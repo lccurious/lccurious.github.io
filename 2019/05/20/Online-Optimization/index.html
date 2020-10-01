@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next-my.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next-my.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="目前的机器学习问题通常是从已有的数据中通过各种优化算法找到理想的模型参数。但是出现数据分布是动态变化的情况时原来方法就难以适用了。针对这种动态的数据形式人们提出在线学习来解决这类问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Online Optimization">
+<meta property="og:url" content="https://lccurious.github.io/2019/05/20/Online-Optimization/index.html">
+<meta property="og:site_name" content="Curiousity Hub">
+<meta property="og:description" content="目前的机器学习问题通常是从已有的数据中通过各种优化算法找到理想的模型参数。但是出现数据分布是动态变化的情况时原来方法就难以适用了。针对这种动态的数据形式人们提出在线学习来解决这类问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-20T09:16:38.000Z">
+<meta property="article:modified_time" content="2020-10-01T09:08:13.708Z">
+<meta property="article:author" content="Bill H">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://lccurious.github.io/2019/05/20/Online-Optimization/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Online Optimization | Curiousity Hub</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Curiousity Hub</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">103</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lccurious.github.io/2019/05/20/Online-Optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Bill H">
+      <meta itemprop="description" content="星辰大海">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Curiousity Hub">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Online Optimization
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-20 17:16:38" itemprop="dateCreated datePublished" datetime="2019-05-20T17:16:38+08:00">2019-05-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-01 17:08:13" itemprop="dateModified" datetime="2020-10-01T17:08:13+08:00">2020-10-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>15k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>目前的机器学习问题通常是从已有的数据中通过各种优化算法找到理想的模型参数。但是出现数据分布是动态变化的情况时原来方法就难以适用了。针对这种动态的数据形式人们提出在线学习来解决这类问题。</p>
+<a id="more"></a>
+<h2 id="背景">背景</h2>
+<p>尽管在原来的统计机器学习中，我们已经取得了很多很好的结果。但是在一些应用场景中，数据会不断产生，新到达的数据可能会使得在历史数据上学习到的模型不再完全适用。而且有时候我们需要一个模型能够更加直接地表示新到达数据的趋势。一个非常现实的场景就是搜索广告的点击率(CTR)评估模型，网友的点击行为会随着时间变化。而基于 batch 的算法除了每次重新计算参数的代价巨大以外还无法即使反馈用户的点击行为迁移。而且在现实中可能遇到的数据量是非常巨大的，以 batch 的方式进行训练需要耗费的资源也过于庞大。在线学习的提出就是为了用于克服这些问题，为了叙述更加流畅将直接使用在线优化来表示。</p>
+<h3 id="在线优化">在线优化</h3>
+<p>在线学习其实是统计机器学习的一种自然拓展<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>，和原来的统计学习的基本不同点在于，而对于统计学习而言则是</p>
+<ul>
+<li>训练数据是有限的</li>
+<li>目标值是有一个上限的 对于在线优化而言</li>
+<li>在学习阶段，训练数据是一次来一个</li>
+<li>没有办法直接获取全部的数据</li>
+<li>甚至训练数据可以是无限的，新的数据可以是在环境中不断生成的</li>
+</ul>
+<p>在原来的最优化任务中，我们的目标函数是要最小化一个经验风险函数： <span class="math display">\[
+    \min_{w} \mathbb{E}_{\tilde{x} \sim \text { distribution }}[\operatorname{loss}(w ; \tilde{x})].
+\]</span> 在线优化任务中，我们通常没有办法直接获得这个分布，无法直接获得样本的梯度，从理论上也很难去估计这种情况下的收敛率，如果是神经网络模型，还可能会灾难性地遗忘之前的样本。</p>
+<p>我们以商贩动态定价作为例子，假设有一个商贩为了能够赚最多的钱，他卖东西不明码标价，而是对每个来购买他东西的顾客都动态定价。他对每个来买东西的客人 <span class="math inline">\(t\)</span> 他能知道一些这个客人的信息 <span class="math inline">\(x_t\)</span>，并基于这些信息他估计这个客人可能会接受的买下某件商品的最高价格 <span class="math inline">\(a_t(x_t)\in \mathcal{Y}\)</span>。而另一方面，顾客心里也有个最高的预期价格 <span class="math inline">\(y_t\)</span>，如果高于这个价格他就不买了。这个例子中商贩的损失函数可以写为<span class="math inline">\(\ell(a,(x, y))=-a(x) \mathbb{1}_{a(x) \leq y}\)</span>，这也称为有限信息博弈，或者不完全信息博弈。</p>
+<p>随机梯度下降（SGD）算法在每次更新内部参数的时候不需要全部的样本信息，在目前是应用最广的一种用于在线优化的技术<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>。在此算法基础上，给在线优化问题带来一些合适的求解方法的启发。</p>
+<p>另外，在迭代和选取模型的时候，稀疏解除了能够帮助选取特征以外还降低了预测计算的复杂度。在实际算法设计和优化过程中，也会注重稀疏性。但这里有个严峻的问题，SGD不能带来稀疏解。就算增加L1正则，在 batch 的时候可以得到稀疏解，但在online的时候却不行<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>。</p>
+<h3 id="梯度下降">梯度下降</h3>
+<p>梯度下降算法在经验风险值最小化问题和深度学习中有着广泛的应用<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>，考虑我们的目标优化问题： <span class="math display">\[
+    x^{*} :=\underset{x}{\arg \min } f(x), \quad \text { with } \quad f(x) :=\frac{1}{n} \sum_{i=1}^{n} f_{i}(x)
+\]</span> 其中 <span class="math inline">\(x^{*}\)</span> 是函数的全局最优值，<span class="math inline">\(n\)</span> 为样本的数量，当我们采用梯度下降法的时候，在每一轮更新函数的参数时，要将所有的样本特征信息都加入到函数参数的更新中去则有： <span class="math display">\[
+    w_{k+1}=w_{k}-\eta_{k} \nabla R_{n}\left(w_{k}\right)=w_{k}-\frac{\eta_{k}}{n} \sum_{i=1}^{n} \nabla f_{i}\left(w_{k}\right)
+\]</span> 其中，<span class="math inline">\(w_k\)</span> 表示函数模型在第 <span class="math inline">\(k\)</span> 步时的函数参数，<span class="math inline">\(\nabla R_{n}\)</span> 表示函数在 <span class="math inline">\(k\)</span> 步时函数在样本总体上的梯度，<span class="math inline">\(\eta_{k}\)</span> 表示在第 <span class="math inline">\(k\)</span> 步时的学习率。但是当样本规模十分庞大时这种更新方式就需要非常庞大的计算量。在实际的场景中，人们常常采用从总的样本中随机选择一批样本计算梯度用于更新参数，而随机性的加入会增加下降梯度步骤的方差，这使得随机梯度下降算法的收敛率不如梯度下降算法。</p>
+<p>如果原来的函数满足强凸假设的话，梯度下降的方法是可以得到近似于线性收敛率 <span class="math inline">\(O(c(1-q)^k)\)</span> 的计算复杂度。</p>
+<h2 id="问题描述">问题描述</h2>
+<p>一个在线优化的问题可以形式化地描述如下<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>，用 <span class="math inline">\(t=1,2,\dots, n\)</span> 表示步骤，在每一步：</p>
+<ul>
+<li>选择一个动作 <span class="math inline">\(a_{t} \in \mathcal{A}\)</span></li>
+<li>同时模拟对手会选择 <span class="math inline">\(z_{t} \in \mathcal{Z}\)</span></li>
+<li>计算得到的损失 <span class="math inline">\(\ell\left(a_{t}, z_{t}\right)\)</span></li>
+<li>观测 <span class="math inline">\(z_{t}\)</span></li>
+</ul>
+<p><strong>目标</strong>：使累计后悔量最小： <span class="math display">\[
+    R_{n}=\sum_{t=1}^{n} \ell\left(a_{t}, z_{t}\right)-\inf _{a \in \mathcal{A}} \sum_{t=1}^{n} \ell\left(a, z_{t}\right).
+\]</span> 其中 <span class="math inline">\(a\)</span> 表示完美的策略，这里表示在 <span class="math inline">\(n\)</span> 个数据上的后悔量 <span class="math inline">\(R_{n}\)</span> 是独立于对手的行为策略的。以上我们可以把在线优化看成是一个在算法和环境之间的重复博弈游戏。在这个过程中算法将不断学习得到最好的策略使得其最适合当前的工作。</p>
+<p>如果一个函数 <span class="math inline">\(f\)</span> 是一个满足 <span class="math inline">\(L\)</span> 光滑的 Lipschitz 连续函数<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>如下 <span class="math display">\[
+\|\nabla f(x)-\nabla f(y)\| \leq L\|x-y\|, \quad \forall x, y \in \mathbb{R}^{d}.
+\]</span> 对于这一类的函数都有<span class="math inline">\(\left\|\nabla f_{i}(x)-\nabla f_{i}(y)\right\| \leq L\|x-y\|\)</span>。其中 Lipschitz 常数 <span class="math inline">\(L\)</span> 和函数的数量编号无关。如果还存在一个常数 <span class="math inline">\(\mu&gt;0\)</span> 有方程如下，则称函数是符合 <span class="math inline">\(\mu\)</span> 强凸的。 <span class="math display">\[
+f(y) \geq f(x)+\langle\nabla f(x), y-x\rangle+\frac{\lambda}{2}\|y-x\|^{2} \quad \forall x, y \in \mathbb{R}^{d}
+\]</span> 有 <span class="math inline">\(Q_f :=L/\mu\)</span> 称为函数的条件数。</p>
+<p>如果对于 <span class="math inline">\(x\in\mathbb{R}^d\)</span> 有 <span class="math display">\[
+    f(x)-f\left(x^{*}\right) \leq \mu\|\nabla f(x)\|^{2}.
+\]</span> 我们称满足这种条件的函数为 <span class="math inline">\(\mu\)</span> 梯度主导的。而且函数 <span class="math inline">\(f\)</span> 不必为凸的。</p>
+<p>在分析以上函数类的收敛率时，用 <span class="math inline">\(\|\nabla f(x)\|^{2} \leq \epsilon\)</span> 来判断迭代是否逼近了一个驻点。和在凸函数 <span class="math inline">\(f\)</span> 中的 SGD 用 <span class="math inline">\(\left[f(x)-f\left(x^{*}\right)\right]\)</span> 或者 <span class="math inline">\(\left\|x-x^{*}\right\|^{2}\)</span> 作为收敛率指标不同。非凸函数的分析中这种不太行得通。</p>
+<h2 id="随机梯度下降">随机梯度下降</h2>
+<p>假设我们可以得到和随机变量 <span class="math inline">\(X\)</span> 高度相关的随机变量 <span class="math inline">\(Y\)</span>，那么利用方差缩减的方法估计随机变量 <span class="math inline">\(X\)</span> 的期望则可以有： <span class="math display">\[
+\theta_{\alpha}=\alpha(X-Y)+\mathbb{E}[Y],
+\]</span> 其中，<span class="math inline">\(\alpha\in [0,1]\)</span>，<span class="math inline">\(\mathbb{E}\)</span>，这个估计量 <span class="math inline">\(\theta_{\alpha}\)</span> 的期望和方差可以写成下面的形式： <span class="math display">\[
+\begin{array}{c}{\mathbb{E} [\theta_{\alpha}]=\alpha \mathbb{E}[X]+(1-\alpha) \mathbb{E}[Y]}, \\ {\operatorname{Var}\left(\theta_{\alpha}\right)=\alpha^{2}[\operatorname{Var}(X)+\operatorname{Var}(Y)-2 \operatorname{Cov}(X, Y)].}\end{array}
+\]</span> 如果其中的 <span class="math inline">\(\alpha\)</span> 变成1这个估计量就是变量 <span class="math inline">\(X\)</span> 的期望，且相关性 <span class="math inline">\(\operatorname{Cov}(X,Y)\)</span> 越大，这个估计量的方差也就越小，很多的方差缩减算法都是基于这个思想。</p>
+<h3 id="sag算法">SAG算法</h3>
+<p>为了减少随机梯度下降算法带来的梯度方差，所以引入了一种方法尝试用上所有的样本梯度，所以在更新梯度信息的时候采用一种新的更新方法SAG（Stochastic Average Gradient）<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>。这个方法将每个样本最近计算过的梯度 <span class="math inline">\(y_i\)</span> 都保存在内存中用于辅助降低下一轮梯度之间的方差。同时,为了保持较小的计算开销，在每一轮更新中，都随机选择一个样本 <span class="math inline">\(i\)</span> 来更新梯度，并且用新计算得到的梯度和内存中已有的梯度一起来更新计算中的参数。 <span class="math display">\[
+    w_{k+1}=w_{k}-\frac{\eta_{k}}{n} \sum_{i=1}^{n} y_{i}^{k}
+\]</span> 其中 <span class="math inline">\(k\)</span> 表示当前是第 <span class="math inline">\(k\)</span> 轮计算，<span class="math inline">\(\eta_{k}\)</span> 表示第 <span class="math inline">\(k\)</span> 轮的学习率，<span class="math inline">\(n\)</span> 表示样本总数 <span class="math display">\[
+y_{i}^{k}=\left\{\begin{array}{lr}{\nabla f_{i}\left(w_{k}\right),} &amp; {\text { if } i_{k}=i} \\ {\nabla f_{i}\left(w_{k-1}\right)} &amp; {\text { otherwise }}\end{array}\right.
+\]</span> 根据这样的规则就有，如果当前的这个样本是被选中进行梯度计算的，就用新计算得到的梯度代替原来内存中为它储存的梯度，如果未被选中则继续沿用内存中为它存储的梯度进行计算，然后把所有样本的梯度信息组合在一起用于更新完整的参数，把这些式子重新改写成一整个式子。 <span class="math display">\[
+    \tilde{g}_{k} \leftarrow \frac{\nabla f_{i_{k}}\left(w_{k}\right)-\nabla f_{i_{k}}\left(w_{k-1}\right)}{n}+\nabla R_{n}\left(w_{k-1}\right)
+\]</span> 通过这种方法得到的梯度方差会随着 <span class="math inline">\(n\)</span> 以 <span class="math inline">\(\frac{1}{n^2}\)</span> 的速度进行衰减，计算的开销和 SGD 没有区别但是会额外增加与样本量相当的内存开销，但是收敛速度要远远大于原来的 SGD 算法。</p>
+<h3 id="svrg算法">SVRG算法</h3>
+<p>SVRG（stochastic variance reduced gradient） 算法在每一轮迭代的内部都要计算一次所有样本的平均梯度，不过在这种计算策略下依然需要比较高的计算开销。在每一轮循环的内部还有一个小的循环，小循环内每次计算两次梯度 <span class="math inline">\(\nabla f_{i_{j}}\left(\tilde{w}_{j}\right)\)</span> 和 <span class="math inline">\(\nabla f_{i_{j}}\left(w_{k}\right)\)</span>。 <span class="math display">\[
+    \tilde{g}_{j} \leftarrow \nabla f_{i_{j}}\left(\tilde{w}_{j}\right)-\left(\nabla f_{i_{j}}\left(w_{k}\right)-\nabla R_{n}\left(w_{k}\right)\right)
+\]</span> 其中 <span class="math inline">\(\nabla R_{n}\left(w_{k}\right)\)</span> 表示样本的梯度均值。在每个循环的内部重新计算梯度的时候进行迭代的参数内容为<span class="math inline">\(\tilde{w}\)</span>，由新的符号 <span class="math inline">\(i_{j}\)</span> (用于索引从样本总体中随机选取的 <span class="math inline">\(m\)</span> 个样本)索引函数参数进行更新： <span class="math display">\[
+\tilde{w}_{j+1} \leftarrow \tilde{w}_{j}-\eta \tilde{g}_{j}
+\]</span> 这就是前面所描述的方差缩减的体现所在，可以看到 <span class="math inline">\(\tilde{g}_{j}\)</span> 是 <span class="math inline">\(\nabla R(\tilde{w} j)\)</span> 的一个无偏估计。在 SVRG 的收敛分析中，因为利用中间小循环内的这种独特更新方式可以让方差有一个不断缩减的上界，比 SGD 假设样本的方差有一个常数上界有更好的收敛性质。而且相对于 SAG 算法而言，不需要再在内存种维护每一个样本的梯度，降低了对内存资源的要求。</p>
+<p>在实验结果中，SVRG相对于SGD来说在最优值附近几乎没有震荡，而且还没有什么噪音，其表现效果基本接近梯度下降。</p>
+<h3 id="saga-算法">SAGA 算法</h3>
+<p>SAGA（Stochastic Variance Reduced Gradient) 算法是在 SVRG 工作基础上的改进，通常是介于 SAG 和 SVRG 之间的一种算法，根据文章内容说明，该方法的在强凸的情况下收敛速度要快于 SAG 和 SVRG，并且同时适应于非强凸的情形。</p>
+<h3 id="scsg-算法">SCSG 算法</h3>
+这是基于SVRG的一个改进算法，因为 SVRG 需要全部数据样本的梯度进行更新，从而达到对于梯度的 Variance 进行控制，所以根据 SVRG 的参数更新规则，它的计算成本是 <span class="math inline">\(O((n+m)T)\)</span>，其中 <span class="math inline">\(n\)</span> 是样本的总数，<span class="math inline">\(m\)</span> 是每轮随机选择更新的样本数量，<span class="math inline">\(T\)</span> 是所用的全部更新轮数。SCSG 和 SVRG 的两个主要区别主要是不像SVRG算法在每轮更新时的内循环中选择全部的样本数据来更新参数，而是选择样本总体的一个子集。
+<p>其余的每个步骤更新内容和SVRG是一模一样的。</p>
+<h2 id="增加稀疏性">增加稀疏性</h2>
+<p>在面对高维数据集或者大规模数据场景时，解的稀疏性尤为重要。直接从 SGD 求解到难以得到比较稀疏的解，所以要增加一些限制使得这些求解结果能够保持更好的稀疏性。</p>
+<h3 id="tg算法">TG算法</h3>
+<p>为了得到比较稀疏的解，一种简单有效的方法是设置一个阈值对求解得到的参数进行阈值化，但是会造成一些数据丢失。截断梯度法（Truncated Gradient）<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>是在某些特定情况下对于简单阈值化方法的改进。</p>
+<p>带 L1 正则约束项的优化往往能够产生稀疏解 <span class="math display">\[
+    \psi(W)=\|W\|_{1}=\sum_{i=1}^{N}\left|w_{i}\right|,
+\]</span> 但是这种正则项的存在在0处不可导的问题，又会导致一些原来是平滑凸函数的优化目标变成非光滑的凸函数，所以在计算梯度时候还要使用次梯度进行计算。 <span class="math display">\[
+    f\left(w_{i}\right)=w_{i}-\eta \nabla_{1} L\left(w_{i}, z_{i}\right)-\eta g \operatorname{sgn}\left(w_{i}\right)
+\]</span> 其中 <span class="math inline">\(\eta\)</span> 表示学习率，<span class="math inline">\(g\)</span> 是一个标量是正则化的参数，<span class="math inline">\(\nabla_{1} L(a, b)\)</span> 表示函数<span class="math inline">\(L(a,b)\)</span>对应于 <span class="math inline">\(a\)</span> 的次梯度，在某个时刻模型的梯度，<span class="math inline">\(\operatorname{sgn}\)</span> 是一个符号函数。</p>
+<p>加入 L1 正则项之后可以再增加一些改进达到更好的求解稀疏性。如果简单地用梯度截断可以取一个 <span class="math inline">\(k\)</span> 作为滑动窗口大小，每隔 <span class="math inline">\(k\)</span> 个更新步就采用下面的更新方式进行更新，其他时间用标准的 SGD 方法更新参数。 <span class="math display">\[
+    f\left(w_{i}\right)=T_{0}\left(w_{i}-\eta \nabla_{1} L\left(w_{i}, z_{i}\right), \theta\right)
+\]</span> 其中 <span class="math inline">\(T_{0}\)</span> 又表示为下面的形式 <span class="math display">\[
+T_{0}\left(v_{i}, \theta\right)=\left\{\begin{array}{ll}{0} &amp; {\text { if }\left|v_{i}\right| \leq \theta} \\ {v_{i}} &amp; {\text { otherwise }}\end{array}\right..
+\]</span> <span class="math inline">\(v_{i}\)</span>表示其中的一个维度。</p>
+<p>在TG<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>中采用和  相同的更行形式但是在对梯度进行截断的步骤做了改进 <span class="math display">\[
+    f\left(w_{i}\right)=T_{1}\left(w_{i}-\eta \nabla_{1} L\left(w_{i}, z_{i}\right), \eta g_{i}, \theta\right)
+\]</span> 其中的 <span class="math inline">\(T_{1}\)</span> 的具体形式如下 <span class="math display">\[
+T_{1}\left(v_{j}, \alpha, \theta\right)=\left\{\begin{array}{ll}{\max \left(0, v_{j}-\alpha\right)} &amp; {\text { if } v_{j} \in[0, \theta]} \\ {\min \left(0, v_{j}+\alpha\right)} &amp; {\text { if } v_{j} \in[-\theta, 0]} \\ {v_{j}} &amp; {\text { otherwise }}\end{array}\right.
+\]</span> 其中，<span class="math inline">\(T_{1}(v, \alpha, \theta)=\left[T_{1}\left(v_{1}, \alpha, \theta\right), \ldots, T_{1}\left(v_{d}, \alpha, \theta\right)\right]\)</span> 当 <span class="math inline">\(i/k\)</span> 为整数时，<span class="math inline">\(g^{(i)}=0\)</span>，如果 <span class="math inline">\(i/k\)</span> 为整数时 <span class="math inline">\(g^{(i)}=kg\)</span>。从这里的更新方式可以看出 <span class="math inline">\(g\)</span> 和 <span class="math inline">\(\theta\)</span> 决定了解的稀疏程度，这两个值越大，则稀疏性越强。</p>
+<h3 id="fobos算法">FOBOS算法</h3>
+<p>前向后向切分（Forward-Backward Splitting）<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>使用次梯度，将权重的更新分成两个步骤。 <span class="math display">\[
+\begin{array}{c}{W^{\left(t+\frac{1}{2}\right)}=W^{(t)}-\eta^{(t)} G^{(t)}}, \\ {W^{(t+1)}=\operatorname{argmin}_{W}\left\{\frac{1}{2}\left\|W-W^{\left(t+\frac{1}{2}\right)}\right\|^{2}+\eta^{\left(t+\frac{1}{2}\right)} \Psi(W)\right\}}.\end{array}
+\]</span> 其中，其中前一项和标准梯度下降一致，后一项是在梯度下降的结果基础上进行微调。微调保证结果在梯度下降的附近，另外增加罚项使得产生的解更加稀疏。</p>
+<p>将两个更新步骤合成为一个则有 <span class="math display">\[
+    W^{(t+1)}=\operatorname{argmin}\left\{\frac{1}{2}\left\|W-W^{(t)}+\eta^{(t)} G^{(t)}\right\|^{2}+\eta^{\left(t+\frac{1}{2}\right)} \Psi(W)\right\},
+\]</span> 如果令<span class="math inline">\(F(W)=\frac{1}{2}\left\|W-W^{(t)}+\eta^{(t)} G^{(t)}\right\|^{2}+\eta^{\left(t+\frac{1}{2}\right)} \Psi(W)\)</span>，在最优解的集合中一定会有 0 向量是 <span class="math inline">\(F(W)\)</span> 的次梯度。也就有 <span class="math display">\[
+    0=\left.\left\{W-W^{(t)}-\eta^{(t)} G^{(t)}+\eta^{\left(t+\frac{1}{2}\right)} \partial \Psi(W)\right\}\right|_{W=W^{(t+1)}},
+\]</span> 进而得到权重更新公式为 <span class="math display">\[
+    W^{(t+1)}=W^{(t)}-\eta^{(t)} G^{(t)}-\eta^{\left(t+\frac{1}{2}\right)} \partial \Psi\left(W^{(t+1)}\right),
+\]</span> 调整得到的权重不仅与迭代前的状态有关还和迭代之后的状态有关，所以称为前向后向切分。</p>
+<p>如果罚项函数用的是 L1 正则，<span class="math inline">\(\Psi(W)=\lambda\|W\|_{1^{\circ}}\)</span> 带入展开有 <span class="math display">\[
+    W^{(t+1)}=\operatorname{argmin}_{w} \sum_{i=1}^{N}\left(\frac{1}{2}\left(w_{i}-w^{(t+\frac{1}{2})}_{i}\right)^{2}+\eta^{\left(t+\frac{1}{2}\right)}\lambda\left|w_{i}\right|\right),
+\]</span> 经过推导<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>得到参数各个维度上的更新方式如下 <span class="math display">\[
+\begin{aligned} w_{i}^{(t+1)} &amp;=\operatorname{sgn}\left(w^{(t+\frac{1}{2})}_{i}\right) \max \left(0,\left|w^{(t+\frac{1}{2})}_{i}\right|-\tilde{\lambda}\right) \\ &amp;=\operatorname{sgn}\left(w_{i}^{(t)}-\eta^{(t)} g_{i}^{(t)}\right) \max \left\{0,\left|w_{i}^{(t)}-\eta^{(t)} g_{i}^{(t)}\right|-\eta^{\left(t+\frac{1}{2}\right)} \lambda\right\} \end{aligned}.
+\]</span> L1-FOBOS 在每次更新模型参数的时候，会对每个维度都进行判断，然后根据梯度截断方式对对应的梯度方向进行处理。也就是当一个样本产生的梯度不足以对对应维度上的权值产生影响时就将这次在这个维度上的更新判定为不重要，然后舍弃本次这个维度的更新。</p>
+<p>因此针对针对 L1-FOBOS 各个方向的梯度更新算法可以写成 <span class="math display">\[
+w_{i}^{(t+1)}=\left\{\begin{array}{ll}{0} &amp; {\text {if }\left|w_{i}^{(t)}-\eta^{(t)} g_{i}^{(t)}\right| \leq \eta^{\left(t+\frac{1}{2}\right)} \lambda} \\ {\left(w_{i}^{(t)}-\eta^{(t)} g_{i}^{(t)}\right)-\eta^{\left(t+\frac{1}{2}\right)} \lambda \operatorname{sgn}\left(w_{i}^{(t)}-\eta^{(t)} g_{i}^{(t)}\right)} &amp; {\text { otherwise }}\end{array}\right..
+\]</span></p>
+<h3 id="rda算法">RDA算法</h3>
+<p>正则对偶平均（Regularized Dual Averaging）<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>，与之前基于随机梯度下降的改进不同，在这个方法是通过对偶平均的方式对梯度进行更新 <span class="math display">\[\label{eq:RDA}
+    W^{(t+1)}=\operatorname{argmin}\left\{\frac{1}{t} \sum_{r=1}^{t}\left\langle G^{(r)}, W\right\rangle+\Psi(W)+\frac{\beta^{(t)}}{t} h(W)\right\},
+\]</span> 其中，<span class="math inline">\(\left\langle G^{(r)}, W\right\rangle\)</span> 表示梯度对参数 <span class="math inline">\(W\)</span> 的积分平均值，<span class="math inline">\(\Psi(W)\)</span> 为积分正则项，还有一个额外的正则项 <span class="math inline">\(\frac{\beta^{(t)}}{t} h(W)\)</span> 是严格凸函数，<span class="math inline">\(\left\{\beta^{(t)} | t \geq 1\right\}\)</span> 是一个非负非自减序列。</p>
+<p>在 L1正则下，为了使方法应用起来较为简单，令 <span class="math inline">\(\Psi(W)=\lambda\|W\|_{1}\)</span>，构造严格凸函数 <span class="math inline">\(h(W)\)</span> 为 <span class="math inline">\(\frac{1}{2}\|W\|_{2}^{2}\)</span>，将非负非自减序列定义为 <span class="math inline">\(\beta^{(t)}=\gamma \sqrt{t}\)</span>，带入函数形式有 <span class="math display">\[
+    W^{(t+1)}=\operatorname{argmin}\left\{\frac{1}{t} \sum_{r=1}^{t}\left\langle G^{(r)}, W\right\rangle+\lambda\|W\|_{1}+\frac{\gamma}{2 \sqrt{t}}\|W\|_{2}^{2}\right\},
+\]</span> 将各个维度拆解成独立 <span class="math inline">\(N\)</span> 个独立的标量最小化问题，根据推导<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>有在 L1 正则下的参数更新方式为 <span class="math display">\[
+w_{i}^{(t+1)}=\left\{\begin{array}{ll}{0} &amp; {\text { if }\left|\overline{g}_{i}^{(t)}\right|&lt;\lambda} \\ {-\frac{\sqrt{t}}{\gamma}\left(\overline{g}_{i}^{(t)}-\lambda \operatorname{sgn}\left(\overline{g}_{i}^{(t)}\right)\right)} &amp; {\text { otherwise }}\end{array}\right..
+\]</span> 由此可见，如果在某个方向上的累计梯度平均绝对值小于某个阈值 <span class="math inline">\(\lambda\)</span> 时，这个权重就会维持为0。这更好地保证了求解结果的系数性。和前面描述的 FOBOS 算法不同，RDA更加保守一些，在梯度累计上做条件判断来对权值进行截断，避免了因为样本训练不足带来的截断使结果精度降低等问题。</p>
+<h3 id="ftrl算法">FTRL算法</h3>
+<p>FTRL（Follow the Regularized Leader）<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>在工程实现的角度上结合了 L1-FOBOS 精度较高的优点和 L1-RDA能够产生更稀疏的解的优点，产生了一个统一的优化求解形式。</p>
+<p>首先看到 FOBOS 和 RDA 在求解方式上的相似之处，FOBOS在迭代过程中都可以写成 <span class="math display">\[
+    W^{(t+1)}=\operatorname{argmin}\left\{\frac{1}{2}\left\|W-W^{(t)}+\eta^{(t)} G^{(t)}\right\|_{2}^{2}+\eta^{(t)} \lambda\|W\|_{1}\right\}.
+\]</span> 但是直接从中得到解析解的难度非常大，我们在前文通过分解成 N 个独立的求解步骤，再将 N 个步骤合并可以得到 <span class="math display">\[
+    W^{(t+1)}=\operatorname{argmin}\left\{G^{(t)} \cdot W+\lambda\|W\|_{1}+\frac{1}{2 \eta^{(t)}}\left\|W-W^{(t)}\right\|_{2}^{2}\right\}.
+\]</span> 而对应于有正则化项的 SDA，我们用 <span class="math inline">\(G^{(1 : t)}=\sum_{s=1}^{t} G^{(s)}\)</span> 表示累计梯度，另外如果再令 <span class="math inline">\(\sigma^{(s)}=\frac{1}{\eta^{(s)}}-\frac{1}{\eta^{(s-1)}}\)</span>，<span class="math inline">\(\sigma^{(1 : t)}=\frac{1}{\eta^{(t)}}\)</span> 还可以将两个式子的形式进一步统一到下面的两个方程中 <span class="math display">\[\label{eq:FOBOS-s}
+    W^{(t+1)}=\operatorname{argmin}\left\{G^{(t)} \cdot W+\lambda\|W\|_{1}+\frac{1}{2} \sigma^{(1 : t)}\left\|W-W^{(t)}\right\|_{2}^{2}\right\},
+\]</span> <span class="math display">\[\label{eq:RDA-s}
+    W^{(t+1)}=\arg \min _{W}\left\{G^{(1 : t)} \cdot W+t \lambda\|W\|_{1}+\frac{1}{2} \sigma^{(1 : t)}\|W-0\|_{2}^{2}\right\}.
+\]</span> 可以通过对比两个方程的形式发现，考虑的是当前正则项的贡献，求得的新解不能与之前的解相差太远，而则采用了累计梯度信息的方式，求得的新解不能与 0 相差太远。</p>
+<p>针对这个在正则项上处理方式和对 <span class="math inline">\(W\)</span> 限制的不同，FTRL 给出了新的特征权值更新方式 <span class="math display">\[
+    W^{(t+1)}=\operatorname{argmin}\left\{G^{(1 : t)} \cdot W+\lambda_{1}\|W\|_{1}+\lambda_{2} \frac{1}{2}\|W\|_{2}^{2}+\frac{1}{2} \sum_{s=1}^{t} \sigma^{(s)}\left\|W-W^{(s)}\right\|_{2}^{2}\right\}.
+\]</span> 根据推导<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a>有最终的参数权重更新方式 <span class="math display">\[
+w_{i}^{(t+1)}=\left\{\begin{array}{ll}{0} &amp; {\text { if }\left|z_{i}^{(t)}\right|&lt;\lambda_{1}} \\ {-\left(\lambda_{2}+\sum_{s=1}^{t} \sigma^{(s)}\right)^{-1}\left(z_{i}^{(t)}-\lambda_{1} \operatorname{sgn}\left(z_{i}^{(t)}\right)\right)} &amp; {\text { otherwise }}\end{array}\right.
+\]</span> 其中在FTRL中还有四个参数通常需要根据具体的实际问题进行设置和调整。</p>
+<h2 id="采样技巧">采样技巧</h2>
+<p>上述的很多文章都集中讨论通过降低梯度下降时的方差抑制来保证求解取得一个比较好的结果，另外一种常规的技巧可以通过优化采样训练集的方式来降低梯度的方差。通过优化训练数据采样的方法是可以和其他降低梯度方差方法并行的一种技巧。</p>
+<p>可调权重的随机梯度下降算法AW-SGD在随机梯度下降算法每轮优化目标函数之前，用额外的随机梯度下降步骤优化采样数据分布估计<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a>。</p>
+<h2 id="总结">总结</h2>
+<p>在线优化适用于处理在线生成的数据，适合完成在大规模场景下的训练任务，并且有 Regret 累计损失函数的理论分析保障。目前而言在工程上FTRL是最好的实现模式。</p>
+<p>具有完全信息在线学习性质的问题可以用于在线分类、回归等强反馈问题中，而基于摇臂机分析的模型可以用于弱反馈问题像是推荐系统、二元反馈等问题中。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Bubeck, Sébastien. 2011. “Introduction to Online Optimization.” Lecture Notes, 1–86.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Bouchard, Guillaume, Théo Trouillon, Julien Perez, and Adrien Gaidon. 2015. “Online Learning to Sample.” ArXiv:1506.09016 [Cs, Math, Stat], June. http://arxiv.org/abs/1506.09016.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>吴海波. n.d. “在线学习（Online Learning）导读.” https://zhuanlan.zhihu.com/p/36410780.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>Reddi, Sashank J., Ahmed Hefny, Suvrit Sra, Barnabás Póczos, and Alexander J. Smola. 2016. “Stochastic Variance Reduction for Nonconvex Optimization.” International Conference on Machine Learning, 314–323.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5" role="doc-endnote"><p>Bubeck, Sébastien. 2011. “Introduction to Online Optimization.” Lecture Notes, 1–86.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6" role="doc-endnote"><p>Nesterov, Jurij Evgenʹevič. 2018. Lectures on Convex Optimization.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7" role="doc-endnote"><p>Roux, Nicolas L and Schmidt, Mark and Bach, Francis R 2012 A stochastic gradient method with an exponential convergence rate for finite training sets Advances in neural information processing systems<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8" role="doc-endnote"><p>Langford, John, Lihong Li, and Tong Zhang. 2009. “Sparse Online Learning via Truncated Gradient.” Journal of Machine Learning Research 10 (Mar): 777–801.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9" role="doc-endnote"><p>Langford, John, Lihong Li, and Tong Zhang. 2009. “Sparse Online Learning via Truncated Gradient.” Journal of Machine Learning Research 10 (Mar): 777–801.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10" role="doc-endnote"><p>Bouchard, Guillaume, Théo Trouillon, Julien Perez, and Adrien Gaidon. 2015. “Online Learning to Sample.” ArXiv:1506.09016 [Cs, Math, Stat], June. http://arxiv.org/abs/1506.09016.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11" role="doc-endnote"><p>Bouchard, Guillaume, Théo Trouillon, Julien Perez, and Adrien Gaidon. 2015. “Online Learning to Sample.” ArXiv:1506.09016 [Cs, Math, Stat], June. http://arxiv.org/abs/1506.09016.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12" role="doc-endnote"><p>Xiao, Lin. 2010. “Dual Averaging Methods for Regularized Stochastic Learning and Online Optimization.” Journal of Machine Learning Research 11 (Oct): 2543–2596.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13" role="doc-endnote"><p>Xiao, Lin. 2010. “Dual Averaging Methods for Regularized Stochastic Learning and Online Optimization.” Journal of Machine Learning Research 11 (Oct): 2543–2596.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14" role="doc-endnote"><p>Johnson, Rie, and Tong Zhang. 2013. “Accelerating Stochastic Gradient Descent Using Predictive Variance Reduction.” In Advances in Neural Information Processing Systems, 315–323.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15" role="doc-endnote"><p>McMahan, H Brendan, Gary Holt, David Sculley, Michael Young, Dietmar Ebner, Julian Grady, Lan Nie, et al. 2013. “Ad Click Prediction: A View from the Trenches.” In Proceedings of the 19th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, 1222–1230. ACM.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16" role="doc-endnote"><p>Bouchard, Guillaume, Théo Trouillon, Julien Perez, and Adrien Gaidon. 2015. “Online Learning to Sample.” ArXiv:1506.09016 [Cs, Math, Stat], June. http://arxiv.org/abs/1506.09016.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Bill H 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Bill H 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill H
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lccurious.github.io/2019/05/20/Online-Optimization/" title="Online Optimization">https://lccurious.github.io/2019/05/20/Online-Optimization/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/05/02/Simple-Socket-Server/" rel="prev" title="简单的 Socket 服务">
+      <i class="fa fa-chevron-left"></i> 简单的 Socket 服务
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/08/19/What-is-Depression/" rel="next" title="抑郁症是">
+      抑郁症是 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E4%BC%98%E5%8C%96"><span class="nav-number">1.1.</span> <span class="nav-text">在线优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="nav-number">1.2.</span> <span class="nav-text">梯度下降</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="nav-number">3.</span> <span class="nav-text">随机梯度下降</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sag%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">SAG算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#svrg%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">SVRG算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#saga-%E7%AE%97%E6%B3%95"><span class="nav-number">3.3.</span> <span class="nav-text">SAGA 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scsg-%E7%AE%97%E6%B3%95"><span class="nav-number">3.4.</span> <span class="nav-text">SCSG 算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E7%A8%80%E7%96%8F%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text">增加稀疏性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tg%E7%AE%97%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">TG算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fobos%E7%AE%97%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">FOBOS算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rda%E7%AE%97%E6%B3%95"><span class="nav-number">4.3.</span> <span class="nav-text">RDA算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ftrl%E7%AE%97%E6%B3%95"><span class="nav-number">4.4.</span> <span class="nav-text">FTRL算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%87%E6%A0%B7%E6%8A%80%E5%B7%A7"><span class="nav-number">5.</span> <span class="nav-text">采样技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill H"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bill H</p>
+  <div class="site-description" itemprop="description">星辰大海</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:lcurious@163.com" title="E-Mail → mailto:lcurious@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/p/1005052024819944" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;p&#x2F;1005052024819944" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill H</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">194k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:57</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

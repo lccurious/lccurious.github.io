@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next-my.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next-my.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="人们为了避免辛普森悖论等因为模型不明，混淆因素也一时无法确定而建立的各种分析方法，希望能够从大量的数据中找到满足控制变量条件的分析。主要包括建立新的表示符号，用以强调是在某个动作作用之后才有的某种结果，在这个理论基础上设计了因果图，分析方法和我们所认知的概率图分析等都比较一致。因果分析就是要在没有条件进行完全的控制变量的情况下进行数据分析，通过因果归纳得到因果结构，然后进行强度估计。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="因果分析 | 介绍">
+<meta property="og:url" content="https://lccurious.github.io/2019/10/16/Causal-Analysis/index.html">
+<meta property="og:site_name" content="Curiousity Hub">
+<meta property="og:description" content="人们为了避免辛普森悖论等因为模型不明，混淆因素也一时无法确定而建立的各种分析方法，希望能够从大量的数据中找到满足控制变量条件的分析。主要包括建立新的表示符号，用以强调是在某个动作作用之后才有的某种结果，在这个理论基础上设计了因果图，分析方法和我们所认知的概率图分析等都比较一致。因果分析就是要在没有条件进行完全的控制变量的情况下进行数据分析，通过因果归纳得到因果结构，然后进行强度估计。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lccurious.github.io/2019/10/16/Causal-Analysis/simplesenparadox.png">
+<meta property="article:published_time" content="2019-10-16T09:36:06.000Z">
+<meta property="article:modified_time" content="2020-10-01T09:08:13.637Z">
+<meta property="article:author" content="Bill H">
+<meta property="article:tag" content="因果分析">
+<meta property="article:tag" content="因果推理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lccurious.github.io/2019/10/16/Causal-Analysis/simplesenparadox.png">
+
+<link rel="canonical" href="https://lccurious.github.io/2019/10/16/Causal-Analysis/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>因果分析 | 介绍 | Curiousity Hub</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Curiousity Hub</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">103</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lccurious.github.io/2019/10/16/Causal-Analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Bill H">
+      <meta itemprop="description" content="星辰大海">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Curiousity Hub">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          因果分析 | 介绍
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-16 17:36:06" itemprop="dateCreated datePublished" datetime="2019-10-16T17:36:06+08:00">2019-10-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-01 17:08:13" itemprop="dateModified" datetime="2020-10-01T17:08:13+08:00">2020-10-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>3.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>人们为了避免辛普森悖论等因为模型不明，混淆因素也一时无法确定而建立的各种分析方法，希望能够从大量的数据中找到满足控制变量条件的分析。主要包括建立新的表示符号，用以强调是在某个动作作用之后才有的某种结果，在这个理论基础上设计了因果图，分析方法和我们所认知的概率图分析等都比较一致。因果分析就是要在没有条件进行完全的控制变量的情况下进行数据分析，通过因果归纳得到因果结构，然后进行强度估计。</p>
+<img src="/2019/10/16/Causal-Analysis/simplesenparadox.png" class="">
+<a id="more"></a>
+<p>本文依照微软在 KDD 上的演示文稿整理部分和因果推理有关的内容如下。</p>
+<h2 id="符号约定">符号约定</h2>
+<p>符号约定是为了区分因果性和原来我们熟悉的关联性模型的表达方式。<span class="math inline">\(P(Y|X)\)</span> 和 <span class="math inline">\(P(Y|do(X))\)</span> 表达的是不同含义，前者着重指根据数据观察得到的概率特征，而后者是指当施加某种干预会带来的某种结果，是着重表达因果性的。</p>
+<ul>
+<li>Conditional Independence Assumption (CIA)
+<ul>
+<li>干预和变量不会相互影响对方的出现</li>
+</ul></li>
+<li>Stable Unit Treatment Value (SUTVA) assumption
+<ul>
+<li>一个单元受到干预的影响和其他单元是否收到干预相互独立<span class="math display">\[P(Y_i|do(T_i,T_j))=P(Y_i|do(T_i))\]</span></li>
+</ul></li>
+<li>Common support
+<ul>
+<li>受到干预的一批变量和没有受到干预的一批变量应该是相似的</li>
+<li>也就是协变量（covariates）应该有所重叠<span class="math display">\[0&lt; P(T=1|X=x) &lt; 1\]</span></li>
+</ul></li>
+</ul>
+<h2 id="结构因果模型">结构因果模型</h2>
+<p>用概率图模型来表示因果关系，通过探索数据进行因果归纳建立图模型，然后通过大量的数据回测实现因果强度的推断。实际上，人们有时候会建立有人工干预的因果模型，这些因果模型能够比较好地表现数据中前后的因果关联。</p>
+<p><strong>警告</strong>:只有正确的因果结构图才能带来正确的因果作用效应估计</p>
+<p>要知道怎样进行良好的模型设计，如果建立 <span class="math inline">\(T\rightarrow Y\)</span> 这样的联通就会导致错误的相关性分析，比如锻炼和胆固醇关系没有根据年龄这个同时作用在锻炼频率和胆固醇水平的混淆量（confounder）进行分层的话，就会得出错误的结论。但是如何对原始数据进行分组，这是具有挑战性的一点。</p>
+<h2 id="倾向评分匹配">倾向评分匹配</h2>
+<blockquote>
+<p>因果分析方法的贡献在于能够在没有条件进行绝对的控制变量实验的情况下，直接通过对数据进行分层探索各个独立变量对于结果的影响程度。</p>
+</blockquote>
+<p>因为在很多情况下，数据的维度都比较高，不会有特别分明的属性（例如年龄、性别等）便于进行针对属性进行分层。通过一些距离函数以无监督聚类的方案对原始数据进行分组，但是这样做的适应度有限，所以通过引入倾向性评分这个来进行数据的分组。</p>
+<blockquote>
+<p>倾向性评分有效的原因在于，协变量相似的个体之间都比较可能有相似的分数，所有映射到相似分数的个体就比较有可能有相似的干预程度。</p>
+</blockquote>
+<p>通过预测一个个体受到某个干预的可能性，可以作为分层的依据，这个分数估计先通过部分有监督的方法进行训练，然后对全部数据进行估计，得出他们的受到干预的倾向性评分 <span class="math inline">\(\hat{e}(\vec{x_i})\)</span>，但是要对这个最终得分有个比较好的矫正对齐方案。也就是要有 <span class="math inline">\((100*p)/%\)</span> 的样本有 <span class="math inline">\(p\)</span> 的倾向性得分。然后依据倾向性得分计算样本之间的距离：<span class="math display">\[Distance(\vec{x_i},\vec{x_k})=|\hat{e}(\vec{x_i})-\hat{e}(\vec{x_j})|\]</span></p>
+<ul>
+<li>倾向性评分算不准是可以接受的，因为这是为了用于平衡协变量带来的分数，而不是真的直接确定干预作用关系。</li>
+<li>倾向性评分准就很有问题了，这意味着没法把干预和协变量分开，因为任何观察到的影响都会来自干预或者相关的协变量。
+<ul>
+<li>解决方案：重新定义干预量，或者把问题陈述再泛化一下。</li>
+</ul></li>
+</ul>
+<ol type="1">
+<li>通过计算各个倾向性评分对原始样本进行分层。</li>
+<li>计算不同层中对于收益影响的加权平均 <span class="math display">\[ATT = \sum_{s\in strata}\frac{1}{N_{s,T=1}}(\bar{Y}_{s,T=1}-\bar{Y}_{s,T=0})\]</span> 其中，<span class="math inline">\(\bar{Y}_{s,T}\)</span> 是层 <span class="math inline">\(s\)</span> 在 <span class="math inline">\(T\)</span> 的干预下，<span class="math inline">\(N_{s,T=1}\)</span> 是在层 <span class="math inline">\(s\)</span> 中受到干预的样本数量。ATT 是指在对照组上控制量的影响差异（例如样本中有的对控制量起反应，有的不起反应）。</li>
+</ol>
+<h3 id="加权">加权</h3>
+<p>数据集通常不会特别平衡，所以我们时常会根据其特征进行加权评估他们的收益效果，一些有效的加权方法可以改进这一问题。 <span class="math display">\[ATE = \frac{1}{N_{T=1}}\sum_{i\in treated}w_i Y_i-\frac{1}{N_{T=0}}\sum_{j\in untreated}w_j Y_j\]</span> 其中，ATE 是指 Average Treatment Effect 表示控制组和对照组之间潜在的影响差异。</p>
+<h2 id="回归">回归</h2>
+<p>通过回归探索某项干预在模型上的作用效果： <span class="math display">\[E(Y|X,T)=\alpha_1 X_1+\alpha_2 X_2+\alpha_3 X_3\dots +\alpha_n X_n+\alpha_T X_T\]</span> <span class="math inline">\(\alpha\)</span> 越大，那么它们之间的因果性就越强。</p>
+<p>回归的因果解释要满足下面几个假设：</p>
+<ul>
+<li><strong>模型正确性</strong>：如果用线性回归分析非线性的因果性就不行</li>
+<li><strong>共线性</strong>：如果协变量之间具有相关性，也不能得到准确的参数</li>
+<li><strong>可忽略性</strong>：如果漏了混淆变量可能会使分析无效</li>
+</ul>
+<p>要非常仔细地设计模型，保证因果解释能力，避免出现共线性的协变量，确保所有相关的混淆变量都已经考虑到了。</p>
+<h2 id="双重鲁棒">双重鲁棒</h2>
+<ol type="1">
+<li>在做模型分层的时候需要正确的模型说明</li>
+<li>在做回归任务的时候也需要正确的模型指定</li>
+</ol>
+<p>通过双重鲁棒采纳倾向性得分和回归方法中最好的组合，任意一个部分估计正确，都可以带来正确的结果，但是如果两个都估计的不好，那么双重鲁棒会带来更加严重的偏见。 <span class="math display">\[DR_1=\begin{cases}
+\frac{Y}{\hat{e}}-\frac{\hat{Y}_{T=1}(1-\hat{e})}{\hat{e}},&amp; T=1 \\
+\hat{Y}_{T=1}, &amp; T=0
+\end{cases}
+\]</span></p>
+<p><span class="math display">\[DR_0=\begin{cases}
+\hat{Y}_{T=0}, &amp; T=1 \\
+\frac{Y}{1-\hat{e}}-\frac{\hat{Y}_{T=1}(\hat{e})}{1-\hat{e}},&amp; T=0
+\end{cases}
+\]</span></p>
+<p>最后计算所有研究样本的平均值 <span class="math inline">\(\bar{DR_1}\)</span> 和 <span class="math inline">\(\bar{DR_0}\)</span>，其中的差异也就是因果作用的影响程度。</p>
+<h2 id="合成控制">合成控制</h2>
+<p>在一些场景中，所有的样本都受到某个干预的影响， 比如政策、全球变暖等，我们需要建立生成控制来估计如果有一批样本没有受到干预的影响（因为这批样本在实际中并不存在）。</p>
+<ol type="1">
+<li>确定会有什么干预量</li>
+<li>在干预来之前进行观测，拟合协变量和输出的关系</li>
+<li>学习得到输出受干预量的影响</li>
+</ol>
+<p>在出现干预以后：</p>
+<ol type="1">
+<li>通过前面学到的无干预模型估计假如没有干预会有什么样的输出</li>
+<li>计算观测所得输出和无干预模型预测之间的差别</li>
+</ol>
+<h2 id="自然实验">自然实验</h2>
+<p>通常，随机实验实验是检验因果关系的重要手段，通过近似随机算法获得某项干预对于输出的影响。为了达到这个目标，与其直接对数据进行可忽略性不如找到一个子集可以近似这样的实验。我们常见的做法有 A/B 测试、抽样、任意随机策略对干预的外部干扰等，只要源头没有受到这些常见的原因影响就可以使用它们。</p>
+<h3 id="工具变量">工具变量</h3>
+<p>比如在霍乱源头分析的场景中，我们可以直接获得邻居因素对于得病的影响，而邻居关系和他们喝哪个自来水厂的水是基本相互独立的，也就是一种近似随机的关系，而自来水厂也不会直接影响他们是否得病，而是水污染让他们得病。</p>
+<p>通过以上的例子进一步推广，可以抽象出工具变量，它们不会受到未观测的混销量影响，同时也不会直接影响到最终的输出。<span class="math display">\[(Z\amalg U)\]</span> 其中 <span class="math inline">\(Z\)</span> 为工具变量，<span class="math inline">\(U\)</span> 为没有观测到的混淆变量，<span class="math inline">\((Z\amalg Y|T, U)\)</span> 工具变量只能通过影响 <span class="math inline">\(X\)</span> （也就是原因）影响到结果，而不能直接影响。因果影响可以通过下面的方式进行计算<span class="math display">\[Causal effect (X\rightarrow Y)=\frac{T_{Z=1}-Y_{Z=0}}{X_{Z=1}-X_{Z=0}}\]</span></p>
+<p>比如随机鼓励一些人去运动，我们可以观测得到运动对于胆固醇的影响程度。也就是通过工具变量来改变干预的分布，从而推断干预量在最终结果上的影响力。</p>
+<h3 id="回归中的不连续">回归中的不连续</h3>
+<p>这种不连续有时候是因为某些阈值带来的，但是在分界线两侧的样本应该是非常相似的，所以通过随机实验把他们放到另外一侧也是可行的。</p>
+<p>回归中的不连续确定了实验组和对照组之间的任意边界，衡量了边界处差异作为对于最终结果影响程度。</p>
+<h3 id="反驳">反驳</h3>
+<ol type="1">
+<li>通过随机增加一些协变量放入数据，再重新进行分析，如果因果估计没有改变，也就是这个当前的模型没有被驳倒。</li>
+<li>随机或者打乱我们干预，重新进行因果分析，如果没有使分析结果改变，没有被驳倒。</li>
+<li>把数据分成很多子集，进行分析，在各个子集内部没有明显差异，没有被驳倒。</li>
+<li>测试协变量是否平衡。</li>
+</ol>
+<h2 id="总结">总结</h2>
+<p>建模-&gt;归纳-&gt;估计-&gt;反驳</p>
+<ul>
+<li>用多种方法验证</li>
+<li>模型不要太过复杂</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Bill H 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Bill H 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill H
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lccurious.github.io/2019/10/16/Causal-Analysis/" title="因果分析 | 介绍">https://lccurious.github.io/2019/10/16/Causal-Analysis/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9B%A0%E6%9E%9C%E5%88%86%E6%9E%90/" rel="tag"># 因果分析</a>
+              <a href="/tags/%E5%9B%A0%E6%9E%9C%E6%8E%A8%E7%90%86/" rel="tag"># 因果推理</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/09/25/Training-Visualization/" rel="prev" title="训练可视化">
+      <i class="fa fa-chevron-left"></i> 训练可视化
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/" rel="next" title="Paper | Domain Agnostic Learning with Disentangled Representations">
+      Paper | Domain Agnostic Learning with Disentangled Representations <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E7%BA%A6%E5%AE%9A"><span class="nav-number">1.</span> <span class="nav-text">符号约定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E5%9B%A0%E6%9E%9C%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">结构因果模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%80%BE%E5%90%91%E8%AF%84%E5%88%86%E5%8C%B9%E9%85%8D"><span class="nav-number">3.</span> <span class="nav-text">倾向评分匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E6%9D%83"><span class="nav-number">3.1.</span> <span class="nav-text">加权</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E5%BD%92"><span class="nav-number">4.</span> <span class="nav-text">回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8C%E9%87%8D%E9%B2%81%E6%A3%92"><span class="nav-number">5.</span> <span class="nav-text">双重鲁棒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%88%E6%88%90%E6%8E%A7%E5%88%B6"><span class="nav-number">6.</span> <span class="nav-text">合成控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E7%84%B6%E5%AE%9E%E9%AA%8C"><span class="nav-number">7.</span> <span class="nav-text">自然实验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E5%8F%98%E9%87%8F"><span class="nav-number">7.1.</span> <span class="nav-text">工具变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E5%BD%92%E4%B8%AD%E7%9A%84%E4%B8%8D%E8%BF%9E%E7%BB%AD"><span class="nav-number">7.2.</span> <span class="nav-text">回归中的不连续</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E9%A9%B3"><span class="nav-number">7.3.</span> <span class="nav-text">反驳</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill H"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bill H</p>
+  <div class="site-description" itemprop="description">星辰大海</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:lcurious@163.com" title="E-Mail → mailto:lcurious@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/p/1005052024819944" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;p&#x2F;1005052024819944" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill H</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">194k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:57</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

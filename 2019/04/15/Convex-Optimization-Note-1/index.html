@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next-my.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next-my.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="凸优化，或叫做凸最优化，凸最小化，是数学最优化的一个子领域，研究定义于凸集中的凸函数最小化的问题。凸优化在某种意义上说较一般情形的数学最优化问题要简单，譬如在凸优化中局部最优值必定是全局最优值。凸函数的凸性使得凸分析中的有力工具在最优化问题中得以应用，如次导数等。凸优化应用于很多学科领域，诸如自动控制系统，信号处理，通讯和网络，电子电路设计，数据分析和建模，统计学（最优化设计），以及金融。在近来运">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Convex Optimization Note 1 | Introduction">
+<meta property="og:url" content="https://lccurious.github.io/2019/04/15/Convex-Optimization-Note-1/index.html">
+<meta property="og:site_name" content="Curiousity Hub">
+<meta property="og:description" content="凸优化，或叫做凸最优化，凸最小化，是数学最优化的一个子领域，研究定义于凸集中的凸函数最小化的问题。凸优化在某种意义上说较一般情形的数学最优化问题要简单，譬如在凸优化中局部最优值必定是全局最优值。凸函数的凸性使得凸分析中的有力工具在最优化问题中得以应用，如次导数等。凸优化应用于很多学科领域，诸如自动控制系统，信号处理，通讯和网络，电子电路设计，数据分析和建模，统计学（最优化设计），以及金融。在近来运">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-04-15T15:39:45.000Z">
+<meta property="article:modified_time" content="2020-10-01T09:08:13.650Z">
+<meta property="article:author" content="Bill H">
+<meta property="article:tag" content="凸优化">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://lccurious.github.io/2019/04/15/Convex-Optimization-Note-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Convex Optimization Note 1 | Introduction | Curiousity Hub</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Curiousity Hub</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">103</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lccurious.github.io/2019/04/15/Convex-Optimization-Note-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Bill H">
+      <meta itemprop="description" content="星辰大海">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Curiousity Hub">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Convex Optimization Note 1 | Introduction
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-15 23:39:45" itemprop="dateCreated datePublished" datetime="2019-04-15T23:39:45+08:00">2019-04-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-01 17:08:13" itemprop="dateModified" datetime="2020-10-01T17:08:13+08:00">2020-10-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>16k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>15 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>凸优化，或叫做凸最优化，凸最小化，是数学最优化的一个子领域，研究定义于凸集中的凸函数最小化的问题。凸优化在某种意义上说较一般情形的数学最优化问题要简单，譬如在凸优化中局部最优值必定是全局最优值。凸函数的凸性使得凸分析中的有力工具在最优化问题中得以应用，如次导数等。凸优化应用于很多学科领域，诸如自动控制系统，信号处理，通讯和网络，电子电路设计，数据分析和建模，统计学（最优化设计），以及金融。在近来运算能力提高和最优化理论发展的背景下，一般的凸优化已经接近简单的线性规划一样直捷易行。许多最优化问题都可以转化成凸优化（凸最小化）问题，例如求凹函数 <span class="math inline">\(f\)</span> 最大值的问题就等同于求凸函数 <span class="math inline">\(-f\)</span> 最小值的问题。<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>下面的这些理论证明等主要来自于NESTEROV的书<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>。</p>
+<a id="more"></a>
+<h2 id="凸优化和机器学习">凸优化和机器学习</h2>
+<p>假设我们有两个空间，样本空间 <span class="math inline">\(\mathcal{X}\)</span>，标签空间 <span class="math inline">\(\mathcal{Y}\)</span>，还有一个参数空间 <span class="math inline">\(\mathcal{H}\)</span> 包括了从样本到标签的映射，引入它们之间的Loss Function <span class="math inline">\(L:\mathcal{Y}\times\mathcal{Y} \rightarrow \mathbb{R}\)</span>，如果已经知道这些样本和标签 <span class="math inline">\(\mathcal{X}\times\mathcal{Y}\)</span> 的分布 <span class="math inline">\(P\)</span>，</p>
+<h3 id="经验风险最小">经验风险最小</h3>
+<p><span class="math display">\[\mathcal{L}_{P}=\mathbb{E}_{P} [L(h(x), y)].\]</span></p>
+<p>学习的目标就是求解一个最优化问题：</p>
+<p><span class="math display">\[\min_{h\in \mathcal{H}}\mathcal{L}_{P}(h).\]</span></p>
+<p>常规的做法就是使得经验风险最小，也就是把训练样本全部跑一遍，然后使得通过我们的误差函数累计计算出来的值最小。</p>
+<p><span class="math display">\[\min_{h\in \mathcal{H}}\sum^{n}_{i=1}L(h(x_i), y_{i})=\min_{\theta}\sum^{n}_{i=1}L(h_{\theta}(x_{i}),y_{i}).\]</span></p>
+<p>当标签是离散值的时候看作是<strong>分类任务</strong>，当标签是连续值的时候看作是<strong>回归任务</strong>。</p>
+<p>一般情况下，求解这种任务是 NP 难的问题，所以引入另一种替代的办法，用Hinge Loss表示<span class="math inline">\([0, 1]\)</span>误差，这样也就使得其有了梯度，而且这种代价函数和原来的代价函数是等价的。引入松弛变量构造一个带约束的最优化函数。</p>
+<p><span class="math display">\[\min_{\omega}\sum^{n}_{i=1}\zeta_{i}\]</span> <span class="math display">\[s.t.\quad \begin{array}{l} y_{i}(x_{i}^{T}w+b) + \zeta_{i} \geq 1, \\ \zeta_{i} \geq 0, \\ ||w||^2_{2} \leq \Lambda \end{array}\]</span></p>
+<p>最后一项<span class="math inline">\(||w||^2_{2} \leq \Lambda\)</span> 是用于约束回归参数的复杂度，用于防止过拟合。一般用拉格朗日乘子法可以对原来约束条件下的方程进行改写得到：</p>
+<p><span class="math display">\[\min_{\omega}\sum^{n}_{i=1}\zeta_{i} + ||w||^2_{2} - \lambda \Lambda\]</span> <span class="math display">\[s.t.\quad \begin{array}{l} y_{i}(x_{i}^{T}w+b) + \zeta_{i} \geq 1, \\ \zeta_{i} \geq 0. \end{array}\]</span></p>
+<p>还有几种常用的损失函数：</p>
+<ol type="1">
+<li>Square loss: <span class="math inline">\(\Phi_{s}(y,y&#39;)=(1-yy&#39;)^2.\)</span></li>
+<li>Logistic loss: <span class="math inline">\(\Phi_{l}(y,y&#39;)=\frac{1}{ln2}ln(1-e^{-yy&#39;}).\)</span></li>
+<li>Cross entropy loss: <span class="math inline">\(\Phi_{c}(y,y&#39;)=-tln(y&#39;)-(1-t)ln(1-y&#39;).\)</span> 其中 <span class="math inline">\(t=(1+y)/2.\)</span></li>
+</ol>
+<h3 id="极大似然视角下">极大似然视角下</h3>
+<p>极大似然估计法下，一个似然函数<span class="math inline">\(P(X,Y|\theta)\)</span>的估计可以通过下面的公式得到。</p>
+<p><span class="math display">\[
+\begin{array}{rl} \theta_{MLE} &amp; = \text{argmin}_{\theta}P(X,Y|\theta) = \text{argmax}_{\theta}\log P(X, Y|\theta) \\
+&amp; = \text{argmax}_{\theta}\log \prod_{i}P(x_i, y_i|\theta) \\
+&amp; = \text{argmax}_{\theta}\sum^{n}_{i=1}\log P(x_{i}, y_{i}|\theta)\end{array}
+\]</span></p>
+<h3 id="极大后验视角下">极大后验视角下</h3>
+<p>如果将其中的极大似然估计替换成极大后验估计，可以改写成下面这样的形式。</p>
+<p><span class="math display">\[
+\begin{array}{rl} \theta_{MAP} &amp; = \text{argmax}_{\theta}P(X, Y|\theta) P(\theta) =\text{argmax}_{\theta} \log\{ P(\theta)P(X,Y|\theta) \}\\
+&amp;=\text{argmax}_{\theta}\log \{ P(\theta)\prod_{i}P(x_{i}, y_{i}|\theta) \}\\
+&amp;=\text{argmax}_{\theta} \{ \log P(\theta) + \sum^{n}_{i=1}P(x_{i}, y_{i}|\theta) \} \\
+\end{array}
+\]</span></p>
+<h2 id="问题泛化">问题泛化</h2>
+<p>令<span class="math inline">\(x\)</span> 是一个<span class="math inline">\(n\)</span> 维实向量：</p>
+<p><span class="math display">\[x=(x^{(1)},\dots, x^{(n)} )^{T} \in \mathbb{R}^{n},\]</span></p>
+<p><span class="math inline">\(S\)</span> 是 <span class="math inline">\(\mathbb{R}^{n}\)</span> 一个子集，且<span class="math inline">\(f_{0}(x),\dots,f_{m}(x)\)</span> 是<span class="math inline">\(x\)</span> 的一些实值函数，一般的约束问题都写成下面的形式：</p>
+<p><span class="math display">\[\min f_{0}(x)\]</span> <span class="math display">\[s.t. \begin{array}{l} f_{j}(x) \leq 0, j=1,\dots m,\\
+x\in S. \end{array}\]</span></p>
+<p>以上的 <span class="math inline">\(f_{0}(x)\)</span> 是我们的目标（objective）函数，而考虑最小化问题只是一种分析习惯，其他形式的优化也可以改写成这种形式，向量函数 <span class="math display">\[f(x)=(f_{1}(x),\dots, f_{m}(x))^{T}\]</span> 称为<em>函数约束</em>（functional constraints）向量，集合<span class="math inline">\(S\)</span> 称为<em>基本可行集</em>（basic feasible set），并且集合 <span class="math display">\[Q=\{x\in S|f_{j}(x) \leq 0, j=1\dots m\}\]</span> 称为问题的可行集（basic set）。如果<span class="math inline">\(Q\neq \emptyset\)</span> 则说明这是一个可行的问题，如果存在<span class="math inline">\(x\in \int Q\)</span>，对于所有不等式约束都满足 <span class="math inline">\(f_{j}(x)&lt;0\)</span> 则称为严格可行的（strictly feasible）。</p>
+<h3 id="问题的自然分类">问题的自然分类</h3>
+<ul>
+<li>有约束问题（constrained problems）：<span class="math inline">\(Q\subset\mathbb{R}^{n}\)</span>。</li>
+<li>无约束问题（unconstrained problems）：<span class="math inline">\(Q\equiv \mathbb{R}^{n}\)</span>。</li>
+<li>光滑问题（smooth problems）：所有的<span class="math inline">\(f_{i}(x)\)</span> 是可微的。</li>
+<li>非光滑问题（nonsmooth problems）：存在不可微的分量<span class="math inline">\(f_{k}(k)\)</span>。</li>
+</ul>
+<p>对于线性约束问题（linearly constrained problems）：所有泛函数约束都是线性的。线性约束问题可以继续分为：</p>
+<ul>
+<li>线性优化问题：如果 <span class="math inline">\(f_{0}(x)\)</span> 也是线性的，那么这个最小化问题就是一个线性优化问题。</li>
+<li>二次优化问题：如果 <span class="math inline">\(f_{0}(x)\)</span> 是二次的，那么这就是一个二次优化问题</li>
+<li>二次约束的二次问题：如果所有的 <span class="math inline">\(f_{j}\)</span> 是二次的，那么这就是一个二次约束的二次问题（quadratically constrained quadratic problem）。</li>
+</ul>
+<h3 id="解的定义">解的定义</h3>
+<p>这种最优化问题中一般会存在多种解：</p>
+<ul>
+<li><span class="math inline">\(x^{*}\)</span> 是全局解（global solution），如果对于所有的 <span class="math inline">\(x\in Q\)</span>， 有 <span class="math display">\[f_{0}(x^{*}) \leq f_{0}(x).\]</span> 在这种情况下，<span class="math inline">\(f_{0}(x^{*})\)</span> 称为问题的（全局）最优值（optimal value）。</li>
+<li><span class="math inline">\(x^{*}\)</span> 如果只是在一个局部<span class="math inline">\(x\in NBR(x^{*}, \delta)\cap Q\)</span>，有 <span class="math display">\[f_{0}(x^{*}) \leq f_{0}(x).\]</span> 则称之为局部解。</li>
+</ul>
+<p>非线性优化式非常重要和有前途的应用理论。它覆盖了几乎所有的运筹学和数值分析的需求（包括现在大量的机器学习内容）虽然总体上看，优化问题是无解的。</p>
+<h2 id="数值方法的性能">数值方法的性能</h2>
+<p>特定的问题因为它本身可能存在个各种特别的性质，某些方法可以有非常独特的求解性能。所以要对一类问题（<span class="math inline">\(\mathcal{P}\in \mathcal{F}\)</span>）来讨论某些方法的性能，在这类问题中都存在相似的特点，而某种数值方法会对这些方法都有一定的性能。</p>
+<blockquote>
+<p>因此，一个方法 <span class="math inline">\(\mathcal{M}\)</span> 在整个类 <span class="math inline">\(\mathcal{F}\)</span> 上的性能（performance）是它的效率的一个自然特性。</p>
+</blockquote>
+<h3 id="符号约定">符号约定</h3>
+<ul>
+<li>模型：问题 <span class="math inline">\(\mathcal{P}\)</span> 的一个已知（known）的“部分”，称为问题的模型 （model）。我们用 <span class="math inline">\(\Sigma\)</span> 来表示模型。通常，模型包含了问题形式，泛函分量的类型描述，等等。</li>
+<li>Oracle：为了识别问题 <span class="math inline">\(\mathcal{P}\)</span>（并且求解它），方法应该能够搜集关于 <span class="math inline">\(\mathcal{P}\)</span> 的特定的信息。为了方便，搜集数据的过程被描述为一个 oracle。一个 oracle <span class="math inline">\(\mathcal{O}\)</span> 就是一个单位，它回答方法连续的询问。方法 <span class="math inline">\(\mathcal{M}\)</span> 试图通过搜集和处理回答，来求解问题 <span class="math inline">\(\mathcal{P}\)</span>。</li>
+<li>求解一个问题所需要的努力程度（computational efforts）的总量是一个方法 <span class="math inline">\(\mathcal{M}\)</span> 的性能。</li>
+<li>逼近解：求解一个问题要找到一个准确度为 <span class="math inline">\(\varepsilon &gt; 0\)</span> 的逼近解。</li>
+</ul>
+<h3 id="常规求解流程">常规求解流程</h3>
+<p>给定初始点 <span class="math inline">\(x_{0}\)</span> 和准确度 <span class="math inline">\(\varepsilon&gt;0\)</span> 和初始化：<span class="math inline">\(k=0\)</span>，初始的信息<span class="math inline">\(I_{-1}=\emptyset\)</span>。</p>
+<ol type="1">
+<li>在<span class="math inline">\(x_{k}\)</span> 调用oracle <span class="math inline">\(\mathcal{O}\)</span>。</li>
+<li>更新信息集：<span class="math inline">\(I_{k}=I_{k-1}\cap (x_{k},\mathcal{O}(x_{k}))\)</span>。</li>
+<li>对 <span class="math inline">\(I_{k}\)</span> 运用方法 <span class="math inline">\(\mathcal{M}\)</span> 的规则，形成点 <span class="math inline">\(x_{k+1}\)</span></li>
+<li>检查停止条件 <span class="math inline">\(\mathcal{T}_{\varepsilon}\)</span>。如果满足条件，则形成输出 <span class="math inline">\(\bar{x}\)</span>。否则设置 <span class="math inline">\(k:=k+1\)</span> 循环步骤。</li>
+</ol>
+<p>真正对于求解问题起作用的是步骤1和环步骤3，这两个步骤也是计算代价集中的地方，我们对这些步骤进行更加具体的分析，有</p>
+<ul>
+<li>解析复杂性（analytical complexity）：求解问题 <span class="math inline">\(\mathcal{P}\)</span>，达到准确率 <span class="math inline">\(\varepsilon\)</span> 所需要调用的orcal的数量。</li>
+<li>算术复杂性（arithmetical complexity）：求解问题 <span class="math inline">\(\mathcal{P}\)</span>，达到准确率 <span class="math inline">\(\varepsilon\)</span>，所需要的算术操作的总数量（包括Oracle方法的工作）。</li>
+</ul>
+<h3 id="oracle">Oracle</h3>
+<p>一般用局部黑盒概念（local black box concept）假设oracle能让我们得到优化问题解析复杂度的大部分结果，而距离测试点 <span class="math inline">\(x\)</span>（或者叫当前的采样点）很远的小问题变化不会影响在 <span class="math inline">\(x\)</span> 的回答。</p>
+<p>继续沿用上面最小化问题的问题表述形式，针对这样一种泛化模型（functional model）假定根据函数的光滑性程度，可以使用不同类型的oracle：</p>
+<ul>
+<li>零阶oracle（zero-order oracle）： 返回 <span class="math inline">\(f(x)\)</span> 的值。</li>
+<li>一阶oracle（first-order oracle）： 返回 <span class="math inline">\(f(x)\)</span> 和梯度 <span class="math inline">\(f&#39;(x)\)</span>的值。</li>
+<li>二阶oracle（second-order oracle）： 返回 <span class="math inline">\(f(x)\)</span>，梯度 <span class="math inline">\(f&#39;(x)\)</span>，和Hessian <span class="math inline">\(f&#39;&#39;(x)\)</span> 的值。</li>
+</ul>
+<h2 id="全局优化中复杂度的界">全局优化中复杂度的界</h2>
+<h3 id="lipschitz连续">Lipschitz连续</h3>
+<ul>
+<li>Lipschitz continuous： 函数被一次函数上下夹逼</li>
+<li>Lipschitz continuous gradient ：函数被二次函数上下夹逼</li>
+<li>Lipschitz continuous Hessian ：函数被三次函数上下夹逼</li>
+</ul>
+<p><span class="math display">\[|f(x)-f(y)| \leq L||x-y||_{\infty}\]</span></p>
+<p>其中，<span class="math inline">\(L\)</span> 是某个Lipschitz常量（Lipschitz constant）</p>
+<p>范数 <span class="math inline">\(l_{\infty}\)</span> 测量 <span class="math inline">\(\mathbb{R}^{n}\)</span> 中的距离：</p>
+<p><span class="math display">\[||x||_{\infty}=\max_{1\leq i \leq n}|x^{(i)}|.\]</span></p>
+<h3 id="上界分析">上界分析</h3>
+<p>根据Lipschitz连续我们可以构造一种零阶的求解方法（它的另一个名字应该是暴力枚举在一定精度下的全部可行解）。在每个维度上都把坐标平均间隔成 <span class="math inline">\(p\)</span> 个点，然后在所有点中找到 <span class="math inline">\(\bar{x}\)</span>，使得目标函数具有最小的值。如果令 <span class="math inline">\(f^{*}\)</span> 是问题的全局最优值。其中点构造为 <span class="math display">\[x_{\alpha}=((\frac{2i_{1}-1)}{2p}), (\frac{2i_{2}-1)}{2p}), \dots, (\frac{2i_{n}-1)}{2p}))^{T}\]</span> 那么 <span class="math display">\[f(\bar{x})-f^{*} \leq \frac{L}{2p}.\]</span></p>
+<p>证明：给定一个多维索引 <span class="math inline">\(\alpha=(i_1, \dots, i_n)\in \{1, \dots, p\}^{n}.\)</span>，定义这个点步长以内的领域范围 <span class="math display">\[X_{\alpha}=\{ x\in \mathbb{R}^{n}: ||x-x_{\alpha}||_{\infty} \leq \frac{1}{2p} \}.\]</span></p>
+<p>很明显这些坐标的全部集合就是函数的可行域：<span class="math display">\[\cap_{\alpha\in \{1,\dots, p\}^{n}}X_{\alpha}=B_{n}\]</span>，如果这个函数存在一个全局最优解，则在网格离散的点上一定有一个索引值 <span class="math inline">\(\alpha^{*}\)</span> 索引的网格点 的连续邻域内存在最优解（就是这个最优解在它的框框内） <span class="math inline">\(x^{*}\in X_{x_{a^{*}}}\)</span> 满足<span class="math inline">\(||x^{*}-x_{\alpha^{*}}||_{\infty} \leq \frac{1}{2p}.\)</span>，因此有，</p>
+<p><span class="math display">\[f(\bar{x}) - f(x^{*}) \leq f(x_{a^{*}})-f(x^{*}) \leq \frac{L}{2p}.\]</span></p>
+<p>把这个问题推广到一系列的问题就有：</p>
+<p><span class="math display">\[\text{Find}~\bar{x}\in B_{n}:\quad f(\bar{x})-f^{*} \leq \varepsilon. \]</span></p>
+<blockquote>
+<p>也就有如果要得到精度在 <span class="math inline">\(\varepsilon\)</span> 以内的解，这个方法的复杂度就在 <span class="math display">\[\mathscr{A}(\mathscr{G}=(\lfloor \frac{L}{2\varepsilon}\rfloor+1)^{n},\]</span> 所以令 <span class="math inline">\(p=\lfloor \frac{L}{2\varepsilon}\rfloor+1 \geq \frac{L}{2\varepsilon}\)</span> 也就有 <span class="math inline">\(f(\bar{x}-f^{*}) \leq \frac{L}{2p} \leq \varepsilon.\)</span> 也就需要调用 <span class="math inline">\(p^n\)</span> 次oracle，这是这个方法的复杂度上界。</p>
+</blockquote>
+<p>实际上这还不够，也许在这种问题形式下还有更好的方法，或者实际上方法 <span class="math inline">\(\mathscr{G}\)</span> 的性能更好，所以再进一步分析求解这种问题的下界，下面的分析基于一些特点：</p>
+<ul>
+<li>它们基于黑盒（black box）的概念。</li>
+<li>这些界对于所有合理的迭代方案都有效，因此，它们给我们提供的是对于这个问题类的解析复杂度的下估计（lower estimate）。</li>
+<li>这些界都用了抵抗 oracle（resisting oracle）的思想。
+<ul>
+<li>对于每个特定方法（for example，<span class="math inline">\(\mathscr{G}(\mathscr{p})\)</span>，一个抵抗oracle试图创建一个最坏（worst）问题：
+<ul>
+<li>它从一个“空”的函数开始，并且试图用最坏可能的方式回答这个方法的每一个调用。</li>
+<li>这个回答必须和前面的回答以及问题类的描述兼容（compatible）</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="下界分析">下界分析</h3>
+<p>首先定义下面这样的问题，有模型 <span class="math inline">\(\min_{x\in \mathbb{B}_{n}}f(x)\)</span> 且 <span class="math inline">\(f(x)\)</span> 在 <span class="math inline">\(\mathbb{B}_{n}\)</span> 上是 <span class="math inline">\(\mathscr{C}_{\infty} Lipschitz\)</span> 连续的。用于收集信息的 Oracle是一个零阶黑盒。目标是为了寻找一个逼近解 <span class="math inline">\(\bar{x}\in \mathbb{B}_{n}:f(\bar{x})-f^{*} \leq \varepsilon\)</span>。根据我们的分析要取得 <span class="math inline">\(\varepsilon\)</span> 的精度，问题 <span class="math inline">\(\mathscr{C}\)</span> 的解析复杂度至少为 <span class="math inline">\((\lfloor \frac{L}{2\varepsilon}\rfloor)^n(\geq 1)\)</span>。 我们假设有一种方法可以使得 <span class="math inline">\(N &lt; p^{n}\)</span> 以内把问题 <span class="math inline">\(\mathscr{P}\)</span> 解决掉，然后再弄一个Oracle，它在任意测试点都返回 <span class="math inline">\(f(x)=0\)</span>，然而因为有 <span class="math inline">\(N &lt; p^n\)</span> 所以还会存在一个多维索引 <span class="math inline">\(\hat{\alpha}\)</span> 使得在箱子 <span class="math inline">\(X_{\hat{\alpha}}\)</span> 内不存在测试点。写成数学形式如下</p>
+<p><span class="math display">\[\bar{f}(x)=\min\{ 0, L||x-x_{*}||_{\infty}-\varepsilon \}.\]</span></p>
+<p>构造出来的这个函数是满足常数 <span class="math inline">\(L\)</span> 的 <span class="math inline">\(\mathscr{C}_{\infty}\)</span>-Lipschitz 连续。它的全局最有解为 <span class="math inline">\(-\varepsilon\)</span> 这样，如果搜索的量小于 <span class="math inline">\(p^n\)</span> 那结果肯定不可能超过 <span class="math inline">\(\varepsilon\)</span> 这是根据比较一般的形式构造出的满足条件的最好的情况了，如果连这个都不能达到，那在最普遍情况下也就达不到更好的结果了。</p>
+<blockquote>
+<p>所以我们可以确定在使用暴力的网格法求解的下界： <span class="math display">\[\mathscr{G}:(\lfloor \frac{L}{2\varepsilon} \rfloor + 1)^n \Leftrightarrow \text{Lower bound:}\lfloor \frac{L}{2\varepsilon} \rfloor^n.\]</span></p>
+</blockquote>
+<p>可以看到这种问题几乎是时间上不可解的，而且推导出的下界也未必比上界更好一些。把这结果和那种NP-难问题的上界进行比较，是组合优化中经典的困难问题，真是让人失望。而像这种网格法在数值计算中还是满常见的，比如数值积分<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>。</p>
+<h2 id="松弛和逼近">松弛和逼近</h2>
+<p>非线性优化中，简单的目标是找到可微函数的局部最小值。但是很多情况下这些函数的全局结构不会比 Lipschitz 连续函数更简单。所以目前大部分的一般非线性优化的方法基于松弛（relaxation）思想：</p>
+<blockquote>
+<ul>
+<li>一个序列 <span class="math inline">\(\{a_{k}\}^{\infty}_{k=0}\)</span> 如果 <span class="math inline">\(a_{k+1}\leq a_{k}, \forall~k\geq 0.\)</span> 它是一个松弛序列（relaxation sequence）</li>
+<li>逼近意味着一个简化的目标函数替换初始的目标函数，在属性上简化函数和原函数的距离非常接近</li>
+</ul>
+</blockquote>
+<p>在非线性优化中常用非线性函数的导数来使用局部（local）逼近。这些就是一阶和二阶逼近（或者也叫线性和平方逼近）。</p>
+<h3 id="一阶逼近">一阶逼近</h3>
+<p>如果 <span class="math inline">\(f(x)\)</span> 在 <span class="math inline">\(\bar{x}\)</span> 是可微的，那么对于 <span class="math inline">\(y\in \mathbb{R}^{n}\)</span>，我们有 <span class="math display">\[f(y)=f(\bar{x})+\langle \nabla f(x), y-\bar{x} \rangle + o(||y-\bar{x}||).\]</span></p>
+<p>线性函数 <span class="math inline">\(f(\bar{x})+\langle \nabla f(\bar{x}), y-\bar{x} \rangle\)</span> 称为 <span class="math inline">\(f\)</span> 在 <span class="math inline">\(\bar{x}\)</span> 的线性逼近（linear approximation），其中 <span class="math inline">\(\langle \cdot, \cdot \rangle\)</span> 表示内积。</p>
+<p><span class="math display">\[\nabla f(x)=(\frac{\partial f(x)}{\partial x^{(1)}}, \dots, \frac{\partial f(x)}{\partial x^{(n)}})^{T}\]</span></p>
+<p>将函数 <span class="math inline">\(f(x)\)</span> 的次层集（sublevel set）记作 <span class="math inline">\(\mathscr{L}_{f}(\alpha)\)</span> （也可以看作是等高线以下内容）： <span class="math display">\[\mathscr{L}_{f}(\alpha)=\{x\in \mathbb{R}^{n} | f(x) \leq \alpha \}.\]</span></p>
+<p>考虑在 <span class="math inline">\(\bar{x}\)</span> 上和 <span class="math inline">\(\mathscr{L}_{f}(f(\bar{x}))\)</span> 相切方向集合： <span class="math display">\[S_{f}(\bar{x})=\left \{ s\in \mathbb{R}^{n}|s= \lim_{y_k \rightarrow \bar{x}, f(y_{k})=f(\bar{x})} \frac{y_k - \bar{x}}{||y_k - \bar{x}||}, \text{for some}~\{y_k\} \rightarrow \bar{x}~\text{with}~f(y_k)=f(\bar{x}) \forall k \right \}.\]</span></p>
+<p>如果 <span class="math inline">\(f(y_k)=f(\bar{x})\)</span>，我们有 <span class="math display">\[f(y_k)=f(\bar{x}) + \langle \nabla f(\bar{x}), y_k - \bar{x} \rangle + o(||y_k - \bar{x}||)=f(\bar{x}).\]</span> 因为 <span class="math inline">\(\lim_{r \downarrow 0}\frac{1}{r}o(r)=0, o(0)=0\)</span> 所以等号两边同时除以 <span class="math inline">\(||y_k-\bar{x}||\)</span> 然后让 <span class="math inline">\(y_k \rightarrow \bar{x}\)</span> 我们就得到： <span class="math display">\[if~s\in S_{f}(\bar{x}), then~\langle \nabla f(\bar{x}), s \rangle=0.\]</span></p>
+<p><span class="math inline">\(s\in S_f(\bar{x})\)</span> 其实就是表示 <span class="math inline">\(\mathbb{R}^{n}\)</span> 中的方向，<span class="math inline">\(||s||=1\)</span>。</p>
+<p><span class="math display">\[\Delta (s)=\lim_{\alpha \downarrow 0}\frac{1}{\alpha}[f(\bar{x} + \alpha s)-f(\bar{x})].\]</span> 最后得到 <span class="math display">\[\Delta (s)=\langle \nabla f(\bar{x}), s\rangle .\]</span> 通过 Cauchy-Schwarz 不等式， <span class="math display">\[-||x||\cdot ||y|| \leq \langle x, y\rangle \leq ||x||\cdot ||y||,\]</span> 推出 <span class="math inline">\(\Delta (s)=\langle \nabla f(\bar{x}), s\rangle \geq -||\nabla f(\bar{x}||.\)</span> 继续再让 <span class="math display">\[\bar{s}=-\nabla f(\bar{x})/||\nabla f(\bar{x})||.\]</span> 带入原来的方程中得到 <span class="math display">\[\Delta (\bar{s})=-\langle \nabla f(\bar{x}), \nabla f(\bar{x}) \rangle / ||\nabla f(\bar{x}) || = -||\nabla f(\bar{x})||.\]</span> 所以，反梯度方向 <span class="math inline">\(-\nabla f(\bar{x})\)</span> 是最快的下降方向。</p>
+<h3 id="一阶优化条件">一阶优化条件</h3>
+<p>令 <span class="math inline">\(x^{*}\)</span> 是一个可微函数 <span class="math inline">\(f(x)\)</span> 的局部最小点。那么 <span class="math inline">\(\nabla f(x^{*})=0\)</span>，而且它周围点 <span class="math inline">\(||y-x^{*}|| \leq r, ~\text{and}~r&gt;0\)</span> 上的函数值都应该比最优点上面的函数值大 <span class="math inline">\(f(y) \geq f(x^{*})\)</span>，而且 <span class="math inline">\(f\)</span> 可微 <span class="math display">\[f(y) = f(x^{*}) + \langle \nabla f(x^{*}, y-x^{*}\rangle + o(||y-x^{*}||) \geq f(x^{*}).\]</span> 因此对于所有的 <span class="math inline">\(s\in \mathbb{R}^{n}\)</span>，我们有 <span class="math inline">\(\langle \nabla f(x^{*}), s \rangle \geq 0.\)</span> 如果取 <span class="math inline">\(s=-\nabla f(x^{*})\)</span> 则有 <span class="math inline">\(-||\nabla f(x^{*})|| \geq 0.\)</span> 当且仅当 <span class="math inline">\(\nabla f(x^{*})=0.\)</span></p>
+<p>但是这仅仅是一个最小值的必要条件，满足这个条件的可能只是个 <span class="math inline">\(f\)</span> 的静点，所以还需要二阶的信息。</p>
+<h3 id="二阶逼近">二阶逼近</h3>
+<p>令函数 <span class="math inline">\(f(x)\)</span> 在 <span class="math inline">\(\bar{x}\)</span> 上是二次可微的，那么 <span class="math display">\[f(y)=f(\bar{x})+\langle \nabla f(x), y-\bar{x} \rangle + \frac{1}{2} \langle \nabla^2 f(\bar{x})(y-\bar{x}), y-\bar{x} \rangle + o(||y-\bar{x}||^2).\]</span></p>
+<p>定义函数 <span class="math inline">\(f\)</span> 在 <span class="math inline">\(x\)</span> 的 Hessian（对称矩阵）</p>
+<p><span class="math display">\[\nabla^2 f(\bar{x})^{(i, j)} = \frac{\partial^2 f(\bar{x})}{\partial x^{(i)} \partial x^{(j)}}\]</span> 对于对称矩阵 <span class="math inline">\(A \succeq 0\)</span> 表示 <span class="math inline">\(A\)</span> 是正半定的（positive semidefine）： <span class="math display">\[\langle Ax, x \rangle \geq 0 ~\forall x\in \mathbb{R}^{n}.\]</span> 如果这个点是一个局部最小点，那么它的二阶导应该至少有大于0的分量 <span class="math display">\[\nabla f(x^{*}) = 0, \nabla^2 f(x^{*})\succeq 0.\]</span> 对于所有的 <span class="math inline">\(s\)</span>，<span class="math inline">\(||s||=1\)</span>，有 <span class="math inline">\(\langle \nabla^2 f(x^{*})s, s\rangle \geq 0\)</span>。 如果满足以上的条件，则必要性得以满足，那么 <span class="math inline">\(x^{*}\)</span> 是 <span class="math inline">\(f(x)\)</span> 的一个严格的局部最小点，有时候也用隔离（isolated）这个词来代替严格（strict）。</p>
+<p><span class="math inline">\(x^{*}\)</span> 为最优值点的充分性证明：在点 <span class="math inline">\(x^{*}\)</span> 的一个很小邻域内，函数 <span class="math inline">\(f(\cdot)\)</span> 可以表达成 <span class="math display">\[f(y)=f(x^{*})+\frac{1}{2}\langle \nabla^2 f(x^{*})(y-x^{*}), y-x^{*}\rangle + o(||y-x^{*}||^2).\]</span> 因为 <span class="math inline">\(o(r^2)/r^2 \rightarrow\)</span> 当 <span class="math inline">\(r\downarrow 0\)</span>，存在一个值 <span class="math inline">\(\bar{r} &gt; 0\)</span> 使得所有的 <span class="math inline">\(r\in [0, \bar{x}]\)</span> 有 <span class="math display">\[|o(r^2)| \leq \frac{r^2}{4} \lambda_{\min}(\nabla^2 f(x^{*})).\]</span> 根据我们的假设，这个特征值是正的，所以，对于任意 <span class="math inline">\(y\in \mathbb{R}^{n}\)</span>，<span class="math inline">\(0&lt;||y-x^{*}||\leq \bar{r}\)</span> 我们有 <span class="math display">\[\begin{array}{rcl} f(y) &amp; \geq &amp; f(x^{*}) + \frac{1}{2}\lambda_{\min}(\nabla^2 f(x^{*}))||y-x^{*}+||o(||y-x^{*}||^2)\\
+&amp; \geq &amp; f(x^{*}) + \frac{1}{2}\lambda_{\min}(\nabla^2 f(x^{*})) + ||y-x^{*}|| &gt; f(x^{*}).\end{array}\]</span></p>
+<p>根据变分不等式，对于对称矩阵 <span class="math inline">\(A\in \mathbb{R}^{n\times n}\)</span> 有 <span class="math display">\[\lambda_{\min}(A)\cdot X^TX \leq X^T AX \leq \lambda_{\max}(A)\cdot X^T X.\]</span> 所以有 <span class="math display">\[\frac{1}{2}\langle \nabla^2(y-x^{*}), y-x^{*}\rangle \geq \lambda_{\min}(\nabla^2 f(x^{*}))||y-x^{*}||^2.\]</span></p>
+<h2 id="可微函数的类">可微函数的类</h2>
+<h3 id="lipschitz-条件">Lipschitz 条件</h3>
+<blockquote>
+<p>令 <span class="math inline">\(Q\)</span> 是一个 <span class="math inline">\(\mathbb{R}^{n}\)</span> 的子集，我们记 <span class="math inline">\(C^{k,p}_{L}(Q)\)</span> 为具有下面属性的函数类：</p>
+<ul>
+<li>任意 <span class="math inline">\(f\in C^{k,p}_{L}(Q)\)</span> 在 <span class="math inline">\(Q\)</span> 上是 k 次连续可微的。</li>
+<li>它的第 <span class="math inline">\(p\)</span> 次导数在 <span class="math inline">\(Q\)</span> 上是 Lipschitz 连续的，有常量 <span class="math inline">\(L\)</span> 对于所有的 <span class="math inline">\(x, y\in Q\)</span></li>
+</ul>
+<p><span class="math display">\[||\nabla^{p}f(x)-\nabla^{p}f(y)|| \leq L||x-y||.\]</span></p>
+</blockquote>
+<p>显然，我们总是会有</p>
+<ol type="1">
+<li><span class="math inline">\(p\leq k\)</span> 显然成立</li>
+<li>如果 <span class="math inline">\(q\geq k\)</span> 那么 <span class="math inline">\(C^{q,p}_{L}(Q)\subset C^{k, p}_{L}(Q)\)</span></li>
+<li>同时，如果 <span class="math inline">\(f_1 \in C^{k, p}_{L_1}(Q)\)</span>，<span class="math inline">\(f_2\in C^{k, p}_{L_2}(Q)\)</span> 且 <span class="math inline">\(\alpha, \beta\in \mathbb{R}^{1}\)</span> 对于 <span class="math display">\[L_3 = |\alpha|L_1+|\beta|L_2\]</span> 有<span class="math inline">\(\alpha f_1+\beta f_2 \in C^{k, p}_{L_3}(Q)\)</span></li>
+</ol>
+<h3 id="lipschitz-continuous-gradient">Lipschitz Continuous Gradient</h3>
+<blockquote>
+<p>考虑具有 Lipschitz 连续梯度的函数类，根据定义这个 <span class="math inline">\(f\in C^{1, 1}_L(\mathbb{R}^n)\)</span> 有对于所有的 <span class="math inline">\(x,y \in \mathbb{R}^{n}\)</span> <span class="math display">\[||\nabla f(x)-\nabla f(y)|| \leq L||x-y||.\]</span></p>
+</blockquote>
+<p>一个函数 <span class="math inline">\(f\)</span> 属于 <span class="math inline">\(C^{2, 1}_L(\mathbb{R}^{n}) \subset C^{1, 1}_L(\mathbb{R}^n)\)</span> 当且仅当对于所有的 <span class="math inline">\(x\in \mathbb{R}^n\)</span> 下面条件满足 <span class="math display">\[||\nabla^2 f(x)|| \leq L.\]</span></p>
+<p>证明：实际上对于任何的 <span class="math inline">\(x, y\in \mathbb{R}^{n}\)</span> 有</p>
+<p><span class="math display">\[\begin{array}{rl}\nabla f(y)&amp;=\nabla f(x)+\int^{1}_{0}\nabla^2 f(x + \tau(y-x))(y-x)d\tau\\
+&amp;=\nabla f(x)+(\int^1_0 \nabla^2 f(x+\tau(y-x))d\tau)\cdot(y-x).\end{array}\]</span></p>
+<p>如果条件 <span class="math inline">\(||\nabla^2 f(x)|| \leq L\)</span> 成立的话有 <span class="math display">\[\begin{array}{rl} ||\nabla f(y)-\nabla f(x)|| &amp; = ||(\int^1_0 \nabla^2 f(x+\tau(y-x))d\tau)\cdot (y-x)||\\
+&amp;\leq ||int^1_0\nabla^2 f(x+\tau(y-x))d\tau||\cdot ||y-x||\\
+&amp;\leq \int^1_0 ||\nabla^2 f(x+\tau(y-x))||d\tau \cdot ||y-x||\\
+&amp;\leq L||y-x||.\end{array}\]</span></p>
+<p>另外，如果 <span class="math inline">\(f\in C^{2,1}_L(\mathbb{R}^n)\)</span>，那么对于任意的 <span class="math inline">\(s\in \mathbb{R}^n\)</span> 和 <span class="math inline">\(\alpha &gt; 0\)</span> 有 <span class="math display">\[\left \| \left (\int^{\alpha}_0 \nabla^2 f(x+\tau s)d\tau \right )\cdot s \right\|=||\nabla f(x+\alpha s)-\nabla f(x)|| \leq \alpha L||s||.\]</span> 证明： 我们令 <span class="math inline">\(\Phi(\alpha) = (\int^{\alpha}_{0} \nabla^2 f(x+\tau s)d\tau)\)</span>，不等式两边同时除以 <span class="math inline">\(\alpha\)</span>，取 <span class="math inline">\(\alpha \downarrow 0\)</span> 有 <span class="math display">\[\left \| \lim_{\alpha \downarrow 0} \frac{\Phi(\alpha)}{\alpha} \cdot s \right \| = \left \| \lim_{\alpha \downarrow 0} \frac{\Phi(\alpha)-\Phi(0)}{\alpha-0} \cdot s \right \| = ||\nabla \Phi(0)\cdot s|| \leq L||s||.\]</span> 因为 <span class="math inline">\(\nabla \Phi(\alpha) = \nabla^2 f(x+\alpha s)\)</span>，有 <span class="math inline">\(\nabla \Phi(0)=\nabla^2 f(x)\)</span>，所以得证。</p>
+<h3 id="几何解释">几何解释</h3>
+<blockquote>
+<p>如果 <span class="math inline">\(f\in C^{1, 1}_L(\mathbb{R}^n)\)</span> 那么对于任意的 <span class="math inline">\(x, y\in \mathbb{R}^n\)</span> 有 <span class="math display">\[|f(y)-f(x)-\langle \nabla f(x), y-x \rangle | \leq \frac{L}{2}||y-x||^2.\]</span></p>
+</blockquote>
+<p><span class="math inline">\(f(y)\)</span> 和其一阶逼近的距离的上界，因为确定了这个上界之后可以将优化复杂的函数 <span class="math inline">\(f\)</span> 等价成为优化它的上界<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>，转化为二次规划问题<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>。</p>
+<p>证明如下 <span class="math display">\[\begin{array}{rl}f(y)&amp;=f(x)+\int^1_0 \langle \nabla f(x+\tau(y-x)), y-x\rangle d\tau\\
+&amp;=f(x) + \langle \nabla f(x), y-x\rangle + \int^1_0 \langle \nabla f(x+\tau(y-x))-\nabla f(x), y-x\rangle d\tau. \end{array}\]</span> 所以 <span class="math display">\[\begin{array}{rl} |f(y)-f(x)-\langle \nabla f(x), y-x \rangle| &amp;= \left | \int^1_0 \langle \nabla f(x+\tau(y-x)) - \nabla f(x), y-x \rangle d\tau \right |\\
+&amp; \leq \int^1_0 \left | \langle \nabla f(x+\tau(y-x)) - \nabla f(x), y-x \rangle \right | d\tau \\
+&amp; \leq \int^1_0 ||\nabla f(x+\tau(y-x)) - \nabla f(x)|| \cdot ||y-x|| d\tau \\
+&amp; \leq \int^1_0 \tau L||y-x||^2 d\tau = \frac{L}{2}||y-x||^2. \end{array}\]</span></p>
+<blockquote>
+<p>如果 <span class="math inline">\(f \in C_{M}^{2,2}\left(\mathbb{R}^{n}\right)\)</span>，是一个二阶可微符合 Lipschitz 连续 Hessian 的函数类型，我们有 <span class="math display">\[
+\left\|\nabla^{2} f(x)-\nabla^{2} f(y)\right\| \leq M\|x-y\|, \quad \forall x, y \in \mathbb{R}^{n}
+\]</span> 则对于任意 <span class="math inline">\(x, y \in \mathbb{R}^{n}\)</span>，做一次积分，再做一次积分 <span class="math display">\[
+\begin{array}{c}{\left\|\nabla f(y)-\nabla f(x)-\nabla^{2} f(x)(y-x)\right\| \leq \frac{M}{2}\|y-x\|^{2}} \\ {\left|f(y)-f(x)-\langle\nabla f(x), y-x\rangle-\frac{1}{2}\left\langle\nabla^{2} f(x)(y-x), y-x\right\rangle\right|} \\ { \leq \frac{M}{6}\|y-x\|^{3}}\end{array}
+\]</span></p>
+</blockquote>
+<p>证明 <span class="math display">\[
+\begin{array}{rl} \nabla f(y)&amp;=\nabla f(x)+\int_{0}^{1} \nabla^{2} f(x+\tau(y-x))(y-x) d \tau \\ &amp;=\nabla f(x)+\nabla^{2} f(x)(y-x)+\int_{0}^{1}\left(\nabla^{2} f(x+\tau(y-x))-\nabla^{2} f(x)\right)(y-x) d \tau \end{array}
+\]</span> 因此 <span class="math display">\[
+\begin{aligned} \left\|\nabla f(y)-\nabla f(x)-\nabla^{2} f(x)(y-x)\right\| &amp;=\left\|\int_{0}^{1}\left(\nabla^{2} f(x+\tau(y-x))-\nabla^{2} f(x)\right)(y-x) d \tau\right\| \\ &amp; \leq \int_{0}^{1}\left\|\left(\nabla^{2} f(x+\tau(y-x))-\nabla^{2} f(x)\right)(y-x)\right\| d \tau \\ &amp; \leq \int_{0}^{1}\left\|\nabla^{2} f(x+\tau(y-x))-\nabla^{2} f(x)\right\| \cdot\|y-x\| d \tau \\ &amp; \leq \int_{0}^{1} \tau M \nabla^{2} f(x+\tau(y-x))-\nabla^{2} f(x)\|\cdot\| y-x\|d \tau\\ &amp; \leq \int_{0}^{1} \tau M\|y-x\|^{2} d \tau=\frac{M}{2}\|y-x\|^{2} \end{aligned}
+\]</span></p>
+<blockquote>
+<p>令 <span class="math inline">\(f \in C_{M}^{2,2}\left(\mathbb{R}^{n}\right)\)</span> 并且 <span class="math inline">\(x, y \in \mathbb{R}^{n}\)</span> with <span class="math inline">\(\|y-x\|=r\)</span> 可以有 <span class="math display">\[
+\nabla^{2} f(x)-M r I_{n} \preceq \nabla^{2} f(y) \preceq \nabla^{2} f(x)+M r I_{n}
+\]</span></p>
+</blockquote>
+<p>证明 我们令 <span class="math inline">\(G=\nabla^{2} f(y)-\nabla^{2} f(x)\)</span> 是一个矩阵，因为 <span class="math inline">\(f \in C_{M}^{2,2}\left(\mathbb{R}^{n}\right)\)</span>，所以它肯定会被限制在这个界限内 <span class="math inline">\(\|G\| \leq M r\)</span> 这意味着矩阵中每个特征值都在这个界限内。 所以我们有 <span class="math display">\[-M r I_{n} \preceq G \equiv \nabla^{2} f(y)-\nabla^{2} f(x) \preceq M r I_{n}\]</span></p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%87%B8%E5%84%AA%E5%8C%96">凸优化维基百科</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>NESTEROV J E. Lectures on convex optimization[M]. 2018.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Numerical_integration">Numerical integration</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://xingyuzhou.org/blog/notes/Lipschitz-gradient">Lipschitz-gradient by xingyuzhou</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Quadratic_programming">Quadratic_programming</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Bill H 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Bill H 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill H
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lccurious.github.io/2019/04/15/Convex-Optimization-Note-1/" title="Convex Optimization Note 1 | Introduction">https://lccurious.github.io/2019/04/15/Convex-Optimization-Note-1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%87%B8%E4%BC%98%E5%8C%96/" rel="tag"># 凸优化</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/04/06/The-Gadfly/" rel="prev" title="牛虻 | 读后">
+      <i class="fa fa-chevron-left"></i> 牛虻 | 读后
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/04/18/Convex-Optimization-Note-2/" rel="next" title="Convex Optimization Note 2 | Gradient Method">
+      Convex Optimization Note 2 | Gradient Method <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%B8%E4%BC%98%E5%8C%96%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">凸优化和机器学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%8F%E9%AA%8C%E9%A3%8E%E9%99%A9%E6%9C%80%E5%B0%8F"><span class="nav-number">1.1.</span> <span class="nav-text">经验风险最小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E8%A7%86%E8%A7%92%E4%B8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">极大似然视角下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%81%E5%A4%A7%E5%90%8E%E9%AA%8C%E8%A7%86%E8%A7%92%E4%B8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">极大后验视角下</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%B3%9B%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">问题泛化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E7%9A%84%E8%87%AA%E7%84%B6%E5%88%86%E7%B1%BB"><span class="nav-number">2.1.</span> <span class="nav-text">问题的自然分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.2.</span> <span class="nav-text">解的定义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E6%96%B9%E6%B3%95%E7%9A%84%E6%80%A7%E8%83%BD"><span class="nav-number">3.</span> <span class="nav-text">数值方法的性能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E7%BA%A6%E5%AE%9A"><span class="nav-number">3.1.</span> <span class="nav-text">符号约定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%84%E6%B1%82%E8%A7%A3%E6%B5%81%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">常规求解流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#oracle"><span class="nav-number">3.3.</span> <span class="nav-text">Oracle</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E4%BC%98%E5%8C%96%E4%B8%AD%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%9A%84%E7%95%8C"><span class="nav-number">4.</span> <span class="nav-text">全局优化中复杂度的界</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lipschitz%E8%BF%9E%E7%BB%AD"><span class="nav-number">4.1.</span> <span class="nav-text">Lipschitz连续</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E7%95%8C%E5%88%86%E6%9E%90"><span class="nav-number">4.2.</span> <span class="nav-text">上界分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E7%95%8C%E5%88%86%E6%9E%90"><span class="nav-number">4.3.</span> <span class="nav-text">下界分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%BE%E5%BC%9B%E5%92%8C%E9%80%BC%E8%BF%91"><span class="nav-number">5.</span> <span class="nav-text">松弛和逼近</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E9%98%B6%E9%80%BC%E8%BF%91"><span class="nav-number">5.1.</span> <span class="nav-text">一阶逼近</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E9%98%B6%E4%BC%98%E5%8C%96%E6%9D%A1%E4%BB%B6"><span class="nav-number">5.2.</span> <span class="nav-text">一阶优化条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E9%98%B6%E9%80%BC%E8%BF%91"><span class="nav-number">5.3.</span> <span class="nav-text">二阶逼近</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%BE%AE%E5%87%BD%E6%95%B0%E7%9A%84%E7%B1%BB"><span class="nav-number">6.</span> <span class="nav-text">可微函数的类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lipschitz-%E6%9D%A1%E4%BB%B6"><span class="nav-number">6.1.</span> <span class="nav-text">Lipschitz 条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lipschitz-continuous-gradient"><span class="nav-number">6.2.</span> <span class="nav-text">Lipschitz Continuous Gradient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E8%A7%A3%E9%87%8A"><span class="nav-number">6.3.</span> <span class="nav-text">几何解释</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill H"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bill H</p>
+  <div class="site-description" itemprop="description">星辰大海</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:lcurious@163.com" title="E-Mail → mailto:lcurious@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/p/1005052024819944" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;p&#x2F;1005052024819944" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill H</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">194k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:57</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

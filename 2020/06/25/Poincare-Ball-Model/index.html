@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next-my.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next-my.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="庞加莱（1854 - 1912）活跃在 19 世纪和 20 世纪之交的人，人类历史上最伟大的数学家之一、当时理论物理与数学物理所有分支的一流专家、爱因斯坦相对论的先驱、最伟大的天体力学家之一、著名的科学哲学家、散文家。他给出了相对论的基础之一的“光速不变原理”，是相对论的先驱。庞加莱圆盘模型（Poincaré disk model）也称共形圆盘模型，是一个双曲几何模型，欧式空间中的直线概念（在这里">
+<meta property="og:type" content="article">
+<meta property="og:title" content="庞加莱球模型">
+<meta property="og:url" content="https://lccurious.github.io/2020/06/25/Poincare-Ball-Model/index.html">
+<meta property="og:site_name" content="Curiousity Hub">
+<meta property="og:description" content="庞加莱（1854 - 1912）活跃在 19 世纪和 20 世纪之交的人，人类历史上最伟大的数学家之一、当时理论物理与数学物理所有分支的一流专家、爱因斯坦相对论的先驱、最伟大的天体力学家之一、著名的科学哲学家、散文家。他给出了相对论的基础之一的“光速不变原理”，是相对论的先驱。庞加莱圆盘模型（Poincaré disk model）也称共形圆盘模型，是一个双曲几何模型，欧式空间中的直线概念（在这里">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lccurious.github.io/2020/06/25/Poincare-Ball-Model/Poincare_line.png">
+<meta property="article:published_time" content="2020-06-25T03:21:33.000Z">
+<meta property="article:modified_time" content="2020-10-01T09:08:13.793Z">
+<meta property="article:author" content="Bill H">
+<meta property="article:tag" content="庞加莱球">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lccurious.github.io/2020/06/25/Poincare-Ball-Model/Poincare_line.png">
+
+<link rel="canonical" href="https://lccurious.github.io/2020/06/25/Poincare-Ball-Model/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>庞加莱球模型 | Curiousity Hub</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Curiousity Hub</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">103</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lccurious.github.io/2020/06/25/Poincare-Ball-Model/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Bill H">
+      <meta itemprop="description" content="星辰大海">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Curiousity Hub">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          庞加莱球模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-25 11:21:33" itemprop="dateCreated datePublished" datetime="2020-06-25T11:21:33+08:00">2020-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-01 17:08:13" itemprop="dateModified" datetime="2020-10-01T17:08:13+08:00">2020-10-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>2.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>庞加莱（1854 - 1912）活跃在 19 世纪和 20 世纪之交的人，人类历史上最伟大的数学家之一、当时理论物理与数学物理所有分支的一流专家、爱因斯坦相对论的先驱、最伟大的天体力学家之一、著名的科学哲学家、散文家。他给出了相对论的基础之一的“光速不变原理”，是相对论的先驱。庞加莱圆盘模型（Poincaré disk model）也称共形圆盘模型，是一个双曲几何模型，欧式空间中的直线概念（在这里更准确的说法是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%B5%8B%E5%9C%B0%E7%BA%BF">测地线</a>）在这里就是对应到垂直于圆盘边界的圆弧或者圆盘的直径。如下图所示，图中每两个点之间的线代表的长度都是相同的，也就是说在庞加莱圆盘模型中每离中心越远，单位欧几里得空间的线段所代表的长度就越长。所以当点越靠近圆盘的边界，它们之间的实际距离就会变得无限大。</p>
+<img src="/2020/06/25/Poincare-Ball-Model/Poincare_line.png" class="">
+<a id="more"></a>
+<ol type="1">
+<li>几何学公理既非综合判断，也非实验经验，他们是约定。约定是心智的产物，约定的选择是自由的，但又不是随意的。</li>
+<li>假使自然界没有固体，便不会有几何学。欧几里德几何学的性质与天然固体非常符合。</li>
+<li>欧几里德几何学不比非欧几何学更真，他只是更为方便而已。经验在任何时候都不会与欧几里德共设相矛盾，同样任何经验永远也不会和罗巴切夫斯基共设相矛盾。</li>
+<li>可以建立一本词典，把非欧几何的术语和欧几里德几何的术语之间建立一一对应的关系，这样非欧几何将永远不会和欧几里德几何相矛盾。</li>
+<li>实验告诉我们的是物体之间的相互关系；至于物体与空间的关系，或者空间个部分的互相关系，没有一个实验影响或者能够影响。实验与空间无关，而与物体有关。</li>
+</ol>
+<h1 id="双曲空间">双曲空间</h1>
+<p>庞加莱圆盘 <span class="math inline">\(\mathbb{H}_{2}\)</span> 就是一个双曲几何的二维的模型，所有的点都落在这个单位圆盘内部，一个常见的推广就是庞加莱球 <span class="math inline">\(\mathcal{H}_{r}\)</span>，所有的点都在这个单位球的内部。它有很多有用的性质，其中一条就是和我们常见的欧几里得空间有很多相似性，在欧式空间和双曲空间具备保角性，在某种程度上距离也是相似的：</p>
+<p><span class="math display">\[
+d_{H}(x,y) = \text{arcosh}(1+2\frac{\|x-y\|^{2}}{(1-\|x\|^{2})(1-\|y\|^{2})})
+\]</span></p>
+<p>因为庞加莱圆盘的几何性质，可以用来对实体进行层次性的建模，学习知识图谱间的层次性信息。我们还是以 <span class="math inline">\(\|x\|=\|y\|=t\)</span> 为例，对于任意的 <span class="math inline">\(t&gt;0\)</span>，当 <span class="math inline">\(t\rightarrow 1\)</span> 时（点移动向圆盘的边界），它们所在的空间中，实际距离将会变得越来越大，极限情况下，它们之间的距离无限大，它们各自到原点的距离也无限大，就像树的结构一样，两个兄弟子节点间的距离和它们到父节点的距离相同。这种和树形结构天然相似的空间扭曲结构也就是探索这些知识图谱嵌入结构层次性的重要关键性质。另外因为保角性，这种性质还能在 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> 有任意小的夹角下保证。</p>
+<p>庞加莱模型的评分函数为：</p>
+<p><span class="math display">\[
+f_{r}(o_{s},o_{t}) = \sum_{(o_{s},o_{t})\in \mathcal{D}}\log \frac{\exp(-d(o_{s},o_{t}))}{\sum_{o_{t&#39;}}\exp(-d(o_{s},o_{t&#39;}))}
+\]</span></p>
+<p>其中 <span class="math inline">\((o_{s},o_{t&#39;})\)</span> 为负样本，也就是要让相关联的三元组在庞加莱圆盘中有更小的距离。但是庞加莱圆盘模型没有考虑相关性质，双曲模型不能再庞加莱圆盘中进行复杂的操作。另外，双曲空间需要黎曼优化方法，包括黎曼曲率张量、黎曼流形和黎曼优化等概念。</p>
+<h1 id="度量形式">度量形式</h1>
+<p>庞加莱圆盘的度量形式为：</p>
+<p><span class="math display">\[
+ds^{2}=4\frac{\sum_{i}dx^{2}_{i}}{(1-\sum_{i}x^{2}_{i})^{2}}
+\]</span></p>
+<p>欧式空间的加和在庞加莱球空间中就是莫比乌斯加和（Möbius addition）：</p>
+<p><span class="math display">\[
+\mathbf{z}\oplus_{c}\mathbf{y}=\frac{(1+2c\langle \mathbf{z},\mathbf{y}\rangle + c\|\mathbf{y}\|^{2})\mathbf{z}+(1-c\|\mathbf{z}\|^{2})\mathbf{y}}{1+2c\langle \mathbf{z}, \mathbf{y}\rangle + c^{2}\|\mathbf{z}\|^{2}\|\mathbf{y}\|^{2}}
+\]</span></p>
+<p>而恢复到在 <span class="math inline">\(\mathbb{R}^{d}\)</span> 的欧几里得加和则为，令 <span class="math inline">\(c\rightarrow 0\)</span>，解析形式的运算为指数映射：</p>
+<p><span class="math display">\[
+\exp^{c}_{\mathbf{z}}(\mathbf{v})=\mathbf{z}\oplus_{c}(\tanh (\sqrt{c}\frac{\lambda^{c}_{\mathbf{z}}\|\mathbf{v}\|}{2})\frac{\mathbf{v}}{\sqrt{c}\|\mathbf{v}\|})
+\]</span></p>
+<p>其中 <span class="math inline">\(\lambda^{c}_{\mathbf{z}}=\frac{2}{1-c\|\mathbf{z}\|^2}\)</span>，相反的操作就是对数映射：</p>
+<p><span class="math display">\[
+\log^{c}_{\mathbf{z}}(\mathbf{y})=\frac{2}{\sqrt{c}\lambda^{c}_{\mathbf{z}}}\tanh^{-1}(\sqrt{c}\|-\mathbf{z}\oplus_{c}\mathbf{y}\|)\frac{-\mathbf{z}\oplus_{c}\mathbf{y}}{\|-\mathbf{z}\oplus_{c}\mathbf{y}\|}
+\]</span></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Bill H 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Bill H 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill H
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lccurious.github.io/2020/06/25/Poincare-Ball-Model/" title="庞加莱球模型">https://lccurious.github.io/2020/06/25/Poincare-Ball-Model/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%BA%9E%E5%8A%A0%E8%8E%B1%E7%90%83/" rel="tag"># 庞加莱球</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/03/Linux-Tool-Set/" rel="prev" title="Linux 不完全命令指南">
+      <i class="fa fa-chevron-left"></i> Linux 不完全命令指南
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/26/Understanding-ELBO/" rel="next" title="理解 ELBO">
+      理解 ELBO <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8C%E6%9B%B2%E7%A9%BA%E9%97%B4"><span class="nav-number">1.</span> <span class="nav-text">双曲空间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%A6%E9%87%8F%E5%BD%A2%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">度量形式</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill H"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bill H</p>
+  <div class="site-description" itemprop="description">星辰大海</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:lcurious@163.com" title="E-Mail → mailto:lcurious@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/p/1005052024819944" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;p&#x2F;1005052024819944" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill H</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">194k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:57</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

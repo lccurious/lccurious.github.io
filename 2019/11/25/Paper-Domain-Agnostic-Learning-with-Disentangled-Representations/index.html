@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next-my.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next-my.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="假设你有两批数据，一批是在游戏中模拟进行自动驾驶的场景训练数据，一批是真实世界中的任务数据，前一批我们有无尽二点标签，但是后一批的标签收集显然就需要很大的人力物力，所以我们希望在前面无尽的数据上训练好的模型能够经过一些调整直接解决后一批数据的任务，这也就是迁移学习要做的任务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paper | Domain Agnostic Learning with Disentangled Representations">
+<meta property="og:url" content="https://lccurious.github.io/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/index.html">
+<meta property="og:site_name" content="Curiousity Hub">
+<meta property="og:description" content="假设你有两批数据，一批是在游戏中模拟进行自动驾驶的场景训练数据，一批是真实世界中的任务数据，前一批我们有无尽二点标签，但是后一批的标签收集显然就需要很大的人力物力，所以我们希望在前面无尽的数据上训练好的模型能够经过一些调整直接解决后一批数据的任务，这也就是迁移学习要做的任务。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lccurious.github.io/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/main.png">
+<meta property="og:image" content="https://lccurious.github.io/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/alg.png">
+<meta property="article:published_time" content="2019-11-25T14:38:34.000Z">
+<meta property="article:modified_time" content="2020-10-01T09:08:13.713Z">
+<meta property="article:author" content="Bill H">
+<meta property="article:tag" content="Domain Adaptation">
+<meta property="article:tag" content="Disentangle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lccurious.github.io/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/main.png">
+
+<link rel="canonical" href="https://lccurious.github.io/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Paper | Domain Agnostic Learning with Disentangled Representations | Curiousity Hub</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Curiousity Hub</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">103</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lccurious.github.io/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Bill H">
+      <meta itemprop="description" content="星辰大海">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Curiousity Hub">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Paper | Domain Agnostic Learning with Disentangled Representations
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-25 22:38:34" itemprop="dateCreated datePublished" datetime="2019-11-25T22:38:34+08:00">2019-11-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-01 17:08:13" itemprop="dateModified" datetime="2020-10-01T17:08:13+08:00">2020-10-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%96%87%E7%8C%AE/" itemprop="url" rel="index"><span itemprop="name">文献</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>假设你有两批数据，一批是在游戏中模拟进行自动驾驶的场景训练数据，一批是真实世界中的任务数据，前一批我们有无尽二点标签，但是后一批的标签收集显然就需要很大的人力物力，所以我们希望在前面无尽的数据上训练好的模型能够经过一些调整直接解决后一批数据的任务，这也就是迁移学习要做的任务。</p>
+<a id="more"></a>
+<p>比较形式化的说法就是：迁移学习主要是为了能够弥合相同任务中的两批数据集的因为边缘分布不一致导致的协变量漂移的问题。基于一个假设： 两批数据的边缘分布不同，但是条件概率分布是相同的，即 <span class="math inline">\(P(x|y)\)</span> 还是相同的，同样的特征是要对应于同样的标签，但是 <span class="math inline">\(P(X)\)</span> 是不相同的，因为数据分布是有些不同的。</p>
+<p>所以针对这样的问题人们提出了一些解决方案：</p>
+<ol type="1">
+<li>通过学习一种嵌入表示方式能够弥补源域和目标域的协变量漂移问题。</li>
+<li>通过对抗学习在保证源域性能情况下使得目标域和源域的中间特征变得难以辨别</li>
+<li>如果在目标域标签可标记的情况下还可以引入主动学习：
+<ol type="1">
+<li>挑选那些最能让源域目标域辨别出错的样本</li>
+<li>挑选那些让源域上训练过的模型最不确定的样本</li>
+</ol></li>
+</ol>
+<p>而实际进行迁移的时候也有几种不同的场景需求：</p>
+<ol type="1">
+<li>源域 <span class="math inline">\(\mathcal{S}\)</span> 单 --&gt; 目标域 <span class="math inline">\(\mathcal{T}\)</span> 单</li>
+<li>源域 <span class="math inline">\(\mathcal{S}\)</span> 多 --&gt; 目标域 <span class="math inline">\(\mathcal{T}\)</span> 单</li>
+<li>源域 <span class="math inline">\(\mathcal{S}\)</span> 单 --&gt; 目标域 <span class="math inline">\(\mathcal{T}\)</span> 多</li>
+</ol>
+<p>这篇文章要讨论的就是这第三个问题。</p>
+<h2 id="大致思路">大致思路</h2>
+<img src="/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/main.png" class="">
+<ul>
+<li>特征生成器 <span class="math inline">\(G\)</span></li>
+<li>解耦器 <span class="math inline">\(D\)</span></li>
+<li>域无关特征 <span class="math inline">\(f_{di}\)</span></li>
+<li>域特定特征 <span class="math inline">\(f_{ds}\)</span></li>
+<li>类别无关特征 <span class="math inline">\(f_{ci}\)</span></li>
+<li>特征重建器 <span class="math inline">\(R\)</span></li>
+<li>分类器 <span class="math inline">\(C\)</span></li>
+</ul>
+<p>通过学习两个解耦对迁移任务进行改进，从<strong>域不变特征</strong>和<strong>类别特征</strong>通过互信息的水平分开。</p>
+<h3 id="变分自编码">变分自编码</h3>
+<p><span class="math display">\[
+\mathcal{L}_{vae} = \|\hat{f}_{G}-f_{G}\|^{2}_{F} + KL(q(z|f_{G})\|p(z))
+\]</span></p>
+<p>其中 <span class="math inline">\(p(z_{c})\)</span> 是一个先验的分布，<span class="math inline">\(z\sim \mathcal{N}(0, I)\)</span> 因为在损失函数中没有特别定义，而且特征量又是取自一个常规的分布，仅仅通过这个自编码器是不能把域不变和域相关的特征区分开来的。</p>
+<h3 id="类别解耦">类别解耦</h3>
+<p><span class="math display">\[
+\mathcal{L}_{ce} = -\mathbb{E}_{(x_s, y_s)\sim \hat{D}_{s}}\sum^{K}_{k=1}\mathbb{1}[k=y_{s}]\log (C(f_{D}))
+\]</span> 其中 <span class="math inline">\(f_{D}\in \{f_{di}, f_{ci}\}\)</span>，用于去除类别不相关特征，通过交叉熵优化解耦器和分类器实现分类错误最小化。</p>
+<p>第二步通过固定分类器，训练解耦器 <span class="math inline">\(D\)</span> 生成类别无关的特征 <span class="math inline">\(f_{ci}\)</span> 欺骗过分类器，可以通过负熵最小化实现：</p>
+<p><span class="math display">\[
+\mathcal{L}_{ent}=-\frac{1}{n_s}\sum^{n_s}_{j=1}\log C(f^{i}_{ci})-\frac{1}{n_t}\sum^{n_t}_{j=1}\log C(f^{j}_{ci})
+\]</span></p>
+<p>也就是使得 <span class="math inline">\(C(f^{i}_{ci})\)</span> 在整体数据判断上都非常不确定。</p>
+<h3 id="域解耦">域解耦</h3>
+<p>通过训练域鉴别器 DI 实现对域指定特征的解耦，也就是能够通过 <span class="math inline">\(f_{di}\)</span> 或者 <span class="math inline">\(f_{ds}\)</span> 来分别这些特征是来自源域 <span class="math inline">\(\mathcal{S}\)</span> 的还是来自目标域 <span class="math inline">\(\mathcal{T}\)</span> 的。</p>
+<p><span class="math display">\[
+\mathcal{L}_{DI} = -\mathbb{E}[l_{f}\log P(l_{f})] + \mathbb{E}(1-l_{f})[\log P(1-l_{f})]
+\]</span></p>
+<p>这里的解耦器就是用于训练欺骗域鉴别器。</p>
+<h3 id="互信息最小化">互信息最小化</h3>
+<p>可以把互信息 <span class="math inline">\(I(X;Y)\)</span> 看成由于知道 <span class="math inline">\(y\)</span> 值而造成的 <span class="math inline">\(x\)</span> 的不确定性的减小(反之亦然)（即 <span class="math inline">\(Y\)</span> 的值透露了多少关于 <span class="math inline">\(X\)</span> 的信息量）<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。我们的目标当然是希望每种特征仅承担各自该承担的任务，也就是 <span class="math inline">\(f_{di},f_{ds}\)</span> 之间以及 <span class="math inline">\(f_{di},f_{ci}\)</span> 之间的互信息都要尽可能的小。 <span class="math display">\[
+I(\mathcal{D}_{x};\mathcal{D}_{f_{di}}) = \int_{\mathbb{X}\times\mathcal{Z}}\log \frac{d\mathbb{P}_{XZ}}{d\mathbb{P}_{X}\otimes\mathbb{P}_{Z}}d\mathbb{P}_{XZ}
+\]</span> 其中 <span class="math inline">\(x\in\{f_{ds}, f_{ci}\}\)</span>，<span class="math inline">\(\mathbb{P}_{XZ}\)</span> 是 <span class="math inline">\((\mathcal{D}_{x},\mathcal{D}_{f_{di}})\)</span> 的联合分布。<span class="math inline">\(\mathbb{P}_{X}=\int_{\mathcal{Z}}d\mathbb{P}_{XZ}\)</span> 和 <span class="math inline">\(\mathbb{P}_{Z}=\int_{\mathcal{X}}d\mathbb{P}_{XZ}\)</span> 是边缘分布，这也就是一个类似于贝叶斯概率的公式。但是这种计算复杂度过高，尤其是还用了张量积 <span class="math inline">\(\otimes\)</span> 导致复杂度到 <span class="math inline">\(O(n^2)\)</span>，所以参照 Mutual Information Neural Estimator（MINE）的做法进行了简化：</p>
+<p><span class="math display">\[
+I\hat{(X;Z)}_{n} = \sup_{\theta \in \Theta}\mathbb{E}_{\mathbb{P}^{(n)}_{XZ}}[T_{\theta}]-\log(\mathbb{E}_{\mathbb{P}^{(n)}\otimes\hat{\mathbb{P}^{(n)}_{Z}}}[e^{T_{\theta}}])
+\]</span> 可以利用神经网络 <span class="math inline">\(T_{\theta}\)</span> 无偏地估计 <span class="math inline">\(n\)</span> 个独立同分布样本的互信息。</p>
+<p>然鹅在实际操作中，用的是更加简单的方式，<span class="math inline">\(I(X;Y)=\int\int \mathbb{P}^{n}_{XZ}(x,y)T(x,z,\theta)-\log(\int\int\mathbb{P}^{n}_{X}(x)\mathbb{P}^{n}_{Z}(z)e^{T(x,z,\theta)}\)</span>，再进一步避免使用积分的形式，代码中是用蒙特卡洛采样的方式实现。</p>
+<p><span class="math display">\[
+I(X,Z) = \frac{1}{n}\sum^{n}_{i=1}T(x, z, \theta) - \log(\frac{1}{n}\sum^{n}_{i=1}e^{T(x, z&#39;,\theta)})
+\]</span> 其中 <span class="math inline">\((x,z)\)</span> 是从联合分布中采样得到的，<span class="math inline">\(z&#39;\)</span> 是从边缘分布中采样得到的。</p>
+<h3 id="改进批归一化">改进批归一化</h3>
+<p>因为一般的批归一化是来自于同一批数据，假设都是类似的分布，但是在这里，目标域有多个域的数据（你还不知道哪个样本是来自哪个域的），所以批内肯定会出现（而且得是这样）协变量漂移的问题，不能简单通过批归一化，所以采用了环样的正则约束： <span class="math display">\[
+\mathcal{L}_{ring}=\frac{1}{2n}\sum^{n}_{i=1}(\|T(x_i)\|_{2}-R)^2
+\]</span> 但是还是容易出现一些模式坍塌的问题，如果这个学习到的 <span class="math inline">\(R\)</span> 太小的话，所以做进一步改进就是引入 Geman-McClure 模型： <span class="math display">\[
+\mathcal{L}^{GM}_{ring}=\frac{\sum^{n}_{i=1}(\|T(x_i)\|_{2}-R)^2}{2n\beta +\sum^{n}_{i=1}(\|T(x_{i})\|_{2}-R)^2}
+\]</span> 其中 <span class="math inline">\(\beta\)</span> 是 Geman-McClure 模型的尺寸。</p>
+<h2 id="完整算法流程">完整算法流程</h2>
+<img src="/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/alg.png" class="">
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BA%92%E4%BF%A1%E6%81%AF">wiki:互信息</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Bill H 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Bill H 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill H
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lccurious.github.io/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/" title="Paper | Domain Agnostic Learning with Disentangled Representations">https://lccurious.github.io/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Domain-Adaptation/" rel="tag"># Domain Adaptation</a>
+              <a href="/tags/Disentangle/" rel="tag"># Disentangle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/10/16/Causal-Analysis/" rel="prev" title="因果分析 | 介绍">
+      <i class="fa fa-chevron-left"></i> 因果分析 | 介绍
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/26/Paper-Modeling-the-Role-of-Working-Memory-and-Episodic-Memory-in-Behavioral-Tasks/" rel="next" title="Paper | Modeling the Role of Working Memory and Episodic Memory in Behavioral Tasks">
+      Paper | Modeling the Role of Working Memory and Episodic Memory in Behavioral Tasks <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E8%87%B4%E6%80%9D%E8%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">大致思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">变分自编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%88%AB%E8%A7%A3%E8%80%A6"><span class="nav-number">1.2.</span> <span class="nav-text">类别解耦</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%9F%E8%A7%A3%E8%80%A6"><span class="nav-number">1.3.</span> <span class="nav-text">域解耦</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%92%E4%BF%A1%E6%81%AF%E6%9C%80%E5%B0%8F%E5%8C%96"><span class="nav-number">1.4.</span> <span class="nav-text">互信息最小化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E8%BF%9B%E6%89%B9%E5%BD%92%E4%B8%80%E5%8C%96"><span class="nav-number">1.5.</span> <span class="nav-text">改进批归一化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">完整算法流程</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill H"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bill H</p>
+  <div class="site-description" itemprop="description">星辰大海</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:lcurious@163.com" title="E-Mail → mailto:lcurious@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/p/1005052024819944" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;p&#x2F;1005052024819944" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill H</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">194k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:57</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

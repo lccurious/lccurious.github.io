@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next-my.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next-my.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="贝叶斯推断是机器学习中常用的一种算法，在很多种情况下可以和其他数据处理技术搭配在一起。它可以处理很多种随机变量，像是参数回归、人口统计、商业KPI或者是演讲中的文字片段等。通常而言，贝叶斯推断是根据已有的数据频率分布对未知的目标进行推断，但是人们通常会用另一种方式来表述概率，像是先验和后验概率。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction to Bayesian Inference">
+<meta property="og:url" content="https://lccurious.github.io/2018/04/11/Introduction-to-Bayesian-Inference/index.html">
+<meta property="og:site_name" content="Curiousity Hub">
+<meta property="og:description" content="贝叶斯推断是机器学习中常用的一种算法，在很多种情况下可以和其他数据处理技术搭配在一起。它可以处理很多种随机变量，像是参数回归、人口统计、商业KPI或者是演讲中的文字片段等。通常而言，贝叶斯推断是根据已有的数据频率分布对未知的目标进行推断，但是人们通常会用另一种方式来表述概率，像是先验和后验概率。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-04-11T13:00:20.000Z">
+<meta property="article:modified_time" content="2020-10-01T09:08:13.687Z">
+<meta property="article:author" content="Bill H">
+<meta property="article:tag" content="贝叶斯推断">
+<meta property="article:tag" content="贝叶斯">
+<meta property="article:tag" content="Bayesian Inference">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://lccurious.github.io/2018/04/11/Introduction-to-Bayesian-Inference/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Introduction to Bayesian Inference | Curiousity Hub</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Curiousity Hub</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">103</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lccurious.github.io/2018/04/11/Introduction-to-Bayesian-Inference/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Bill H">
+      <meta itemprop="description" content="星辰大海">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Curiousity Hub">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Introduction to Bayesian Inference
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-04-11 21:00:20" itemprop="dateCreated datePublished" datetime="2018-04-11T21:00:20+08:00">2018-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-01 17:08:13" itemprop="dateModified" datetime="2020-10-01T17:08:13+08:00">2020-10-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>贝叶斯推断是机器学习中常用的一种算法，在很多种情况下可以和其他数据处理技术搭配在一起。它可以处理很多种随机变量，像是参数回归、人口统计、商业KPI或者是演讲中的文字片段等。通常而言，贝叶斯推断是根据已有的数据频率分布对未知的目标进行推断，但是人们通常会用另一种方式来表述概率，像是先验和后验概率。</p>
+<a id="more"></a>
+<h2 id="概念">概念</h2>
+<p>最基本的贝叶斯公式：</p>
+<p><span class="math display">\[P(A\mid B) = \frac{P(A)P(B\mid A)}{P(B)}\]</span></p>
+<p>其中A是一个事件发生的概率，而B就像是一些什么数据或者证据可以支撑A的发生。把<span class="math inline">\(P(A\mid B)\)</span>说成是在B发生的情况下A发生的概率。</p>
+<p>所以推广到一般情况，假设<span class="math inline">\(\{A_i\}\)</span>是事件集合里的一部分，对于任意的<span class="math inline">\(A_i\)</span>，贝叶斯定理可以写成：</p>
+<p><span class="math display">\[P(A_{i}\mid B) = \frac{P(B\mid A_{i})P(A_{i})}{\sum_{i}P(B\mid A_{i})P(A_{i})}\]</span></p>
+<p>贝叶斯是描述某件事会不会出现的不确定性，这种不确定性则是通过已有的数据作为证据，这种事件我们则称为随机事件。随机事件的先验分布反映了我们在看到任何数据之前的信心<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>，后验概率则是考虑得到的相关证据和给定数据之后所得到的条件概率，后验概率分布也是一个随机变量，是基于试验和调查之后得到的概率分布<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>，也就是后验概率是受到数据分布和获得证据的影响的。</p>
+<h2 id="例子">例子</h2>
+<p><strong>例子描述：</strong> 假如我们要评估一个广告是不是有效的，我们可以根据点击这个广告的人数占看过这个广告的人数的比例来进行推测下一个看的人点击这个广告的概率。这个概率就是我们的一个参数，设为<span class="math inline">\(\theta\)</span>值域为<span class="math inline">\([0, 1]\)</span>，最传统的做法就是枚举这个参数值，然后看看哪个值和我们得到的数据最接近。</p>
+<p><span class="math inline">\(argmax_{\theta}P(X\mid \theta)\)</span>，其中的<span class="math inline">\(X\)</span>就是我们观测到的数据。</p>
+<p>这样我们可以得到似然函数<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a><span class="math inline">\(P(X\mid \theta)\)</span>，并且很容易推断出这个值就是我们得到的历史数据中的点击比例，但是这是根据历史经验的，也许真实的值和这个差了很多呢，在你拿到的这部分数据之后人们就都不点开广告看了呢，这也是有可能的，所以为了估计得更准确一些我们再参考一些别的广告被点击的频率，这样能让我们得到的结论也更具有一般性。</p>
+<h3 id="先验概率分布">先验概率分布</h3>
+<p>在我们正式开始计算之前，我们认为这个<span class="math inline">\(\theta\)</span>值更有可能会偏向某一个值或范围，而这种估计通常是来自下面几种：</p>
+<ul>
+<li>Informative; empirical: We have some data from related experiments and choose to leverage that data to inform our prior beliefs. Our prior beliefs will impact our final assessment.</li>
+<li>Informative; non-empirical: We have some inherent reason to prefer certain values over others. For instance, if we want to regularize a regression to prevent overfitting, we might set the prior distribution of our coefficients to have decreasing probability as we move away from 0. Our prior beliefs will impact our final assessment.</li>
+<li>Informative; domain-knowledge: Though we do not have supporting data, we know as domain experts that certain facts are more true than others. Our prior beliefs will impact our final assessment.</li>
+<li>Non-informative: Our prior beliefs will have little to no effect on our final assessment. We want the data to speak for itself.</li>
+</ul>
+<p>为了对<span class="math inline">\(\theta\)</span>进行估计，我们假定这个值是符合beta分布的（这种假设就是一种先验信息，以点击率作为估计目标，还是和beta分布比较吻合的），通常我们知道正态分布、二项分布、均匀分布等但是这个beta分布讲的比较少了。简单的说就是当你不知道一个东西的具体概率是多少时，它可以给出所有概率出现的可能性大小。beta分布由两个参数决定<span class="math inline">\((\alpha, \beta)\)</span>：</p>
+<p><span class="math display">\[f(x;\alpha ,\beta) = \frac{x^{\alpha -1} (1-x)^{\beta-1}}{\int_0\^1 \mu^{\alpha-1} (1-\mu)^{\beta-1} d \mu}\]</span></p>
+<p>我们通过历史的点击数据来对这个分布进行拟合从而得到对应的<span class="math inline">\(\alpha\)</span>、<span class="math inline">\(\beta\)</span>的估计值。</p>
+<p>所以再回到我们的贝叶斯公式来推算所需的<span class="math inline">\(\theta\)</span>：</p>
+<p><span class="math display">\[P(\theta\mid X)=\frac{P(\theta)P(X\mid \theta)}{P(X)}\]</span></p>
+<p>其中<span class="math inline">\(P(X)\)</span>是一个固定值，这个值不是由<span class="math inline">\(\theta\)</span>决定的，我们可以把后验概率表示成：</p>
+<p><span class="math display">\[Posterior=\frac{Prior \cdot Evidence}{Constant}\]</span></p>
+<h3 id="后验概率推断">后验概率推断</h3>
+<p>根据定义，后验概率的计算形式为：</p>
+<p><span class="math display">\[P(\theta\mid X)=\frac{P(\theta)P(X\mid \theta)}{P(X)}\]</span></p>
+<p>其中的分母<span class="math inline">\(P(X)\)</span>是在所有合法的<span class="math inline">\(\theta\)</span>下观察到数据的概率，为了找到全部合法的概率总值，写成数学形式就是：</p>
+<p><span class="math display">\[\int P(\theta)P(X\mid \theta)d\theta\]</span></p>
+<p>但是，实际问题上并不能真的通过这种公式来求得概率和，也就是说，这个公式是没有解析解的<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>。所以为了求得这个值我们要换一种方式，用马尔科夫链蒙特卡罗过程（Markov Chain Monte Carlo，MCMC）对这个值进行逼近，这种方法是通过模仿那种未知分布的数据生成大量样例。先从一个具体的值开始，然后“提出”另一个值，同时也会拒绝一些不太靠谱的生成值，然后采用新生成的值，再估计得出下一步的模拟生成样例。</p>
+<h2 id="贝氏陷阱">贝氏陷阱</h2>
+<p>在很多时候，我们在已有的经验上通过观测进一步地修正和使答案更加精确，终于是我们更加了解这个事物。如果说，你以为你通过先验证据做出了大致正确的估计，可是也许这种估计就是错的，然后随着观测一步一步走向更深的谬误中去。就像马克吐温说的：“让我们陷入困境的不是无知，而是信以为真的谬误“。</p>
+<p>所以，你应该给各种事情都留一些概率，这样可以避免盲目地消去可能性，而正态分布，它即可以把我们的猜测集中在某个范围内，无限远处的概率虽然小，却也不为零，所以是很好的先验模型，对于任何分布，至少不会丢失某些信息。</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Prior_probability" class="uri">https://en.wikipedia.org/wiki/Prior_probability</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Posterior_probability" class="uri">https://en.wikipedia.org/wiki/Posterior_probability</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>似然性是用于在已知某些观测所得到的结果时，对有关食物的性质进行估计，就像是条件概率的逆反，从我们根据什么条件得出某些事件发生概率到根据某些事件的频率推断出背后的证据来。参见：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Likelihood_function" class="uri">https://en.wikipedia.org/wiki/Likelihood_function</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>就是一些严格的公式,给出任意的自变量就可以求出其因变量,也就是问题的解。他人可以利用这些公式计算各自的问题。所谓的解析解是一种包含：分式、三角函数、指数、对数甚至无限级数等基本函数的解的形式。用来求得解析解的方法称为解析法〈analytic techniques、analytic methods〉，解析法即是常见的微积分技巧，例如分离变量法等。解析解为一封闭形式〈closed-form〉的函数，因此对任一独立变量，我们皆可将其带入解析函数求得正确的相依变量。因此，解析解也被称为闭式解（closed-form solution）。<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Bill H 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Bill H 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Bill H
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lccurious.github.io/2018/04/11/Introduction-to-Bayesian-Inference/" title="Introduction to Bayesian Inference">https://lccurious.github.io/2018/04/11/Introduction-to-Bayesian-Inference/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-Hans" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%8E%A8%E6%96%AD/" rel="tag"># 贝叶斯推断</a>
+              <a href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF/" rel="tag"># 贝叶斯</a>
+              <a href="/tags/Bayesian-Inference/" rel="tag"># Bayesian Inference</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/04/Frequent-Pattern-Mining/" rel="prev" title="频繁模式挖掘">
+      <i class="fa fa-chevron-left"></i> 频繁模式挖掘
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/28/C-Dynamic-Memory-Allocation/" rel="next" title="C++ 动态内存分配">
+      C++ 动态内存分配 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">2.</span> <span class="nav-text">例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E9%AA%8C%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83"><span class="nav-number">2.1.</span> <span class="nav-text">先验概率分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E9%AA%8C%E6%A6%82%E7%8E%87%E6%8E%A8%E6%96%AD"><span class="nav-number">2.2.</span> <span class="nav-text">后验概率推断</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9D%E6%B0%8F%E9%99%B7%E9%98%B1"><span class="nav-number">3.</span> <span class="nav-text">贝氏陷阱</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bill H"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Bill H</p>
+  <div class="site-description" itemprop="description">星辰大海</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:lcurious@163.com" title="E-Mail → mailto:lcurious@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/p/1005052024819944" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;p&#x2F;1005052024819944" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill H</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">194k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:57</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
