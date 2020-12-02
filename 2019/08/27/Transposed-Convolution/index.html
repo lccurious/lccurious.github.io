@@ -252,7 +252,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>896</span>
+              <span>834</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -273,35 +273,37 @@
         <p>反卷积（Deconvolution）很容易和信号处理中的反卷积混淆起来，其实在常见的卷积神经网络文献中应该指的是转置卷积（Transposed Convolution），下文见更准确地使用转置卷积来指代这一过程。</p>
 <img src="/2019/08/27/Transposed-Convolution/no_padding_no_strides_transposed.gif" class="">
 <a id="more"></a>
-<p>如封面示意图<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>，这里的卷积都是 2 维规则方形的：</p>
+<p>如封面示意图<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>，这里的卷积都是 2 维规则方形的：</p>
 <ul>
 <li>stride：卷积核滑动步长</li>
 <li>padding：卷积前对原始图像进行边缘补充所用宽度的像素个数，补全方式由用户定义，一般默认补零</li>
 <li>kernel size：方形卷积核的边长像素个数</li>
 </ul>
-<h2 id="卷积操作">卷积操作</h2>
+<h2 id="卷积操作"><a class="markdownIt-Anchor" href="#卷积操作"></a> 卷积操作</h2>
 <img src="/2019/08/27/Transposed-Convolution/no_padding_no_strides.gif" class="">
-<p>如图<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>这样的卷积操作都可以写成矩阵相乘的形式：</p>
+<p>如图<sup class="footnote-ref"><a href="#fn1" id="fnref1:1">[1:1]</a></sup>这样的卷积操作都可以写成矩阵相乘的形式：</p>
 <img src="/2019/08/27/Transposed-Convolution/1_NoXQbZqPnxSnjdAwo93XcQ.png" class="">
 <p>首先看到这样的卷积操作可以通过把计算顺序写进矩阵中，然后将目标图像展平成向量，实际上在很多卷积数值实现中，都是使用这种步骤可以加速程序的执行。</p>
 <img src="/2019/08/27/Transposed-Convolution/1_ql2ZxrS_h8D7KHNCrGndug.png" class="">
 <p>通过这种重排卷积核以对应和展平成向量的图像做卷积可以得到同样展平的卷积后图像，然后对这个图像进行重排可以简单地恢复其空间结构。</p>
-<h2 id="转置卷积">转置卷积</h2>
-<p>这样转置卷积的问题就好理解了，如果要做的操作为 <span class="math display">\[I_{4\times 4}\otimes K_{3\times 3} = C_{2\times 2}\]</span> 经过对卷积重排和图像展平之后就变成 <span class="math display">\[K_{4\times 16} \cdot I_{16} = C_{4}\]</span> 那么要从卷积后的图像 <span class="math inline">\(C_{2\times 2}\)</span> 得到原图像 <span class="math inline">\(I_{4\times 4}\)</span> 就做个矩阵乘逆吧：<span class="math display">\[I_{16} = (K_{4\times 16})^{-1} \cdot C_{4}\]</span></p>
+<h2 id="转置卷积"><a class="markdownIt-Anchor" href="#转置卷积"></a> 转置卷积</h2>
+<p>这样转置卷积的问题就好理解了，如果要做的操作为 $$I_{4\times 4}\otimes K_{3\times 3} = C_{2\times 2}$$<br />
+经过对卷积重排和图像展平之后就变成 $$K_{4\times 16} \cdot I_{16} = C_{4}$$<br />
+那么要从卷积后的图像 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>C</mi><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">C_{2\times 2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mbin mtight">×</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span> 得到原图像 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>I</mi><mrow><mn>4</mn><mo>×</mo><mn>4</mn></mrow></msub></mrow><annotation encoding="application/x-tex">I_{4\times 4}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span><span class="mbin mtight">×</span><span class="mord mtight">4</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span> 就做个矩阵乘逆吧：$$I_{16} = (K_{4\times 16})^{-1} \cdot C_{4}$$</p>
 <img src="/2019/08/27/Transposed-Convolution/1_JDAuBt3aS9mz3aQQ7JKYKA.png" class="">
 <p>将上面的过程可视化成图像计算过程。</p>
-<h2 id="总结">总结</h2>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
 <ul>
 <li>卷积操作可以通过矩阵重排用更高效的方式实现</li>
 <li>在矩阵实现的基础上很容易理解反卷积的规则</li>
 <li>实际中不一定会严格按照这种反卷积的操作，更多的是为了保持这种卷积形状，然后通过神经网络学习得到</li>
 <li>这里只说明了转置卷积的做法，在实际构建模型的时候可以有更多的操作</li>
 </ul>
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p>https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<hr class="footnotes-sep" />
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations">https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations</a> <a href="#fnref1" class="footnote-backref">↩︎</a> <a href="#fnref1:1" class="footnote-backref">↩︎</a></p>
+</li>
 </ol>
 </section>
 
@@ -425,7 +427,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">卷积操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF"><span class="nav-number">2.</span> <span class="nav-text">转置卷积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text"> 卷积操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF"><span class="nav-number">2.</span> <span class="nav-text"> 转置卷积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text"> 总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -497,12 +499,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">202k</span>
+    <span title="站点总字数">226k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:04</span>
+    <span title="站点阅读时长">3:26</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>

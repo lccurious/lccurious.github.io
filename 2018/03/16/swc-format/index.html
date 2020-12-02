@@ -267,23 +267,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="swc-格式">SWC 格式</h2>
-<p>SWC是一种直接使用文本表示的文件格式，它是一个文本文件，其中包含以＃字符开头的各种字段的标题以及包含索引，半径，类型和连接信息的一系列三维点。 <a id="more"></a> 表示点的文本文件中的行具有以下布局。</p>
+        <h2 id="swc-格式"><a class="markdownIt-Anchor" href="#swc-格式"></a> SWC 格式</h2>
+<p>SWC是一种直接使用文本表示的文件格式，它是一个文本文件，其中包含以＃字符开头的各种字段的标题以及包含索引，半径，类型和连接信息的一系列三维点。</p>
+<a id="more"></a>
+<p>表示点的文本文件中的行具有以下布局。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">n T x y z R P</span><br><span class="line">n是一个整数标签，用于标识当前点，并从一行到下一行递增1。</span><br><span class="line">T是代表神经元节段类型的整数，例如体细胞，轴突，顶端树突等。标准接受的整数值在下面给出。</span><br><span class="line">•	0 =未定义</span><br><span class="line">•	1 =索玛</span><br><span class="line">•	2 =轴突</span><br><span class="line">•	3 =枝晶</span><br><span class="line">•	4 =顶端树突</span><br><span class="line">•	5 =叉点</span><br><span class="line">•	6 =结束点</span><br><span class="line">•	7 =自定义</span><br><span class="line">x，y，z给出每个节点的笛卡尔坐标。</span><br><span class="line">R是该节点处的半径。</span><br><span class="line">P表示当前点的父（整数标签）或-1以表示原点（soma）。</span><br></pre></td></tr></table></figure>
 <p>下面显示了 由NeuronStudio生成的仅包含8个点的示例文件。请注意，标题的某些字段缺少值。在写这篇文章的时候，目前还不清楚这是否允许。在潜在的SWC阅读器使用这些字段的情况下，NeuronStudio使用1.0填充SHRINKAGE_CORRECTION和SCALE。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ORIGINAL_SOURCE NeuronStudio 0.8.80</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> CREATURE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> REGION</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> FIELD/LAYER</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> TYPE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> CONTRIBUTOR</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> REFERENCE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> RAW</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> EXTRAS</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SOMA_AREA</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SHINKAGE_CORRECTION 1.0 1.0 1.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> VERSION_NUMBER 1.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> VERSION_DATE 2007-07-24</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SCALE 1.0 1.0 1.0</span></span><br><span class="line">1 1 14.566132 34.873772 7.857000 0.717830 -1</span><br><span class="line">2 0 16.022520 33.760513 7.047000 0.463378 1</span><br><span class="line">3 5 17.542000 32.604973 6.885001 0.638007 2</span><br><span class="line">4 0 19.163984 32.022469 5.913000 0.602284 3</span><br><span class="line">5 0 20.448090 30.822802 4.860000 0.436025 4</span><br><span class="line">6 6 21.897903 28.881084 3.402000 0.471886 5</span><br><span class="line">7 0 18.461960 30.289471 8.586000 0.447463 3</span><br><span class="line">8 6 19.420759 28.730757 9.558000 0.496217 7</span><br></pre></td></tr></table></figure>
-<h2 id="读取swc文件">读取SWC文件</h2>
+<h2 id="读取swc文件"><a class="markdownIt-Anchor" href="#读取swc文件"></a> 读取SWC文件</h2>
 <img src="/2018/03/16/swc-format/NeutubeLogo.png" class="" title="title:NeuTube">
 <p>这里以NeuTube为例读取SWC文件，在NeuTube的<a target="_blank" rel="noopener" href="http://www.neutracing.com/download/">下载页面</a>选择对应的下载方式下载完成就可以得到一个压缩包，然后将这个压缩包解压到你要的位置，启动neuTube。你会得到下面的页面</p>
 <img src="/2018/03/16/swc-format/Snipaste_2018-03-17_00-12-17.png" class="" title="title:启动界面">
 <p>然后点File-&gt;Open选择你要打开的SWC文件即可得到三维的用一个一个圆形叠加在一起的模型，通常是神经元模型。</p>
 <img src="/2018/03/16/swc-format/Snipaste_2018-03-17_00-14-55.png" class="" title="title:SWC可视化界面">
 <p>TODO：NeuTube其他操作</p>
-<h2 id="更多阅读">更多阅读</h2>
+<h2 id="更多阅读"><a class="markdownIt-Anchor" href="#更多阅读"></a> 更多阅读</h2>
 <ul>
-<li><a target="_blank" rel="noopener" href="http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html" class="uri">http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html</a></li>
-<li><a target="_blank" rel="noopener" href="http://research.mssm.edu/cnic/swc.html" class="uri">http://research.mssm.edu/cnic/swc.html</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.neutracing.com/tutorial/" class="uri">http://www.neutracing.com/tutorial/</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html">http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html</a></li>
+<li><a target="_blank" rel="noopener" href="http://research.mssm.edu/cnic/swc.html">http://research.mssm.edu/cnic/swc.html</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.neutracing.com/tutorial/">http://www.neutracing.com/tutorial/</a></li>
 </ul>
 
     </div>
@@ -405,7 +407,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#swc-%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">SWC 格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96swc%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">读取SWC文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E9%98%85%E8%AF%BB"><span class="nav-number">3.</span> <span class="nav-text">更多阅读</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#swc-%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text"> SWC 格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96swc%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text"> 读取SWC文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E9%98%85%E8%AF%BB"><span class="nav-number">3.</span> <span class="nav-text"> 更多阅读</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -477,12 +479,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">202k</span>
+    <span title="站点总字数">226k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:04</span>
+    <span title="站点阅读时长">3:26</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
