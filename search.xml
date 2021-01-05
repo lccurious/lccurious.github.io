@@ -255,6 +255,41 @@ L_{\text {target }}(\hat{y}, y)+\lambda \cdot L_{\operatorname{loss}}(\hat{l}, l
       </tags>
   </entry>
   <entry>
+    <title>C++命名空间</title>
+    <url>/2018/01/11/C-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/</url>
+    <content><![CDATA[<p>命名空间的存在就是为了给代码中的表示符提供一个范围,将代码组织到一个逻辑中,这样在不同命名空间中的同名函数也可以通过它所在的命名空间来区分开来了.我们经常使用的内容就是<code>using namespace std</code>,但是实际上在更多大型的工程组织中会用到更多稍微复杂些的命名空间的写法来保证冲突的避免. <a id="more"></a></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> ContosoData</span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ObjectManager</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">DoSomething</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(ObjectManager)</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="using指令">Using指令</h2>
+<p>如果本地变量的名称与命名空间变量的名称相同，则隐藏命名空间变量。 使命名空间变量具有与全局变量相同的名称是错误的。</p>
+<p>一般情况下，避免将 using 指令放置在头文件 (*.h) 中，因为任何包含该标头的文件都会将命名空间中的所有内容引入范围，这将导致非常难以调试的名称隐藏和名称冲突问题。 在头文件中，始终使用完全限定名。 如果这些名称太长，可以使用命名空间别名将其缩短。</p>
+<h2 id="声明命名空间和命名空间成员">声明命名空间和命名空间成员</h2>
+<p>指定的命名空间的成员可以在定义的名称的显式限定所声明的命名空间的外部进行定义。 但是，定义必须出现在命名空间中的声明位置之后，该命名空间包含在声明的命名空间中。 例如:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// defining_namespace_members.cpp</span></span><br><span class="line"><span class="comment">// C2039 expected</span></span><br><span class="line"><span class="keyword">namespace</span> V &#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">V::f</span><span class="params">()</span> </span>&#123; &#125;        <span class="comment">// ok</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">V::g</span><span class="params">()</span> </span>&#123; &#125;        <span class="comment">// C2039, g() is not yet a member of V</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">namespace</span> V &#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并且<strong>当跨多个头文件声明命名空间成员，并且未以正确的顺序包含这些标头时，可能出现此错误。</strong></p>
+<h2 id="嵌套命名空间">嵌套命名空间</h2>
+<p>可以嵌套命名空间。 普通的嵌套命名空间具有对其父级成员的非限定访问权限，而父成员不具有对嵌套命名空间的非限定访问权限（除非它被声明为内联），如下面的示例所示：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> ContosoDataServer</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">namespace</span> Details</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> CountImpl;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Ban</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> Foo(); &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Bar</span><span class="params">()</span></span>&#123;...&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Baz</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; <span class="keyword">return</span> Details::CountImpl; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>普通嵌套命名空间可用于封装不属于父命名空间的公共接口的一部分的内部实现详细信息。</p>
+<h2 id="内联命名空间-c-11">内联命名空间 (C++ 11)</h2>
+<p>与普通嵌套命名空间不同，内联命名空间的成员会被视为父命名空间的成员。</p>
+<p>可以将内联命名空间用作版本控制机制，以管理对库的公共接口的更改。 例如，可以创建单个父命名空间，并将接口的每个版本封装到嵌套在父命名空间内的其自己的命名空间中。 保留最新或首选的版本的命名空间限定为内联，并因此以父命名空间的直接成员的形式公开。 调用 Parent::Class 的客户端代码将自动绑定到新代码。 通过使用指向包含该代码的嵌套命名空间的完全限定路径，选择使用较旧版本的客户端仍可以对其进行访问。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Contoso</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">namespace</span> v_10</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Funcs</span></span></span><br><span class="line"><span class="class">        &#123;</span></span><br><span class="line">        <span class="keyword">public</span>:</span><br><span class="line">            Funcs(<span class="keyword">void</span>);</span><br><span class="line">            <span class="function">T <span class="title">Add</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Subtract</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Multiply</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Divide</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">inline</span> <span class="keyword">namespace</span> v_20</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Funcs</span></span></span><br><span class="line"><span class="class">        &#123;</span></span><br><span class="line">        <span class="keyword">public</span>:</span><br><span class="line">            Funcs(<span class="keyword">void</span>);</span><br><span class="line">            <span class="function">T <span class="title">Add</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Subtract</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Multiply</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; <span class="title">Log</span><span class="params">(<span class="keyword">double</span>)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Accumulate</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt; nums)</span></span>;</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="匿名或未命名的命名空间">匿名或未命名的命名空间</h2>
+<p>可以创建显式命名空间，但不为其提供一个名称：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">MyFunc</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这称为未命名的命名空间或匿名命名空间，在你想要使变量声明对于其他文件中的代码不可见（即 为它们提供内部链接），而不必创建已命名的命名空间时非常有用。 同一文件中的所有代码都可以看到未命名的命名空间中的标识符，但这些标识符以及命名空间本身在该文件外部（或更准确地说，在翻译单元外部）不可见。</p>
+<hr />
+<p>整理参考: <a href="https://msdn.microsoft.com/zh-cn/library/5cb46ksf.aspx" class="uri">https://msdn.microsoft.com/zh-cn/library/5cb46ksf.aspx</a></p>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>命名空间</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C++ 动态内存分配</title>
     <url>/2018/04/28/C-Dynamic-Memory-Allocation/</url>
     <content><![CDATA[<p>C++中经常涉及对于内存的操作，包括指针的使用，new操作符，还有原来C语言中有的malloc等，为了使写出来的程序更加健壮，需要对这些有比较深刻的理解能力。对于动态内存分配， 有些操作对象只在程序运行时才能确定，这样编译时就无法为他们预定存储空间，只能在程序运行时，系统根据运行时的要求进行内存分配，这种方法称为动态存储分配。所有动态存储分配都在堆区中进行。</p>
@@ -299,159 +334,6 @@ L_{\text {target }}(\hat{y}, y)+\lambda \cdot L_{\operatorname{loss}}(\hat{l}, l
       </tags>
   </entry>
   <entry>
-    <title>C++命名空间</title>
-    <url>/2018/01/11/C-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/</url>
-    <content><![CDATA[<p>命名空间的存在就是为了给代码中的表示符提供一个范围,将代码组织到一个逻辑中,这样在不同命名空间中的同名函数也可以通过它所在的命名空间来区分开来了.我们经常使用的内容就是<code>using namespace std</code>,但是实际上在更多大型的工程组织中会用到更多稍微复杂些的命名空间的写法来保证冲突的避免. <a id="more"></a></p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> ContosoData</span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ObjectManager</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">DoSomething</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(ObjectManager)</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="using指令">Using指令</h2>
-<p>如果本地变量的名称与命名空间变量的名称相同，则隐藏命名空间变量。 使命名空间变量具有与全局变量相同的名称是错误的。</p>
-<p>一般情况下，避免将 using 指令放置在头文件 (*.h) 中，因为任何包含该标头的文件都会将命名空间中的所有内容引入范围，这将导致非常难以调试的名称隐藏和名称冲突问题。 在头文件中，始终使用完全限定名。 如果这些名称太长，可以使用命名空间别名将其缩短。</p>
-<h2 id="声明命名空间和命名空间成员">声明命名空间和命名空间成员</h2>
-<p>指定的命名空间的成员可以在定义的名称的显式限定所声明的命名空间的外部进行定义。 但是，定义必须出现在命名空间中的声明位置之后，该命名空间包含在声明的命名空间中。 例如:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// defining_namespace_members.cpp</span></span><br><span class="line"><span class="comment">// C2039 expected</span></span><br><span class="line"><span class="keyword">namespace</span> V &#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">V::f</span><span class="params">()</span> </span>&#123; &#125;        <span class="comment">// ok</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">V::g</span><span class="params">()</span> </span>&#123; &#125;        <span class="comment">// C2039, g() is not yet a member of V</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">namespace</span> V &#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>并且<strong>当跨多个头文件声明命名空间成员，并且未以正确的顺序包含这些标头时，可能出现此错误。</strong></p>
-<h2 id="嵌套命名空间">嵌套命名空间</h2>
-<p>可以嵌套命名空间。 普通的嵌套命名空间具有对其父级成员的非限定访问权限，而父成员不具有对嵌套命名空间的非限定访问权限（除非它被声明为内联），如下面的示例所示：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> ContosoDataServer</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">namespace</span> Details</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> CountImpl;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Ban</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> Foo(); &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Bar</span><span class="params">()</span></span>&#123;...&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Baz</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; <span class="keyword">return</span> Details::CountImpl; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>普通嵌套命名空间可用于封装不属于父命名空间的公共接口的一部分的内部实现详细信息。</p>
-<h2 id="内联命名空间-c-11">内联命名空间 (C++ 11)</h2>
-<p>与普通嵌套命名空间不同，内联命名空间的成员会被视为父命名空间的成员。</p>
-<p>可以将内联命名空间用作版本控制机制，以管理对库的公共接口的更改。 例如，可以创建单个父命名空间，并将接口的每个版本封装到嵌套在父命名空间内的其自己的命名空间中。 保留最新或首选的版本的命名空间限定为内联，并因此以父命名空间的直接成员的形式公开。 调用 Parent::Class 的客户端代码将自动绑定到新代码。 通过使用指向包含该代码的嵌套命名空间的完全限定路径，选择使用较旧版本的客户端仍可以对其进行访问。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Contoso</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">namespace</span> v_10</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Funcs</span></span></span><br><span class="line"><span class="class">        &#123;</span></span><br><span class="line">        <span class="keyword">public</span>:</span><br><span class="line">            Funcs(<span class="keyword">void</span>);</span><br><span class="line">            <span class="function">T <span class="title">Add</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Subtract</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Multiply</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Divide</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">inline</span> <span class="keyword">namespace</span> v_20</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Funcs</span></span></span><br><span class="line"><span class="class">        &#123;</span></span><br><span class="line">        <span class="keyword">public</span>:</span><br><span class="line">            Funcs(<span class="keyword">void</span>);</span><br><span class="line">            <span class="function">T <span class="title">Add</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Subtract</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Multiply</span><span class="params">(T a, T b)</span></span>;</span><br><span class="line">            <span class="function"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; <span class="title">Log</span><span class="params">(<span class="keyword">double</span>)</span></span>;</span><br><span class="line">            <span class="function">T <span class="title">Accumulate</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt; nums)</span></span>;</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="匿名或未命名的命名空间">匿名或未命名的命名空间</h2>
-<p>可以创建显式命名空间，但不为其提供一个名称：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">MyFunc</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这称为未命名的命名空间或匿名命名空间，在你想要使变量声明对于其他文件中的代码不可见（即 为它们提供内部链接），而不必创建已命名的命名空间时非常有用。 同一文件中的所有代码都可以看到未命名的命名空间中的标识符，但这些标识符以及命名空间本身在该文件外部（或更准确地说，在翻译单元外部）不可见。</p>
-<hr />
-<p>整理参考: <a href="https://msdn.microsoft.com/zh-cn/library/5cb46ksf.aspx" class="uri">https://msdn.microsoft.com/zh-cn/library/5cb46ksf.aspx</a></p>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-        <tag>命名空间</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>因果分析 | 介绍</title>
-    <url>/2019/10/16/Causal-Analysis/</url>
-    <content><![CDATA[<p>人们为了避免辛普森悖论等因为模型不明，混淆因素也一时无法确定而建立的各种分析方法，希望能够从大量的数据中找到满足控制变量条件的分析。主要包括建立新的表示符号，用以强调是在某个动作作用之后才有的某种结果，在这个理论基础上设计了因果图，分析方法和我们所认知的概率图分析等都比较一致。因果分析就是要在没有条件进行完全的控制变量的情况下进行数据分析，通过因果归纳得到因果结构，然后进行强度估计。</p>
-<img src="/2019/10/16/Causal-Analysis/simplesenparadox.png" class="">
-<a id="more"></a>
-<p>本文依照微软在 KDD 上的演示文稿整理部分和因果推理有关的内容如下。</p>
-<h2 id="符号约定">符号约定</h2>
-<p>符号约定是为了区分因果性和原来我们熟悉的关联性模型的表达方式。<span class="math inline">\(P(Y|X)\)</span> 和 <span class="math inline">\(P(Y|do(X))\)</span> 表达的是不同含义，前者着重指根据数据观察得到的概率特征，而后者是指当施加某种干预会带来的某种结果，是着重表达因果性的。</p>
-<ul>
-<li>Conditional Independence Assumption (CIA)
-<ul>
-<li>干预和变量不会相互影响对方的出现</li>
-</ul></li>
-<li>Stable Unit Treatment Value (SUTVA) assumption
-<ul>
-<li>一个单元受到干预的影响和其他单元是否收到干预相互独立<span class="math display">\[P(Y_i|do(T_i,T_j))=P(Y_i|do(T_i))\]</span></li>
-</ul></li>
-<li>Common support
-<ul>
-<li>受到干预的一批变量和没有受到干预的一批变量应该是相似的</li>
-<li>也就是协变量（covariates）应该有所重叠<span class="math display">\[0&lt; P(T=1|X=x) &lt; 1\]</span></li>
-</ul></li>
-</ul>
-<h2 id="结构因果模型">结构因果模型</h2>
-<p>用概率图模型来表示因果关系，通过探索数据进行因果归纳建立图模型，然后通过大量的数据回测实现因果强度的推断。实际上，人们有时候会建立有人工干预的因果模型，这些因果模型能够比较好地表现数据中前后的因果关联。</p>
-<p><strong>警告</strong>:只有正确的因果结构图才能带来正确的因果作用效应估计</p>
-<p>要知道怎样进行良好的模型设计，如果建立 <span class="math inline">\(T\rightarrow Y\)</span> 这样的联通就会导致错误的相关性分析，比如锻炼和胆固醇关系没有根据年龄这个同时作用在锻炼频率和胆固醇水平的混淆量（confounder）进行分层的话，就会得出错误的结论。但是如何对原始数据进行分组，这是具有挑战性的一点。</p>
-<h2 id="倾向评分匹配">倾向评分匹配</h2>
-<blockquote>
-<p>因果分析方法的贡献在于能够在没有条件进行绝对的控制变量实验的情况下，直接通过对数据进行分层探索各个独立变量对于结果的影响程度。</p>
-</blockquote>
-<p>因为在很多情况下，数据的维度都比较高，不会有特别分明的属性（例如年龄、性别等）便于进行针对属性进行分层。通过一些距离函数以无监督聚类的方案对原始数据进行分组，但是这样做的适应度有限，所以通过引入倾向性评分这个来进行数据的分组。</p>
-<blockquote>
-<p>倾向性评分有效的原因在于，协变量相似的个体之间都比较可能有相似的分数，所有映射到相似分数的个体就比较有可能有相似的干预程度。</p>
-</blockquote>
-<p>通过预测一个个体受到某个干预的可能性，可以作为分层的依据，这个分数估计先通过部分有监督的方法进行训练，然后对全部数据进行估计，得出他们的受到干预的倾向性评分 <span class="math inline">\(\hat{e}(\vec{x_i})\)</span>，但是要对这个最终得分有个比较好的矫正对齐方案。也就是要有 <span class="math inline">\((100*p)/%\)</span> 的样本有 <span class="math inline">\(p\)</span> 的倾向性得分。然后依据倾向性得分计算样本之间的距离：<span class="math display">\[Distance(\vec{x_i},\vec{x_k})=|\hat{e}(\vec{x_i})-\hat{e}(\vec{x_j})|\]</span></p>
-<ul>
-<li>倾向性评分算不准是可以接受的，因为这是为了用于平衡协变量带来的分数，而不是真的直接确定干预作用关系。</li>
-<li>倾向性评分准就很有问题了，这意味着没法把干预和协变量分开，因为任何观察到的影响都会来自干预或者相关的协变量。
-<ul>
-<li>解决方案：重新定义干预量，或者把问题陈述再泛化一下。</li>
-</ul></li>
-</ul>
-<ol type="1">
-<li>通过计算各个倾向性评分对原始样本进行分层。</li>
-<li>计算不同层中对于收益影响的加权平均 <span class="math display">\[ATT = \sum_{s\in strata}\frac{1}{N_{s,T=1}}(\bar{Y}_{s,T=1}-\bar{Y}_{s,T=0})\]</span> 其中，<span class="math inline">\(\bar{Y}_{s,T}\)</span> 是层 <span class="math inline">\(s\)</span> 在 <span class="math inline">\(T\)</span> 的干预下，<span class="math inline">\(N_{s,T=1}\)</span> 是在层 <span class="math inline">\(s\)</span> 中受到干预的样本数量。ATT 是指在对照组上控制量的影响差异（例如样本中有的对控制量起反应，有的不起反应）。</li>
-</ol>
-<h3 id="加权">加权</h3>
-<p>数据集通常不会特别平衡，所以我们时常会根据其特征进行加权评估他们的收益效果，一些有效的加权方法可以改进这一问题。 <span class="math display">\[ATE = \frac{1}{N_{T=1}}\sum_{i\in treated}w_i Y_i-\frac{1}{N_{T=0}}\sum_{j\in untreated}w_j Y_j\]</span> 其中，ATE 是指 Average Treatment Effect 表示控制组和对照组之间潜在的影响差异。</p>
-<h2 id="回归">回归</h2>
-<p>通过回归探索某项干预在模型上的作用效果： <span class="math display">\[E(Y|X,T)=\alpha_1 X_1+\alpha_2 X_2+\alpha_3 X_3\dots +\alpha_n X_n+\alpha_T X_T\]</span> <span class="math inline">\(\alpha\)</span> 越大，那么它们之间的因果性就越强。</p>
-<p>回归的因果解释要满足下面几个假设：</p>
-<ul>
-<li><strong>模型正确性</strong>：如果用线性回归分析非线性的因果性就不行</li>
-<li><strong>共线性</strong>：如果协变量之间具有相关性，也不能得到准确的参数</li>
-<li><strong>可忽略性</strong>：如果漏了混淆变量可能会使分析无效</li>
-</ul>
-<p>要非常仔细地设计模型，保证因果解释能力，避免出现共线性的协变量，确保所有相关的混淆变量都已经考虑到了。</p>
-<h2 id="双重鲁棒">双重鲁棒</h2>
-<ol type="1">
-<li>在做模型分层的时候需要正确的模型说明</li>
-<li>在做回归任务的时候也需要正确的模型指定</li>
-</ol>
-<p>通过双重鲁棒采纳倾向性得分和回归方法中最好的组合，任意一个部分估计正确，都可以带来正确的结果，但是如果两个都估计的不好，那么双重鲁棒会带来更加严重的偏见。 <span class="math display">\[DR_1=\begin{cases}
-\frac{Y}{\hat{e}}-\frac{\hat{Y}_{T=1}(1-\hat{e})}{\hat{e}},&amp; T=1 \\
-\hat{Y}_{T=1}, &amp; T=0
-\end{cases}
-\]</span></p>
-<p><span class="math display">\[DR_0=\begin{cases}
-\hat{Y}_{T=0}, &amp; T=1 \\
-\frac{Y}{1-\hat{e}}-\frac{\hat{Y}_{T=1}(\hat{e})}{1-\hat{e}},&amp; T=0
-\end{cases}
-\]</span></p>
-<p>最后计算所有研究样本的平均值 <span class="math inline">\(\bar{DR_1}\)</span> 和 <span class="math inline">\(\bar{DR_0}\)</span>，其中的差异也就是因果作用的影响程度。</p>
-<h2 id="合成控制">合成控制</h2>
-<p>在一些场景中，所有的样本都受到某个干预的影响， 比如政策、全球变暖等，我们需要建立生成控制来估计如果有一批样本没有受到干预的影响（因为这批样本在实际中并不存在）。</p>
-<ol type="1">
-<li>确定会有什么干预量</li>
-<li>在干预来之前进行观测，拟合协变量和输出的关系</li>
-<li>学习得到输出受干预量的影响</li>
-</ol>
-<p>在出现干预以后：</p>
-<ol type="1">
-<li>通过前面学到的无干预模型估计假如没有干预会有什么样的输出</li>
-<li>计算观测所得输出和无干预模型预测之间的差别</li>
-</ol>
-<h2 id="自然实验">自然实验</h2>
-<p>通常，随机实验实验是检验因果关系的重要手段，通过近似随机算法获得某项干预对于输出的影响。为了达到这个目标，与其直接对数据进行可忽略性不如找到一个子集可以近似这样的实验。我们常见的做法有 A/B 测试、抽样、任意随机策略对干预的外部干扰等，只要源头没有受到这些常见的原因影响就可以使用它们。</p>
-<h3 id="工具变量">工具变量</h3>
-<p>比如在霍乱源头分析的场景中，我们可以直接获得邻居因素对于得病的影响，而邻居关系和他们喝哪个自来水厂的水是基本相互独立的，也就是一种近似随机的关系，而自来水厂也不会直接影响他们是否得病，而是水污染让他们得病。</p>
-<p>通过以上的例子进一步推广，可以抽象出工具变量，它们不会受到未观测的混销量影响，同时也不会直接影响到最终的输出。<span class="math display">\[(Z\amalg U)\]</span> 其中 <span class="math inline">\(Z\)</span> 为工具变量，<span class="math inline">\(U\)</span> 为没有观测到的混淆变量，<span class="math inline">\((Z\amalg Y|T, U)\)</span> 工具变量只能通过影响 <span class="math inline">\(X\)</span> （也就是原因）影响到结果，而不能直接影响。因果影响可以通过下面的方式进行计算<span class="math display">\[Causal effect (X\rightarrow Y)=\frac{T_{Z=1}-Y_{Z=0}}{X_{Z=1}-X_{Z=0}}\]</span></p>
-<p>比如随机鼓励一些人去运动，我们可以观测得到运动对于胆固醇的影响程度。也就是通过工具变量来改变干预的分布，从而推断干预量在最终结果上的影响力。</p>
-<h3 id="回归中的不连续">回归中的不连续</h3>
-<p>这种不连续有时候是因为某些阈值带来的，但是在分界线两侧的样本应该是非常相似的，所以通过随机实验把他们放到另外一侧也是可行的。</p>
-<p>回归中的不连续确定了实验组和对照组之间的任意边界，衡量了边界处差异作为对于最终结果影响程度。</p>
-<h3 id="反驳">反驳</h3>
-<ol type="1">
-<li>通过随机增加一些协变量放入数据，再重新进行分析，如果因果估计没有改变，也就是这个当前的模型没有被驳倒。</li>
-<li>随机或者打乱我们干预，重新进行因果分析，如果没有使分析结果改变，没有被驳倒。</li>
-<li>把数据分成很多子集，进行分析，在各个子集内部没有明显差异，没有被驳倒。</li>
-<li>测试协变量是否平衡。</li>
-</ol>
-<h2 id="总结">总结</h2>
-<p>建模-&gt;归纳-&gt;估计-&gt;反驳</p>
-<ul>
-<li>用多种方法验证</li>
-<li>模型不要太过复杂</li>
-</ul>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>因果分析</tag>
-        <tag>因果推理</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Cmake工程例子</title>
     <url>/2017/12/19/Cmake%E5%B7%A5%E7%A8%8B%E4%BE%8B%E5%AD%90/</url>
     <content><![CDATA[<p>在Unix类型的系统上为了将代码比较好的组织在一起形成一个有序的编译链接形式，我们常常会使用CMakeLists.txt来指定一个代码工程的编译依赖和一些宏定义。然后在对应的目录下通过<code>cmake .</code>生成Makefile文件，然后再使用make来对整个工程进行编译。 <a id="more"></a> 所以下面内容是参照CMake的官方教程<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>重新表述的。</p>
@@ -477,6 +359,132 @@ L_{\text {target }}(\hat{y}, y)+\lambda \cdot L_{\operatorname{loss}}(\hat{l}, l
       <tags>
         <tag>编译</tag>
         <tag>工程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>因果分析 | 介绍</title>
+    <url>/2019/10/16/Causal-Analysis/</url>
+    <content><![CDATA[<p>人们为了避免辛普森悖论等因为模型不明，混淆因素也一时无法确定而建立的各种分析方法，希望能够从大量的数据中找到满足控制变量条件的分析。主要包括建立新的表示符号，用以强调是在某个动作作用之后才有的某种结果，在这个理论基础上设计了因果图，分析方法和我们所认知的概率图分析等都比较一致。因果分析就是要在没有条件进行完全的控制变量的情况下进行数据分析，通过因果归纳得到因果结构，然后进行强度估计。</p>
+<img src="/2019/10/16/Causal-Analysis/simplesenparadox.png" class="">
+<a id="more"></a>
+<p>本文依照微软在 KDD 上的演示文稿整理部分和因果推理有关的内容如下。</p>
+<h2 id="符号约定">符号约定</h2>
+<p>符号约定是为了区分因果性和原来我们熟悉的关联性模型的表达方式。<span class="math inline">\(P(Y|X)\)</span> 和 <span class="math inline">\(P(Y|do(X))\)</span> 表达的是不同含义，前者着重指根据数据观察得到的概率特征，而后者是指当施加某种干预会带来的某种结果，是着重表达因果性的。</p>
+<ul>
+<li>Conditional Independence Assumption (CIA)
+<ul>
+<li>干预和变量不会相互影响对方的出现</li>
+</ul></li>
+<li>Stable Unit Treatment Value (SUTVA) assumption
+<ul>
+<li>一个单元受到干预的影响和其他单元是否收到干预相互独立<span class="math inline">\(P(Y_i|do(T_i,T_j))=P(Y_i|do(T_i))\)</span></li>
+</ul></li>
+<li>Common support
+<ul>
+<li>受到干预的一批变量和没有受到干预的一批变量应该是相似的</li>
+<li>也就是协变量（covariates）应该有所重叠（带有某类如性别、年龄等属性的样本） <span class="math inline">\(0&lt; P(T=1|X=x) &lt; 1\)</span></li>
+</ul></li>
+</ul>
+<h2 id="结构因果模型">结构因果模型</h2>
+<p>用概率图模型来表示因果关系，通过探索数据进行因果归纳建立图模型，然后通过大量的数据回测实现因果强度的推断。实际上，人们有时候会建立有人工干预的因果模型，这些因果模型能够比较好地表现数据中前后的因果关联。</p>
+<p><strong>警告</strong>:只有正确的因果结构图才能带来正确的因果作用效应估计</p>
+<p>要知道怎样进行良好的模型设计，如果建立 <span class="math inline">\(T\rightarrow Y\)</span> 这样的联通就会导致错误的相关性分析，比如锻炼和胆固醇关系没有根据年龄这个同时作用在锻炼频率和胆固醇水平的混淆量（confounder）进行分层的话，就会得出错误的结论。但是如何对原始数据进行分组，这是具有挑战性的一点。</p>
+<h2 id="倾向评分匹配">倾向评分匹配</h2>
+<blockquote>
+<p>因果分析方法的贡献在于能够在没有条件进行绝对的控制变量实验的情况下，直接通过对数据进行分层探索各个独立变量对于结果的影响程度。</p>
+</blockquote>
+<p>因为在很多情况下，数据的维度都比较高，不会有特别分明的属性（例如年龄、性别等）便于进行针对属性进行分层。通过一些距离函数以无监督聚类的方案对原始数据进行分组，但是这样做的适应度有限，所以通过引入倾向性评分这个来进行数据的分组。</p>
+<blockquote>
+<p>倾向性评分有效的原因在于，协变量相似的个体之间都比较可能有相似的分数，所有映射到相似分数的个体就比较有可能有相似的干预程度。</p>
+</blockquote>
+<p>通过预测一个个体受到某个干预的可能性，可以作为分层的依据，这个分数估计先通过部分有监督的方法进行训练，然后对全部数据进行估计，得出他们的受到干预的倾向性评分 <span class="math inline">\(\hat{e}(\vec{x_i})\)</span>，但是要对这个最终得分有个比较好的矫正对齐方案。也就是要有 <span class="math inline">\((100*p)\%\)</span> 的样本有 <span class="math inline">\(p\)</span> 的倾向性得分。然后依据倾向性得分计算样本之间的距离：<span class="math display">\[{\rm Distance}(\vec{x_i},\vec{x_k})=|\hat{e}(\vec{x_i})-\hat{e}(\vec{x_j})|\]</span></p>
+<ul>
+<li>倾向性评分算不准是可以接受的，因为这是为了用于平衡协变量带来的分数，而不是真的直接确定干预作用关系。</li>
+<li>倾向性评分准就很有问题了，这意味着没法把干预和协变量分开，因为任何观察到的影响都会来自干预或者相关的协变量。
+<ul>
+<li>解决方案：重新定义干预量，或者把问题陈述再泛化一下。</li>
+</ul></li>
+</ul>
+<ol type="1">
+<li>通过计算各个倾向性评分对原始样本进行分层。</li>
+<li>计算不同层中对于收益影响的加权平均 <span class="math inline">\(ATT = \sum_{s\in strata}\frac{1}{N_{s,T=1}}(\bar{Y}_{s,T=1}-\bar{Y}_{s,T=0})\)</span> 其中，<span class="math inline">\(\bar{Y}_{s,T}\)</span> 是层 <span class="math inline">\(s\)</span> 在 <span class="math inline">\(T\)</span> 的干预下，<span class="math inline">\(N_{s,T=1}\)</span> 是在层 <span class="math inline">\(s\)</span> 中受到干预的样本数量。ATT 是指在对照组上控制量的影响差异（例如样本中有的对控制量起反应，有的不起反应）。</li>
+</ol>
+<h3 id="加权">加权</h3>
+<p>数据集通常不会特别平衡，所以我们时常会根据其特征进行加权评估他们的收益效果，一些有效的加权方法可以改进这一问题。 <span class="math display">\[
+ATE = \frac{1}{N_{T=1}}\sum_{i\in {\rm Treated}}w_i Y_i-\frac{1}{N_{T=0}}\sum_{j\in {\rm Untreated}}w_j Y_j
+\]</span> 其中，ATE 是指 Average Treatment Effect 表示控制组和对照组之间潜在的影响差异。</p>
+<h2 id="回归">回归</h2>
+<p>通过回归探索某项干预在模型上的作用效果： <span class="math display">\[
+E(Y|X,T)=\alpha_1 X_1+\alpha_2 X_2+\alpha_3 X_3\dots +\alpha_n X_n+\alpha_T X_T
+\]</span></p>
+<p><span class="math inline">\(\alpha\)</span> 越大，那么它们之间的因果性就越强。</p>
+<p>回归的因果解释要满足下面几个假设：</p>
+<ul>
+<li><strong>模型正确性</strong>：如果用线性回归分析非线性的因果性就不行</li>
+<li><strong>共线性</strong>：如果协变量之间具有相关性，也不能得到准确的参数</li>
+<li><strong>可忽略性</strong>：如果漏了混淆变量可能会使分析无效</li>
+</ul>
+<p>要非常仔细地设计模型，保证因果解释能力，避免出现共线性的协变量，确保所有相关的混淆变量都已经考虑到了。</p>
+<h2 id="双重鲁棒">双重鲁棒</h2>
+<ol type="1">
+<li>在做模型分层的时候需要正确的模型说明</li>
+<li>在做回归任务的时候也需要正确的模型指定</li>
+</ol>
+<p>通过双重鲁棒采纳倾向性得分和回归方法中最好的组合，任意一个部分估计正确，都可以带来正确的结果，但是如果两个都估计的不好，那么双重鲁棒会带来更加严重的偏见。 <span class="math display">\[
+DR_1=\begin{cases}
+\frac{Y}{\hat{e}}-\frac{\hat{Y}_{T=1}(1-\hat{e})}{\hat{e}},&amp; T=1 \\
+\hat{Y}_{T=1}, &amp; T=0
+\end{cases}
+\]</span></p>
+<p><span class="math display">\[
+DR_0=\begin{cases}
+\hat{Y}_{T=0}, &amp; T=1 \\
+\frac{Y}{1-\hat{e}}-\frac{\hat{Y}_{T=1}(\hat{e})}{1-\hat{e}},&amp; T=0
+\end{cases}
+\]</span></p>
+<p>最后计算所有研究样本的平均值 <span class="math inline">\(\bar{DR_1}\)</span> 和 <span class="math inline">\(\bar{DR_0}\)</span>，其中的差异也就是因果作用的影响程度。</p>
+<h2 id="合成控制">合成控制</h2>
+<p>在一些场景中，所有的样本都受到某个干预的影响， 比如政策、全球变暖等，我们需要建立生成控制来估计如果有一批样本没有受到干预的影响（因为这批样本在实际中并不存在）。</p>
+<ol type="1">
+<li>确定会有什么干预量</li>
+<li>在干预来之前进行观测，拟合协变量和输出的关系</li>
+<li>学习得到输出受干预量的影响</li>
+</ol>
+<p>在出现干预以后：</p>
+<ol type="1">
+<li>通过前面学到的无干预模型估计假如没有干预会有什么样的输出</li>
+<li>计算观测所得输出和无干预模型预测之间的差别</li>
+</ol>
+<h2 id="自然实验">自然实验</h2>
+<p>通常，随机实验实验是检验因果关系的重要手段，通过近似随机算法获得某项干预对于输出的影响。为了达到这个目标，与其直接对数据进行可忽略性不如找到一个子集可以近似这样的实验。我们常见的做法有 A/B 测试、抽样、任意随机策略对干预的外部干扰等，只要源头没有受到这些常见的原因影响就可以使用它们。</p>
+<h3 id="工具变量">工具变量</h3>
+<p>比如在霍乱源头分析的场景中，我们可以直接获得邻居因素对于得病的影响，而邻居关系和他们喝哪个自来水厂的水是基本相互独立的，也就是一种近似随机的关系，而自来水厂也不会直接影响他们是否得病，而是水污染让他们得病。</p>
+<p>通过以上的例子进一步推广，可以抽象出工具变量，它们不会受到未观测的混销量影响，同时也不会直接影响到最终的输出。<span class="math inline">\((Z\amalg U)\)</span> 其中 <span class="math inline">\(Z\)</span> 为工具变量，<span class="math inline">\(U\)</span> 为没有观测到的混淆变量，<span class="math inline">\((Z\amalg Y|T, U)\)</span> 工具变量只能通过影响 <span class="math inline">\(X\)</span> （也就是原因）影响到结果，而不能直接影响。因果影响可以通过下面的方式进行计算 <span class="math display">\[
+{\rm Causal~effect}(X\rightarrow Y)=\frac{T_{Z=1}-Y_{Z=0}}{X_{Z=1}-X_{Z=0}}
+\]</span> 比如随机鼓励一些人去运动，我们可以观测得到运动对于胆固醇的影响程度。也就是通过工具变量来改变干预的分布，从而推断干预量在最终结果上的影响力。</p>
+<h3 id="回归中的不连续">回归中的不连续</h3>
+<p>这种不连续有时候是因为某些阈值带来的，但是在分界线两侧的样本应该是非常相似的，所以通过随机实验把他们放到另外一侧也是可行的。</p>
+<p>回归中的不连续确定了实验组和对照组之间的任意边界，衡量了边界处差异作为对于最终结果影响程度。</p>
+<h3 id="反驳">反驳</h3>
+<ol type="1">
+<li>通过随机增加一些协变量放入数据，再重新进行分析，如果因果估计没有改变，也就是这个当前的模型没有被驳倒。</li>
+<li>随机或者打乱我们干预，重新进行因果分析，如果没有使分析结果改变，没有被驳倒。</li>
+<li>把数据分成很多子集，进行分析，在各个子集内部没有明显差异，没有被驳倒。</li>
+<li>测试协变量是否平衡。</li>
+</ol>
+<h2 id="总结">总结</h2>
+<p>建模-&gt;归纳-&gt;估计-&gt;反驳</p>
+<ul>
+<li>用多种方法验证</li>
+<li>模型不要太过复杂</li>
+</ul>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>因果分析</tag>
+        <tag>因果推理</tag>
       </tags>
   </entry>
   <entry>
@@ -844,6 +852,43 @@ P(\mathbf{X}=e_i)=f(e_i)=p_i
       </tags>
   </entry>
   <entry>
+    <title>Gradient Boosting</title>
+    <url>/2018/01/18/Gradient-Boosting/</url>
+    <content><![CDATA[<img src="/2018/01/18/Gradient-Boosting/bb1-1150x317.png" class="" title="title:difference between Bagging and Boosting">
+<p>集成学习(Ensemble Learning)通过构建并结合多个学习器来完成学习任务，有时候也被称为多分类器系统(multi-classifier system)，基于委员会的学习(committee-based learning)等。渐进梯度集成方法(Gradient Boosting)有很多优点，基于这种方法又有很多变种<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。 <a id="more"></a></p>
+<p>集成学习是通过很多个个体学习器（比如某种神经网络，某种决策树等）组合而成，假设其中一个学习器的错误率为<span class="math inline">\(\epsilon\)</span>的，并且每个个体学习器都是相互独立的。对于一个以得票超过半数为最终结果的集成规则，它的最终错误率就比较低了。</p>
+<p><span class="math display">\[
+\begin{split}
+P_{error} &amp;= \sum^{\lfloor T/2 \rfloor}_{k=0}{T \choose k} (1-\epsilon)^{k} \epsilon^{T-k} \\ &amp; \leq exp(-\frac{1}{2}T(1-2\epsilon)^{2})
+\end{split}
+\]</span></p>
+<p>这是一个指数级降低的错误率，但是其中一个前提是很难被满足的，就是对于学习器都是相互独立的这个要求。</p>
+<p>根据学习器的输入输出方式，有些集成学习中的学习器是相互依赖的，一个的输入依赖另一个输出，以Boosting为代表。有些集成学习中的学习器不存在这种强依赖，可以并行运行的，以Bagging和“随机森林”（Random Forest）为代表。</p>
+<h1 id="ensemblebagging-and-boosting">Ensemble，Bagging and Boosting</h1>
+<p>我们用机器学习算法来预测目标值时造成预测值和真实值不同的主要原因是噪声，数据变异和偏重。<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>所以集成方法(Ensemble)就是为了克服这类问题而出现的。</p>
+<ul>
+<li><strong>Bagging</strong>是简单地将多种相互独立的预测器/模型/学习器用一些模型平均的方法集成。这些方法包括加权平均，取得分最高的学习器的结果等。</li>
+</ul>
+<p>因为在进行训练的时候每次都是对数据集进行随机抽样，所以每个模型</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>周志华. 机器学习[M]. Qing hua da xue chu ban she，2016.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p><a href="https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d" class="uri">https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>Boosting</tag>
+        <tag>Ensemble</tag>
+        <tag>Gradient</tag>
+        <tag>Bagging</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>卷积神经网络梯度可视化</title>
     <url>/2020/01/27/Grad-CAM-Visualization/</url>
     <content><![CDATA[<p>通过对卷积神经网络中各个特征层的特征内容来确定针对某个视觉任务，神经网络的关注点在哪个位置。然后通过热力图将其重要性展示出模型通过哪些像素点判断模型属于哪一个类别再用于后续的分析，同时也作为可解释性方向的一个重要组成，通过 Tensorflow 和 Pytorch 的例子来探索其具体的原理和实现方式。</p>
@@ -880,43 +925,6 @@ L^{c}_{Grad-CAM} = \text{ReLU}(\sum_{k}\alpha^{c}_{k}A^{k})
       <tags>
         <tag>卷积可视化</tag>
         <tag>注意力</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Gradient Boosting</title>
-    <url>/2018/01/18/Gradient-Boosting/</url>
-    <content><![CDATA[<img src="/2018/01/18/Gradient-Boosting/bb1-1150x317.png" class="" title="title:difference between Bagging and Boosting">
-<p>集成学习(Ensemble Learning)通过构建并结合多个学习器来完成学习任务，有时候也被称为多分类器系统(multi-classifier system)，基于委员会的学习(committee-based learning)等。渐进梯度集成方法(Gradient Boosting)有很多优点，基于这种方法又有很多变种<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。 <a id="more"></a></p>
-<p>集成学习是通过很多个个体学习器（比如某种神经网络，某种决策树等）组合而成，假设其中一个学习器的错误率为<span class="math inline">\(\epsilon\)</span>的，并且每个个体学习器都是相互独立的。对于一个以得票超过半数为最终结果的集成规则，它的最终错误率就比较低了。</p>
-<p><span class="math display">\[
-\begin{split}
-P_{error} &amp;= \sum^{\lfloor T/2 \rfloor}_{k=0}{T \choose k} (1-\epsilon)^{k} \epsilon^{T-k} \\ &amp; \leq exp(-\frac{1}{2}T(1-2\epsilon)^{2})
-\end{split}
-\]</span></p>
-<p>这是一个指数级降低的错误率，但是其中一个前提是很难被满足的，就是对于学习器都是相互独立的这个要求。</p>
-<p>根据学习器的输入输出方式，有些集成学习中的学习器是相互依赖的，一个的输入依赖另一个输出，以Boosting为代表。有些集成学习中的学习器不存在这种强依赖，可以并行运行的，以Bagging和“随机森林”（Random Forest）为代表。</p>
-<h1 id="ensemblebagging-and-boosting">Ensemble，Bagging and Boosting</h1>
-<p>我们用机器学习算法来预测目标值时造成预测值和真实值不同的主要原因是噪声，数据变异和偏重。<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>所以集成方法(Ensemble)就是为了克服这类问题而出现的。</p>
-<ul>
-<li><strong>Bagging</strong>是简单地将多种相互独立的预测器/模型/学习器用一些模型平均的方法集成。这些方法包括加权平均，取得分最高的学习器的结果等。</li>
-</ul>
-<p>因为在进行训练的时候每次都是对数据集进行随机抽样，所以每个模型</p>
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p>周志华. 机器学习[M]. Qing hua da xue chu ban she，2016.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p><a href="https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d" class="uri">https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>Boosting</tag>
-        <tag>Ensemble</tag>
-        <tag>Gradient</tag>
-        <tag>Bagging</tag>
       </tags>
   </entry>
   <entry>
@@ -979,30 +987,6 @@ P_{error} &amp;= \sum^{\lfloor T/2 \rfloor}_{k=0}{T \choose k} (1-\epsilon)^{k} 
       </tags>
   </entry>
   <entry>
-    <title>Linux 不完全命令指南</title>
-    <url>/2020/05/03/Linux-Tool-Set/</url>
-    <content><![CDATA[<p>不定期更新的 Linux 的脚本管理片段，用于提高日常使用过程中效率。</p>
-<img src="/2020/05/03/Linux-Tool-Set/v2-01a6301b2101a984790cb8895ece7d96_1200x500.jpg" class="">
-<a id="more"></a>
-<h2 id="文件统计">文件统计</h2>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du -sh  <span class="comment"># 显示当前文件夹的大小</span></span><br><span class="line">du -lh --max-depth=1  <span class="comment"># 列出当前文件夹下各个目录的大小</span></span><br><span class="line">df -lh  <span class="comment"># 列出当前文件系统的空间使用情况</span></span><br></pre></td></tr></table></figure>
-<p>tree 需要额外安装，是命令行常用的查看文件夹项目结构的工具 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tree dir_name -L 3  <span class="comment"># 以树形结构列出当前目录最多三级的子项目</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="文件传输">文件传输</h2>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -avz -P source_path username@target_machine:target_path/  <span class="comment"># 传输某个文件夹到另一台机器</span></span><br></pre></td></tr></table></figure>
-<h2 id="命令行">命令行</h2>
-<p>新建一个tmux会话，可以在里面开多个窗口，把窗口分成多个面板，然后用 <code>ctrl+b+d</code> 离开这个会话，之后再通过 <code>tmux a -t name</code> 回到当前的这个会话，所有的内容都会保持原样。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux new -s name  <span class="comment"># 新建一个tmux会话</span></span><br><span class="line">tmux ls  <span class="comment"># 查看已经打开的会话列表</span></span><br><span class="line">tmux a -t name  <span class="comment"># 进入一个已有的会话</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="连接">连接</h2>
-<p>创建软连接相当于只创建了一个快捷方式指向源目标，程序访问这个软连接就会自动指向它所指向的目标。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln -s source_path target_path</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>脚本</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>离线服务器通过PC中转连接公网</title>
     <url>/2020/07/27/Local-Server-Proxy/</url>
     <content><![CDATA[<p>不愧是学校的网络，让人在科研以外还学到了各种各样的知识。<strong>前情提要：1. 学校的网络账号是一个IP一个账号 2. 即使登录了账号，连从阿里云下载内容都无法顺利实现（不知道是到公网的哪条路受到了阻碍）</strong>。所以只有通过与服务器直接相连的控制端提供公网的访问中转。</p>
@@ -1051,6 +1035,30 @@ P_{error} &amp;= \sum^{\lfloor T/2 \rfloor}_{k=0}{T \choose k} (1-\epsilon)^{k} 
       </categories>
       <tags>
         <tag>CCProxy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux 不完全命令指南</title>
+    <url>/2020/05/03/Linux-Tool-Set/</url>
+    <content><![CDATA[<p>不定期更新的 Linux 的脚本管理片段，用于提高日常使用过程中效率。</p>
+<img src="/2020/05/03/Linux-Tool-Set/v2-01a6301b2101a984790cb8895ece7d96_1200x500.jpg" class="">
+<a id="more"></a>
+<h2 id="文件统计">文件统计</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du -sh  <span class="comment"># 显示当前文件夹的大小</span></span><br><span class="line">du -lh --max-depth=1  <span class="comment"># 列出当前文件夹下各个目录的大小</span></span><br><span class="line">df -lh  <span class="comment"># 列出当前文件系统的空间使用情况</span></span><br></pre></td></tr></table></figure>
+<p>tree 需要额外安装，是命令行常用的查看文件夹项目结构的工具 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tree dir_name -L 3  <span class="comment"># 以树形结构列出当前目录最多三级的子项目</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="文件传输">文件传输</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -avz -P source_path username@target_machine:target_path/  <span class="comment"># 传输某个文件夹到另一台机器</span></span><br></pre></td></tr></table></figure>
+<h2 id="命令行">命令行</h2>
+<p>新建一个tmux会话，可以在里面开多个窗口，把窗口分成多个面板，然后用 <code>ctrl+b+d</code> 离开这个会话，之后再通过 <code>tmux a -t name</code> 回到当前的这个会话，所有的内容都会保持原样。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux new -s name  <span class="comment"># 新建一个tmux会话</span></span><br><span class="line">tmux ls  <span class="comment"># 查看已经打开的会话列表</span></span><br><span class="line">tmux a -t name  <span class="comment"># 进入一个已有的会话</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="连接">连接</h2>
+<p>创建软连接相当于只创建了一个快捷方式指向源目标，程序访问这个软连接就会自动指向它所指向的目标。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln -s source_path target_path</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>脚本</tag>
       </tags>
   </entry>
   <entry>
@@ -1315,75 +1323,6 @@ U_{ij,kl}=\left\{\begin{array}{cl}1 &amp; \text{if}~i=k, j\neq l, or~i\neq k,j=l
       </tags>
   </entry>
   <entry>
-    <title>Paper | Modeling the Role of Working Memory and Episodic Memory in Behavioral Tasks</title>
-    <url>/2019/11/26/Paper-Modeling-the-Role-of-Working-Memory-and-Episodic-Memory-in-Behavioral-Tasks/</url>
-    <content><![CDATA[<p>这篇文章主要研究<strong>工作记忆</strong>和<strong>情节记忆</strong>在行为任务中所承担的角色，在此之前，人们通过应用强化学习研究了很多<strong>目标导向行为的机制</strong>，但还没有明确的把<strong>记忆系统</strong>纳入到问题的考虑场景中。这篇文章从小鼠的实验文献中得到灵感，将<strong>工作记忆</strong>和<strong>情节记忆</strong>通过六个实验融入强化学习系统中，发现如果在没有延迟的任务中，只用纳入工作记忆就可以解决全部的任务，但是如果在有延迟的任务仿真中，需要工作记忆和情节记忆共同配合实现所有场景的目标完成（除了一个消除气味序列歧义的任务）。</p>
-<a id="more"></a>
-<h2 id="强化学习">强化学习</h2>
-<p>强化学习通过状态 <span class="math inline">\(s\)</span> 动作 <span class="math inline">\(a\)</span> 和奖励 <span class="math inline">\(r\)</span> 模拟一个智能体仅仅在奖励机制的作用下如何自动学习出一套目标导向的任务。</p>
-<ul>
-<li><span class="math inline">\(V(s)\)</span> 表示智能体维护的状态表</li>
-<li><span class="math inline">\(Q(s, a)\)</span> 表示智能体维护的动作价值表，也就是在状态 <span class="math inline">\(s\)</span> 下做出动作 <span class="math inline">\(a\)</span> 的价值</li>
-</ul>
-<p>这里的强化学习通过时序差分(Temporal Difference)完成，一个智能体在状态 <span class="math inline">\(s\)</span> 做出一个动作 <span class="math inline">\(a\)</span> 到达状态 <span class="math inline">\(s&#39;\)</span> 将会获得的奖励 <span class="math inline">\(r\)</span>:</p>
-<p><span class="math display">\[
-\delta = r+\gamma V(s&#39;) - V(s)
-\]</span></p>
-<p>其中 <span class="math inline">\(\gamma\)</span> 表示时间折扣因子，如果 <span class="math inline">\(\gamma\)</span> 越小则表示近期的回报价值更高。</p>
-<p><span class="math display">\[
-V(s) \leftarrow V(s)+\alpha \delta
-\]</span> <span class="math display">\[
-Q(s, a) \leftarrow Q(s,a)+\alpha \delta
-\]</span> 其中 <span class="math inline">\(\alpha\)</span> 表示学习率，另外为了加速智能体的学习过程，增加一种叫做资格痕迹的东西，让当前动作带来的奖励不仅影响它刚刚离开的状态 <span class="math inline">\(s\)</span> 估值，同时还会影响它最近访问过的那些状态估值:</p>
-<p><span class="math display">\[
-V(s) \leftarrow V(s) +\alpha \delta \cdot E(s, a)
-\]</span> <span class="math display">\[
-Q(s,a) \leftarrow Q(s, a) + \alpha \delta \cdot E(s,a)
-\]</span> 对于每一对 <span class="math inline">\(s\)</span> 和 <span class="math inline">\(a\)</span>，在模拟阶段 <span class="math inline">\(E(s,a)\)</span> 会经过阈值 <span class="math inline">\(\theta\)</span> 处理，对于当前状态和动作 <span class="math inline">\(E(s,a)\leftarrow 1\)</span> 对于其他的状态 <span class="math inline">\(s&#39;\)</span> 则设置 <span class="math inline">\(E(s&#39;,a)\leftarrow \lambda E(s&#39;, a)\)</span>, 其中 <span class="math inline">\(\lambda\)</span> 是一个延迟算子。</p>
-<p>这样每个智能体还需要额外维护一张表 <span class="math inline">\(E(s, a)\)</span>。</p>
-<h2 id="状态和动作">状态和动作</h2>
-<p>假设状态可以因式分解成 <span class="math inline">\(S=S_{1}\times S_{2} \times \dots \times S_{n}\)</span>，那么状态中的元素也就是 <span class="math inline">\(n\)</span> 分量组成的 <span class="math inline">\(\{(x_{1},x_{2}\dots,x_{n}\}\)</span> 在这篇文章设计的实验中主要分为位置状态 <span class="math inline">\(S_{L}\)</span> (网格中的方格数量)和工作记忆 <span class="math inline">\(S_{WM}\)</span> 以及情节记忆 <span class="math inline">\(S_{EP}\)</span>。</p>
-<p>另外从生理学角度看，因为把记忆的表现和记忆的影响也作为状态信息了，也就建模了智能体脑区的多个功能区。</p>
-<p>文中所表现的状态动作以网格的形式表现就如下图：其中黑色箭头表示正在执行的动作，灰色箭头表示其他未选择的动作，黑色方块表示不能逾越的障碍，灰色方块表示可以推动的屏障。</p>
-<img src="/2019/11/26/Paper-Modeling-the-Role-of-Working-Memory-and-Episodic-Memory-in-Behavioral-Tasks/nihms46022f2.jpg" class="">
-<h2 id="工作记忆">工作记忆</h2>
-<p>工作记忆有两种经典的表述方式，而两种方式的机制都是通过增加工作记忆动作的动作值学习将刺激缓冲进工作记忆的合适时间。（这听起来很绕，其实可以把这些看成一种门控模型）。这种说法和另一种模型也比较类似，考虑一组变量 <span class="math inline">\(&lt;I,\pi, \beta&gt;\)</span> 其中 <span class="math inline">\(I\)</span> 是当前状态下可用的动作集合，<span class="math inline">\(\pi\)</span> 是一种策略，<span class="math inline">\(\beta(s)\)</span> 给出在任意状态 <span class="math inline">\(s\)</span> 将会终止的概率。</p>
-<h2 id="情节记忆">情节记忆</h2>
-<p>情节记忆的两个主要特征：</p>
-<ol type="1">
-<li>是上下文可寻址的</li>
-<li>是按照时间索引的</li>
-</ol>
-<p>第一条表示，这些记忆是可以连成线索的，也就像是能通过一个关键词牵出一整个语义场景。第二条表示，一旦回放到当时那个场景，所有在那个时刻发生的事情都可以被回忆起。</p>
-<p>如果用 <span class="math inline">\(\mathbf{T}\)</span> 作为一个有 <span class="math inline">\(n\)</span> 个时间节点的二值行向量，每次只有一个元素非零，<span class="math inline">\(\mathbf{S}\)</span> 表示所有状态存在与否的状态，是由多种状态空间串联而成的。通过一个时间提取向量，可获取记忆指标为，这种记忆形式的数学表达形式化如下，<span class="math inline">\(M\)</span> 在每一步动作之后都会按照下面的方式更新：</p>
-<p><span class="math display">\[
-dM=\mathbf{T}^{T}\mathbf{S}-\mathbf{T}^{T}\mathbf{T}M
-\]</span></p>
-<p>或者：</p>
-<p><span class="math display">\[
-dM = \mathbf{T}^{T}(\mathbf{S}-\mathbf{T}M)
-\]</span></p>
-<p>其中 <span class="math inline">\(M\)</span> 可以用突触连接权重矩阵来表示，这里的 <span class="math inline">\(dM\)</span> 表示记忆的更新量，这样在任意一个时刻的状态都可以直接通过时间向量和记忆状态相乘获得状态，并且公式中的第一项 <span class="math inline">\(\mathbf{T}^{T}\mathbf{S}\)</span> 表示感觉向量到时间索引向量，第二项 <span class="math inline">\(\mathbf{T}^{T}\mathbf{T}M\)</span> 生成和 <span class="math inline">\(M\)</span> 相同大小的矩阵：</p>
-<p><span class="math display">\[
-\mathbf{S}=\mathbf{T}M
-\]</span></p>
-<p>另外又定义了为每个状态元素定义了一行的矩阵 <span class="math inline">\(N\)</span>，其中包含了给定状态最后一次经历的时间索引向量。</p>
-<p><span class="math display">\[
-dN=\mathbf{S}^{T}\mathbf{T} - \sum_{i}\mathbf{S}^{T}_{i}S_{i}N
-\]</span></p>
-<h2 id="总结">总结</h2>
-<p>文章通过六个实验给出了一个结论，即考虑工作记忆和情节记忆在强化学习任务中是有效的。</p>
-]]></content>
-      <categories>
-        <category>文献</category>
-      </categories>
-      <tags>
-        <tag>工作记忆</tag>
-        <tag>行为</tag>
-        <tag>情节记忆</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Particle Filters</title>
     <url>/2018/08/29/Particle-Filters/</url>
     <content><![CDATA[<p>Particle Filters，从1993年提出来就作为一种应用很广的最优化估计算法，用于解决非线性非高斯分布的状态空间问题求解，通过在线的数值估计的方式解决问题。现在也应用在像计算机视觉，计量经济学，机器人学和导航等各种各样的场景中。<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>并且随着改进方案的不断提出，Particle Filters也可以应用在更加高维，更加复杂的场景中。<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
@@ -1470,6 +1409,75 @@ dN=\mathbf{S}^{T}\mathbf{T} - \sum_{i}\mathbf{S}^{T}_{i}S_{i}N
       </categories>
       <tags>
         <tag>滤波</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Paper | Modeling the Role of Working Memory and Episodic Memory in Behavioral Tasks</title>
+    <url>/2019/11/26/Paper-Modeling-the-Role-of-Working-Memory-and-Episodic-Memory-in-Behavioral-Tasks/</url>
+    <content><![CDATA[<p>这篇文章主要研究<strong>工作记忆</strong>和<strong>情节记忆</strong>在行为任务中所承担的角色，在此之前，人们通过应用强化学习研究了很多<strong>目标导向行为的机制</strong>，但还没有明确的把<strong>记忆系统</strong>纳入到问题的考虑场景中。这篇文章从小鼠的实验文献中得到灵感，将<strong>工作记忆</strong>和<strong>情节记忆</strong>通过六个实验融入强化学习系统中，发现如果在没有延迟的任务中，只用纳入工作记忆就可以解决全部的任务，但是如果在有延迟的任务仿真中，需要工作记忆和情节记忆共同配合实现所有场景的目标完成（除了一个消除气味序列歧义的任务）。</p>
+<a id="more"></a>
+<h2 id="强化学习">强化学习</h2>
+<p>强化学习通过状态 <span class="math inline">\(s\)</span> 动作 <span class="math inline">\(a\)</span> 和奖励 <span class="math inline">\(r\)</span> 模拟一个智能体仅仅在奖励机制的作用下如何自动学习出一套目标导向的任务。</p>
+<ul>
+<li><span class="math inline">\(V(s)\)</span> 表示智能体维护的状态表</li>
+<li><span class="math inline">\(Q(s, a)\)</span> 表示智能体维护的动作价值表，也就是在状态 <span class="math inline">\(s\)</span> 下做出动作 <span class="math inline">\(a\)</span> 的价值</li>
+</ul>
+<p>这里的强化学习通过时序差分(Temporal Difference)完成，一个智能体在状态 <span class="math inline">\(s\)</span> 做出一个动作 <span class="math inline">\(a\)</span> 到达状态 <span class="math inline">\(s&#39;\)</span> 将会获得的奖励 <span class="math inline">\(r\)</span>:</p>
+<p><span class="math display">\[
+\delta = r+\gamma V(s&#39;) - V(s)
+\]</span></p>
+<p>其中 <span class="math inline">\(\gamma\)</span> 表示时间折扣因子，如果 <span class="math inline">\(\gamma\)</span> 越小则表示近期的回报价值更高。</p>
+<p><span class="math display">\[
+V(s) \leftarrow V(s)+\alpha \delta
+\]</span> <span class="math display">\[
+Q(s, a) \leftarrow Q(s,a)+\alpha \delta
+\]</span> 其中 <span class="math inline">\(\alpha\)</span> 表示学习率，另外为了加速智能体的学习过程，增加一种叫做资格痕迹的东西，让当前动作带来的奖励不仅影响它刚刚离开的状态 <span class="math inline">\(s\)</span> 估值，同时还会影响它最近访问过的那些状态估值:</p>
+<p><span class="math display">\[
+V(s) \leftarrow V(s) +\alpha \delta \cdot E(s, a)
+\]</span> <span class="math display">\[
+Q(s,a) \leftarrow Q(s, a) + \alpha \delta \cdot E(s,a)
+\]</span> 对于每一对 <span class="math inline">\(s\)</span> 和 <span class="math inline">\(a\)</span>，在模拟阶段 <span class="math inline">\(E(s,a)\)</span> 会经过阈值 <span class="math inline">\(\theta\)</span> 处理，对于当前状态和动作 <span class="math inline">\(E(s,a)\leftarrow 1\)</span> 对于其他的状态 <span class="math inline">\(s&#39;\)</span> 则设置 <span class="math inline">\(E(s&#39;,a)\leftarrow \lambda E(s&#39;, a)\)</span>, 其中 <span class="math inline">\(\lambda\)</span> 是一个延迟算子。</p>
+<p>这样每个智能体还需要额外维护一张表 <span class="math inline">\(E(s, a)\)</span>。</p>
+<h2 id="状态和动作">状态和动作</h2>
+<p>假设状态可以因式分解成 <span class="math inline">\(S=S_{1}\times S_{2} \times \dots \times S_{n}\)</span>，那么状态中的元素也就是 <span class="math inline">\(n\)</span> 分量组成的 <span class="math inline">\(\{(x_{1},x_{2}\dots,x_{n}\}\)</span> 在这篇文章设计的实验中主要分为位置状态 <span class="math inline">\(S_{L}\)</span> (网格中的方格数量)和工作记忆 <span class="math inline">\(S_{WM}\)</span> 以及情节记忆 <span class="math inline">\(S_{EP}\)</span>。</p>
+<p>另外从生理学角度看，因为把记忆的表现和记忆的影响也作为状态信息了，也就建模了智能体脑区的多个功能区。</p>
+<p>文中所表现的状态动作以网格的形式表现就如下图：其中黑色箭头表示正在执行的动作，灰色箭头表示其他未选择的动作，黑色方块表示不能逾越的障碍，灰色方块表示可以推动的屏障。</p>
+<img src="/2019/11/26/Paper-Modeling-the-Role-of-Working-Memory-and-Episodic-Memory-in-Behavioral-Tasks/nihms46022f2.jpg" class="">
+<h2 id="工作记忆">工作记忆</h2>
+<p>工作记忆有两种经典的表述方式，而两种方式的机制都是通过增加工作记忆动作的动作值学习将刺激缓冲进工作记忆的合适时间。（这听起来很绕，其实可以把这些看成一种门控模型）。这种说法和另一种模型也比较类似，考虑一组变量 <span class="math inline">\(&lt;I,\pi, \beta&gt;\)</span> 其中 <span class="math inline">\(I\)</span> 是当前状态下可用的动作集合，<span class="math inline">\(\pi\)</span> 是一种策略，<span class="math inline">\(\beta(s)\)</span> 给出在任意状态 <span class="math inline">\(s\)</span> 将会终止的概率。</p>
+<h2 id="情节记忆">情节记忆</h2>
+<p>情节记忆的两个主要特征：</p>
+<ol type="1">
+<li>是上下文可寻址的</li>
+<li>是按照时间索引的</li>
+</ol>
+<p>第一条表示，这些记忆是可以连成线索的，也就像是能通过一个关键词牵出一整个语义场景。第二条表示，一旦回放到当时那个场景，所有在那个时刻发生的事情都可以被回忆起。</p>
+<p>如果用 <span class="math inline">\(\mathbf{T}\)</span> 作为一个有 <span class="math inline">\(n\)</span> 个时间节点的二值行向量，每次只有一个元素非零，<span class="math inline">\(\mathbf{S}\)</span> 表示所有状态存在与否的状态，是由多种状态空间串联而成的。通过一个时间提取向量，可获取记忆指标为，这种记忆形式的数学表达形式化如下，<span class="math inline">\(M\)</span> 在每一步动作之后都会按照下面的方式更新：</p>
+<p><span class="math display">\[
+dM=\mathbf{T}^{T}\mathbf{S}-\mathbf{T}^{T}\mathbf{T}M
+\]</span></p>
+<p>或者：</p>
+<p><span class="math display">\[
+dM = \mathbf{T}^{T}(\mathbf{S}-\mathbf{T}M)
+\]</span></p>
+<p>其中 <span class="math inline">\(M\)</span> 可以用突触连接权重矩阵来表示，这里的 <span class="math inline">\(dM\)</span> 表示记忆的更新量，这样在任意一个时刻的状态都可以直接通过时间向量和记忆状态相乘获得状态，并且公式中的第一项 <span class="math inline">\(\mathbf{T}^{T}\mathbf{S}\)</span> 表示感觉向量到时间索引向量，第二项 <span class="math inline">\(\mathbf{T}^{T}\mathbf{T}M\)</span> 生成和 <span class="math inline">\(M\)</span> 相同大小的矩阵：</p>
+<p><span class="math display">\[
+\mathbf{S}=\mathbf{T}M
+\]</span></p>
+<p>另外又定义了为每个状态元素定义了一行的矩阵 <span class="math inline">\(N\)</span>，其中包含了给定状态最后一次经历的时间索引向量。</p>
+<p><span class="math display">\[
+dN=\mathbf{S}^{T}\mathbf{T} - \sum_{i}\mathbf{S}^{T}_{i}S_{i}N
+\]</span></p>
+<h2 id="总结">总结</h2>
+<p>文章通过六个实验给出了一个结论，即考虑工作记忆和情节记忆在强化学习任务中是有效的。</p>
+]]></content>
+      <categories>
+        <category>文献</category>
+      </categories>
+      <tags>
+        <tag>工作记忆</tag>
+        <tag>行为</tag>
+        <tag>情节记忆</tag>
       </tags>
   </entry>
   <entry>
@@ -1571,52 +1579,6 @@ dN=\mathbf{S}^{T}\mathbf{T} - \sum_{i}\mathbf{S}^{T}_{i}S_{i}N
       </categories>
       <tags>
         <tag>牛虻</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>杀死一只知更鸟-正义和教养</title>
-    <url>/2018/07/25/To-Kill-a-Mocking-Bird/</url>
-    <content><![CDATA[<p>这本书的故事背景在20世纪30年代的美国南部，虽然南北战争之后林肯已经签署了《解放黑奴宣言》但是对于稍微落后偏远一点的南部小镇，人们仍然以一种非常粗野的方式对待他们所不能理解正义和权利。本书中的三个孩子因为镇上的几桩冤案经历了猝不及防成长------痛苦与迷惑，悲伤与愤怒，也有温情与感动。</p>
-<a id="more"></a>
-<p>有很多真实的感觉，从书本开始时候你会觉得如果那是你小时候，你也会这么去做的。对于阿德利家的好奇，抑制不住的好奇心想要去探索很多周边的场所和传言中的事情，一切的表现都和自己小时候那么的相似。</p>
-<p>看完这本书的人们都为书中传达出的正义的精神而印象深刻，我也不例外，整本书的故事是通过作者作为一个小女孩的视角讲述的，我们更容易直接感受到作为小女孩父亲所带来的教养的影响力。很多时候，你在周围的小世界里格格不入，但是这未必就代表你是错的，或者你就必须要和周围的人变得一样，但是作为正在成长期的孩子，他们很难判断哪些是对的，哪些是不应该去学习不应该去理会的。而正是在面对孩子们的不理解作为父亲也作为律师的阿蒂克斯很有条理地给出他的理由，正义和教养通过这种方式传达给成长中迷茫的孩子。</p>
-<blockquote>
-<ol type="1">
-<li>最主要的是，如果我不去做，我在镇上就抬不起头来，我就不能在立法委员会里代表这个县，我就不能再教导你和杰姆如何做人。</li>
-<li>道理很简单，不能因为我们在此之前已经失败了一百年，就认为我们没有理由去争取胜利。</li>
-</ol>
-</blockquote>
-<p>当故事中的主角说到“为了他我宁愿被人叫做胆小鬼。我为此感到自己很高尚，并把这种高尚保持了三个星期。”这是一个父亲言传身教给他的孩子们带来的影响力。</p>
-<p>还有一些语言，我也希望将其摘抄在下面：</p>
-<p>勇敢是：当你还未开始就已知道自己会输，可你依然要去做，而且无论如何都要把它坚持到底。你很少能赢，但有时也会。</p>
-<p>第十二章</p>
-<p>没有必要把你懂的所有东西都说出来。那很不淑女——再说，人们不喜欢他们身边有人比他们懂得更多。那会让他们很恼火。</p>
-<p>第十七章</p>
-<p>可是在我看来，他就如同不带手电摸黑叉青蛙。在交叉讯问证人时，千万，千万，千万，不要去问一个你事先不知道答案的问题，这是我从吃奶时就领悟到的一个信条。如果你问了，常常会得到一个你不想要的答案，这个答案很可能会毁掉你的诉讼。</p>
-<p>第二十章</p>
-<p>这样的确不诚实，但对人们会有帮助。芬奇小姐，我其实不怎么喝酒，可是你知道吗，他们永远永远也不可能理解：我之所以这样生活，是因为这就是我想要的生活方式。</p>
-<p>他向迪儿甩了甩头：“他的本性还没有被破坏。等他再长大些，就不会觉得恶心，不会再为此哭泣了。也许事情会让他震惊——觉得不对，但他不会再哭了，过几年他就不会再为此哭泣了。”</p>
-<p>“先生们，在我结束之前，我还有一件事要说。前总统托马斯·杰斐逊￼曾经说过，‘一切人生来平等’，北方佬和华盛顿行政首脑的贤内助￼最喜欢拿这句话来攻击我们。在今年，也就是1935年，产生了一种倾向，有些人断章取义地用这句话去套各种不同的情况。我能想到的最可笑的例子，是那些管公立教育的人，他们让愚笨懒惰的学生和勤奋聪明的学生一道升学——因为‘一切人生来平等’，教育者们会这样严肃地告诉你，落后的孩子会承受自卑的痛苦和折磨。我们知道，人并不像某些人强迫我们相信的那样生来平等——有些人比别人聪明，有些人生来就比别人占优势，有些男人比别的男人挣钱多，有些女士的蛋糕比别的女士做得好，有些人天生就比大多数人有才华。</p>
-<p>第二十三章</p>
-<p>没有完美的制度，我们在界限上徘徊</p>
-<p> 在我们生活的这个世界里，有些东西会让人丧失理智——他们不论怎样努力都做不到公平。</p>
-<p>第二十五章</p>
-<p>一切隐匿在看似正义的程序之下，人都是如此，所以世界上最无法直视的就是人</p>
-<p> 我明白了安德伍德先生的意思：阿蒂克斯使用了所有能开释一个自由人的法律手段去拯救汤姆，可是在人们内心深处的那个秘密法庭里，阿蒂克斯根本没有任何诉讼可言。从马耶拉张嘴喊叫的那一刻起，汤姆就死定了。</p>
-<p>我明白了安德伍德先生的意思：阿蒂克斯使用了所有能开释一个自由人的法律手段去拯救汤姆，可是在人们内心深处的那个秘密法庭里，阿蒂克斯根本没有任何诉讼可言。从马耶拉张嘴喊叫的那一刻起，汤姆就死定了。</p>
-<p>第二十八章</p>
-<p>我后来就此事问了亚历山德拉姑姑，她说持这种观点的一般都是社会上想往上爬的人。</p>
-<p>第二十九章</p>
-<p>你千万不要自寻烦恼——因为，如果我们一直跟着感觉走，那我们就像追着自己尾巴的猫一样。</p>
-<p>第三十一章</p>
-<p>阿蒂克斯是对的。他有次说，除非你穿上一个人的鞋子，像他一样走来走去，否则你永远无法真正了解一个人。</p>
-]]></content>
-      <categories>
-        <category>读书</category>
-      </categories>
-      <tags>
-        <tag>杀死一只知更鸟</tag>
-        <tag>成长</tag>
       </tags>
   </entry>
   <entry>
@@ -1726,6 +1688,52 @@ Y^x &amp; Y^y\\
       </tags>
   </entry>
   <entry>
+    <title>杀死一只知更鸟-正义和教养</title>
+    <url>/2018/07/25/To-Kill-a-Mocking-Bird/</url>
+    <content><![CDATA[<p>这本书的故事背景在20世纪30年代的美国南部，虽然南北战争之后林肯已经签署了《解放黑奴宣言》但是对于稍微落后偏远一点的南部小镇，人们仍然以一种非常粗野的方式对待他们所不能理解正义和权利。本书中的三个孩子因为镇上的几桩冤案经历了猝不及防成长------痛苦与迷惑，悲伤与愤怒，也有温情与感动。</p>
+<a id="more"></a>
+<p>有很多真实的感觉，从书本开始时候你会觉得如果那是你小时候，你也会这么去做的。对于阿德利家的好奇，抑制不住的好奇心想要去探索很多周边的场所和传言中的事情，一切的表现都和自己小时候那么的相似。</p>
+<p>看完这本书的人们都为书中传达出的正义的精神而印象深刻，我也不例外，整本书的故事是通过作者作为一个小女孩的视角讲述的，我们更容易直接感受到作为小女孩父亲所带来的教养的影响力。很多时候，你在周围的小世界里格格不入，但是这未必就代表你是错的，或者你就必须要和周围的人变得一样，但是作为正在成长期的孩子，他们很难判断哪些是对的，哪些是不应该去学习不应该去理会的。而正是在面对孩子们的不理解作为父亲也作为律师的阿蒂克斯很有条理地给出他的理由，正义和教养通过这种方式传达给成长中迷茫的孩子。</p>
+<blockquote>
+<ol type="1">
+<li>最主要的是，如果我不去做，我在镇上就抬不起头来，我就不能在立法委员会里代表这个县，我就不能再教导你和杰姆如何做人。</li>
+<li>道理很简单，不能因为我们在此之前已经失败了一百年，就认为我们没有理由去争取胜利。</li>
+</ol>
+</blockquote>
+<p>当故事中的主角说到“为了他我宁愿被人叫做胆小鬼。我为此感到自己很高尚，并把这种高尚保持了三个星期。”这是一个父亲言传身教给他的孩子们带来的影响力。</p>
+<p>还有一些语言，我也希望将其摘抄在下面：</p>
+<p>勇敢是：当你还未开始就已知道自己会输，可你依然要去做，而且无论如何都要把它坚持到底。你很少能赢，但有时也会。</p>
+<p>第十二章</p>
+<p>没有必要把你懂的所有东西都说出来。那很不淑女——再说，人们不喜欢他们身边有人比他们懂得更多。那会让他们很恼火。</p>
+<p>第十七章</p>
+<p>可是在我看来，他就如同不带手电摸黑叉青蛙。在交叉讯问证人时，千万，千万，千万，不要去问一个你事先不知道答案的问题，这是我从吃奶时就领悟到的一个信条。如果你问了，常常会得到一个你不想要的答案，这个答案很可能会毁掉你的诉讼。</p>
+<p>第二十章</p>
+<p>这样的确不诚实，但对人们会有帮助。芬奇小姐，我其实不怎么喝酒，可是你知道吗，他们永远永远也不可能理解：我之所以这样生活，是因为这就是我想要的生活方式。</p>
+<p>他向迪儿甩了甩头：“他的本性还没有被破坏。等他再长大些，就不会觉得恶心，不会再为此哭泣了。也许事情会让他震惊——觉得不对，但他不会再哭了，过几年他就不会再为此哭泣了。”</p>
+<p>“先生们，在我结束之前，我还有一件事要说。前总统托马斯·杰斐逊￼曾经说过，‘一切人生来平等’，北方佬和华盛顿行政首脑的贤内助￼最喜欢拿这句话来攻击我们。在今年，也就是1935年，产生了一种倾向，有些人断章取义地用这句话去套各种不同的情况。我能想到的最可笑的例子，是那些管公立教育的人，他们让愚笨懒惰的学生和勤奋聪明的学生一道升学——因为‘一切人生来平等’，教育者们会这样严肃地告诉你，落后的孩子会承受自卑的痛苦和折磨。我们知道，人并不像某些人强迫我们相信的那样生来平等——有些人比别人聪明，有些人生来就比别人占优势，有些男人比别的男人挣钱多，有些女士的蛋糕比别的女士做得好，有些人天生就比大多数人有才华。</p>
+<p>第二十三章</p>
+<p>没有完美的制度，我们在界限上徘徊</p>
+<p> 在我们生活的这个世界里，有些东西会让人丧失理智——他们不论怎样努力都做不到公平。</p>
+<p>第二十五章</p>
+<p>一切隐匿在看似正义的程序之下，人都是如此，所以世界上最无法直视的就是人</p>
+<p> 我明白了安德伍德先生的意思：阿蒂克斯使用了所有能开释一个自由人的法律手段去拯救汤姆，可是在人们内心深处的那个秘密法庭里，阿蒂克斯根本没有任何诉讼可言。从马耶拉张嘴喊叫的那一刻起，汤姆就死定了。</p>
+<p>我明白了安德伍德先生的意思：阿蒂克斯使用了所有能开释一个自由人的法律手段去拯救汤姆，可是在人们内心深处的那个秘密法庭里，阿蒂克斯根本没有任何诉讼可言。从马耶拉张嘴喊叫的那一刻起，汤姆就死定了。</p>
+<p>第二十八章</p>
+<p>我后来就此事问了亚历山德拉姑姑，她说持这种观点的一般都是社会上想往上爬的人。</p>
+<p>第二十九章</p>
+<p>你千万不要自寻烦恼——因为，如果我们一直跟着感觉走，那我们就像追着自己尾巴的猫一样。</p>
+<p>第三十一章</p>
+<p>阿蒂克斯是对的。他有次说，除非你穿上一个人的鞋子，像他一样走来走去，否则你永远无法真正了解一个人。</p>
+]]></content>
+      <categories>
+        <category>读书</category>
+      </categories>
+      <tags>
+        <tag>杀死一只知更鸟</tag>
+        <tag>成长</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>训练可视化</title>
     <url>/2019/09/25/Training-Visualization/</url>
     <content><![CDATA[<p>要认真看文档，网上虽然存在很多看起来好用的小抄，但是很多还是不如直接去看文档更方便满足你的需求。</p>
@@ -1770,52 +1778,6 @@ Y^x &amp; Y^y\\
         <tag>可视化</tag>
         <tag>Pytorch</tag>
         <tag>Tensorflow</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>转置卷积</title>
-    <url>/2019/08/27/Transposed-Convolution/</url>
-    <content><![CDATA[<p>反卷积（Deconvolution）很容易和信号处理中的反卷积混淆起来，其实在常见的卷积神经网络文献中应该指的是转置卷积（Transposed Convolution），下文见更准确地使用转置卷积来指代这一过程。</p>
-<img src="/2019/08/27/Transposed-Convolution/no_padding_no_strides_transposed.gif" class="">
-<a id="more"></a>
-<p>如封面示意图<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>，这里的卷积都是 2 维规则方形的：</p>
-<ul>
-<li>stride：卷积核滑动步长</li>
-<li>padding：卷积前对原始图像进行边缘补充所用宽度的像素个数，补全方式由用户定义，一般默认补零</li>
-<li>kernel size：方形卷积核的边长像素个数</li>
-</ul>
-<h2 id="卷积操作">卷积操作</h2>
-<img src="/2019/08/27/Transposed-Convolution/no_padding_no_strides.gif" class="">
-<p>如图<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>这样的卷积操作都可以写成矩阵相乘的形式：</p>
-<img src="/2019/08/27/Transposed-Convolution/1_NoXQbZqPnxSnjdAwo93XcQ.png" class="">
-<p>首先看到这样的卷积操作可以通过把计算顺序写进矩阵中，然后将目标图像展平成向量，实际上在很多卷积数值实现中，都是使用这种步骤可以加速程序的执行。</p>
-<img src="/2019/08/27/Transposed-Convolution/1_ql2ZxrS_h8D7KHNCrGndug.png" class="">
-<p>通过这种重排卷积核以对应和展平成向量的图像做卷积可以得到同样展平的卷积后图像，然后对这个图像进行重排可以简单地恢复其空间结构。</p>
-<h2 id="转置卷积">转置卷积</h2>
-<p>这样转置卷积的问题就好理解了，如果要做的操作为 <span class="math display">\[I_{4\times 4}\otimes K_{3\times 3} = C_{2\times 2}\]</span> 经过对卷积重排和图像展平之后就变成 <span class="math display">\[K_{4\times 16} \cdot I_{16} = C_{4}\]</span> 那么要从卷积后的图像 <span class="math inline">\(C_{2\times 2}\)</span> 得到原图像 <span class="math inline">\(I_{4\times 4}\)</span> 就做个矩阵乘逆吧：<span class="math display">\[I_{16} = (K_{4\times 16})^{-1} \cdot C_{4}\]</span></p>
-<img src="/2019/08/27/Transposed-Convolution/1_JDAuBt3aS9mz3aQQ7JKYKA.png" class="">
-<p>将上面的过程可视化成图像计算过程。</p>
-<h2 id="总结">总结</h2>
-<ul>
-<li>卷积操作可以通过矩阵重排用更高效的方式实现</li>
-<li>在矩阵实现的基础上很容易理解反卷积的规则</li>
-<li>实际中不一定会严格按照这种反卷积的操作，更多的是为了保持这种卷积形状，然后通过神经网络学习得到</li>
-<li>这里只说明了转置卷积的做法，在实际构建模型的时候可以有更多的操作</li>
-</ul>
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p>https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>反卷积</tag>
-        <tag>转置卷积</tag>
       </tags>
   </entry>
   <entry>
@@ -1975,6 +1937,52 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       </tags>
   </entry>
   <entry>
+    <title>转置卷积</title>
+    <url>/2019/08/27/Transposed-Convolution/</url>
+    <content><![CDATA[<p>反卷积（Deconvolution）很容易和信号处理中的反卷积混淆起来，其实在常见的卷积神经网络文献中应该指的是转置卷积（Transposed Convolution），下文见更准确地使用转置卷积来指代这一过程。</p>
+<img src="/2019/08/27/Transposed-Convolution/no_padding_no_strides_transposed.gif" class="">
+<a id="more"></a>
+<p>如封面示意图<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>，这里的卷积都是 2 维规则方形的：</p>
+<ul>
+<li>stride：卷积核滑动步长</li>
+<li>padding：卷积前对原始图像进行边缘补充所用宽度的像素个数，补全方式由用户定义，一般默认补零</li>
+<li>kernel size：方形卷积核的边长像素个数</li>
+</ul>
+<h2 id="卷积操作">卷积操作</h2>
+<img src="/2019/08/27/Transposed-Convolution/no_padding_no_strides.gif" class="">
+<p>如图<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>这样的卷积操作都可以写成矩阵相乘的形式：</p>
+<img src="/2019/08/27/Transposed-Convolution/1_NoXQbZqPnxSnjdAwo93XcQ.png" class="">
+<p>首先看到这样的卷积操作可以通过把计算顺序写进矩阵中，然后将目标图像展平成向量，实际上在很多卷积数值实现中，都是使用这种步骤可以加速程序的执行。</p>
+<img src="/2019/08/27/Transposed-Convolution/1_ql2ZxrS_h8D7KHNCrGndug.png" class="">
+<p>通过这种重排卷积核以对应和展平成向量的图像做卷积可以得到同样展平的卷积后图像，然后对这个图像进行重排可以简单地恢复其空间结构。</p>
+<h2 id="转置卷积">转置卷积</h2>
+<p>这样转置卷积的问题就好理解了，如果要做的操作为 <span class="math display">\[I_{4\times 4}\otimes K_{3\times 3} = C_{2\times 2}\]</span> 经过对卷积重排和图像展平之后就变成 <span class="math display">\[K_{4\times 16} \cdot I_{16} = C_{4}\]</span> 那么要从卷积后的图像 <span class="math inline">\(C_{2\times 2}\)</span> 得到原图像 <span class="math inline">\(I_{4\times 4}\)</span> 就做个矩阵乘逆吧：<span class="math display">\[I_{16} = (K_{4\times 16})^{-1} \cdot C_{4}\]</span></p>
+<img src="/2019/08/27/Transposed-Convolution/1_JDAuBt3aS9mz3aQQ7JKYKA.png" class="">
+<p>将上面的过程可视化成图像计算过程。</p>
+<h2 id="总结">总结</h2>
+<ul>
+<li>卷积操作可以通过矩阵重排用更高效的方式实现</li>
+<li>在矩阵实现的基础上很容易理解反卷积的规则</li>
+<li>实际中不一定会严格按照这种反卷积的操作，更多的是为了保持这种卷积形状，然后通过神经网络学习得到</li>
+<li>这里只说明了转置卷积的做法，在实际构建模型的时候可以有更多的操作</li>
+</ul>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>反卷积</tag>
+        <tag>转置卷积</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>什么科研</title>
     <url>/2018/01/06/WhyExplore/</url>
     <content><![CDATA[<h3 id="好的研究">好的研究</h3>
@@ -2052,6 +2060,20 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       </tags>
   </entry>
   <entry>
+    <title>Word Vector</title>
+    <url>/2018/02/12/Word-Vector/</url>
+    <content><![CDATA[<h2 id="skip-gram-model">Skip gram model</h2>
+<p>The main idea behind the skip-gram model is this: it takes every words in a large corpora and also takes one-by-one the words that surround it within a defined 'windows' to then feed a neural network that after training will predict the probability for each word to actually appear in the window around the focus word.</p>
+<img src="/2018/02/12/Word-Vector/1_yiH5sZI-IBxDSQMKhvbcHw.png" class="">
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>主旨写作技巧</title>
     <url>/2017/12/14/WillBeBetter/</url>
     <content><![CDATA[<p>为了使论文具备更高的可读性，本文分条收录了论文撰写中需要注意和保持要点。论文作为传播学术成果的一种载体，还是应当以可读性为一个很重要的评判要点，我们要推翻学术的墙，让知识的传播更为容易。</p>
@@ -2111,20 +2133,6 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       </tags>
   </entry>
   <entry>
-    <title>Word Vector</title>
-    <url>/2018/02/12/Word-Vector/</url>
-    <content><![CDATA[<h2 id="skip-gram-model">Skip gram model</h2>
-<p>The main idea behind the skip-gram model is this: it takes every words in a large corpora and also takes one-by-one the words that surround it within a defined 'windows' to then feed a neural network that after training will predict the probability for each word to actually appear in the window around the focus word.</p>
-<img src="/2018/02/12/Word-Vector/1_yiH5sZI-IBxDSQMKhvbcHw.png" class="">
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>conda包组织工具</title>
     <url>/2018/01/08/condaGuide/</url>
     <content><![CDATA[<p>使用Anaconda的过程中一种常见的使用手段就是使用conda来管理各类的Python第三方库。但是这个包管理工具不仅在Anaconda生态系统中起到非常重要的作用，也可以作为我们自己的软件开发管理工具。本文将对conda的软件开发管理工具做一定的介绍。 <a id="more"></a></p>
@@ -2161,81 +2169,6 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       <tags>
         <tag>开发</tag>
         <tag>conda</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Google Test 基础</title>
-    <url>/2018/03/10/googletest/</url>
-    <content><![CDATA[<p>Google Test是一个C++的测试框架, 在Linux, Windows和Mac上都可以使用这个工具来对C++代码进行测试. Google Test的一些特性:</p>
-<ol type="1">
-<li><strong>独立</strong>, 测试样例的测试结果不会受其他测试的影响, 每个测试都是被隔离开来的.</li>
-<li><strong>结构</strong>, 测试能够很好地反应测试代码的组织结构.</li>
-<li><strong>重用</strong>, 测试可以被移植和重用, 能够支持许多不同的系统和编译器.</li>
-<li><strong>定位</strong>, 测试失败了之后可以马上定位到这个错误发生的位置.</li>
-<li><strong>简单</strong>, 不会增加使用者的负担.</li>
-</ol>
-<a id="more"></a>
-<h2 id="安装googletest">安装GoogleTest</h2>
-<p>首先从github上获取代码然后编译安装, 通过CMake的方式进行,没有碰到什么坑.</p>
-<h2 id="基本概念">基本概念</h2>
-<p>在使用Google Test我们从断言开始熟悉整个过程, 我们通过断言来判断程序的行为是否正确. 断言的结果分别为 success, nonfatal failure, 或者 fatal failure. 如果出现fatal failure则会终端当前的函数.</p>
-<h3 id="简单测试">简单测试</h3>
-<p>通过下面的方式创建测试:</p>
-<ol type="1">
-<li>用<code>TEST()</code>宏来定义测试函数.</li>
-<li>在这个函数中可以用Google Test测试任何C++语句.</li>
-<li>测试结果由断言给定, 任意断言测试错误, 这整个测试结果就是失败.</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">TEST(test_case_name, test_name) &#123;</span><br><span class="line">    ...test body ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>例如可以参考下面比较简单的测试样例：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">TEST(MyTest, Add)</span><br><span class="line">&#123;</span><br><span class="line">    EXPECT_EQ(<span class="number">1</span> + <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    ASSERT_EQ(<span class="number">1</span> + <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="基本断言">基本断言</h3>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;"><strong>Fatal assertion</strong></th>
-<th style="text-align: center;"><strong>Nonfatal assertion</strong></th>
-<th style="text-align: center;"><strong>Verifies</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><code>ASSERT_TRUE(</code>condition<code>)</code>;</td>
-<td style="text-align: center;"><code>EXPECT_TRUE(</code>condition<code>)</code>;</td>
-<td style="text-align: center;">condition is true</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;"><code>ASSERT_FALSE(</code>condition<code>)</code>;</td>
-<td style="text-align: center;"><code>EXPECT_FALSE(</code>condition<code>)</code>;</td>
-<td style="text-align: center;">condition is false</td>
-</tr>
-</tbody>
-</table>
-<p>如果是<code>ASSERT_*</code>条件不成立, 则会直接报致命错误然后程序返回, 如果是<code>EXPECT_*</code>条件不成立则会继续进行.</p>
-<h2 id="在测试函数之间共享数据">在测试函数之间共享数据</h2>
-<p>同一批测试数据有时候会被多次使用，但是如果像下面那样调用就有点不太优雅。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">TEST(MyTest, Sum)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">    vec.push_back(<span class="number">1</span>);</span><br><span class="line">    vec.push_back(<span class="number">2</span>);</span><br><span class="line">    EXPECT_EQ(<span class="number">3</span>, <span class="built_in">std</span>::accumulate(vec.begin(), vec.end(), <span class="number">0</span>));</span><br><span class="line">&#125;</span><br><span class="line">TEST(MyTest, Size)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">    vec.push_back(<span class="number">1</span>);</span><br><span class="line">    vec.push_back(<span class="number">2</span>);</span><br><span class="line">    EXPECT_EQ(<span class="number">2</span>, vec.size());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>更好的做法是，在初始化数据时创建的一个数据，并且所有的数据都可以在本地环境中对其进行修改，但是这种修改不会影响到原始数据<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。如果你觉得有必要可以再写一个<code>SetUp()</code>对所需要使用的数据进行初始化，也还可以再写一个<code>TearDown()</code>来释放全部的资源空间。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gtest/gtest.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VectorTest</span> :</span> <span class="keyword">public</span> testing::Test</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">SetUp</span><span class="params">()</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        vec.push_back(<span class="number">1</span>);</span><br><span class="line">        vec.push_back(<span class="number">2</span>);</span><br><span class="line">        vec.push_back(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 注意这里使用 TEST_F，而不是 TEST</span></span><br><span class="line">TEST_F(VectorTest, PushBack)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 虽然这里修改了 vec，但对其它测试函数来说是不可见的</span></span><br><span class="line">    vec.push_back(<span class="number">4</span>);</span><br><span class="line">    EXPECT_EQ(vec.size(), <span class="number">4</span>);</span><br><span class="line">    EXPECT_EQ(vec.back(), <span class="number">4</span>);</span><br><span class="line">&#125;</span><br><span class="line">TEST_F(VectorTest, Size)</span><br><span class="line">&#123;</span><br><span class="line">    EXPECT_EQ(vec.size(), <span class="number">3</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ::testing::InitGoogleTest(&amp;argc, argv);</span><br><span class="line">    <span class="keyword">return</span> RUN_ALL_TESTS();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="在qt中使用googletest">在Qt中使用GoogleTest</h2>
-<p>因为如果要使用Qt内置的googletest要重新新建一个项目，还是希望能统一在同一个项目中完成这些设置，所以还是决定在当前项目中开一个测试目录专门用于测试。</p>
-<h2 id="gtest进阶">Gtest进阶</h2>
-<ul>
-<li><a href="https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md" class="uri">https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md</a></li>
-</ul>
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p><a href="https://github.com/google/googletest/blob/master/googletest/docs/Primer.md" class="uri">https://github.com/google/googletest/blob/master/googletest/docs/Primer.md</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>测试</tag>
-        <tag>GoogleTest</tag>
       </tags>
   </entry>
   <entry>
@@ -2324,6 +2257,137 @@ W_{2}[\mu,\upsilon]=\inf_{\gamma}\int \|x-y\|_{2}^{2}d\gamma(x,y)
       <tags>
         <tag>最优传输</tag>
         <tag>optimal transport</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Google Test 基础</title>
+    <url>/2018/03/10/googletest/</url>
+    <content><![CDATA[<p>Google Test是一个C++的测试框架, 在Linux, Windows和Mac上都可以使用这个工具来对C++代码进行测试. Google Test的一些特性:</p>
+<ol type="1">
+<li><strong>独立</strong>, 测试样例的测试结果不会受其他测试的影响, 每个测试都是被隔离开来的.</li>
+<li><strong>结构</strong>, 测试能够很好地反应测试代码的组织结构.</li>
+<li><strong>重用</strong>, 测试可以被移植和重用, 能够支持许多不同的系统和编译器.</li>
+<li><strong>定位</strong>, 测试失败了之后可以马上定位到这个错误发生的位置.</li>
+<li><strong>简单</strong>, 不会增加使用者的负担.</li>
+</ol>
+<a id="more"></a>
+<h2 id="安装googletest">安装GoogleTest</h2>
+<p>首先从github上获取代码然后编译安装, 通过CMake的方式进行,没有碰到什么坑.</p>
+<h2 id="基本概念">基本概念</h2>
+<p>在使用Google Test我们从断言开始熟悉整个过程, 我们通过断言来判断程序的行为是否正确. 断言的结果分别为 success, nonfatal failure, 或者 fatal failure. 如果出现fatal failure则会终端当前的函数.</p>
+<h3 id="简单测试">简单测试</h3>
+<p>通过下面的方式创建测试:</p>
+<ol type="1">
+<li>用<code>TEST()</code>宏来定义测试函数.</li>
+<li>在这个函数中可以用Google Test测试任何C++语句.</li>
+<li>测试结果由断言给定, 任意断言测试错误, 这整个测试结果就是失败.</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">TEST(test_case_name, test_name) &#123;</span><br><span class="line">    ...test body ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例如可以参考下面比较简单的测试样例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">TEST(MyTest, Add)</span><br><span class="line">&#123;</span><br><span class="line">    EXPECT_EQ(<span class="number">1</span> + <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    ASSERT_EQ(<span class="number">1</span> + <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="基本断言">基本断言</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>Fatal assertion</strong></th>
+<th style="text-align: center;"><strong>Nonfatal assertion</strong></th>
+<th style="text-align: center;"><strong>Verifies</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>ASSERT_TRUE(</code>condition<code>)</code>;</td>
+<td style="text-align: center;"><code>EXPECT_TRUE(</code>condition<code>)</code>;</td>
+<td style="text-align: center;">condition is true</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>ASSERT_FALSE(</code>condition<code>)</code>;</td>
+<td style="text-align: center;"><code>EXPECT_FALSE(</code>condition<code>)</code>;</td>
+<td style="text-align: center;">condition is false</td>
+</tr>
+</tbody>
+</table>
+<p>如果是<code>ASSERT_*</code>条件不成立, 则会直接报致命错误然后程序返回, 如果是<code>EXPECT_*</code>条件不成立则会继续进行.</p>
+<h2 id="在测试函数之间共享数据">在测试函数之间共享数据</h2>
+<p>同一批测试数据有时候会被多次使用，但是如果像下面那样调用就有点不太优雅。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">TEST(MyTest, Sum)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">    vec.push_back(<span class="number">1</span>);</span><br><span class="line">    vec.push_back(<span class="number">2</span>);</span><br><span class="line">    EXPECT_EQ(<span class="number">3</span>, <span class="built_in">std</span>::accumulate(vec.begin(), vec.end(), <span class="number">0</span>));</span><br><span class="line">&#125;</span><br><span class="line">TEST(MyTest, Size)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">    vec.push_back(<span class="number">1</span>);</span><br><span class="line">    vec.push_back(<span class="number">2</span>);</span><br><span class="line">    EXPECT_EQ(<span class="number">2</span>, vec.size());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>更好的做法是，在初始化数据时创建的一个数据，并且所有的数据都可以在本地环境中对其进行修改，但是这种修改不会影响到原始数据<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。如果你觉得有必要可以再写一个<code>SetUp()</code>对所需要使用的数据进行初始化，也还可以再写一个<code>TearDown()</code>来释放全部的资源空间。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gtest/gtest.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VectorTest</span> :</span> <span class="keyword">public</span> testing::Test</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">SetUp</span><span class="params">()</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        vec.push_back(<span class="number">1</span>);</span><br><span class="line">        vec.push_back(<span class="number">2</span>);</span><br><span class="line">        vec.push_back(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 注意这里使用 TEST_F，而不是 TEST</span></span><br><span class="line">TEST_F(VectorTest, PushBack)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 虽然这里修改了 vec，但对其它测试函数来说是不可见的</span></span><br><span class="line">    vec.push_back(<span class="number">4</span>);</span><br><span class="line">    EXPECT_EQ(vec.size(), <span class="number">4</span>);</span><br><span class="line">    EXPECT_EQ(vec.back(), <span class="number">4</span>);</span><br><span class="line">&#125;</span><br><span class="line">TEST_F(VectorTest, Size)</span><br><span class="line">&#123;</span><br><span class="line">    EXPECT_EQ(vec.size(), <span class="number">3</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ::testing::InitGoogleTest(&amp;argc, argv);</span><br><span class="line">    <span class="keyword">return</span> RUN_ALL_TESTS();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="在qt中使用googletest">在Qt中使用GoogleTest</h2>
+<p>因为如果要使用Qt内置的googletest要重新新建一个项目，还是希望能统一在同一个项目中完成这些设置，所以还是决定在当前项目中开一个测试目录专门用于测试。</p>
+<h2 id="gtest进阶">Gtest进阶</h2>
+<ul>
+<li><a href="https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md" class="uri">https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md</a></li>
+</ul>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a href="https://github.com/google/googletest/blob/master/googletest/docs/Primer.md" class="uri">https://github.com/google/googletest/blob/master/googletest/docs/Primer.md</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>测试</tag>
+        <tag>GoogleTest</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PaddlePaddle</title>
+    <url>/2018/05/15/paddlepaddle/</url>
+    <content><![CDATA[<p>paddlepaddle是百度开源的并行分布式全功能深度学习平台，全名为PArallel Distributed Deep LEarning，开发的动机是百度的工程师将其用在百度的各种产品中。支持CPU/GPU的单机和分布式模式，支持模型并行和数据并行。对于NLP和推荐算法、RNN等都有很好的支持。</p>
+<img src="/2018/05/15/paddlepaddle/%E4%B8%8B%E8%BD%BD.png" class="">
+<a id="more"></a>
+<h2 id="安装">安装</h2>
+<p>这里针对CentOS的操作系统，常用的配置方案是Docker+Ubuntu+PaddlePaddle（这是针对Windows系统的）目前PaddlePaddle似乎还是不支持Windows系统。这里采用一种最为简单的方式进行配置，CentOS+Anaconda3+PaddlPaddle，需要声明的一点是因为很多的第三方库开始宣布不再维护Python2的代码了，所以采用Anaconda3作为主版本。</p>
+<h3 id="配置python2.7环境">配置Python2.7环境</h3>
+<p>因为主板本使用的是Anaconda3，默认为Python3，所以通过conda环境管理机制建立一个使用Python2的版本，具体可参考另一篇文章<a href="/2018/01/08/condaGuide/" title="conda包组织管理">conda包组织管理</a>，为了使安装更加迅速，将anaconda的源改为清华大学的开源镜像，参照anaconda下的<a href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/">Anaconda 镜像使用帮助</a>进行修改。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 这条是示例，不要执行这一条</span></span><br><span class="line">conda create --name paddlepaddle python=2.7</span><br></pre></td></tr></table></figure>
+<p>因为paddlepaddle的依赖比较多，既要Pillow又要OpenCV，还要NLTK等，所以建议使用管理员（这里是指我）预先准备好的配置文件<code>paddlepaddle.yml</code>，然后执行下面的命令来创建conda的环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env create --file paddlepaddle.yml</span><br></pre></td></tr></table></figure>
+<p>通过这种方式就能将paddlepaddle的单机环境配置好了，考虑到这是在服务器上配置的，所以还是建议通过Jupyter Nodebook进行使用。</p>
+<h2 id="服务器端开启jupyter服务">服务器端开启Jupyter服务</h2>
+<p>将paddlepaddle的环境配置好了以后可以通过下面的指令来查看：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda env list</span><br></pre></td></tr></table></figure>
+<p>正常情况下会出现：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># conda environments:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">base                  *  F:\Anaconda3</span><br><span class="line">paddlepaddle             F:\Anaconda3\envs\paddlepaddle</span><br></pre></td></tr></table></figure>
+<p>通过指令<code>source activate paddlepaddle</code>激活paddlepaddle的环境，在命令行的最左边会出现一个（paddlepaddle），此时所有python的操作包括包的安装卸载等都仅仅对paddlepaddle这个环境造成影响。因为paddlepaddle仅提供了pip的安装方式，所以再用pip安装paddlepaddle（要在paddlepaddle环境激活的情况下）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install paddlepaddle</span><br></pre></td></tr></table></figure>
+<p>然后开启jupyter服务</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook 文件夹路径</span><br></pre></td></tr></table></figure>
+<p>但是通过这种方式开启的服务，一旦退出ssh界面，所有的服务都会被关闭，并且还会存在一个问题是这样开启的jupyter服务不能让远程客户端使用。</p>
+<h3 id="jupyter-开启远程服务">Jupyter 开启远程服务</h3>
+<p>默认情况下，配置文件 <code>~/.jupyter/jupyter_notebook_config.py</code>并不存在，需要自行创建。使用下列命令生成配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
+<p>如果是 root 用户执行上面的命令，会发生一个问题：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Running as root it not recommended. Use --allow-root to bypass.</span><br></pre></td></tr></table></figure>
+<p>提示信息很明显，root 用户执行时需要加上 --allow-root 选项。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config --allow-config</span><br></pre></td></tr></table></figure>
+<p>执行成功后，会出现下面的信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Writing default config to: /root/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+<p>生成密码:</p>
+<p>从 jupyter notebook 5.0 版本开始，提供了一个命令来设置密码：<code>jupyter notebook password</code>，生成的密码存储在 <code>jupyter_notebook_config.json</code>。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ jupyter notebook password</span><br><span class="line">Enter password:  ****</span><br><span class="line">Verify password: ****</span><br><span class="line">[NotebookPasswordApp] Wrote hashed password to /Users/you/.jupyter/jupyter_notebook_config.json</span><br></pre></td></tr></table></figure>
+<p>不过手动生成也并不麻烦：</p>
+<p>除了使用提供的命令，也可以通过手动安装，建议使用的手动安装，因为<code>jupyter notebook password</code>好像更啰嗦。打开 ipython 执行下面内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">In [1]: from notebook.auth import passwd</span><br><span class="line">In [2]: passwd()</span><br><span class="line">Enter password:</span><br><span class="line">Verify password:</span><br><span class="line">Out[2]: <span class="string">&#x27;sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><code>sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed</code> 这一串就是要在 <code>jupyter_notebook_config.py</code>添加的密码。</p>
+<p>修改配置文件</p>
+<p>在<code>jupyter_notebook_config.py</code>中找到下面的行，取消注释并修改。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip=<span class="string">&#x27;*&#x27;</span></span><br><span class="line">c.NotebookApp.password = u<span class="string">&#x27;sha:ce...刚才复制的那个密文&#x27;</span></span><br><span class="line">c.NotebookApp.open_browser = False</span><br><span class="line">c.NotebookApp.port =8888 <span class="comment">#可自行指定一个端口, 访问时使用该端口</span></span><br></pre></td></tr></table></figure>
+<h3 id="服务开启">服务开启</h3>
+<p>以上设置完以后就可以在服务器上启动<code>jupyter notebook，jupyter notebook</code>, root用户使用<code>jupyter notebook --allow-root</code>。打开 IP:指定的端口, 输入密码就可以访问了。</p>
+<p>但是对于那种使用ssh操作服务器的用户而言，应该在后面加上<code>&amp;</code>符号以便让jupyer在后台一直运行。</p>
+<p>开启服务之后就可以通过<code>服务器ip:8888</code>这个地址访问jupyter notebook了，打开之后应该就能看到如下场景了。</p>
+<img src="/2018/05/15/paddlepaddle/Snipaste_2018-05-15_10-53-49.png" class="">
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>paddlepaddle</tag>
       </tags>
   </entry>
   <entry>
@@ -2428,91 +2492,6 @@ FWIoU=\frac{1}{\sum^{k}_{i=0}\sum^{k}_{j=0}p_{ij}}\sum^{k}_{i=0}\frac{p_{ii}\sum
       </tags>
   </entry>
   <entry>
-    <title>PaddlePaddle</title>
-    <url>/2018/05/15/paddlepaddle/</url>
-    <content><![CDATA[<p>paddlepaddle是百度开源的并行分布式全功能深度学习平台，全名为PArallel Distributed Deep LEarning，开发的动机是百度的工程师将其用在百度的各种产品中。支持CPU/GPU的单机和分布式模式，支持模型并行和数据并行。对于NLP和推荐算法、RNN等都有很好的支持。</p>
-<img src="/2018/05/15/paddlepaddle/%E4%B8%8B%E8%BD%BD.png" class="">
-<a id="more"></a>
-<h2 id="安装">安装</h2>
-<p>这里针对CentOS的操作系统，常用的配置方案是Docker+Ubuntu+PaddlePaddle（这是针对Windows系统的）目前PaddlePaddle似乎还是不支持Windows系统。这里采用一种最为简单的方式进行配置，CentOS+Anaconda3+PaddlPaddle，需要声明的一点是因为很多的第三方库开始宣布不再维护Python2的代码了，所以采用Anaconda3作为主版本。</p>
-<h3 id="配置python2.7环境">配置Python2.7环境</h3>
-<p>因为主板本使用的是Anaconda3，默认为Python3，所以通过conda环境管理机制建立一个使用Python2的版本，具体可参考另一篇文章<a href="/2018/01/08/condaGuide/" title="conda包组织管理">conda包组织管理</a>，为了使安装更加迅速，将anaconda的源改为清华大学的开源镜像，参照anaconda下的<a href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/">Anaconda 镜像使用帮助</a>进行修改。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 这条是示例，不要执行这一条</span></span><br><span class="line">conda create --name paddlepaddle python=2.7</span><br></pre></td></tr></table></figure>
-<p>因为paddlepaddle的依赖比较多，既要Pillow又要OpenCV，还要NLTK等，所以建议使用管理员（这里是指我）预先准备好的配置文件<code>paddlepaddle.yml</code>，然后执行下面的命令来创建conda的环境：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env create --file paddlepaddle.yml</span><br></pre></td></tr></table></figure>
-<p>通过这种方式就能将paddlepaddle的单机环境配置好了，考虑到这是在服务器上配置的，所以还是建议通过Jupyter Nodebook进行使用。</p>
-<h2 id="服务器端开启jupyter服务">服务器端开启Jupyter服务</h2>
-<p>将paddlepaddle的环境配置好了以后可以通过下面的指令来查看：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda env list</span><br></pre></td></tr></table></figure>
-<p>正常情况下会出现：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># conda environments:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">base                  *  F:\Anaconda3</span><br><span class="line">paddlepaddle             F:\Anaconda3\envs\paddlepaddle</span><br></pre></td></tr></table></figure>
-<p>通过指令<code>source activate paddlepaddle</code>激活paddlepaddle的环境，在命令行的最左边会出现一个（paddlepaddle），此时所有python的操作包括包的安装卸载等都仅仅对paddlepaddle这个环境造成影响。因为paddlepaddle仅提供了pip的安装方式，所以再用pip安装paddlepaddle（要在paddlepaddle环境激活的情况下）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install paddlepaddle</span><br></pre></td></tr></table></figure>
-<p>然后开启jupyter服务</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook 文件夹路径</span><br></pre></td></tr></table></figure>
-<p>但是通过这种方式开启的服务，一旦退出ssh界面，所有的服务都会被关闭，并且还会存在一个问题是这样开启的jupyter服务不能让远程客户端使用。</p>
-<h3 id="jupyter-开启远程服务">Jupyter 开启远程服务</h3>
-<p>默认情况下，配置文件 <code>~/.jupyter/jupyter_notebook_config.py</code>并不存在，需要自行创建。使用下列命令生成配置文件：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
-<p>如果是 root 用户执行上面的命令，会发生一个问题：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Running as root it not recommended. Use --allow-root to bypass.</span><br></pre></td></tr></table></figure>
-<p>提示信息很明显，root 用户执行时需要加上 --allow-root 选项。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config --allow-config</span><br></pre></td></tr></table></figure>
-<p>执行成功后，会出现下面的信息：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Writing default config to: /root/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-<p>生成密码:</p>
-<p>从 jupyter notebook 5.0 版本开始，提供了一个命令来设置密码：<code>jupyter notebook password</code>，生成的密码存储在 <code>jupyter_notebook_config.json</code>。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ jupyter notebook password</span><br><span class="line">Enter password:  ****</span><br><span class="line">Verify password: ****</span><br><span class="line">[NotebookPasswordApp] Wrote hashed password to /Users/you/.jupyter/jupyter_notebook_config.json</span><br></pre></td></tr></table></figure>
-<p>不过手动生成也并不麻烦：</p>
-<p>除了使用提供的命令，也可以通过手动安装，建议使用的手动安装，因为<code>jupyter notebook password</code>好像更啰嗦。打开 ipython 执行下面内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">In [1]: from notebook.auth import passwd</span><br><span class="line">In [2]: passwd()</span><br><span class="line">Enter password:</span><br><span class="line">Verify password:</span><br><span class="line">Out[2]: <span class="string">&#x27;sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed&#x27;</span></span><br></pre></td></tr></table></figure>
-<p><code>sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed</code> 这一串就是要在 <code>jupyter_notebook_config.py</code>添加的密码。</p>
-<p>修改配置文件</p>
-<p>在<code>jupyter_notebook_config.py</code>中找到下面的行，取消注释并修改。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip=<span class="string">&#x27;*&#x27;</span></span><br><span class="line">c.NotebookApp.password = u<span class="string">&#x27;sha:ce...刚才复制的那个密文&#x27;</span></span><br><span class="line">c.NotebookApp.open_browser = False</span><br><span class="line">c.NotebookApp.port =8888 <span class="comment">#可自行指定一个端口, 访问时使用该端口</span></span><br></pre></td></tr></table></figure>
-<h3 id="服务开启">服务开启</h3>
-<p>以上设置完以后就可以在服务器上启动<code>jupyter notebook，jupyter notebook</code>, root用户使用<code>jupyter notebook --allow-root</code>。打开 IP:指定的端口, 输入密码就可以访问了。</p>
-<p>但是对于那种使用ssh操作服务器的用户而言，应该在后面加上<code>&amp;</code>符号以便让jupyer在后台一直运行。</p>
-<p>开启服务之后就可以通过<code>服务器ip:8888</code>这个地址访问jupyter notebook了，打开之后应该就能看到如下场景了。</p>
-<img src="/2018/05/15/paddlepaddle/Snipaste_2018-05-15_10-53-49.png" class="">
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>paddlepaddle</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NeuTube和SWC使用指南</title>
-    <url>/2018/03/16/swc-format/</url>
-    <content><![CDATA[<h2 id="swc-格式">SWC 格式</h2>
-<p>SWC是一种直接使用文本表示的文件格式，它是一个文本文件，其中包含以＃字符开头的各种字段的标题以及包含索引，半径，类型和连接信息的一系列三维点。 <a id="more"></a> 表示点的文本文件中的行具有以下布局。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">n T x y z R P</span><br><span class="line">n是一个整数标签，用于标识当前点，并从一行到下一行递增1。</span><br><span class="line">T是代表神经元节段类型的整数，例如体细胞，轴突，顶端树突等。标准接受的整数值在下面给出。</span><br><span class="line">•	0 =未定义</span><br><span class="line">•	1 =索玛</span><br><span class="line">•	2 =轴突</span><br><span class="line">•	3 =枝晶</span><br><span class="line">•	4 =顶端树突</span><br><span class="line">•	5 =叉点</span><br><span class="line">•	6 =结束点</span><br><span class="line">•	7 =自定义</span><br><span class="line">x，y，z给出每个节点的笛卡尔坐标。</span><br><span class="line">R是该节点处的半径。</span><br><span class="line">P表示当前点的父（整数标签）或-1以表示原点（soma）。</span><br></pre></td></tr></table></figure>
-<p>下面显示了 由NeuronStudio生成的仅包含8个点的示例文件。请注意，标题的某些字段缺少值。在写这篇文章的时候，目前还不清楚这是否允许。在潜在的SWC阅读器使用这些字段的情况下，NeuronStudio使用1.0填充SHRINKAGE_CORRECTION和SCALE。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ORIGINAL_SOURCE NeuronStudio 0.8.80</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> CREATURE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> REGION</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> FIELD/LAYER</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> TYPE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> CONTRIBUTOR</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> REFERENCE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> RAW</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> EXTRAS</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SOMA_AREA</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SHINKAGE_CORRECTION 1.0 1.0 1.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> VERSION_NUMBER 1.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> VERSION_DATE 2007-07-24</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SCALE 1.0 1.0 1.0</span></span><br><span class="line">1 1 14.566132 34.873772 7.857000 0.717830 -1</span><br><span class="line">2 0 16.022520 33.760513 7.047000 0.463378 1</span><br><span class="line">3 5 17.542000 32.604973 6.885001 0.638007 2</span><br><span class="line">4 0 19.163984 32.022469 5.913000 0.602284 3</span><br><span class="line">5 0 20.448090 30.822802 4.860000 0.436025 4</span><br><span class="line">6 6 21.897903 28.881084 3.402000 0.471886 5</span><br><span class="line">7 0 18.461960 30.289471 8.586000 0.447463 3</span><br><span class="line">8 6 19.420759 28.730757 9.558000 0.496217 7</span><br></pre></td></tr></table></figure>
-<h2 id="读取swc文件">读取SWC文件</h2>
-<img src="/2018/03/16/swc-format/NeutubeLogo.png" class="" title="title:NeuTube">
-<p>这里以NeuTube为例读取SWC文件，在NeuTube的<a href="http://www.neutracing.com/download/">下载页面</a>选择对应的下载方式下载完成就可以得到一个压缩包，然后将这个压缩包解压到你要的位置，启动neuTube。你会得到下面的页面</p>
-<img src="/2018/03/16/swc-format/Snipaste_2018-03-17_00-12-17.png" class="" title="title:启动界面">
-<p>然后点File-&gt;Open选择你要打开的SWC文件即可得到三维的用一个一个圆形叠加在一起的模型，通常是神经元模型。</p>
-<img src="/2018/03/16/swc-format/Snipaste_2018-03-17_00-14-55.png" class="" title="title:SWC可视化界面">
-<p>TODO：NeuTube其他操作</p>
-<h2 id="更多阅读">更多阅读</h2>
-<ul>
-<li><a href="http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html" class="uri">http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html</a></li>
-<li><a href="http://research.mssm.edu/cnic/swc.html" class="uri">http://research.mssm.edu/cnic/swc.html</a></li>
-<li><a href="http://www.neutracing.com/tutorial/" class="uri">http://www.neutracing.com/tutorial/</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>自然科学</category>
-      </categories>
-      <tags>
-        <tag>SWC</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>神经科学与“记忆印记”</title>
     <url>/2018/01/09/silent-engrams/</url>
     <content><![CDATA[<p>神经科学这门被DNA双螺旋结构的发现者之一Francis Crick和其他知名的生物学家吹捧成为未来的潮流的学科。到目前为止都还没有出现一个特别显著的突破，科学家们对大脑功能的分子和细胞机制的了解极其有限。<img src="/2018/01/09/silent-engrams/Memory_2880x1405-2880x1405.jpg" class="" title="Eero Lampinen for Quanta Magazine"> <a id="more"></a></p>
@@ -2603,6 +2582,35 @@ V(s)=\mathbb{E}_{\pi}[ \sum^{\infty}_{t=0}\gamma&#39;R(s_{t})\mid s_{0}=s]
       <tags>
         <tag>认知神经科学</tag>
         <tag>记忆</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NeuTube和SWC使用指南</title>
+    <url>/2018/03/16/swc-format/</url>
+    <content><![CDATA[<h2 id="swc-格式">SWC 格式</h2>
+<p>SWC是一种直接使用文本表示的文件格式，它是一个文本文件，其中包含以＃字符开头的各种字段的标题以及包含索引，半径，类型和连接信息的一系列三维点。 <a id="more"></a> 表示点的文本文件中的行具有以下布局。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">n T x y z R P</span><br><span class="line">n是一个整数标签，用于标识当前点，并从一行到下一行递增1。</span><br><span class="line">T是代表神经元节段类型的整数，例如体细胞，轴突，顶端树突等。标准接受的整数值在下面给出。</span><br><span class="line">•	0 =未定义</span><br><span class="line">•	1 =索玛</span><br><span class="line">•	2 =轴突</span><br><span class="line">•	3 =枝晶</span><br><span class="line">•	4 =顶端树突</span><br><span class="line">•	5 =叉点</span><br><span class="line">•	6 =结束点</span><br><span class="line">•	7 =自定义</span><br><span class="line">x，y，z给出每个节点的笛卡尔坐标。</span><br><span class="line">R是该节点处的半径。</span><br><span class="line">P表示当前点的父（整数标签）或-1以表示原点（soma）。</span><br></pre></td></tr></table></figure>
+<p>下面显示了 由NeuronStudio生成的仅包含8个点的示例文件。请注意，标题的某些字段缺少值。在写这篇文章的时候，目前还不清楚这是否允许。在潜在的SWC阅读器使用这些字段的情况下，NeuronStudio使用1.0填充SHRINKAGE_CORRECTION和SCALE。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ORIGINAL_SOURCE NeuronStudio 0.8.80</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> CREATURE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> REGION</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> FIELD/LAYER</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> TYPE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> CONTRIBUTOR</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> REFERENCE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> RAW</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> EXTRAS</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SOMA_AREA</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SHINKAGE_CORRECTION 1.0 1.0 1.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> VERSION_NUMBER 1.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> VERSION_DATE 2007-07-24</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SCALE 1.0 1.0 1.0</span></span><br><span class="line">1 1 14.566132 34.873772 7.857000 0.717830 -1</span><br><span class="line">2 0 16.022520 33.760513 7.047000 0.463378 1</span><br><span class="line">3 5 17.542000 32.604973 6.885001 0.638007 2</span><br><span class="line">4 0 19.163984 32.022469 5.913000 0.602284 3</span><br><span class="line">5 0 20.448090 30.822802 4.860000 0.436025 4</span><br><span class="line">6 6 21.897903 28.881084 3.402000 0.471886 5</span><br><span class="line">7 0 18.461960 30.289471 8.586000 0.447463 3</span><br><span class="line">8 6 19.420759 28.730757 9.558000 0.496217 7</span><br></pre></td></tr></table></figure>
+<h2 id="读取swc文件">读取SWC文件</h2>
+<img src="/2018/03/16/swc-format/NeutubeLogo.png" class="" title="title:NeuTube">
+<p>这里以NeuTube为例读取SWC文件，在NeuTube的<a href="http://www.neutracing.com/download/">下载页面</a>选择对应的下载方式下载完成就可以得到一个压缩包，然后将这个压缩包解压到你要的位置，启动neuTube。你会得到下面的页面</p>
+<img src="/2018/03/16/swc-format/Snipaste_2018-03-17_00-12-17.png" class="" title="title:启动界面">
+<p>然后点File-&gt;Open选择你要打开的SWC文件即可得到三维的用一个一个圆形叠加在一起的模型，通常是神经元模型。</p>
+<img src="/2018/03/16/swc-format/Snipaste_2018-03-17_00-14-55.png" class="" title="title:SWC可视化界面">
+<p>TODO：NeuTube其他操作</p>
+<h2 id="更多阅读">更多阅读</h2>
+<ul>
+<li><a href="http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html" class="uri">http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html</a></li>
+<li><a href="http://research.mssm.edu/cnic/swc.html" class="uri">http://research.mssm.edu/cnic/swc.html</a></li>
+<li><a href="http://www.neutracing.com/tutorial/" class="uri">http://www.neutracing.com/tutorial/</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>自然科学</category>
+      </categories>
+      <tags>
+        <tag>SWC</tag>
       </tags>
   </entry>
   <entry>
