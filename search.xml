@@ -153,6 +153,31 @@ L_{\text {target }}(\hat{y}, y)+\lambda \cdot L_{\operatorname{loss}}(\hat{l}, l
       </tags>
   </entry>
   <entry>
+    <title>Apex Cuda Acceleration</title>
+    <url>/2019/12/23/Apex-Cuda-Acceleration/</url>
+    <content><![CDATA[<p>在使用 Pytorch 进行训练的时候有些步骤可以进一步优化和提高整体训练的速度。其本质是通过将很多操作转化为 <code>Float16</code> 进行计算，其他仍保持原有的 <code>Float32</code> 精度计算，这样做的好处在于可以显著减小显存的占用。在不减少模型参数规模的前提下提高计算的速度和 <code>batchsize</code> 的调整空间。</p>
+<a id="more"></a>
+<h2 id="安装">安装</h2>
+<p>基于 Ubuntu 机器，在 CUDA 和 CUDNN 已经预备好的环境中，具体请以官方代码库为准。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/NVIDIA/apex</span><br><span class="line"><span class="built_in">cd</span> apex</span><br><span class="line">pip install -v --no-cache-dir --global-option=<span class="string">&quot;--cpp_ext&quot;</span> --global-option=<span class="string">&quot;--cuda_ext&quot;</span> ./</span><br></pre></td></tr></table></figure>
+<h2 id="使用">使用</h2>
+<p>Apex 是一个辅助 Pytorch 的包，用以优化其运行过程的计算资源平衡，根据用户对于精度的敏感程度可以选择下面几种取舍等级。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 带检查的导入方式</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> apex.parallel <span class="keyword">import</span> DistributedDataParallel <span class="keyword">as</span> DDP</span><br><span class="line">    <span class="keyword">from</span> apex.fp16_utils <span class="keyword">import</span> *</span><br><span class="line">    <span class="keyword">from</span> apex <span class="keyword">import</span> amp, optimizers</span><br><span class="line">    <span class="keyword">from</span> apex.multi_tensor_apply <span class="keyword">import</span> multi_tensor_applier</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">raise</span> ImportError(<span class="string">&quot;Please install apex from https://www.github.com/nvidia/apex to run this example.&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialization</span></span><br><span class="line">opt_level = <span class="string">&#x27;O1&#x27;</span></span><br><span class="line">model, optimizer = amp.initialize(model, optimizer, opt_level=opt_level)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train your model</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">with</span> amp.scale_loss(loss, optimizer) <span class="keyword">as</span> scaled_loss:</span><br><span class="line">    scaled_loss.backward()</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Save checkpoint</span></span><br><span class="line">checkpoint = &#123;</span><br><span class="line">    <span class="string">&#x27;model&#x27;</span>: model.state_dict(),</span><br><span class="line">    <span class="string">&#x27;optimizer&#x27;</span>: optimizer.state_dict(),</span><br><span class="line">    <span class="string">&#x27;amp&#x27;</span>: amp.state_dict()</span><br><span class="line">&#125;</span><br><span class="line">torch.save(checkpoint, <span class="string">&#x27;amp_checkpoint.pt&#x27;</span>)</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Restore</span></span><br><span class="line">model = ...</span><br><span class="line">optimizer = ...</span><br><span class="line">checkpoint = torch.load(<span class="string">&#x27;amp_checkpoint.pt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">model, optimizer = amp.initialize(model, optimizer, opt_level=opt_level)</span><br><span class="line">model.load_state_dict(checkpoint[<span class="string">&#x27;model&#x27;</span>])</span><br><span class="line">optimizer.load_state_dict(checkpoint[<span class="string">&#x27;optimizer&#x27;</span>])</span><br><span class="line">amp.load_state_dict(checkpoint[<span class="string">&#x27;amp&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Continue training</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>O0：纯FP32训练，可以作为accuracy的baseline；</li>
+<li>O1：混合精度训练（推荐使用），根据黑白名单自动决定使用FP16（GEMM, 卷积）还是FP32（Softmax）进行计算。</li>
+<li>O2：“几乎FP16”混合精度训练，不存在黑白名单，除了Batch norm，几乎都是用FP16计算。</li>
+<li>O3：纯FP16训练，很不稳定，但是可以作为speed的baseline；</li>
+</ul>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>Apex</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Black First Won</title>
     <url>/2018/05/01/Black-First-Won/</url>
     <content><![CDATA[<p>五子棋中存在先手黑棋必赢的策略，所以职业比赛中会设置带禁手和不带禁手的区别。在没有计算机的年代里，人们只是感觉黑棋可能存在绝对的赢面，后来到1992年Victor Allis通过编程证明不带禁手的五子棋，是黑必胜的。后来在2001年Janos Wagner第一次证明带禁手的五子棋，也是黑必胜的。</p>
@@ -227,31 +252,6 @@ L_{\text {target }}(\hat{y}, y)+\lambda \cdot L_{\operatorname{loss}}(\hat{l}, l
       <tags>
         <tag>五子棋</tag>
         <tag>游戏策略</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Apex Cuda Acceleration</title>
-    <url>/2019/12/23/Apex-Cuda-Acceleration/</url>
-    <content><![CDATA[<p>在使用 Pytorch 进行训练的时候有些步骤可以进一步优化和提高整体训练的速度。其本质是通过将很多操作转化为 <code>Float16</code> 进行计算，其他仍保持原有的 <code>Float32</code> 精度计算，这样做的好处在于可以显著减小显存的占用。在不减少模型参数规模的前提下提高计算的速度和 <code>batchsize</code> 的调整空间。</p>
-<a id="more"></a>
-<h2 id="安装">安装</h2>
-<p>基于 Ubuntu 机器，在 CUDA 和 CUDNN 已经预备好的环境中，具体请以官方代码库为准。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/NVIDIA/apex</span><br><span class="line"><span class="built_in">cd</span> apex</span><br><span class="line">pip install -v --no-cache-dir --global-option=<span class="string">&quot;--cpp_ext&quot;</span> --global-option=<span class="string">&quot;--cuda_ext&quot;</span> ./</span><br></pre></td></tr></table></figure>
-<h2 id="使用">使用</h2>
-<p>Apex 是一个辅助 Pytorch 的包，用以优化其运行过程的计算资源平衡，根据用户对于精度的敏感程度可以选择下面几种取舍等级。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 带检查的导入方式</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> apex.parallel <span class="keyword">import</span> DistributedDataParallel <span class="keyword">as</span> DDP</span><br><span class="line">    <span class="keyword">from</span> apex.fp16_utils <span class="keyword">import</span> *</span><br><span class="line">    <span class="keyword">from</span> apex <span class="keyword">import</span> amp, optimizers</span><br><span class="line">    <span class="keyword">from</span> apex.multi_tensor_apply <span class="keyword">import</span> multi_tensor_applier</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">raise</span> ImportError(<span class="string">&quot;Please install apex from https://www.github.com/nvidia/apex to run this example.&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialization</span></span><br><span class="line">opt_level = <span class="string">&#x27;O1&#x27;</span></span><br><span class="line">model, optimizer = amp.initialize(model, optimizer, opt_level=opt_level)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train your model</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">with</span> amp.scale_loss(loss, optimizer) <span class="keyword">as</span> scaled_loss:</span><br><span class="line">    scaled_loss.backward()</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Save checkpoint</span></span><br><span class="line">checkpoint = &#123;</span><br><span class="line">    <span class="string">&#x27;model&#x27;</span>: model.state_dict(),</span><br><span class="line">    <span class="string">&#x27;optimizer&#x27;</span>: optimizer.state_dict(),</span><br><span class="line">    <span class="string">&#x27;amp&#x27;</span>: amp.state_dict()</span><br><span class="line">&#125;</span><br><span class="line">torch.save(checkpoint, <span class="string">&#x27;amp_checkpoint.pt&#x27;</span>)</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Restore</span></span><br><span class="line">model = ...</span><br><span class="line">optimizer = ...</span><br><span class="line">checkpoint = torch.load(<span class="string">&#x27;amp_checkpoint.pt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">model, optimizer = amp.initialize(model, optimizer, opt_level=opt_level)</span><br><span class="line">model.load_state_dict(checkpoint[<span class="string">&#x27;model&#x27;</span>])</span><br><span class="line">optimizer.load_state_dict(checkpoint[<span class="string">&#x27;optimizer&#x27;</span>])</span><br><span class="line">amp.load_state_dict(checkpoint[<span class="string">&#x27;amp&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Continue training</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<ul>
-<li>O0：纯FP32训练，可以作为accuracy的baseline；</li>
-<li>O1：混合精度训练（推荐使用），根据黑白名单自动决定使用FP16（GEMM, 卷积）还是FP32（Softmax）进行计算。</li>
-<li>O2：“几乎FP16”混合精度训练，不存在黑白名单，除了Batch norm，几乎都是用FP16计算。</li>
-<li>O3：纯FP16训练，很不稳定，但是可以作为speed的baseline；</li>
-</ul>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>Apex</tag>
       </tags>
   </entry>
   <entry>
@@ -1574,6 +1574,52 @@ dN=\mathbf{S}^{T}\mathbf{T} - \sum_{i}\mathbf{S}^{T}_{i}S_{i}N
       </tags>
   </entry>
   <entry>
+    <title>杀死一只知更鸟-正义和教养</title>
+    <url>/2018/07/25/To-Kill-a-Mocking-Bird/</url>
+    <content><![CDATA[<p>这本书的故事背景在20世纪30年代的美国南部，虽然南北战争之后林肯已经签署了《解放黑奴宣言》但是对于稍微落后偏远一点的南部小镇，人们仍然以一种非常粗野的方式对待他们所不能理解正义和权利。本书中的三个孩子因为镇上的几桩冤案经历了猝不及防成长------痛苦与迷惑，悲伤与愤怒，也有温情与感动。</p>
+<a id="more"></a>
+<p>有很多真实的感觉，从书本开始时候你会觉得如果那是你小时候，你也会这么去做的。对于阿德利家的好奇，抑制不住的好奇心想要去探索很多周边的场所和传言中的事情，一切的表现都和自己小时候那么的相似。</p>
+<p>看完这本书的人们都为书中传达出的正义的精神而印象深刻，我也不例外，整本书的故事是通过作者作为一个小女孩的视角讲述的，我们更容易直接感受到作为小女孩父亲所带来的教养的影响力。很多时候，你在周围的小世界里格格不入，但是这未必就代表你是错的，或者你就必须要和周围的人变得一样，但是作为正在成长期的孩子，他们很难判断哪些是对的，哪些是不应该去学习不应该去理会的。而正是在面对孩子们的不理解作为父亲也作为律师的阿蒂克斯很有条理地给出他的理由，正义和教养通过这种方式传达给成长中迷茫的孩子。</p>
+<blockquote>
+<ol type="1">
+<li>最主要的是，如果我不去做，我在镇上就抬不起头来，我就不能在立法委员会里代表这个县，我就不能再教导你和杰姆如何做人。</li>
+<li>道理很简单，不能因为我们在此之前已经失败了一百年，就认为我们没有理由去争取胜利。</li>
+</ol>
+</blockquote>
+<p>当故事中的主角说到“为了他我宁愿被人叫做胆小鬼。我为此感到自己很高尚，并把这种高尚保持了三个星期。”这是一个父亲言传身教给他的孩子们带来的影响力。</p>
+<p>还有一些语言，我也希望将其摘抄在下面：</p>
+<p>勇敢是：当你还未开始就已知道自己会输，可你依然要去做，而且无论如何都要把它坚持到底。你很少能赢，但有时也会。</p>
+<p>第十二章</p>
+<p>没有必要把你懂的所有东西都说出来。那很不淑女——再说，人们不喜欢他们身边有人比他们懂得更多。那会让他们很恼火。</p>
+<p>第十七章</p>
+<p>可是在我看来，他就如同不带手电摸黑叉青蛙。在交叉讯问证人时，千万，千万，千万，不要去问一个你事先不知道答案的问题，这是我从吃奶时就领悟到的一个信条。如果你问了，常常会得到一个你不想要的答案，这个答案很可能会毁掉你的诉讼。</p>
+<p>第二十章</p>
+<p>这样的确不诚实，但对人们会有帮助。芬奇小姐，我其实不怎么喝酒，可是你知道吗，他们永远永远也不可能理解：我之所以这样生活，是因为这就是我想要的生活方式。</p>
+<p>他向迪儿甩了甩头：“他的本性还没有被破坏。等他再长大些，就不会觉得恶心，不会再为此哭泣了。也许事情会让他震惊——觉得不对，但他不会再哭了，过几年他就不会再为此哭泣了。”</p>
+<p>“先生们，在我结束之前，我还有一件事要说。前总统托马斯·杰斐逊￼曾经说过，‘一切人生来平等’，北方佬和华盛顿行政首脑的贤内助￼最喜欢拿这句话来攻击我们。在今年，也就是1935年，产生了一种倾向，有些人断章取义地用这句话去套各种不同的情况。我能想到的最可笑的例子，是那些管公立教育的人，他们让愚笨懒惰的学生和勤奋聪明的学生一道升学——因为‘一切人生来平等’，教育者们会这样严肃地告诉你，落后的孩子会承受自卑的痛苦和折磨。我们知道，人并不像某些人强迫我们相信的那样生来平等——有些人比别人聪明，有些人生来就比别人占优势，有些男人比别的男人挣钱多，有些女士的蛋糕比别的女士做得好，有些人天生就比大多数人有才华。</p>
+<p>第二十三章</p>
+<p>没有完美的制度，我们在界限上徘徊</p>
+<p> 在我们生活的这个世界里，有些东西会让人丧失理智——他们不论怎样努力都做不到公平。</p>
+<p>第二十五章</p>
+<p>一切隐匿在看似正义的程序之下，人都是如此，所以世界上最无法直视的就是人</p>
+<p> 我明白了安德伍德先生的意思：阿蒂克斯使用了所有能开释一个自由人的法律手段去拯救汤姆，可是在人们内心深处的那个秘密法庭里，阿蒂克斯根本没有任何诉讼可言。从马耶拉张嘴喊叫的那一刻起，汤姆就死定了。</p>
+<p>我明白了安德伍德先生的意思：阿蒂克斯使用了所有能开释一个自由人的法律手段去拯救汤姆，可是在人们内心深处的那个秘密法庭里，阿蒂克斯根本没有任何诉讼可言。从马耶拉张嘴喊叫的那一刻起，汤姆就死定了。</p>
+<p>第二十八章</p>
+<p>我后来就此事问了亚历山德拉姑姑，她说持这种观点的一般都是社会上想往上爬的人。</p>
+<p>第二十九章</p>
+<p>你千万不要自寻烦恼——因为，如果我们一直跟着感觉走，那我们就像追着自己尾巴的猫一样。</p>
+<p>第三十一章</p>
+<p>阿蒂克斯是对的。他有次说，除非你穿上一个人的鞋子，像他一样走来走去，否则你永远无法真正了解一个人。</p>
+]]></content>
+      <categories>
+        <category>读书</category>
+      </categories>
+      <tags>
+        <tag>杀死一只知更鸟</tag>
+        <tag>成长</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Thin Plate Spline</title>
     <url>/2019/01/29/Thin-Plate-Spline/</url>
     <content><![CDATA[<p>给定两张图片中一些相互对应的关键点，如何能够将其中一张图片形变到另外一张图片上使得这些关键点都对应重合？这就是TPS方法所要解决的问题，TPS可以对表面进行柔性的变形。</p>
@@ -1677,52 +1723,6 @@ Y^x &amp; Y^y\\
       </categories>
       <tags>
         <tag>数值计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>杀死一只知更鸟-正义和教养</title>
-    <url>/2018/07/25/To-Kill-a-Mocking-Bird/</url>
-    <content><![CDATA[<p>这本书的故事背景在20世纪30年代的美国南部，虽然南北战争之后林肯已经签署了《解放黑奴宣言》但是对于稍微落后偏远一点的南部小镇，人们仍然以一种非常粗野的方式对待他们所不能理解正义和权利。本书中的三个孩子因为镇上的几桩冤案经历了猝不及防成长------痛苦与迷惑，悲伤与愤怒，也有温情与感动。</p>
-<a id="more"></a>
-<p>有很多真实的感觉，从书本开始时候你会觉得如果那是你小时候，你也会这么去做的。对于阿德利家的好奇，抑制不住的好奇心想要去探索很多周边的场所和传言中的事情，一切的表现都和自己小时候那么的相似。</p>
-<p>看完这本书的人们都为书中传达出的正义的精神而印象深刻，我也不例外，整本书的故事是通过作者作为一个小女孩的视角讲述的，我们更容易直接感受到作为小女孩父亲所带来的教养的影响力。很多时候，你在周围的小世界里格格不入，但是这未必就代表你是错的，或者你就必须要和周围的人变得一样，但是作为正在成长期的孩子，他们很难判断哪些是对的，哪些是不应该去学习不应该去理会的。而正是在面对孩子们的不理解作为父亲也作为律师的阿蒂克斯很有条理地给出他的理由，正义和教养通过这种方式传达给成长中迷茫的孩子。</p>
-<blockquote>
-<ol type="1">
-<li>最主要的是，如果我不去做，我在镇上就抬不起头来，我就不能在立法委员会里代表这个县，我就不能再教导你和杰姆如何做人。</li>
-<li>道理很简单，不能因为我们在此之前已经失败了一百年，就认为我们没有理由去争取胜利。</li>
-</ol>
-</blockquote>
-<p>当故事中的主角说到“为了他我宁愿被人叫做胆小鬼。我为此感到自己很高尚，并把这种高尚保持了三个星期。”这是一个父亲言传身教给他的孩子们带来的影响力。</p>
-<p>还有一些语言，我也希望将其摘抄在下面：</p>
-<p>勇敢是：当你还未开始就已知道自己会输，可你依然要去做，而且无论如何都要把它坚持到底。你很少能赢，但有时也会。</p>
-<p>第十二章</p>
-<p>没有必要把你懂的所有东西都说出来。那很不淑女——再说，人们不喜欢他们身边有人比他们懂得更多。那会让他们很恼火。</p>
-<p>第十七章</p>
-<p>可是在我看来，他就如同不带手电摸黑叉青蛙。在交叉讯问证人时，千万，千万，千万，不要去问一个你事先不知道答案的问题，这是我从吃奶时就领悟到的一个信条。如果你问了，常常会得到一个你不想要的答案，这个答案很可能会毁掉你的诉讼。</p>
-<p>第二十章</p>
-<p>这样的确不诚实，但对人们会有帮助。芬奇小姐，我其实不怎么喝酒，可是你知道吗，他们永远永远也不可能理解：我之所以这样生活，是因为这就是我想要的生活方式。</p>
-<p>他向迪儿甩了甩头：“他的本性还没有被破坏。等他再长大些，就不会觉得恶心，不会再为此哭泣了。也许事情会让他震惊——觉得不对，但他不会再哭了，过几年他就不会再为此哭泣了。”</p>
-<p>“先生们，在我结束之前，我还有一件事要说。前总统托马斯·杰斐逊￼曾经说过，‘一切人生来平等’，北方佬和华盛顿行政首脑的贤内助￼最喜欢拿这句话来攻击我们。在今年，也就是1935年，产生了一种倾向，有些人断章取义地用这句话去套各种不同的情况。我能想到的最可笑的例子，是那些管公立教育的人，他们让愚笨懒惰的学生和勤奋聪明的学生一道升学——因为‘一切人生来平等’，教育者们会这样严肃地告诉你，落后的孩子会承受自卑的痛苦和折磨。我们知道，人并不像某些人强迫我们相信的那样生来平等——有些人比别人聪明，有些人生来就比别人占优势，有些男人比别的男人挣钱多，有些女士的蛋糕比别的女士做得好，有些人天生就比大多数人有才华。</p>
-<p>第二十三章</p>
-<p>没有完美的制度，我们在界限上徘徊</p>
-<p> 在我们生活的这个世界里，有些东西会让人丧失理智——他们不论怎样努力都做不到公平。</p>
-<p>第二十五章</p>
-<p>一切隐匿在看似正义的程序之下，人都是如此，所以世界上最无法直视的就是人</p>
-<p> 我明白了安德伍德先生的意思：阿蒂克斯使用了所有能开释一个自由人的法律手段去拯救汤姆，可是在人们内心深处的那个秘密法庭里，阿蒂克斯根本没有任何诉讼可言。从马耶拉张嘴喊叫的那一刻起，汤姆就死定了。</p>
-<p>我明白了安德伍德先生的意思：阿蒂克斯使用了所有能开释一个自由人的法律手段去拯救汤姆，可是在人们内心深处的那个秘密法庭里，阿蒂克斯根本没有任何诉讼可言。从马耶拉张嘴喊叫的那一刻起，汤姆就死定了。</p>
-<p>第二十八章</p>
-<p>我后来就此事问了亚历山德拉姑姑，她说持这种观点的一般都是社会上想往上爬的人。</p>
-<p>第二十九章</p>
-<p>你千万不要自寻烦恼——因为，如果我们一直跟着感觉走，那我们就像追着自己尾巴的猫一样。</p>
-<p>第三十一章</p>
-<p>阿蒂克斯是对的。他有次说，除非你穿上一个人的鞋子，像他一样走来走去，否则你永远无法真正了解一个人。</p>
-]]></content>
-      <categories>
-        <category>读书</category>
-      </categories>
-      <tags>
-        <tag>杀死一只知更鸟</tag>
-        <tag>成长</tag>
       </tags>
   </entry>
   <entry>
@@ -2327,62 +2327,6 @@ W_{2}[\mu,\upsilon]=\inf_{\gamma}\int \|x-y\|_{2}^{2}d\gamma(x,y)
       </tags>
   </entry>
   <entry>
-    <title>PaddlePaddle</title>
-    <url>/2018/05/15/paddlepaddle/</url>
-    <content><![CDATA[<p>paddlepaddle是百度开源的并行分布式全功能深度学习平台，全名为PArallel Distributed Deep LEarning，开发的动机是百度的工程师将其用在百度的各种产品中。支持CPU/GPU的单机和分布式模式，支持模型并行和数据并行。对于NLP和推荐算法、RNN等都有很好的支持。</p>
-<img src="/2018/05/15/paddlepaddle/%E4%B8%8B%E8%BD%BD.png" class="">
-<a id="more"></a>
-<h2 id="安装">安装</h2>
-<p>这里针对CentOS的操作系统，常用的配置方案是Docker+Ubuntu+PaddlePaddle（这是针对Windows系统的）目前PaddlePaddle似乎还是不支持Windows系统。这里采用一种最为简单的方式进行配置，CentOS+Anaconda3+PaddlPaddle，需要声明的一点是因为很多的第三方库开始宣布不再维护Python2的代码了，所以采用Anaconda3作为主版本。</p>
-<h3 id="配置python2.7环境">配置Python2.7环境</h3>
-<p>因为主板本使用的是Anaconda3，默认为Python3，所以通过conda环境管理机制建立一个使用Python2的版本，具体可参考另一篇文章<a href="/2018/01/08/condaGuide/" title="conda包组织管理">conda包组织管理</a>，为了使安装更加迅速，将anaconda的源改为清华大学的开源镜像，参照anaconda下的<a href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/">Anaconda 镜像使用帮助</a>进行修改。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 这条是示例，不要执行这一条</span></span><br><span class="line">conda create --name paddlepaddle python=2.7</span><br></pre></td></tr></table></figure>
-<p>因为paddlepaddle的依赖比较多，既要Pillow又要OpenCV，还要NLTK等，所以建议使用管理员（这里是指我）预先准备好的配置文件<code>paddlepaddle.yml</code>，然后执行下面的命令来创建conda的环境：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env create --file paddlepaddle.yml</span><br></pre></td></tr></table></figure>
-<p>通过这种方式就能将paddlepaddle的单机环境配置好了，考虑到这是在服务器上配置的，所以还是建议通过Jupyter Nodebook进行使用。</p>
-<h2 id="服务器端开启jupyter服务">服务器端开启Jupyter服务</h2>
-<p>将paddlepaddle的环境配置好了以后可以通过下面的指令来查看：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda env list</span><br></pre></td></tr></table></figure>
-<p>正常情况下会出现：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># conda environments:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">base                  *  F:\Anaconda3</span><br><span class="line">paddlepaddle             F:\Anaconda3\envs\paddlepaddle</span><br></pre></td></tr></table></figure>
-<p>通过指令<code>source activate paddlepaddle</code>激活paddlepaddle的环境，在命令行的最左边会出现一个（paddlepaddle），此时所有python的操作包括包的安装卸载等都仅仅对paddlepaddle这个环境造成影响。因为paddlepaddle仅提供了pip的安装方式，所以再用pip安装paddlepaddle（要在paddlepaddle环境激活的情况下）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install paddlepaddle</span><br></pre></td></tr></table></figure>
-<p>然后开启jupyter服务</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook 文件夹路径</span><br></pre></td></tr></table></figure>
-<p>但是通过这种方式开启的服务，一旦退出ssh界面，所有的服务都会被关闭，并且还会存在一个问题是这样开启的jupyter服务不能让远程客户端使用。</p>
-<h3 id="jupyter-开启远程服务">Jupyter 开启远程服务</h3>
-<p>默认情况下，配置文件 <code>~/.jupyter/jupyter_notebook_config.py</code>并不存在，需要自行创建。使用下列命令生成配置文件：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
-<p>如果是 root 用户执行上面的命令，会发生一个问题：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Running as root it not recommended. Use --allow-root to bypass.</span><br></pre></td></tr></table></figure>
-<p>提示信息很明显，root 用户执行时需要加上 --allow-root 选项。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config --allow-config</span><br></pre></td></tr></table></figure>
-<p>执行成功后，会出现下面的信息：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Writing default config to: /root/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-<p>生成密码:</p>
-<p>从 jupyter notebook 5.0 版本开始，提供了一个命令来设置密码：<code>jupyter notebook password</code>，生成的密码存储在 <code>jupyter_notebook_config.json</code>。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ jupyter notebook password</span><br><span class="line">Enter password:  ****</span><br><span class="line">Verify password: ****</span><br><span class="line">[NotebookPasswordApp] Wrote hashed password to /Users/you/.jupyter/jupyter_notebook_config.json</span><br></pre></td></tr></table></figure>
-<p>不过手动生成也并不麻烦：</p>
-<p>除了使用提供的命令，也可以通过手动安装，建议使用的手动安装，因为<code>jupyter notebook password</code>好像更啰嗦。打开 ipython 执行下面内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">In [1]: from notebook.auth import passwd</span><br><span class="line">In [2]: passwd()</span><br><span class="line">Enter password:</span><br><span class="line">Verify password:</span><br><span class="line">Out[2]: <span class="string">&#x27;sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed&#x27;</span></span><br></pre></td></tr></table></figure>
-<p><code>sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed</code> 这一串就是要在 <code>jupyter_notebook_config.py</code>添加的密码。</p>
-<p>修改配置文件</p>
-<p>在<code>jupyter_notebook_config.py</code>中找到下面的行，取消注释并修改。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip=<span class="string">&#x27;*&#x27;</span></span><br><span class="line">c.NotebookApp.password = u<span class="string">&#x27;sha:ce...刚才复制的那个密文&#x27;</span></span><br><span class="line">c.NotebookApp.open_browser = False</span><br><span class="line">c.NotebookApp.port =8888 <span class="comment">#可自行指定一个端口, 访问时使用该端口</span></span><br></pre></td></tr></table></figure>
-<h3 id="服务开启">服务开启</h3>
-<p>以上设置完以后就可以在服务器上启动<code>jupyter notebook，jupyter notebook</code>, root用户使用<code>jupyter notebook --allow-root</code>。打开 IP:指定的端口, 输入密码就可以访问了。</p>
-<p>但是对于那种使用ssh操作服务器的用户而言，应该在后面加上<code>&amp;</code>符号以便让jupyer在后台一直运行。</p>
-<p>开启服务之后就可以通过<code>服务器ip:8888</code>这个地址访问jupyter notebook了，打开之后应该就能看到如下场景了。</p>
-<img src="/2018/05/15/paddlepaddle/Snipaste_2018-05-15_10-53-49.png" class="">
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>paddlepaddle</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>图像语义分割</title>
     <url>/2020/02/09/semantic-segmentation/</url>
     <content><![CDATA[<p>图像分割，或者叫语义图像分割，通过给图像的每一个像素分配一个它所属的类别标签。通过这种分割可以把图像中语义抽象表示出来，也是计算机视觉中一个非常重要的方向，有着非常众多重要应用场景，包括自动驾驶中的场景分割，医学影像中的病灶区域分割等。</p>
@@ -2484,6 +2428,91 @@ FWIoU=\frac{1}{\sum^{k}_{i=0}\sum^{k}_{j=0}p_{ij}}\sum^{k}_{i=0}\frac{p_{ii}\sum
       </tags>
   </entry>
   <entry>
+    <title>PaddlePaddle</title>
+    <url>/2018/05/15/paddlepaddle/</url>
+    <content><![CDATA[<p>paddlepaddle是百度开源的并行分布式全功能深度学习平台，全名为PArallel Distributed Deep LEarning，开发的动机是百度的工程师将其用在百度的各种产品中。支持CPU/GPU的单机和分布式模式，支持模型并行和数据并行。对于NLP和推荐算法、RNN等都有很好的支持。</p>
+<img src="/2018/05/15/paddlepaddle/%E4%B8%8B%E8%BD%BD.png" class="">
+<a id="more"></a>
+<h2 id="安装">安装</h2>
+<p>这里针对CentOS的操作系统，常用的配置方案是Docker+Ubuntu+PaddlePaddle（这是针对Windows系统的）目前PaddlePaddle似乎还是不支持Windows系统。这里采用一种最为简单的方式进行配置，CentOS+Anaconda3+PaddlPaddle，需要声明的一点是因为很多的第三方库开始宣布不再维护Python2的代码了，所以采用Anaconda3作为主版本。</p>
+<h3 id="配置python2.7环境">配置Python2.7环境</h3>
+<p>因为主板本使用的是Anaconda3，默认为Python3，所以通过conda环境管理机制建立一个使用Python2的版本，具体可参考另一篇文章<a href="/2018/01/08/condaGuide/" title="conda包组织管理">conda包组织管理</a>，为了使安装更加迅速，将anaconda的源改为清华大学的开源镜像，参照anaconda下的<a href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/">Anaconda 镜像使用帮助</a>进行修改。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 这条是示例，不要执行这一条</span></span><br><span class="line">conda create --name paddlepaddle python=2.7</span><br></pre></td></tr></table></figure>
+<p>因为paddlepaddle的依赖比较多，既要Pillow又要OpenCV，还要NLTK等，所以建议使用管理员（这里是指我）预先准备好的配置文件<code>paddlepaddle.yml</code>，然后执行下面的命令来创建conda的环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env create --file paddlepaddle.yml</span><br></pre></td></tr></table></figure>
+<p>通过这种方式就能将paddlepaddle的单机环境配置好了，考虑到这是在服务器上配置的，所以还是建议通过Jupyter Nodebook进行使用。</p>
+<h2 id="服务器端开启jupyter服务">服务器端开启Jupyter服务</h2>
+<p>将paddlepaddle的环境配置好了以后可以通过下面的指令来查看：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda env list</span><br></pre></td></tr></table></figure>
+<p>正常情况下会出现：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># conda environments:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">base                  *  F:\Anaconda3</span><br><span class="line">paddlepaddle             F:\Anaconda3\envs\paddlepaddle</span><br></pre></td></tr></table></figure>
+<p>通过指令<code>source activate paddlepaddle</code>激活paddlepaddle的环境，在命令行的最左边会出现一个（paddlepaddle），此时所有python的操作包括包的安装卸载等都仅仅对paddlepaddle这个环境造成影响。因为paddlepaddle仅提供了pip的安装方式，所以再用pip安装paddlepaddle（要在paddlepaddle环境激活的情况下）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install paddlepaddle</span><br></pre></td></tr></table></figure>
+<p>然后开启jupyter服务</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook 文件夹路径</span><br></pre></td></tr></table></figure>
+<p>但是通过这种方式开启的服务，一旦退出ssh界面，所有的服务都会被关闭，并且还会存在一个问题是这样开启的jupyter服务不能让远程客户端使用。</p>
+<h3 id="jupyter-开启远程服务">Jupyter 开启远程服务</h3>
+<p>默认情况下，配置文件 <code>~/.jupyter/jupyter_notebook_config.py</code>并不存在，需要自行创建。使用下列命令生成配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
+<p>如果是 root 用户执行上面的命令，会发生一个问题：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Running as root it not recommended. Use --allow-root to bypass.</span><br></pre></td></tr></table></figure>
+<p>提示信息很明显，root 用户执行时需要加上 --allow-root 选项。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config --allow-config</span><br></pre></td></tr></table></figure>
+<p>执行成功后，会出现下面的信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Writing default config to: /root/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+<p>生成密码:</p>
+<p>从 jupyter notebook 5.0 版本开始，提供了一个命令来设置密码：<code>jupyter notebook password</code>，生成的密码存储在 <code>jupyter_notebook_config.json</code>。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ jupyter notebook password</span><br><span class="line">Enter password:  ****</span><br><span class="line">Verify password: ****</span><br><span class="line">[NotebookPasswordApp] Wrote hashed password to /Users/you/.jupyter/jupyter_notebook_config.json</span><br></pre></td></tr></table></figure>
+<p>不过手动生成也并不麻烦：</p>
+<p>除了使用提供的命令，也可以通过手动安装，建议使用的手动安装，因为<code>jupyter notebook password</code>好像更啰嗦。打开 ipython 执行下面内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">In [1]: from notebook.auth import passwd</span><br><span class="line">In [2]: passwd()</span><br><span class="line">Enter password:</span><br><span class="line">Verify password:</span><br><span class="line">Out[2]: <span class="string">&#x27;sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><code>sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed</code> 这一串就是要在 <code>jupyter_notebook_config.py</code>添加的密码。</p>
+<p>修改配置文件</p>
+<p>在<code>jupyter_notebook_config.py</code>中找到下面的行，取消注释并修改。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip=<span class="string">&#x27;*&#x27;</span></span><br><span class="line">c.NotebookApp.password = u<span class="string">&#x27;sha:ce...刚才复制的那个密文&#x27;</span></span><br><span class="line">c.NotebookApp.open_browser = False</span><br><span class="line">c.NotebookApp.port =8888 <span class="comment">#可自行指定一个端口, 访问时使用该端口</span></span><br></pre></td></tr></table></figure>
+<h3 id="服务开启">服务开启</h3>
+<p>以上设置完以后就可以在服务器上启动<code>jupyter notebook，jupyter notebook</code>, root用户使用<code>jupyter notebook --allow-root</code>。打开 IP:指定的端口, 输入密码就可以访问了。</p>
+<p>但是对于那种使用ssh操作服务器的用户而言，应该在后面加上<code>&amp;</code>符号以便让jupyer在后台一直运行。</p>
+<p>开启服务之后就可以通过<code>服务器ip:8888</code>这个地址访问jupyter notebook了，打开之后应该就能看到如下场景了。</p>
+<img src="/2018/05/15/paddlepaddle/Snipaste_2018-05-15_10-53-49.png" class="">
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>paddlepaddle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NeuTube和SWC使用指南</title>
+    <url>/2018/03/16/swc-format/</url>
+    <content><![CDATA[<h2 id="swc-格式">SWC 格式</h2>
+<p>SWC是一种直接使用文本表示的文件格式，它是一个文本文件，其中包含以＃字符开头的各种字段的标题以及包含索引，半径，类型和连接信息的一系列三维点。 <a id="more"></a> 表示点的文本文件中的行具有以下布局。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">n T x y z R P</span><br><span class="line">n是一个整数标签，用于标识当前点，并从一行到下一行递增1。</span><br><span class="line">T是代表神经元节段类型的整数，例如体细胞，轴突，顶端树突等。标准接受的整数值在下面给出。</span><br><span class="line">•	0 =未定义</span><br><span class="line">•	1 =索玛</span><br><span class="line">•	2 =轴突</span><br><span class="line">•	3 =枝晶</span><br><span class="line">•	4 =顶端树突</span><br><span class="line">•	5 =叉点</span><br><span class="line">•	6 =结束点</span><br><span class="line">•	7 =自定义</span><br><span class="line">x，y，z给出每个节点的笛卡尔坐标。</span><br><span class="line">R是该节点处的半径。</span><br><span class="line">P表示当前点的父（整数标签）或-1以表示原点（soma）。</span><br></pre></td></tr></table></figure>
+<p>下面显示了 由NeuronStudio生成的仅包含8个点的示例文件。请注意，标题的某些字段缺少值。在写这篇文章的时候，目前还不清楚这是否允许。在潜在的SWC阅读器使用这些字段的情况下，NeuronStudio使用1.0填充SHRINKAGE_CORRECTION和SCALE。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ORIGINAL_SOURCE NeuronStudio 0.8.80</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> CREATURE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> REGION</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> FIELD/LAYER</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> TYPE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> CONTRIBUTOR</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> REFERENCE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> RAW</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> EXTRAS</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SOMA_AREA</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SHINKAGE_CORRECTION 1.0 1.0 1.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> VERSION_NUMBER 1.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> VERSION_DATE 2007-07-24</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SCALE 1.0 1.0 1.0</span></span><br><span class="line">1 1 14.566132 34.873772 7.857000 0.717830 -1</span><br><span class="line">2 0 16.022520 33.760513 7.047000 0.463378 1</span><br><span class="line">3 5 17.542000 32.604973 6.885001 0.638007 2</span><br><span class="line">4 0 19.163984 32.022469 5.913000 0.602284 3</span><br><span class="line">5 0 20.448090 30.822802 4.860000 0.436025 4</span><br><span class="line">6 6 21.897903 28.881084 3.402000 0.471886 5</span><br><span class="line">7 0 18.461960 30.289471 8.586000 0.447463 3</span><br><span class="line">8 6 19.420759 28.730757 9.558000 0.496217 7</span><br></pre></td></tr></table></figure>
+<h2 id="读取swc文件">读取SWC文件</h2>
+<img src="/2018/03/16/swc-format/NeutubeLogo.png" class="" title="title:NeuTube">
+<p>这里以NeuTube为例读取SWC文件，在NeuTube的<a href="http://www.neutracing.com/download/">下载页面</a>选择对应的下载方式下载完成就可以得到一个压缩包，然后将这个压缩包解压到你要的位置，启动neuTube。你会得到下面的页面</p>
+<img src="/2018/03/16/swc-format/Snipaste_2018-03-17_00-12-17.png" class="" title="title:启动界面">
+<p>然后点File-&gt;Open选择你要打开的SWC文件即可得到三维的用一个一个圆形叠加在一起的模型，通常是神经元模型。</p>
+<img src="/2018/03/16/swc-format/Snipaste_2018-03-17_00-14-55.png" class="" title="title:SWC可视化界面">
+<p>TODO：NeuTube其他操作</p>
+<h2 id="更多阅读">更多阅读</h2>
+<ul>
+<li><a href="http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html" class="uri">http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html</a></li>
+<li><a href="http://research.mssm.edu/cnic/swc.html" class="uri">http://research.mssm.edu/cnic/swc.html</a></li>
+<li><a href="http://www.neutracing.com/tutorial/" class="uri">http://www.neutracing.com/tutorial/</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>自然科学</category>
+      </categories>
+      <tags>
+        <tag>SWC</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>神经科学与“记忆印记”</title>
     <url>/2018/01/09/silent-engrams/</url>
     <content><![CDATA[<p>神经科学这门被DNA双螺旋结构的发现者之一Francis Crick和其他知名的生物学家吹捧成为未来的潮流的学科。到目前为止都还没有出现一个特别显著的突破，科学家们对大脑功能的分子和细胞机制的了解极其有限。<img src="/2018/01/09/silent-engrams/Memory_2880x1405-2880x1405.jpg" class="" title="Eero Lampinen for Quanta Magazine"> <a id="more"></a></p>
@@ -2574,35 +2603,6 @@ V(s)=\mathbb{E}_{\pi}[ \sum^{\infty}_{t=0}\gamma&#39;R(s_{t})\mid s_{0}=s]
       <tags>
         <tag>认知神经科学</tag>
         <tag>记忆</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NeuTube和SWC使用指南</title>
-    <url>/2018/03/16/swc-format/</url>
-    <content><![CDATA[<h2 id="swc-格式">SWC 格式</h2>
-<p>SWC是一种直接使用文本表示的文件格式，它是一个文本文件，其中包含以＃字符开头的各种字段的标题以及包含索引，半径，类型和连接信息的一系列三维点。 <a id="more"></a> 表示点的文本文件中的行具有以下布局。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">n T x y z R P</span><br><span class="line">n是一个整数标签，用于标识当前点，并从一行到下一行递增1。</span><br><span class="line">T是代表神经元节段类型的整数，例如体细胞，轴突，顶端树突等。标准接受的整数值在下面给出。</span><br><span class="line">•	0 =未定义</span><br><span class="line">•	1 =索玛</span><br><span class="line">•	2 =轴突</span><br><span class="line">•	3 =枝晶</span><br><span class="line">•	4 =顶端树突</span><br><span class="line">•	5 =叉点</span><br><span class="line">•	6 =结束点</span><br><span class="line">•	7 =自定义</span><br><span class="line">x，y，z给出每个节点的笛卡尔坐标。</span><br><span class="line">R是该节点处的半径。</span><br><span class="line">P表示当前点的父（整数标签）或-1以表示原点（soma）。</span><br></pre></td></tr></table></figure>
-<p>下面显示了 由NeuronStudio生成的仅包含8个点的示例文件。请注意，标题的某些字段缺少值。在写这篇文章的时候，目前还不清楚这是否允许。在潜在的SWC阅读器使用这些字段的情况下，NeuronStudio使用1.0填充SHRINKAGE_CORRECTION和SCALE。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ORIGINAL_SOURCE NeuronStudio 0.8.80</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> CREATURE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> REGION</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> FIELD/LAYER</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> TYPE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> CONTRIBUTOR</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> REFERENCE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> RAW</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> EXTRAS</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SOMA_AREA</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SHINKAGE_CORRECTION 1.0 1.0 1.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> VERSION_NUMBER 1.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> VERSION_DATE 2007-07-24</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> SCALE 1.0 1.0 1.0</span></span><br><span class="line">1 1 14.566132 34.873772 7.857000 0.717830 -1</span><br><span class="line">2 0 16.022520 33.760513 7.047000 0.463378 1</span><br><span class="line">3 5 17.542000 32.604973 6.885001 0.638007 2</span><br><span class="line">4 0 19.163984 32.022469 5.913000 0.602284 3</span><br><span class="line">5 0 20.448090 30.822802 4.860000 0.436025 4</span><br><span class="line">6 6 21.897903 28.881084 3.402000 0.471886 5</span><br><span class="line">7 0 18.461960 30.289471 8.586000 0.447463 3</span><br><span class="line">8 6 19.420759 28.730757 9.558000 0.496217 7</span><br></pre></td></tr></table></figure>
-<h2 id="读取swc文件">读取SWC文件</h2>
-<img src="/2018/03/16/swc-format/NeutubeLogo.png" class="" title="title:NeuTube">
-<p>这里以NeuTube为例读取SWC文件，在NeuTube的<a href="http://www.neutracing.com/download/">下载页面</a>选择对应的下载方式下载完成就可以得到一个压缩包，然后将这个压缩包解压到你要的位置，启动neuTube。你会得到下面的页面</p>
-<img src="/2018/03/16/swc-format/Snipaste_2018-03-17_00-12-17.png" class="" title="title:启动界面">
-<p>然后点File-&gt;Open选择你要打开的SWC文件即可得到三维的用一个一个圆形叠加在一起的模型，通常是神经元模型。</p>
-<img src="/2018/03/16/swc-format/Snipaste_2018-03-17_00-14-55.png" class="" title="title:SWC可视化界面">
-<p>TODO：NeuTube其他操作</p>
-<h2 id="更多阅读">更多阅读</h2>
-<ul>
-<li><a href="http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html" class="uri">http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html</a></li>
-<li><a href="http://research.mssm.edu/cnic/swc.html" class="uri">http://research.mssm.edu/cnic/swc.html</a></li>
-<li><a href="http://www.neutracing.com/tutorial/" class="uri">http://www.neutracing.com/tutorial/</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>自然科学</category>
-      </categories>
-      <tags>
-        <tag>SWC</tag>
       </tags>
   </entry>
   <entry>
