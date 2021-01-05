@@ -235,13 +235,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>12k</span>
+              <span>8.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>11 分钟</span>
+              <span>8 分钟</span>
             </span>
 
         </div>
@@ -253,7 +253,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在基础背景介绍过之后可以开始非约束的最小化问题的收敛速度（收敛率）（the rate of convergence）学习了，在<a href="/2019/04/15/Convex-Optimization-Note-1/" title="第一章">第一章</a>中也已经证明反梯度方向是最快的下降方向。在这篇文章中，我们将基于基本的直觉感受展开描述。在很多的推导中我们不能以非常直接或者解析的方式去描述某一类问题最为精确的形式，所以我们将尽自己所能找到一些能够有充足证明确定它成立的证明来论证，也就是宁愿给一个不那么精确的描述也不要给出一个错误的估计。下面的笔记依然是基于Lectures on convex optimization<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
+          <p>在基础背景介绍过之后可以开始非约束的最小化问题的收敛速度（收敛率）（the rate of convergence）学习了，在<a href="/2019/04/15/Convex-Optimization-Note-1/" title="第一章">第一章</a>中也已经证明反梯度方向是最快的下降方向。在这篇文章中，我们将基于基本的直觉感受展开描述。在很多的推导中我们不能以非常直接或者解析的方式去描述某一类问题最为精确的形式，所以我们将尽自己所能找到一些能够有充足证明确定它成立的证明来论证，也就是宁愿给一个不那么精确的描述也不要给出一个错误的估计。下面的笔记依然是基于Lectures on convex optimization<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/04/18/Convex-Optimization-Note-2/#more" rel="contents">
@@ -328,13 +328,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>23k</span>
+              <span>16k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>21 分钟</span>
+              <span>15 分钟</span>
             </span>
 
         </div>
@@ -346,7 +346,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>凸优化，或叫做凸最优化，凸最小化，是数学最优化的一个子领域，研究定义于凸集中的凸函数最小化的问题。凸优化在某种意义上说较一般情形的数学最优化问题要简单，譬如在凸优化中局部最优值必定是全局最优值。凸函数的凸性使得凸分析中的有力工具在最优化问题中得以应用，如次导数等。凸优化应用于很多学科领域，诸如自动控制系统，信号处理，通讯和网络，电子电路设计，数据分析和建模，统计学（最优化设计），以及金融。在近来运算能力提高和最优化理论发展的背景下，一般的凸优化已经接近简单的线性规划一样直捷易行。许多最优化问题都可以转化成凸优化（凸最小化）问题，例如求凹函数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span> 最大值的问题就等同于求凸函数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord">−</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span> 最小值的问题。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>下面的这些理论证明等主要来自于NESTEROV的书<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>。</p>
+          <p>凸优化，或叫做凸最优化，凸最小化，是数学最优化的一个子领域，研究定义于凸集中的凸函数最小化的问题。凸优化在某种意义上说较一般情形的数学最优化问题要简单，譬如在凸优化中局部最优值必定是全局最优值。凸函数的凸性使得凸分析中的有力工具在最优化问题中得以应用，如次导数等。凸优化应用于很多学科领域，诸如自动控制系统，信号处理，通讯和网络，电子电路设计，数据分析和建模，统计学（最优化设计），以及金融。在近来运算能力提高和最优化理论发展的背景下，一般的凸优化已经接近简单的线性规划一样直捷易行。许多最优化问题都可以转化成凸优化（凸最小化）问题，例如求凹函数 <span class="math inline">\(f\)</span> 最大值的问题就等同于求凸函数 <span class="math inline">\(-f\)</span> 最小值的问题。<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>下面的这些理论证明等主要来自于NESTEROV的书<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/04/15/Convex-Optimization-Note-1/#more" rel="contents">
@@ -532,7 +532,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>PyQt5 在应付一些小的场景是够了，而且因为其简单易用，以Python为编写语言可以很简单地和其他以Python为主的库相容。而且为了方便后续的修改，我们尝试使用MVC（Model，View，Controller）的方式进行程序设计<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
+          <p>PyQt5 在应付一些小的场景是够了，而且因为其简单易用，以Python为编写语言可以很简单地和其他以Python为主的库相容。而且为了方便后续的修改，我们尝试使用MVC（Model，View，Controller）的方式进行程序设计<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
 <img src="/2019/03/20/PyQt5-Note1-UI/diagram-mvc-480x241.png" class="">
           <!--noindex-->
             <div class="post-button">
@@ -702,13 +702,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>6.2k</span>
+              <span>5.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>6 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -796,7 +796,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>6k</span>
+              <span>5.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -814,7 +814,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Particle Filters，从1993年提出来就作为一种应用很广的最优化估计算法，用于解决非线性非高斯分布的状态空间问题求解，通过在线的数值估计的方式解决问题。现在也应用在像计算机视觉，计量经济学，机器人学和导航等各种各样的场景中。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>并且随着改进方案的不断提出，Particle Filters也可以应用在更加高维，更加复杂的场景中。<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+          <p>Particle Filters，从1993年提出来就作为一种应用很广的最优化估计算法，用于解决非线性非高斯分布的状态空间问题求解，通过在线的数值估计的方式解决问题。现在也应用在像计算机视觉，计量经济学，机器人学和导航等各种各样的场景中。<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>并且随着改进方案的不断提出，Particle Filters也可以应用在更加高维，更加复杂的场景中。<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/08/29/Particle-Filters/#more" rel="contents">
@@ -1245,12 +1245,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">226k</span>
+    <span title="站点总字数">201k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:26</span>
+    <span title="站点阅读时长">3:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>

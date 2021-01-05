@@ -249,7 +249,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>815</span>
+              <span>813</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -270,8 +270,8 @@
         <p>VTK是一个开源面向对象的软件系统，可以用于计算机图形学，可视化，和图像处理。提供了很多的非常简单容易使用的面向对象的设计和实现。</p>
 <img src="/2018/01/09/vtkGuide01/vtk_logo-main1.png" class="">
 <a id="more"></a>
-<h2 id="smartpointer设计"><a class="markdownIt-Anchor" href="#smartpointer设计"></a> SmartPointer设计</h2>
-<p>在VTK中的很多对象操作都是基于SmartPointer实现的，这个在官方文档中提到，它背后的思想是引用计数和更加自动化的内存管理，在使用这个模板类不需要自己去指定释放资源，因为根据引用计数，一旦这个指针没有再被引用了之后就会被被自动释放很好地保护了内存资源<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
+<h2 id="smartpointer设计">SmartPointer设计</h2>
+<p>在VTK中的很多对象操作都是基于SmartPointer实现的，这个在官方文档中提到，它背后的思想是引用计数和更加自动化的内存管理，在使用这个模板类不需要自己去指定释放资源，因为根据引用计数，一旦这个指针没有再被引用了之后就会被被自动释放很好地保护了内存资源<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
 <p>如果不用智能指针，对于一个VTK对象则要</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vtkObject* MyObject = vtkObject::New();</span><br></pre></td></tr></table></figure>
 <p>然后使用完成后还必须要对其进行释放</p>
@@ -281,12 +281,11 @@
 <p>把指针传递给一个函数</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MyFunction</span><span class="params">(vtkSmartPointer&lt;vtkPolyData&gt; polydata)</span> </span>&#123; ... &#125;</span><br><span class="line">...</span><br><span class="line">vtkSmartPointer&lt;vtkPolyData&gt; polydata = vtkSmartPointer&lt;vtkPolyData&gt;::New();</span><br><span class="line">MyFunction(polydata);</span><br></pre></td></tr></table></figure>
 <p>还可以将智能指针作为类的成员变量，这样的好处之一就是避免总是看到星星<code>*</code>，当然最重要的事情是我们不必再劳心于程序设计中的内存管理，因为智能指针已经通过引用计数来解决了这类问题，有点Java的感觉了。</p>
-<h2 id="vtkpolydatamapper"><a class="markdownIt-Anchor" href="#vtkpolydatamapper"></a> vtkPolyDataMapper</h2>
-<hr class="footnotes-sep" />
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.vtk.org/Wiki/VTK/Tutorials/SmartPointers">https://www.vtk.org/Wiki/VTK/Tutorials/SmartPointers</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
+<h2 id="vtkpolydatamapper">vtkPolyDataMapper</h2>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>https://www.vtk.org/Wiki/VTK/Tutorials/SmartPointers<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -411,7 +410,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#smartpointer%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text"> SmartPointer设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vtkpolydatamapper"><span class="nav-number">2.</span> <span class="nav-text"> vtkPolyDataMapper</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#smartpointer%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">SmartPointer设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vtkpolydatamapper"><span class="nav-number">2.</span> <span class="nav-text">vtkPolyDataMapper</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -483,12 +482,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">226k</span>
+    <span title="站点总字数">201k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:26</span>
+    <span title="站点阅读时长">3:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>

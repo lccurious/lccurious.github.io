@@ -270,7 +270,7 @@
       
         <p>要认真看文档，网上虽然存在很多看起来好用的小抄，但是很多还是不如直接去看文档更方便满足你的需求。</p>
 <a id="more"></a>
-<h2 id="基于-tensorboard"><a class="markdownIt-Anchor" href="#基于-tensorboard"></a> 基于 Tensorboard</h2>
+<h2 id="基于-tensorboard">基于 Tensorboard</h2>
 <p>可以用 TensorBoard 来展现 TensorFlow 图，绘制图像生成的定量指标图以及显示附加数据（如其中传递的图像）。当 TensorBoard 完全配置好后，它将显示如下：</p>
 <img src="/2019/09/25/Training-Visualization/mnist_tensorboard.png" class="">
 <ul>
@@ -279,9 +279,9 @@
 <li>Image</li>
 <li>text</li>
 </ul>
-<h3 id="tensorflow-写法"><a class="markdownIt-Anchor" href="#tensorflow-写法"></a> Tensorflow 写法</h3>
+<h3 id="tensorflow-写法">Tensorflow 写法</h3>
 <p>下次再补，已经很久没有使用过 TensorFlow，等下次用到再来补充。</p>
-<h3 id="pytorch-写法"><a class="markdownIt-Anchor" href="#pytorch-写法"></a> Pytorch 写法</h3>
+<h3 id="pytorch-写法">Pytorch 写法</h3>
 <p>Pytorch 1.2.0 之后就正式支持了 TensorBoard 的内容记录，功能都实现在 <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensorboard.html"><code>torch.utils.tensorboard</code></a> 内。</p>
 <p>另附，如果需要对中间的特征进行输出观察的话，可以用 PyTorch 的 hook 机制，可以在保持原始网络的结构的情况下实现中间特征的观测。</p>
 <p>基于版本 1.2.0 共有两种 hook 机制，分别是针对 Tensor 的 hook 和针对 <code>nn.Module</code> 的 hook，有不同的用法。以针对 <code>nn.Module</code> 的用法，可以按照名字将模型中你关注的模块挑出，然后注册好传播所用的函数，以 HRNet 的特征层提取为例，这里可以针对某个 Branch 做输出观测。</p>
@@ -299,7 +299,9 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># add feature monitor</span></span><br><span class="line"><span class="keyword">for</span> idx, (name, m) <span class="keyword">in</span> enumerate(model.module.named_modules()):</span><br><span class="line">    <span class="keyword">if</span> name == <span class="string">&#x27;stage4&#x27;</span>:</span><br><span class="line">        m.register_forward_hook(feature_viz_stage4)</span><br><span class="line">        print(idx, <span class="string">&#x27;-&gt;&#x27;</span>, name, <span class="string">&#x27;hooked!&#x27;</span>)</span><br><span class="line">    <span class="keyword">elif</span> name == <span class="string">&#x27;stage3&#x27;</span>:</span><br><span class="line">        m.register_forward_hook(feature_viz_stage3)</span><br><span class="line">        print(idx, <span class="string">&#x27;-&gt;&#x27;</span>, name, <span class="string">&#x27;hooked!&#x27;</span>)</span><br><span class="line">    <span class="keyword">elif</span> name == <span class="string">&#x27;stage2&#x27;</span>:</span><br><span class="line">        m.register_forward_hook(feature_viz_stage2)</span><br><span class="line">        print(idx, <span class="string">&#x27;-&gt;&#x27;</span>, name, <span class="string">&#x27;hooked!&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>另外，上面用的是 <code>model.module</code> 是因为在实际训练过程中使用了 <code>model = torch.nn.DataParallel(model, device_ids=cfg.GPUS).cuda()</code> 所以需要通过这一步拿到真正对应的模块名字。</p>
-<p><img src="feature_training.png" alt="中间的特征可视化结果" /></p>
+<figure>
+<img src="feature_training.png" alt="中间的特征可视化结果" /><figcaption aria-hidden="true">中间的特征可视化结果</figcaption>
+</figure>
 
     </div>
 
@@ -422,7 +424,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-tensorboard"><span class="nav-number">1.</span> <span class="nav-text"> 基于 Tensorboard</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tensorflow-%E5%86%99%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text"> Tensorflow 写法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pytorch-%E5%86%99%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text"> Pytorch 写法</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-tensorboard"><span class="nav-number">1.</span> <span class="nav-text">基于 Tensorboard</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tensorflow-%E5%86%99%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">Tensorflow 写法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pytorch-%E5%86%99%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">Pytorch 写法</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -494,12 +496,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">226k</span>
+    <span title="站点总字数">201k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:26</span>
+    <span title="站点阅读时长">3:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>

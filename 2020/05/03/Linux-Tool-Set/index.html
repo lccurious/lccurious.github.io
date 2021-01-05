@@ -269,18 +269,15 @@
         <p>不定期更新的 Linux 的脚本管理片段，用于提高日常使用过程中效率。</p>
 <img src="/2020/05/03/Linux-Tool-Set/v2-01a6301b2101a984790cb8895ece7d96_1200x500.jpg" class="">
 <a id="more"></a>
-<h2 id="文件统计"><a class="markdownIt-Anchor" href="#文件统计"></a> 文件统计</h2>
+<h2 id="文件统计">文件统计</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">du -sh  <span class="comment"># 显示当前文件夹的大小</span></span><br><span class="line">du -lh --max-depth=1  <span class="comment"># 列出当前文件夹下各个目录的大小</span></span><br><span class="line">df -lh  <span class="comment"># 列出当前文件系统的空间使用情况</span></span><br></pre></td></tr></table></figure>
-<p>tree 需要额外安装，是命令行常用的查看文件夹项目结构的工具</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree dir_name -L 3  <span class="comment"># 以树形结构列出当前目录最多三级的子项目</span></span><br></pre></td></tr></table></figure>
-<h2 id="文件传输"><a class="markdownIt-Anchor" href="#文件传输"></a> 文件传输</h2>
+<p>tree 需要额外安装，是命令行常用的查看文件夹项目结构的工具 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree dir_name -L 3  <span class="comment"># 以树形结构列出当前目录最多三级的子项目</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="文件传输">文件传输</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -avz -P source_path username@target_machine:target_path/  <span class="comment"># 传输某个文件夹到另一台机器</span></span><br></pre></td></tr></table></figure>
-<h2 id="命令行"><a class="markdownIt-Anchor" href="#命令行"></a> 命令行</h2>
-<p>新建一个tmux会话，可以在里面开多个窗口，把窗口分成多个面板，然后用 <code>ctrl+b+d</code> 离开这个会话，之后再通过 <code>tmux a -t name</code> 回到当前的这个会话，所有的内容都会保持原样。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tmux new -s name  <span class="comment"># 新建一个tmux会话</span></span><br><span class="line">tmux ls  <span class="comment"># 查看已经打开的会话列表</span></span><br><span class="line">tmux a -t name  <span class="comment"># 进入一个已有的会话</span></span><br></pre></td></tr></table></figure>
-<h2 id="连接"><a class="markdownIt-Anchor" href="#连接"></a> 连接</h2>
-<p>创建软连接相当于只创建了一个快捷方式指向源目标，程序访问这个软连接就会自动指向它所指向的目标。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s source_path target_path</span><br></pre></td></tr></table></figure>
+<h2 id="命令行">命令行</h2>
+<p>新建一个tmux会话，可以在里面开多个窗口，把窗口分成多个面板，然后用 <code>ctrl+b+d</code> 离开这个会话，之后再通过 <code>tmux a -t name</code> 回到当前的这个会话，所有的内容都会保持原样。 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tmux new -s name  <span class="comment"># 新建一个tmux会话</span></span><br><span class="line">tmux ls  <span class="comment"># 查看已经打开的会话列表</span></span><br><span class="line">tmux a -t name  <span class="comment"># 进入一个已有的会话</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="连接">连接</h2>
+<p>创建软连接相当于只创建了一个快捷方式指向源目标，程序访问这个软连接就会自动指向它所指向的目标。 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s source_path target_path</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
@@ -402,7 +399,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%BB%9F%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text"> 文件统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="nav-number">2.</span> <span class="nav-text"> 文件传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="nav-number">3.</span> <span class="nav-text"> 命令行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5"><span class="nav-number">4.</span> <span class="nav-text"> 连接</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%BB%9F%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">文件统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="nav-number">2.</span> <span class="nav-text">文件传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="nav-number">3.</span> <span class="nav-text">命令行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5"><span class="nav-number">4.</span> <span class="nav-text">连接</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -474,12 +471,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">226k</span>
+    <span title="站点总字数">201k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:26</span>
+    <span title="站点阅读时长">3:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
