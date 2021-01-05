@@ -269,43 +269,30 @@
 <p>当程序运行到需要一个动态分配的变量或对象时，必须向系统申请取得堆中的一块所需大小的存贮空间，用于存贮该变量或对象。当不再使用该变量或对象时，也就是它的生命结束时，要显式释放它所占用的存贮空间，这样系统就能对该堆空间进行再次分配，做到重复使用有限的资源。</p>
 <a id="more"></a>
 <p><strong>内存的分配方式：</strong></p>
-<ol>
-<li>从静态存储区分配
-<blockquote>
-<p>内存在程序编译的时候就已经分配好了，这些内存空间在程序运行期间都存在。</p>
-</blockquote>
-</li>
-<li>在堆栈上分配
-<blockquote>
-<p>在函数执行期间，函数内部变量，包括形参等的存储单元都创建在堆栈上，函数结束的时候这些存储单元会自动释放。<br />
-堆栈内存分配运算内置在处理器的指令集中，效率很高，并且一般不存在失败的危险，但是分配的内存空间有限，可能会出现栈溢出的现象。</p>
-</blockquote>
-</li>
-<li>从堆栈或者自由存储空间上分配
-<blockquote>
-<p>程序在运行期间用malloc()或者new申请任意数量的内存，由程序员决定释放的时间。</p>
-</blockquote>
-</li>
+<ol type="1">
+<li>从静态存储区分配 &gt; 内存在程序编译的时候就已经分配好了，这些内存空间在程序运行期间都存在。</li>
+<li>在堆栈上分配 &gt; 在函数执行期间，函数内部变量，包括形参等的存储单元都创建在堆栈上，函数结束的时候这些存储单元会自动释放。 &gt; 堆栈内存分配运算内置在处理器的指令集中，效率很高，并且一般不存在失败的危险，但是分配的内存空间有限，可能会出现栈溢出的现象。</li>
+<li>从堆栈或者自由存储空间上分配 &gt; 程序在运行期间用malloc()或者new申请任意数量的内存，由程序员决定释放的时间。</li>
 </ol>
 <blockquote>
 <p>malloc/free、new/delete、new[]/delete[]一定要匹配使用，否则可能会出现内存泄漏问题。</p>
 </blockquote>
-<h2 id="针对内置类型"><a class="markdownIt-Anchor" href="#针对内置类型"></a> 针对内置类型</h2>
+<h2 id="针对内置类型">针对内置类型</h2>
 <p>函数原型</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *)</span><span class="title">throw</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
 <p>用法</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p2 = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1</span>);<span class="comment">//开辟了一个int类型的空间，并用1进行了初始化</span></span><br><span class="line"><span class="keyword">int</span> *p3 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">3</span>];<span class="comment">//开辟了具有3个int类型的空间，类似于数组（都是连续的）</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> p1;</span><br><span class="line"><span class="keyword">delete</span> p2;</span><br><span class="line"><span class="keyword">delete</span>[] p3;<span class="comment">//注意匹配使用</span></span><br></pre></td></tr></table></figure>
-<h2 id="针对自定义类型"><a class="markdownIt-Anchor" href="#针对自定义类型"></a> 针对自定义类型</h2>
+<h2 id="针对自定义类型">针对自定义类型</h2>
 <p>自定义类型的内存分配函数的工作流程为：operator new-&gt;malloc函数-&gt;如果开辟失败，则抛出异常-&gt;如果开辟成功就调用构造函数。</p>
 <p>对于在自定义对象的新建和释放一定要确保析构函数和构造函数能够统一，保证这个对象能够被明确的析构，从内存中清除，否则也将会产生不可预料的内存访问冲突(异常0xC0000005)。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// new_scalar.cpp</span></span><br><span class="line"><span class="comment">////////////////////////////////////</span></span><br><span class="line"><span class="comment">// new() Fallback Ordering</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// +----------+</span></span><br><span class="line"><span class="comment">// |new_scalar&lt;---------------+</span></span><br><span class="line"><span class="comment">// +----^-----+               |</span></span><br><span class="line"><span class="comment">//      |                     |</span></span><br><span class="line"><span class="comment">// +----+-------------+  +----+----+</span></span><br><span class="line"><span class="comment">// |new_scalar_nothrow|  |new_array|</span></span><br><span class="line"><span class="comment">// +------------------+  +----^----+</span></span><br><span class="line"><span class="comment">//                            |</span></span><br><span class="line"><span class="comment">//               +------------+----+</span></span><br><span class="line"><span class="comment">//               |new_array_nothrow|</span></span><br><span class="line"><span class="comment">//               +-----------------+</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span>* __CRTDECL <span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span> <span class="keyword">const</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (;;)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">void</span>* <span class="keyword">const</span> block = <span class="built_in">malloc</span>(size))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> block;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (_callnewh(size) == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (size == SIZE_MAX)</span><br><span class="line">            &#123;</span><br><span class="line">                __scrt_throw_std_bad_array_new_length();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                __scrt_throw_std_bad_alloc();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The new handler was successful; try to allocate again...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="异常0xc0000005"><a class="markdownIt-Anchor" href="#异常0xc0000005"></a> 异常0xC0000005</h2>
+<h2 id="异常0xc0000005">异常0xC0000005</h2>
 <p>这种错误的意思一般是指访问了不属于自己的内存空间，这种错误出现的原因有：</p>
-<ol>
+<ol type="1">
 <li>给一个数组分配了较小的内存空间，然后又给该数组赋了一个比较大的值。</li>
 <li>句柄或指针在使用前被释放。</li>
 </ol>
-<h3 id="堆栈"><a class="markdownIt-Anchor" href="#堆栈"></a> 堆栈</h3>
+<h3 id="堆栈">堆栈</h3>
 <p>栈：在Windows下，栈是向低地址扩展的数据结构，是一块连续内存的空间，也就是系统在程序编译的过程种就已经确定好大小的空间，如果申请的空间超过栈的剩余空间将会提示stack overflow.</p>
 <p>堆：是向高地址扩展的数据结构，是不连续的内存区域，堆的大小受限于计算机系统中有效的虚拟内存，比较灵活也比较大。</p>
 <p>栈是由系统自动分配，速度较快，但是无法自定义地址。堆是由new分配内存，一般速度比较慢，容易产生内存碎片，不过用起来非常方便。</p>
@@ -431,7 +418,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%92%88%E5%AF%B9%E5%86%85%E7%BD%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text"> 针对内置类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%92%88%E5%AF%B9%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text"> 针对自定义类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B80xc0000005"><span class="nav-number">3.</span> <span class="nav-text"> 异常0xC0000005</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E6%A0%88"><span class="nav-number">3.1.</span> <span class="nav-text"> 堆栈</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%92%88%E5%AF%B9%E5%86%85%E7%BD%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">针对内置类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%92%88%E5%AF%B9%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">针对自定义类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B80xc0000005"><span class="nav-number">3.</span> <span class="nav-text">异常0xC0000005</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E6%A0%88"><span class="nav-number">3.1.</span> <span class="nav-text">堆栈</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -494,7 +481,7 @@
 <div class="copyright">
   
   &copy; 2017 – 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -503,12 +490,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">226k</span>
+    <span title="站点总字数">201k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:26</span>
+    <span title="站点阅读时长">3:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>

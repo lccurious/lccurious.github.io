@@ -273,8 +273,8 @@
         <p>互联网软件的开发和发布，已经形成了一套标准呢流程，最重要的部分就是持续集成（Continuous integration，CI）。持续集成强调开发人员提交了新代码之后，立刻进行构建、（单元）测试。根据测试结果，我们可以确定新代码和原有代码能否正确地集成在一起。</p>
 <img src="/2019/03/14/Continuous-integration/CI.jpg" class="" title="持续集成">
 <a id="more"></a>
-<h2 id="什么是-ci"><a class="markdownIt-Anchor" href="#什么是-ci"></a> 什么是 CI ？</h2>
-<p>因为在有些产品的开发周期中会有非常多非常快速密集的变更（例如一天多次将代码集成到主干上），所以在开发过程中有很多的错误难以被及时发现。采用持续集成的方法，虽然并不能使得产品避免bug，但是可以更早更及时地发现问题，不至于累计成难以解决的大问题<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。持续继承可以给团队带来的好处有：</p>
+<h2 id="什么是-ci">什么是 CI ？</h2>
+<p>因为在有些产品的开发周期中会有非常多非常快速密集的变更（例如一天多次将代码集成到主干上），所以在开发过程中有很多的错误难以被及时发现。采用持续集成的方法，虽然并不能使得产品避免bug，但是可以更早更及时地发现问题，不至于累计成难以解决的大问题<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。持续继承可以给团队带来的好处有：</p>
 <ul>
 <li>避免漫长紧张的集成</li>
 <li>提高项目的透明度和团队交流</li>
@@ -284,12 +284,12 @@
 <li>更快地交付代码</li>
 </ul>
 <img src="/2019/03/14/Continuous-integration/Snipaste_2019-03-14_13-37-48.png" class="">
-<p>大部分的持续集成系统都会有一套相同的基本工具和过程。当开发者将一个新的工作增加到分支上时，服务器机会自动编译和测试代码来确定是否能够正常工作，是否能够和主开发分支上的代码集成。持续集成服务会输出编译结果和这个分支能否通过所有集成到主开发分支上的要求。针对每一次提交，CI就能够输出连续的交付（Continuous Delivery，CD），新版本的软件通过质量团队或者用户的评审之后，可以进入生产阶段。代码通过评审的下一步是进入持续部署（Continuous Deployment）<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>，代码通过评审之后自动部署到生产环境中去。</p>
-<h2 id="ci-流程"><a class="markdownIt-Anchor" href="#ci-流程"></a> CI 流程</h2>
-<p>根据持续集成的设计，整个过程从提交代码到生产，主要有以下几步<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>。</p>
-<h3 id="提交"><a class="markdownIt-Anchor" href="#提交"></a> 提交</h3>
+<p>大部分的持续集成系统都会有一套相同的基本工具和过程。当开发者将一个新的工作增加到分支上时，服务器机会自动编译和测试代码来确定是否能够正常工作，是否能够和主开发分支上的代码集成。持续集成服务会输出编译结果和这个分支能否通过所有集成到主开发分支上的要求。针对每一次提交，CI就能够输出连续的交付（Continuous Delivery，CD），新版本的软件通过质量团队或者用户的评审之后，可以进入生产阶段。代码通过评审的下一步是进入持续部署（Continuous Deployment）<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>，代码通过评审之后自动部署到生产环境中去。</p>
+<h2 id="ci-流程">CI 流程</h2>
+<p>根据持续集成的设计，整个过程从提交代码到生产，主要有以下几步<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>。</p>
+<h3 id="提交">提交</h3>
 <p>开发者完成一部分的代码编写之后，向代码仓库提交代码。所有后面的步骤都始于本地代码的一次提交（commit）。</p>
-<h3 id="测试"><a class="markdownIt-Anchor" href="#测试"></a> 测试</h3>
+<h3 id="测试">测试</h3>
 <p>代码仓库对commit操作配置了钩子（hook），只要提交代码或者合并进主干，就会跑自动化测试。</p>
 <p>测试有好几种。</p>
 <blockquote>
@@ -300,23 +300,20 @@
 </ul>
 </blockquote>
 <p>至少单元测试要能够通过保证这个新加的模块是能够正常使用的。这样至少可以合并到主干分支中去，但是还需要确定这种合并之后的软件是不是能够很正常运作，所以还需要进行集成测试，甚至端对端测试来保证每次提交的结果是正确的。如果不能保证整体是能够正常运行的，那就不能到下一步的部署阶段。</p>
-<h3 id="部署"><a class="markdownIt-Anchor" href="#部署"></a> 部署</h3>
+<h3 id="部署">部署</h3>
 <p>通过所有的测试之后，代码是可以部署到生产环境了，将这个版本的所有文件打包就可以发布到服务器上了。</p>
 <p>生产服务器将打包文件，解包成本地的一个目录，再将运行路径的符号链接（symlink）指向这个目录，然后重新启动应用。这方面的部署工具有<a target="_blank" rel="noopener" href="http://www.ansible.com/">Ansible</a>，<a target="_blank" rel="noopener" href="https://www.chef.io/chef/">Chef</a>，<a target="_blank" rel="noopener" href="https://puppetlabs.com/">Puppet</a>等。</p>
-<h2 id="github-和-ci"><a class="markdownIt-Anchor" href="#github-和-ci"></a> Github 和 CI</h2>
+<h2 id="github-和-ci">Github 和 CI</h2>
 <p>在Github上你可以通过添加WebHook来连接你的CI服务器，一旦你发布了新的内容或者有新的pull，都会被拷贝到服务器上然后运行编译和测试程序。</p>
 <img src="/2019/03/14/Continuous-integration/Snipaste_2019-03-14_13-53-21.png" class="">
 <p>然后服务器会及时返回测试结果给GitHub，来告知是否通过测试。所有的过程都是高度自动自动化，这个结果还会产生一个build的徽章，你可以把它添加到你的README文件中去。</p>
 <img src="/2019/03/14/Continuous-integration/Snipaste_2019-03-14_13-55-24.png" class="">
-<hr class="footnotes-sep" />
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.thoughtworks.com/continuous-integration">https://www.thoughtworks.com/continuous-integration</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=xSv_m3KhUO8">https://www.youtube.com/watch?v=xSv_m3KhUO8</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html">http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://www.thoughtworks.com/continuous-integration" class="uri">https://www.thoughtworks.com/continuous-integration</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=xSv_m3KhUO8" class="uri">https://www.youtube.com/watch?v=xSv_m3KhUO8</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html" class="uri">http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -441,7 +438,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-ci"><span class="nav-number">1.</span> <span class="nav-text"> 什么是 CI ？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ci-%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text"> CI 流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4"><span class="nav-number">2.1.</span> <span class="nav-text"> 提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">2.2.</span> <span class="nav-text"> 测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2"><span class="nav-number">2.3.</span> <span class="nav-text"> 部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#github-%E5%92%8C-ci"><span class="nav-number">3.</span> <span class="nav-text"> Github 和 CI</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-ci"><span class="nav-number">1.</span> <span class="nav-text">什么是 CI ？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ci-%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">CI 流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4"><span class="nav-number">2.1.</span> <span class="nav-text">提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">2.2.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2"><span class="nav-number">2.3.</span> <span class="nav-text">部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#github-%E5%92%8C-ci"><span class="nav-number">3.</span> <span class="nav-text">Github 和 CI</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -504,7 +501,7 @@
 <div class="copyright">
   
   &copy; 2017 – 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -513,12 +510,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">226k</span>
+    <span title="站点总字数">201k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:26</span>
+    <span title="站点阅读时长">3:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
