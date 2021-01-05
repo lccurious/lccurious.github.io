@@ -19,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="paddlepaddle是百度开源的并行分布式全功能深度学习平台，全名为PArallel Distributed Deep LEarning，开发的动机是百度的工程师将其用在百度的各种产品中。支持CPU&#x2F;GPU的单机和分布式模式，支持模型并行和数据并行。对于NLP和推荐算法、RNN等都有很好的支持。">
@@ -269,15 +269,15 @@
         <p>paddlepaddle是百度开源的并行分布式全功能深度学习平台，全名为PArallel Distributed Deep LEarning，开发的动机是百度的工程师将其用在百度的各种产品中。支持CPU/GPU的单机和分布式模式，支持模型并行和数据并行。对于NLP和推荐算法、RNN等都有很好的支持。</p>
 <img src="/2018/05/15/paddlepaddle/%E4%B8%8B%E8%BD%BD.png" class="">
 <a id="more"></a>
-<h2 id="安装">安装</h2>
+<h2 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h2>
 <p>这里针对CentOS的操作系统，常用的配置方案是Docker+Ubuntu+PaddlePaddle（这是针对Windows系统的）目前PaddlePaddle似乎还是不支持Windows系统。这里采用一种最为简单的方式进行配置，CentOS+Anaconda3+PaddlPaddle，需要声明的一点是因为很多的第三方库开始宣布不再维护Python2的代码了，所以采用Anaconda3作为主版本。</p>
-<h3 id="配置python2.7环境">配置Python2.7环境</h3>
+<h3 id="配置python27环境"><a class="markdownIt-Anchor" href="#配置python27环境"></a> 配置Python2.7环境</h3>
 <p>因为主板本使用的是Anaconda3，默认为Python3，所以通过conda环境管理机制建立一个使用Python2的版本，具体可参考另一篇文章<a href="/2018/01/08/condaGuide/" title="conda包组织管理">conda包组织管理</a>，为了使安装更加迅速，将anaconda的源改为清华大学的开源镜像，参照anaconda下的<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/">Anaconda 镜像使用帮助</a>进行修改。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 这条是示例，不要执行这一条</span></span><br><span class="line">conda create --name paddlepaddle python=2.7</span><br></pre></td></tr></table></figure>
 <p>因为paddlepaddle的依赖比较多，既要Pillow又要OpenCV，还要NLTK等，所以建议使用管理员（这里是指我）预先准备好的配置文件<code>paddlepaddle.yml</code>，然后执行下面的命令来创建conda的环境：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda env create --file paddlepaddle.yml</span><br></pre></td></tr></table></figure>
 <p>通过这种方式就能将paddlepaddle的单机环境配置好了，考虑到这是在服务器上配置的，所以还是建议通过Jupyter Nodebook进行使用。</p>
-<h2 id="服务器端开启jupyter服务">服务器端开启Jupyter服务</h2>
+<h2 id="服务器端开启jupyter服务"><a class="markdownIt-Anchor" href="#服务器端开启jupyter服务"></a> 服务器端开启Jupyter服务</h2>
 <p>将paddlepaddle的环境配置好了以后可以通过下面的指令来查看：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda env list</span><br></pre></td></tr></table></figure>
 <p>正常情况下会出现：</p>
@@ -287,7 +287,7 @@
 <p>然后开启jupyter服务</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter notebook 文件夹路径</span><br></pre></td></tr></table></figure>
 <p>但是通过这种方式开启的服务，一旦退出ssh界面，所有的服务都会被关闭，并且还会存在一个问题是这样开启的jupyter服务不能让远程客户端使用。</p>
-<h3 id="jupyter-开启远程服务">Jupyter 开启远程服务</h3>
+<h3 id="jupyter-开启远程服务"><a class="markdownIt-Anchor" href="#jupyter-开启远程服务"></a> Jupyter 开启远程服务</h3>
 <p>默认情况下，配置文件 <code>~/.jupyter/jupyter_notebook_config.py</code>并不存在，需要自行创建。使用下列命令生成配置文件：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
 <p>如果是 root 用户执行上面的命令，会发生一个问题：</p>
@@ -302,11 +302,12 @@
 <p>不过手动生成也并不麻烦：</p>
 <p>除了使用提供的命令，也可以通过手动安装，建议使用的手动安装，因为<code>jupyter notebook password</code>好像更啰嗦。打开 ipython 执行下面内容：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In [1]: from notebook.auth import passwd</span><br><span class="line">In [2]: passwd()</span><br><span class="line">Enter password:</span><br><span class="line">Verify password:</span><br><span class="line">Out[2]: <span class="string">&#x27;sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed&#x27;</span></span><br></pre></td></tr></table></figure>
-<p><code>sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed</code> 这一串就是要在 <code>jupyter_notebook_config.py</code>添加的密码。</p>
+<p><code>sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed</code><br />
+这一串就是要在 <code>jupyter_notebook_config.py</code>添加的密码。</p>
 <p>修改配置文件</p>
 <p>在<code>jupyter_notebook_config.py</code>中找到下面的行，取消注释并修改。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">c.NotebookApp.ip=<span class="string">&#x27;*&#x27;</span></span><br><span class="line">c.NotebookApp.password = u<span class="string">&#x27;sha:ce...刚才复制的那个密文&#x27;</span></span><br><span class="line">c.NotebookApp.open_browser = False</span><br><span class="line">c.NotebookApp.port =8888 <span class="comment">#可自行指定一个端口, 访问时使用该端口</span></span><br></pre></td></tr></table></figure>
-<h3 id="服务开启">服务开启</h3>
+<h3 id="服务开启"><a class="markdownIt-Anchor" href="#服务开启"></a> 服务开启</h3>
 <p>以上设置完以后就可以在服务器上启动<code>jupyter notebook，jupyter notebook</code>, root用户使用<code>jupyter notebook --allow-root</code>。打开 IP:指定的端口, 输入密码就可以访问了。</p>
 <p>但是对于那种使用ssh操作服务器的用户而言，应该在后面加上<code>&amp;</code>符号以便让jupyer在后台一直运行。</p>
 <p>开启服务之后就可以通过<code>服务器ip:8888</code>这个地址访问jupyter notebook了，打开之后应该就能看到如下场景了。</p>
@@ -431,7 +432,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEpython2.7%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.</span> <span class="nav-text">配置Python2.7环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E5%BC%80%E5%90%AFjupyter%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">服务器端开启Jupyter服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jupyter-%E5%BC%80%E5%90%AF%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.1.</span> <span class="nav-text">Jupyter 开启远程服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%BC%80%E5%90%AF"><span class="nav-number">2.2.</span> <span class="nav-text">服务开启</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text"> 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEpython27%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.</span> <span class="nav-text"> 配置Python2.7环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E5%BC%80%E5%90%AFjupyter%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text"> 服务器端开启Jupyter服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jupyter-%E5%BC%80%E5%90%AF%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.1.</span> <span class="nav-text"> Jupyter 开启远程服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%BC%80%E5%90%AF"><span class="nav-number">2.2.</span> <span class="nav-text"> 服务开启</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -503,12 +504,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">201k</span>
+    <span title="站点总字数">226k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:03</span>
+    <span title="站点阅读时长">3:26</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>

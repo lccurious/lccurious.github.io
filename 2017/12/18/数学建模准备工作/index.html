@@ -19,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="此文是为初次接触数学建模比赛的同学准备的，同时也在一定程度上是局限于这项比赛的一点应试技巧。大致将覆盖下面几个方面的内容：  前置说明和题目介绍 数学工具 计算工具">
@@ -288,15 +288,28 @@
 <li>全面地认识一个问题</li>
 <li>直面自身方法的局限性</li>
 </ul>
-<h2 id="题目介绍">题目介绍</h2>
+<h2 id="题目介绍"><a class="markdownIt-Anchor" href="#题目介绍"></a> 题目介绍</h2>
 <p>我们先从题目的角度出发，一般情况下的题目大概可以分为评价类、规划类、计算类。每种类型的题目都有它不同的切入方式，并没有高下之分。</p>
-<ol type="1">
-<li><p>评价类 &gt; 评价类的题目通常不会有太高的计算要求，但是其实很考究选手的思维能力。此类题目常常是和一项政策联系在一起的，你可能需要评价一个方案将会带来什么样的影响，考量一个公司是否值得投资。你要尽可能避免各项评价方式过于主观，尽可能让你的评价方案更具有普适性，能够体现一项方案中的重点影响因素等。对于有些问题你仅仅做出评价还是不够的，还要有一定的预见能力，即在多个维度上进行观察。对选手在数据收集能力上的要求是比较高的。</p></li>
-<li><p>规划类 &gt; 规划类的题目通常涉及路径规划、生产量分配、资源分配等基本上都是NP难问题，往往都带有很多现实情况的约束，而且是题目中不会给出的，需要自己去思量，那样的方案是否合乎实际，这一点很重要！始终要明白我们现在解决的实际问题，要考虑到你的方法在实际应用过程中会碰到什么样的问题，对于这样或者那样的问题应该如何去解决。</p></li>
-<li><p>计算类 &gt; 计算类的题目通常需要比较高的计算和推导水平，像是对复杂的动力系统建立偏微分方程组，对某些形状特殊的容器和结构抽象出简单扼要的数学表达形式等。有时候列出的偏微分方程还是不可解的，基于现实条件可能需要修改模型或者通过数值方式来解决没有解析解的问题。在建模和计算两边需要很好地配合。</p></li>
+<ol>
+<li>评价类</li>
 </ol>
-<h2 id="数学工具">数学工具</h2>
-<ol type="1">
+<blockquote>
+<p>评价类的题目通常不会有太高的计算要求，但是其实很考究选手的思维能力。此类题目常常是和一项政策联系在一起的，你可能需要评价一个方案将会带来什么样的影响，考量一个公司是否值得投资。你要尽可能避免各项评价方式过于主观，尽可能让你的评价方案更具有普适性，能够体现一项方案中的重点影响因素等。对于有些问题你仅仅做出评价还是不够的，还要有一定的预见能力，即在多个维度上进行观察。对选手在数据收集能力上的要求是比较高的。</p>
+</blockquote>
+<ol start="2">
+<li>规划类</li>
+</ol>
+<blockquote>
+<p>规划类的题目通常涉及路径规划、生产量分配、资源分配等基本上都是NP难问题，往往都带有很多现实情况的约束，而且是题目中不会给出的，需要自己去思量，那样的方案是否合乎实际，这一点很重要！始终要明白我们现在解决的实际问题，要考虑到你的方法在实际应用过程中会碰到什么样的问题，对于这样或者那样的问题应该如何去解决。</p>
+</blockquote>
+<ol start="3">
+<li>计算类</li>
+</ol>
+<blockquote>
+<p>计算类的题目通常需要比较高的计算和推导水平，像是对复杂的动力系统建立偏微分方程组，对某些形状特殊的容器和结构抽象出简单扼要的数学表达形式等。有时候列出的偏微分方程还是不可解的，基于现实条件可能需要修改模型或者通过数值方式来解决没有解析解的问题。在建模和计算两边需要很好地配合。</p>
+</blockquote>
+<h2 id="数学工具"><a class="markdownIt-Anchor" href="#数学工具"></a> 数学工具</h2>
+<ol>
 <li>多目标优化</li>
 <li>层次分析法</li>
 <li>各类拟合方法</li>
@@ -307,16 +320,34 @@
 <li>概率论与数理统计</li>
 <li>线性代数</li>
 </ol>
-<h2 id="计算工具">计算工具</h2>
+<h2 id="计算工具"><a class="markdownIt-Anchor" href="#计算工具"></a> 计算工具</h2>
 <p>这需要一些计算机基础算法的同学来对计算方案的可行性进行评价和实现，在这个过程中，像是ACM竞赛中所要求的一些数据结构，对于空间复杂度时间复杂度的估算能力，最短路径求法、各类搜索算法等，这些是最为基础的要求，而后很多内容可以通过现成的库来帮助完成计算，像是复杂网络的模拟和仿真就可以通过Python的networkx或者<a target="_blank" rel="noopener" href="http://igraph.org">igraph</a>直接建图进行模拟。</p>
-<ol type="1">
-<li><p>MATLAB &gt; 这是非常常用的工具，因为已经把大部分的函数封装好了，根据所要解决的问题参照MATLAB的函数手册可以很快找到解决方案，再进一步可以在MathWork网站上找到很多提供参考的例程。同时建议形成自己的MATLAB编码习惯，多使用函数封装。</p></li>
-<li><p>Python（Anaconda） &gt; 其中的Pandas和Numpy将会经常见面，至于Matplotlib模块也非常好用和MATLAB中很多函数名都是相同的，参照官方文档进行编写可以解决大多数场景下的问题可以和MATLAB的作图方法相互补充。</p></li>
-<li><p>Lingo</p></li>
-<li><p>Mathematics</p></li>
+<ol>
+<li>MATLAB</li>
 </ol>
-<h2 id="可供参考的书籍">可供参考的书籍</h2>
-<p><img src="https://img1.doubanio.com/lpic/s22778797.jpg" alt="matlab" /> <img src="https://img1.doubanio.com/lpic/s5727038.jpg" alt="model" /> <img src="https://img3.doubanio.com/lpic/s6300655.jpg" alt="book" /> <img src="https://img1.doubanio.com/lpic/s28735609.jpg" alt="ml" /> <img src="https://img3.doubanio.com/lpic/s27291003.jpg" alt="Linear" /></p>
+<blockquote>
+<p>这是非常常用的工具，因为已经把大部分的函数封装好了，根据所要解决的问题参照MATLAB的函数手册可以很快找到解决方案，再进一步可以在MathWork网站上找到很多提供参考的例程。同时建议形成自己的MATLAB编码习惯，多使用函数封装。</p>
+</blockquote>
+<ol start="2">
+<li>Python（Anaconda）</li>
+</ol>
+<blockquote>
+<p>其中的Pandas和Numpy将会经常见面，至于Matplotlib模块也非常好用和MATLAB中很多函数名都是相同的，参照官方文档进行编写可以解决大多数场景下的问题可以和MATLAB的作图方法相互补充。</p>
+</blockquote>
+<ol start="3">
+<li>
+<p>Lingo</p>
+</li>
+<li>
+<p>Mathematics</p>
+</li>
+</ol>
+<h2 id="可供参考的书籍"><a class="markdownIt-Anchor" href="#可供参考的书籍"></a> 可供参考的书籍</h2>
+<p><img src="https://img1.doubanio.com/lpic/s22778797.jpg" alt="matlab" /><br />
+<img src="https://img1.doubanio.com/lpic/s5727038.jpg" alt="model" /><br />
+<img src="https://img3.doubanio.com/lpic/s6300655.jpg" alt="book" /><br />
+<img src="https://img1.doubanio.com/lpic/s28735609.jpg" alt="ml" /><br />
+<img src="https://img3.doubanio.com/lpic/s27291003.jpg" alt="Linear" /></p>
 <p>暂时先到这里</p>
 
     </div>
@@ -440,7 +471,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">题目介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">数学工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">计算工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E4%BE%9B%E5%8F%82%E8%80%83%E7%9A%84%E4%B9%A6%E7%B1%8D"><span class="nav-number">4.</span> <span class="nav-text">可供参考的书籍</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text"> 题目介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text"> 数学工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text"> 计算工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E4%BE%9B%E5%8F%82%E8%80%83%E7%9A%84%E4%B9%A6%E7%B1%8D"><span class="nav-number">4.</span> <span class="nav-text"> 可供参考的书籍</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -512,12 +543,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">201k</span>
+    <span title="站点总字数">226k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:03</span>
+    <span title="站点阅读时长">3:26</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>

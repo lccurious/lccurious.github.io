@@ -19,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"lccurious.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Google Test是一个C++的测试框架, 在Linux, Windows和Mac上都可以使用这个工具来对C++代码进行测试. Google Test的一些特性:  独立, 测试样例的测试结果不会受其他测试的影响, 每个测试都是被隔离开来的. 结构, 测试能够很好地反应测试代码的组织结构. 重用, 测试可以被移植和重用, 能够支持许多不同的系统和编译器. 定位, 测试失败了之后可以马上定位到这">
@@ -264,8 +264,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Google Test是一个C++的测试框架, 在Linux, Windows和Mac上都可以使用这个工具来对C++代码进行测试. Google Test的一些特性:</p>
-<ol type="1">
+        <p>Google Test是一个C++的测试框架, 在Linux, Windows和Mac上都可以使用这个工具来对C++代码进行测试.<br />
+Google Test的一些特性:</p>
+<ol>
 <li><strong>独立</strong>, 测试样例的测试结果不会受其他测试的影响, 每个测试都是被隔离开来的.</li>
 <li><strong>结构</strong>, 测试能够很好地反应测试代码的组织结构.</li>
 <li><strong>重用</strong>, 测试可以被移植和重用, 能够支持许多不同的系统和编译器.</li>
@@ -273,13 +274,13 @@
 <li><strong>简单</strong>, 不会增加使用者的负担.</li>
 </ol>
 <a id="more"></a>
-<h2 id="安装googletest">安装GoogleTest</h2>
+<h2 id="安装googletest"><a class="markdownIt-Anchor" href="#安装googletest"></a> 安装GoogleTest</h2>
 <p>首先从github上获取代码然后编译安装, 通过CMake的方式进行,没有碰到什么坑.</p>
-<h2 id="基本概念">基本概念</h2>
+<h2 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h2>
 <p>在使用Google Test我们从断言开始熟悉整个过程, 我们通过断言来判断程序的行为是否正确. 断言的结果分别为 success, nonfatal failure, 或者 fatal failure. 如果出现fatal failure则会终端当前的函数.</p>
-<h3 id="简单测试">简单测试</h3>
+<h3 id="简单测试"><a class="markdownIt-Anchor" href="#简单测试"></a> 简单测试</h3>
 <p>通过下面的方式创建测试:</p>
-<ol type="1">
+<ol>
 <li>用<code>TEST()</code>宏来定义测试函数.</li>
 <li>在这个函数中可以用Google Test测试任何C++语句.</li>
 <li>测试结果由断言给定, 任意断言测试错误, 这整个测试结果就是失败.</li>
@@ -287,44 +288,45 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TEST(test_case_name, test_name) &#123;</span><br><span class="line">    ...test body ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>例如可以参考下面比较简单的测试样例：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TEST(MyTest, Add)</span><br><span class="line">&#123;</span><br><span class="line">    EXPECT_EQ(<span class="number">1</span> + <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    ASSERT_EQ(<span class="number">1</span> + <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="基本断言">基本断言</h3>
+<h3 id="基本断言"><a class="markdownIt-Anchor" href="#基本断言"></a> 基本断言</h3>
 <table>
 <thead>
-<tr class="header">
-<th style="text-align: center;"><strong>Fatal assertion</strong></th>
-<th style="text-align: center;"><strong>Nonfatal assertion</strong></th>
-<th style="text-align: center;"><strong>Verifies</strong></th>
+<tr>
+<th style="text-align:center"><strong>Fatal assertion</strong></th>
+<th style="text-align:center"><strong>Nonfatal assertion</strong></th>
+<th style="text-align:center"><strong>Verifies</strong></th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: center;"><code>ASSERT_TRUE(</code>condition<code>)</code>;</td>
-<td style="text-align: center;"><code>EXPECT_TRUE(</code>condition<code>)</code>;</td>
-<td style="text-align: center;">condition is true</td>
+<tr>
+<td style="text-align:center"><code>ASSERT_TRUE(</code>condition<code>)</code>;</td>
+<td style="text-align:center"><code>EXPECT_TRUE(</code>condition<code>)</code>;</td>
+<td style="text-align:center">condition is true</td>
 </tr>
-<tr class="even">
-<td style="text-align: center;"><code>ASSERT_FALSE(</code>condition<code>)</code>;</td>
-<td style="text-align: center;"><code>EXPECT_FALSE(</code>condition<code>)</code>;</td>
-<td style="text-align: center;">condition is false</td>
+<tr>
+<td style="text-align:center"><code>ASSERT_FALSE(</code>condition<code>)</code>;</td>
+<td style="text-align:center"><code>EXPECT_FALSE(</code>condition<code>)</code>;</td>
+<td style="text-align:center">condition is false</td>
 </tr>
 </tbody>
 </table>
 <p>如果是<code>ASSERT_*</code>条件不成立, 则会直接报致命错误然后程序返回, 如果是<code>EXPECT_*</code>条件不成立则会继续进行.</p>
-<h2 id="在测试函数之间共享数据">在测试函数之间共享数据</h2>
+<h2 id="在测试函数之间共享数据"><a class="markdownIt-Anchor" href="#在测试函数之间共享数据"></a> 在测试函数之间共享数据</h2>
 <p>同一批测试数据有时候会被多次使用，但是如果像下面那样调用就有点不太优雅。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">TEST(MyTest, Sum)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">    vec.push_back(<span class="number">1</span>);</span><br><span class="line">    vec.push_back(<span class="number">2</span>);</span><br><span class="line">    EXPECT_EQ(<span class="number">3</span>, <span class="built_in">std</span>::accumulate(vec.begin(), vec.end(), <span class="number">0</span>));</span><br><span class="line">&#125;</span><br><span class="line">TEST(MyTest, Size)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">    vec.push_back(<span class="number">1</span>);</span><br><span class="line">    vec.push_back(<span class="number">2</span>);</span><br><span class="line">    EXPECT_EQ(<span class="number">2</span>, vec.size());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>更好的做法是，在初始化数据时创建的一个数据，并且所有的数据都可以在本地环境中对其进行修改，但是这种修改不会影响到原始数据<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。如果你觉得有必要可以再写一个<code>SetUp()</code>对所需要使用的数据进行初始化，也还可以再写一个<code>TearDown()</code>来释放全部的资源空间。</p>
+<p>更好的做法是，在初始化数据时创建的一个数据，并且所有的数据都可以在本地环境中对其进行修改，但是这种修改不会影响到原始数据<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。如果你觉得有必要可以再写一个<code>SetUp()</code>对所需要使用的数据进行初始化，也还可以再写一个<code>TearDown()</code>来释放全部的资源空间。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;gtest/gtest.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VectorTest</span> :</span> <span class="keyword">public</span> testing::Test</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">SetUp</span><span class="params">()</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        vec.push_back(<span class="number">1</span>);</span><br><span class="line">        vec.push_back(<span class="number">2</span>);</span><br><span class="line">        vec.push_back(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 注意这里使用 TEST_F，而不是 TEST</span></span><br><span class="line">TEST_F(VectorTest, PushBack)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 虽然这里修改了 vec，但对其它测试函数来说是不可见的</span></span><br><span class="line">    vec.push_back(<span class="number">4</span>);</span><br><span class="line">    EXPECT_EQ(vec.size(), <span class="number">4</span>);</span><br><span class="line">    EXPECT_EQ(vec.back(), <span class="number">4</span>);</span><br><span class="line">&#125;</span><br><span class="line">TEST_F(VectorTest, Size)</span><br><span class="line">&#123;</span><br><span class="line">    EXPECT_EQ(vec.size(), <span class="number">3</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ::testing::InitGoogleTest(&amp;argc, argv);</span><br><span class="line">    <span class="keyword">return</span> RUN_ALL_TESTS();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="在qt中使用googletest">在Qt中使用GoogleTest</h2>
+<h2 id="在qt中使用googletest"><a class="markdownIt-Anchor" href="#在qt中使用googletest"></a> 在Qt中使用GoogleTest</h2>
 <p>因为如果要使用Qt内置的googletest要重新新建一个项目，还是希望能统一在同一个项目中完成这些设置，所以还是决定在当前项目中开一个测试目录专门用于测试。</p>
-<h2 id="gtest进阶">Gtest进阶</h2>
+<h2 id="gtest进阶"><a class="markdownIt-Anchor" href="#gtest进阶"></a> Gtest进阶</h2>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md" class="uri">https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md">https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md</a></li>
 </ul>
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p><a target="_blank" rel="noopener" href="https://github.com/google/googletest/blob/master/googletest/docs/Primer.md" class="uri">https://github.com/google/googletest/blob/master/googletest/docs/Primer.md</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<hr class="footnotes-sep" />
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://github.com/google/googletest/blob/master/googletest/docs/Primer.md">https://github.com/google/googletest/blob/master/googletest/docs/Primer.md</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
 </ol>
 </section>
 
@@ -448,7 +450,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85googletest"><span class="nav-number">1.</span> <span class="nav-text">安装GoogleTest</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E6%B5%8B%E8%AF%95"><span class="nav-number">2.1.</span> <span class="nav-text">简单测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%96%AD%E8%A8%80"><span class="nav-number">2.2.</span> <span class="nav-text">基本断言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E6%B5%8B%E8%AF%95%E5%87%BD%E6%95%B0%E4%B9%8B%E9%97%B4%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE"><span class="nav-number">3.</span> <span class="nav-text">在测试函数之间共享数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8qt%E4%B8%AD%E4%BD%BF%E7%94%A8googletest"><span class="nav-number">4.</span> <span class="nav-text">在Qt中使用GoogleTest</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gtest%E8%BF%9B%E9%98%B6"><span class="nav-number">5.</span> <span class="nav-text">Gtest进阶</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85googletest"><span class="nav-number">1.</span> <span class="nav-text"> 安装GoogleTest</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text"> 基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E6%B5%8B%E8%AF%95"><span class="nav-number">2.1.</span> <span class="nav-text"> 简单测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%96%AD%E8%A8%80"><span class="nav-number">2.2.</span> <span class="nav-text"> 基本断言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E6%B5%8B%E8%AF%95%E5%87%BD%E6%95%B0%E4%B9%8B%E9%97%B4%E5%85%B1%E4%BA%AB%E6%95%B0%E6%8D%AE"><span class="nav-number">3.</span> <span class="nav-text"> 在测试函数之间共享数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8qt%E4%B8%AD%E4%BD%BF%E7%94%A8googletest"><span class="nav-number">4.</span> <span class="nav-text"> 在Qt中使用GoogleTest</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gtest%E8%BF%9B%E9%98%B6"><span class="nav-number">5.</span> <span class="nav-text"> Gtest进阶</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -520,12 +522,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">201k</span>
+    <span title="站点总字数">226k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:03</span>
+    <span title="站点阅读时长">3:26</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
