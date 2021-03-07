@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://lccurious.github.io/2020/01/30/optimal-transport/distribution.png">
 <meta property="og:image" content="https://lccurious.github.io/2020/01/30/optimal-transport/discrete_distribution.png">
 <meta property="article:published_time" content="2020-01-30T10:40:39.000Z">
-<meta property="article:modified_time" content="2021-03-07T09:16:39.458Z">
+<meta property="article:modified_time" content="2021-03-07T09:38:01.071Z">
 <meta property="article:author" content="Bill H">
 <meta property="article:tag" content="最优传输">
 <meta property="article:tag" content="optimal transport">
@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-07 17:16:39" itemprop="dateModified" datetime="2021-03-07T17:16:39+08:00">2021-03-07</time>
+                <time title="修改时间：2021-03-07 17:38:01" itemprop="dateModified" datetime="2021-03-07T17:38:01+08:00">2021-03-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -370,16 +370,16 @@ d_{M}(\mu,\nu):=\min_{P\in U(\mu,\nu)}\langle P, M\rangle.
 U_{\alpha}(\mu,\nu):=\{P\in U(\mu, \nu)|KL(P||\mu\nu^{T})\leq \alpha\}=\{P\in U(\mu, \nu)|h(P)\geq h(\mu)+h(\nu)-\alpha\}
 \]</span> 因此，就可以把对<span class="math inline">\(\mu\nu^{T}\)</span>的KL散度小于某个阈值的<span class="math inline">\(P\)</span>的集合解释为一系列在<span class="math inline">\(U(\mu,\nu)\)</span>中的联合分布<span class="math inline">\(P\)</span>，它对<span class="math inline">\(h(\mu)\)</span>和<span class="math inline">\(h(\nu)\)</span>有足够的熵，或者足够小的互信息。</p>
 <p>所以定义Sinkhorn Distance为： <span class="math display">\[
-d_{M,\alpha}(\mu,\nu):=\min_{P\in U_{\alpha}(\mu,\nu)}\lang P, M\rang.
+d_{M,\alpha}(\mu,\nu):=\min_{P\in U_{\alpha}(\mu,\nu)}\langle P, M\rangle.
 \]</span></p>
 <blockquote>
 <p>之所以考虑在最优传输中使用熵的限制是因为，经典的线性规划的结果都是在可行域的顶点上取到。这样的一个<span class="math inline">\(d\times d\)</span>维度的顶点通常最多只有<span class="math inline">\(2d-1\)</span>个非零的元素。从概率的角度看这个顶点则是一个准确定性联合分布，因为一旦某一行有个元素<span class="math inline">\(p_{ij}&gt;0\)</span>，这一行的其他元素<span class="math inline">\(p_{ij&#39;}\)</span>其中<span class="math inline">\(j&#39;\neq j\)</span>就很少是非零的了。</p>
 </blockquote>
 <img src="/2020/01/30/optimal-transport/image-20210307110425631.png" class="" title="image-20210307110425631">
 <p>另外再证明了三角不等式： <span class="math display">\[
-d_{M,\alpha}(x,z)=\min_{P\in U_{\alpha}(x,z)}\lang P,M\rang \leq\lang S, M\rang\leq d_{M,\alpha}(x,y)+d_{M,\alpha}(y,z)
+d_{M,\alpha}(x,z)=\min_{P\in U_{\alpha}(x,z)}\langle P,M\rangle \leq\langle S, M\rangle\leq d_{M,\alpha}(x,y)+d_{M,\alpha}(y,z)
 \]</span> 可以大致确认通过一些优化手段是可以找到最优解的，然后考虑有熵限制条件的优化问题： <span class="math display">\[
-{\rm For}~\lambda&gt;0,d^{\lambda}_{M}(\mu,\nu):=\lang P^{\lambda},M\rang,~{\rm where}~P^{\lambda}={\rm argmin}_{P\in U(\mu, \nu)}\lang P,M\rang-\frac{1}{\lambda}h(P).
+{\rm For}~\lambda&gt;0,d^{\lambda}_{M}(\mu,\nu):=\langle P^{\lambda},M\rangle,~{\rm where}~P^{\lambda}={\rm argmin}_{P\in U(\mu, \nu)}\langle P,M\rangle-\frac{1}{\lambda}h(P).
 \]</span> 基于对偶理论有任意的<span class="math inline">\(\alpha\)</span>对应于一个<span class="math inline">\(\lambda\in[0, +\infty]\)</span>使得<span class="math inline">\(d_{M,\alpha}(\mu,\nu)=d^{\lambda}_{M}(\mu, \nu)\)</span>，这个<span class="math inline">\(d^{\lambda}_{M}\)</span>就叫做dual-Sinkhorn divergence，它可以被很方便地计算得到。</p>
 <p>从上图也可以看到传输方案<span class="math inline">\(P^{\lambda}\)</span>的熵随着<span class="math inline">\(\lambda\)</span>的增大而单调递增，我们可以通过不断增大<span class="math inline">\(\lambda\)</span>直到<span class="math inline">\(h(P^{\lambda})\)</span>到达<span class="math inline">\(h(\mu)+h(\nu)-\alpha\)</span>。</p>
 <p><strong>通过Matrix Scaling Algorithm来对<span class="math inline">\(d^{\lambda}_{M}\)</span>进行求解</strong>，对于任意<span class="math inline">\(\lambda&gt;0\)</span>有唯一解<span class="math inline">\(P^{\lambda}={\rm diag}(\mu)K{\rm diag}(\nu)\)</span>，其中<span class="math inline">\(K:=e^{-\lambda M}\)</span>。</p>

@@ -23,6 +23,29 @@
       </tags>
   </entry>
   <entry>
+    <title>午间休息</title>
+    <url>/2017/12/20/AfternoonTime/</url>
+    <content><![CDATA[<p>可以在午间休息的时间换换脑子，似乎写的文章都是想要对身边的好朋友们絮叨的话。这篇文章中将针对基于Python的数据预览和简单预处理问题进行简单介绍，包括环境的配置和具体操作，同时也将不全面地叙述一些数据预处理的技巧。 <a id="more"></a></p>
+<h2 id="anaconda">Anaconda</h2>
+<p>Python（蟒蛇）---&gt; Anaconda（巨蟒），可想而知Anaconda是在纯Python的基础上进行扩展的，Anaconda中集成了很多科学计算程序包（modules），可以通过conda指令很方便地组织和管理这些包。</p>
+<p>你可以到Anaconda的<a href="https://www.anaconda.com/download/">官方下载网站</a>上去下载和安装，都是可视化的安装界面（如果只用Anaconda建议安装过程中勾选加入PATH），想装哪个版本的就仁者见仁智者见智了。考虑到很多工具正在放弃2.7的维护，个人偏向于3.+的版本，但是还是有些代码是完全由2.7写成的，所以自行决定，语法是相差不大的。</p>
+<p>Anaconda安装完成之后，考虑到中国特色网络环境，建议去清华的镜像站更换Anaconda的更新源。更换源的操作在<a href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/">TUNA</a>上有很详尽的说明了，在此对这些镜像站致以敬意。</p>
+<h2 id="jupyter">Jupyter</h2>
+<p>这是一个颜值高交互方便的工具，在Ubuntu的Terminal或者Windows的命令行提示符中输入下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Ubuntu：请把文件夹替换成自己的目录路径</span></span><br><span class="line">jupyter notebook /home/username/Documents/myscifolder</span><br><span class="line"><span class="meta">#</span><span class="bash"> Windows：请把文件夹替换成自己的目录路径</span></span><br><span class="line">jupyter notebook E:/templateuse/myscifolder</span><br></pre></td></tr></table></figure>
+<p>然后启动之后可以直接在新打开的网页上编写代码了，下面是一个Jupyter Notebook的预览界面，只是简单展示一下这项工具的功能。</p>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>数学建模</tag>
+        <tag>Jupyter</tag>
+        <tag>Python</tag>
+        <tag>数据预处理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>主动学习</title>
     <url>/2019/08/27/Active-Learning/</url>
     <content><![CDATA[<p>主动学习是指通过自动的机器学习算法，从数据集中自动挑选出部分数据请求标签，在统计上也称为查询学习或者最优实验设计。主动学习通过设计合理的查询函数，不断从未标注的数据中挑选出数据加入标注后放入训练集。有效的主动学习数据选择策略可以有效地降低训练的代价并同时提高模型的识别能力。赋予你的模型好奇心，让其有一些如何去学习的智能。</p>
@@ -152,29 +175,6 @@ L_{\text {target }}(\hat{y}, y)+\lambda \cdot L_{\operatorname{loss}}(\hat{l}, l
       </categories>
       <tags>
         <tag>Apex</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>午间休息</title>
-    <url>/2017/12/20/AfternoonTime/</url>
-    <content><![CDATA[<p>可以在午间休息的时间换换脑子，似乎写的文章都是想要对身边的好朋友们絮叨的话。这篇文章中将针对基于Python的数据预览和简单预处理问题进行简单介绍，包括环境的配置和具体操作，同时也将不全面地叙述一些数据预处理的技巧。 <a id="more"></a></p>
-<h2 id="anaconda">Anaconda</h2>
-<p>Python（蟒蛇）---&gt; Anaconda（巨蟒），可想而知Anaconda是在纯Python的基础上进行扩展的，Anaconda中集成了很多科学计算程序包（modules），可以通过conda指令很方便地组织和管理这些包。</p>
-<p>你可以到Anaconda的<a href="https://www.anaconda.com/download/">官方下载网站</a>上去下载和安装，都是可视化的安装界面（如果只用Anaconda建议安装过程中勾选加入PATH），想装哪个版本的就仁者见仁智者见智了。考虑到很多工具正在放弃2.7的维护，个人偏向于3.+的版本，但是还是有些代码是完全由2.7写成的，所以自行决定，语法是相差不大的。</p>
-<p>Anaconda安装完成之后，考虑到中国特色网络环境，建议去清华的镜像站更换Anaconda的更新源。更换源的操作在<a href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/">TUNA</a>上有很详尽的说明了，在此对这些镜像站致以敬意。</p>
-<h2 id="jupyter">Jupyter</h2>
-<p>这是一个颜值高交互方便的工具，在Ubuntu的Terminal或者Windows的命令行提示符中输入下面的命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Ubuntu：请把文件夹替换成自己的目录路径</span></span><br><span class="line">jupyter notebook /home/username/Documents/myscifolder</span><br><span class="line"><span class="meta">#</span><span class="bash"> Windows：请把文件夹替换成自己的目录路径</span></span><br><span class="line">jupyter notebook E:/templateuse/myscifolder</span><br></pre></td></tr></table></figure>
-<p>然后启动之后可以直接在新打开的网页上编写代码了，下面是一个Jupyter Notebook的预览界面，只是简单展示一下这项工具的功能。</p>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>数学建模</tag>
-        <tag>Jupyter</tag>
-        <tag>Python</tag>
-        <tag>数据预处理</tag>
       </tags>
   </entry>
   <entry>
@@ -695,62 +695,6 @@ r_{0}=\left\|x_{0}-x^{*}\right\|&lt;\overline{r}=\frac{2 \mu}{M}
       </tags>
   </entry>
   <entry>
-    <title>Empirical Mode Decomposition</title>
-    <url>/2020/12/01/Empirical-Mode-Decomposotion/</url>
-    <content><![CDATA[<p>经验模态分解（Empirical Mode Decomposition, EMD）是一种适用于非线性、非平稳信号的自适应信号分解方法。EMD方法把原始信号分解成多个固有模态函数（Intrinsic Mode Functions, IMF），EMD的提出者黄锷认为，任何信号都可以拆分成若干个固有模态函数之和，这种函数符合下面两种特征：</p>
-<ol type="1">
-<li>在整个数据段内，极值点的个数和过零点的个数必须相等或者相差最多不超过一个。</li>
-<li>在任意时刻点，局部最大值的包络（上包络线）和局部最小值的包络（下包络线）的平均值必须为零。</li>
-</ol>
-<img src="/2020/12/01/Empirical-Mode-Decomposotion/Emd_example_lowres.gif" class="" title="Emd_example_lowres">
-<a id="more"></a>
-<h2 id="希尔伯特变换">希尔伯特变换</h2>
-<p>设一个实值函数<span class="math inline">\(x(t)\)</span>，其希尔伯特变换（Hilbert Transform）记作<span class="math inline">\(\hat{x}(t)\)</span>（或记作<span class="math inline">\(H[x(t)]\)</span>）： <span class="math display">\[
-\hat{x}(t)=H[x(t)]=\frac{1}{\pi}\int^{\infty}_{-\infty}\frac{x(\tau)}{t-\tau}d\tau
-\]</span> 对应的反变换为： <span class="math display">\[
-x(t)=H^{-1}[\hat{x}(t)]=-\frac{1}{\pi}\int^{\infty}_{-\infty}\frac{\hat{x}(\tau)}{t-\tau}d\tau
-\]</span></p>
-<h2 id="经验模态分解">经验模态分解</h2>
-<p>经验模态分解是通过不断的筛选来逐步找出所有的IMF，给定一个信号<span class="math inline">\(x(t)\)</span>，对应的筛选过程为：</p>
-<img src="/2020/12/01/Empirical-Mode-Decomposotion/Flowchart-of-empirical-mode-decomposition-EMD-decomposition_W640.jpg" class="" title="img">
-<p>最后可以分解得到一组IMF和最后的残差分量，即n个IMF和1个单调残差分量。</p>
-<h3 id="停止准则">停止准则</h3>
-<p>如果筛选的次数过多可能会破坏信号本身的物理性质，为了确保经验模态分析法分解出的固有模态函数能够保留顺势频率与瞬时振幅的物理意义通过设定筛选的停止准则来决定筛选的次数。</p>
-<ol type="1">
-<li><p><strong>标准差准则</strong>：连续两次筛选结果的分量标准差（Standard Deviation，SD）作为停止准则如下所示（一般当标准差小于0.2到0.3间时，停止筛选动作）： <span class="math display">\[
-SD=\sum^{T}_{t=0}\frac{|h_{k-1}(t)-h_{k}(t)|^{2}}{h_{k-1}(t)^{2}}
-\]</span></p></li>
-<li><p><strong>S数准则</strong>：定义过零点和极值点相等或者至多相差1的连续筛选数目。当S次连续筛选后，每一次过零点和极值点保持相同（相等或者至多差1），筛选过程才停止。</p></li>
-<li><p><strong>能量差异追踪法</strong>：假设原始的信号<span class="math inline">\(x(t)\)</span>包含有限个彼此不相关的正交分量<span class="math inline">\(x_{i}(t)\)</span>： <span class="math display">\[
-x(t)=x_{1}(t)+x_{2}(t)+\dots+x_{n}(t)=\sum^{n}_{i=1}x_{i}(t)
-\]</span> 原始信号<span class="math inline">\(x(t)\)</span>的总能量可以表示为： <span class="math display">\[
-E_{x}=\int^{\infty}_{-\infty}[\sum^{n}_{i=1}x_{i}(t)]^{2}dt=\int^{\infty}_{-\infty}[\sum^{n}_{i=1}x_{i}(t)^{2}]dt
-\]</span> 如果经验模态分析分解出的信号固有模态函数<span class="math inline">\(c_{1}(t)\)</span>正好就是正交分量<span class="math inline">\(x_{1}(t)\)</span>，则维持能量守恒，但是如果这种正交通常并不直接成立，对于分离的<span class="math inline">\(c_{1}(t)\)</span>，它的总能量表示为： <span class="math display">\[
-E_{tot}=\int^{\infty}_{-\infty}c_{1}(t)^{2}dt+\int^{\infty}_{-\infty}[x(t)-c_{1}(t)]^{2}dt=2E_{c1}+E_{x}-2\int^{\infty}_{-\infty}x(t)c_{1}(t)dt
-\]</span> 这个<span class="math inline">\(E_{tot}\neq E_{x}\)</span>产生的一个能量差异<span class="math inline">\(E_{err}\)</span>表示所得到的固有模态信号存在能量泄露的问题（nonorthogonal leakage），所以假设一个足够小的<span class="math inline">\(|E_{err}|\)</span>当作停止准则，所分解出来的IMF正交性越高，信号的完整性、瞬时振幅与瞬时频率特性也会比以标准差（SD）作为停止准则要好，可以降低不必要的震荡，尤其是在初始边界的部分。</p>
-<p>实际在现实中，因为数据点是有限的，所以即使各个分量都是由三角曲线构成的也会引入这种正交泄露的问题。</p></li>
-<li><p><strong>阈值准则</strong>：用两个阈值<span class="math inline">\(\theta_{1}\)</span>和<span class="math inline">\(\theta_{2}\)</span>作为停止准则，用上下包络线算出模态振幅<span class="math inline">\(a(t)=\frac{u_{k}(t)-l_{k}(t)}{2}\)</span>再求出包络线均值和模态振幅的绝对比值，这个比值称为估计函数（evaluation function，<span class="math inline">\(e(t)\)</span>）<span class="math inline">\(e(t)=|\frac{m(t)}{a(t)}|\)</span>，当信号长度的<span class="math inline">\(1-\alpha\)</span>部分满足<span class="math inline">\(e(t)&lt;\theta_{1}\)</span>，剩余的部分满足<span class="math inline">\(e(t)&lt;\theta_{2}\)</span>，则迭代停止。</p>
-<ul>
-<li><span class="math inline">\(\theta_{1}\)</span>：确保全域的小波动为均值使得固有模态函数不会产生不必要的震荡</li>
-<li><span class="math inline">\(\theta_{2}\)</span>：考虑到局部可能发上的间断性大偏离情况</li>
-</ul>
-<p>常见的设定值为：<span class="math inline">\(\alpha=0.05,\theta_{1}=0.05,\theta_{2}=10\theta_{1}\)</span>。</p></li>
-<li><p><strong>手工设定</strong>：凭借领域经验指定IMFs的数量</p></li>
-</ol>
-<h2 id="混模问题">混模问题</h2>
-<p>混模问题是指在同一个固有模态函数里会有不同尺度的信号混杂，或者同一尺度的信号出现在不同的固有模态函数中。这种状况发生的原因是收集到的信号中有间断性信号出现，这些间断使得经验模态分解不能分解出同一个尺度的信号。而这种混模的存在也会导致分解得到的固有模态函数失去物理意义。任何扰动都可能会导致产生新的固有模态函数。所以黄锷等人提出增加噪声辅助的经验总体经验模态分解法（Ensemble Empirical Mode Decomposition），利用加入白噪声（white noise）来解决混模问题。</p>
-<h2 id="总体经验模态分解法">总体经验模态分解法</h2>
-<p>总体经验模态分解法作为一种噪声辅助的信号分析方法，首先在信号中加入白噪声（white noise），然后再对信号做经验模态分解，并重复以上步骤若干次（1000次），最后将每次分解得到对应的固有模态函数取平均来抵消噪声造成的影响。</p>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>EMD</tag>
-        <tag>EEMD</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>频繁模式挖掘</title>
     <url>/2018/04/04/Frequent-Pattern-Mining/</url>
     <content><![CDATA[<p>在很多时候我们会关注两个或多个对象同时出现的频率，这些相关性往往意味着某种行为特征。例如我们可以根据网站的日志找到网站中某些的网页经常被用户访问到，这些频繁性提供了用户浏览习惯的线索，有助于提高浏览的体验。其中非常典型的应用就是<span style="color:#ff0000;">购物篮分析（market basket analysis）</span>可以通过用户经常购买的物品集合找到人们经常一起买的物品集合。之后可以提取出这些物品的<span style="color:#ff0000;">关联规则（association rule）</span>比如可以发现啤酒和尿布经常会被人组合购买，从而将这些物品放在邻近的地方销售会有更好的效果。 <a id="more"></a></p>
@@ -810,6 +754,62 @@ P(\mathbf{X}=e_i)=f(e_i)=p_i
       </tags>
   </entry>
   <entry>
+    <title>Empirical Mode Decomposition</title>
+    <url>/2020/12/01/Empirical-Mode-Decomposotion/</url>
+    <content><![CDATA[<p>经验模态分解（Empirical Mode Decomposition, EMD）是一种适用于非线性、非平稳信号的自适应信号分解方法。EMD方法把原始信号分解成多个固有模态函数（Intrinsic Mode Functions, IMF），EMD的提出者黄锷认为，任何信号都可以拆分成若干个固有模态函数之和，这种函数符合下面两种特征：</p>
+<ol type="1">
+<li>在整个数据段内，极值点的个数和过零点的个数必须相等或者相差最多不超过一个。</li>
+<li>在任意时刻点，局部最大值的包络（上包络线）和局部最小值的包络（下包络线）的平均值必须为零。</li>
+</ol>
+<img src="/2020/12/01/Empirical-Mode-Decomposotion/Emd_example_lowres.gif" class="" title="Emd_example_lowres">
+<a id="more"></a>
+<h2 id="希尔伯特变换">希尔伯特变换</h2>
+<p>设一个实值函数<span class="math inline">\(x(t)\)</span>，其希尔伯特变换（Hilbert Transform）记作<span class="math inline">\(\hat{x}(t)\)</span>（或记作<span class="math inline">\(H[x(t)]\)</span>）： <span class="math display">\[
+\hat{x}(t)=H[x(t)]=\frac{1}{\pi}\int^{\infty}_{-\infty}\frac{x(\tau)}{t-\tau}d\tau
+\]</span> 对应的反变换为： <span class="math display">\[
+x(t)=H^{-1}[\hat{x}(t)]=-\frac{1}{\pi}\int^{\infty}_{-\infty}\frac{\hat{x}(\tau)}{t-\tau}d\tau
+\]</span></p>
+<h2 id="经验模态分解">经验模态分解</h2>
+<p>经验模态分解是通过不断的筛选来逐步找出所有的IMF，给定一个信号<span class="math inline">\(x(t)\)</span>，对应的筛选过程为：</p>
+<img src="/2020/12/01/Empirical-Mode-Decomposotion/Flowchart-of-empirical-mode-decomposition-EMD-decomposition_W640.jpg" class="" title="img">
+<p>最后可以分解得到一组IMF和最后的残差分量，即n个IMF和1个单调残差分量。</p>
+<h3 id="停止准则">停止准则</h3>
+<p>如果筛选的次数过多可能会破坏信号本身的物理性质，为了确保经验模态分析法分解出的固有模态函数能够保留顺势频率与瞬时振幅的物理意义通过设定筛选的停止准则来决定筛选的次数。</p>
+<ol type="1">
+<li><p><strong>标准差准则</strong>：连续两次筛选结果的分量标准差（Standard Deviation，SD）作为停止准则如下所示（一般当标准差小于0.2到0.3间时，停止筛选动作）： <span class="math display">\[
+SD=\sum^{T}_{t=0}\frac{|h_{k-1}(t)-h_{k}(t)|^{2}}{h_{k-1}(t)^{2}}
+\]</span></p></li>
+<li><p><strong>S数准则</strong>：定义过零点和极值点相等或者至多相差1的连续筛选数目。当S次连续筛选后，每一次过零点和极值点保持相同（相等或者至多差1），筛选过程才停止。</p></li>
+<li><p><strong>能量差异追踪法</strong>：假设原始的信号<span class="math inline">\(x(t)\)</span>包含有限个彼此不相关的正交分量<span class="math inline">\(x_{i}(t)\)</span>： <span class="math display">\[
+x(t)=x_{1}(t)+x_{2}(t)+\dots+x_{n}(t)=\sum^{n}_{i=1}x_{i}(t)
+\]</span> 原始信号<span class="math inline">\(x(t)\)</span>的总能量可以表示为： <span class="math display">\[
+E_{x}=\int^{\infty}_{-\infty}[\sum^{n}_{i=1}x_{i}(t)]^{2}dt=\int^{\infty}_{-\infty}[\sum^{n}_{i=1}x_{i}(t)^{2}]dt
+\]</span> 如果经验模态分析分解出的信号固有模态函数<span class="math inline">\(c_{1}(t)\)</span>正好就是正交分量<span class="math inline">\(x_{1}(t)\)</span>，则维持能量守恒，但是如果这种正交通常并不直接成立，对于分离的<span class="math inline">\(c_{1}(t)\)</span>，它的总能量表示为： <span class="math display">\[
+E_{tot}=\int^{\infty}_{-\infty}c_{1}(t)^{2}dt+\int^{\infty}_{-\infty}[x(t)-c_{1}(t)]^{2}dt=2E_{c1}+E_{x}-2\int^{\infty}_{-\infty}x(t)c_{1}(t)dt
+\]</span> 这个<span class="math inline">\(E_{tot}\neq E_{x}\)</span>产生的一个能量差异<span class="math inline">\(E_{err}\)</span>表示所得到的固有模态信号存在能量泄露的问题（nonorthogonal leakage），所以假设一个足够小的<span class="math inline">\(|E_{err}|\)</span>当作停止准则，所分解出来的IMF正交性越高，信号的完整性、瞬时振幅与瞬时频率特性也会比以标准差（SD）作为停止准则要好，可以降低不必要的震荡，尤其是在初始边界的部分。</p>
+<p>实际在现实中，因为数据点是有限的，所以即使各个分量都是由三角曲线构成的也会引入这种正交泄露的问题。</p></li>
+<li><p><strong>阈值准则</strong>：用两个阈值<span class="math inline">\(\theta_{1}\)</span>和<span class="math inline">\(\theta_{2}\)</span>作为停止准则，用上下包络线算出模态振幅<span class="math inline">\(a(t)=\frac{u_{k}(t)-l_{k}(t)}{2}\)</span>再求出包络线均值和模态振幅的绝对比值，这个比值称为估计函数（evaluation function，<span class="math inline">\(e(t)\)</span>）<span class="math inline">\(e(t)=|\frac{m(t)}{a(t)}|\)</span>，当信号长度的<span class="math inline">\(1-\alpha\)</span>部分满足<span class="math inline">\(e(t)&lt;\theta_{1}\)</span>，剩余的部分满足<span class="math inline">\(e(t)&lt;\theta_{2}\)</span>，则迭代停止。</p>
+<ul>
+<li><span class="math inline">\(\theta_{1}\)</span>：确保全域的小波动为均值使得固有模态函数不会产生不必要的震荡</li>
+<li><span class="math inline">\(\theta_{2}\)</span>：考虑到局部可能发上的间断性大偏离情况</li>
+</ul>
+<p>常见的设定值为：<span class="math inline">\(\alpha=0.05,\theta_{1}=0.05,\theta_{2}=10\theta_{1}\)</span>。</p></li>
+<li><p><strong>手工设定</strong>：凭借领域经验指定IMFs的数量</p></li>
+</ol>
+<h2 id="混模问题">混模问题</h2>
+<p>混模问题是指在同一个固有模态函数里会有不同尺度的信号混杂，或者同一尺度的信号出现在不同的固有模态函数中。这种状况发生的原因是收集到的信号中有间断性信号出现，这些间断使得经验模态分解不能分解出同一个尺度的信号。而这种混模的存在也会导致分解得到的固有模态函数失去物理意义。任何扰动都可能会导致产生新的固有模态函数。所以黄锷等人提出增加噪声辅助的经验总体经验模态分解法（Ensemble Empirical Mode Decomposition），利用加入白噪声（white noise）来解决混模问题。</p>
+<h2 id="总体经验模态分解法">总体经验模态分解法</h2>
+<p>总体经验模态分解法作为一种噪声辅助的信号分析方法，首先在信号中加入白噪声（white noise），然后再对信号做经验模态分解，并重复以上步骤若干次（1000次），最后将每次分解得到对应的固有模态函数取平均来抵消噪声造成的影响。</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>EMD</tag>
+        <tag>EEMD</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Git手册</title>
     <url>/2018/01/11/Git%E6%8C%87%E5%8D%97/</url>
     <content><![CDATA[<img src="/2018/01/11/Git%E6%8C%87%E5%8D%97/18133.png" class="">
@@ -832,43 +832,6 @@ P(\mathbf{X}=e_i)=f(e_i)=p_i
       </categories>
       <tags>
         <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Gradient Boosting</title>
-    <url>/2018/01/18/Gradient-Boosting/</url>
-    <content><![CDATA[<img src="/2018/01/18/Gradient-Boosting/bb1-1150x317.png" class="" title="title:difference between Bagging and Boosting">
-<p>集成学习(Ensemble Learning)通过构建并结合多个学习器来完成学习任务，有时候也被称为多分类器系统(multi-classifier system)，基于委员会的学习(committee-based learning)等。渐进梯度集成方法(Gradient Boosting)有很多优点，基于这种方法又有很多变种<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。 <a id="more"></a></p>
-<p>集成学习是通过很多个个体学习器（比如某种神经网络，某种决策树等）组合而成，假设其中一个学习器的错误率为<span class="math inline">\(\epsilon\)</span>的，并且每个个体学习器都是相互独立的。对于一个以得票超过半数为最终结果的集成规则，它的最终错误率就比较低了。</p>
-<p><span class="math display">\[
-\begin{split}
-P_{error} &amp;= \sum^{\lfloor T/2 \rfloor}_{k=0}{T \choose k} (1-\epsilon)^{k} \epsilon^{T-k} \\ &amp; \leq exp(-\frac{1}{2}T(1-2\epsilon)^{2})
-\end{split}
-\]</span></p>
-<p>这是一个指数级降低的错误率，但是其中一个前提是很难被满足的，就是对于学习器都是相互独立的这个要求。</p>
-<p>根据学习器的输入输出方式，有些集成学习中的学习器是相互依赖的，一个的输入依赖另一个输出，以Boosting为代表。有些集成学习中的学习器不存在这种强依赖，可以并行运行的，以Bagging和“随机森林”（Random Forest）为代表。</p>
-<h1 id="ensemblebagging-and-boosting">Ensemble，Bagging and Boosting</h1>
-<p>我们用机器学习算法来预测目标值时造成预测值和真实值不同的主要原因是噪声，数据变异和偏重。<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>所以集成方法(Ensemble)就是为了克服这类问题而出现的。</p>
-<ul>
-<li><strong>Bagging</strong>是简单地将多种相互独立的预测器/模型/学习器用一些模型平均的方法集成。这些方法包括加权平均，取得分最高的学习器的结果等。</li>
-</ul>
-<p>因为在进行训练的时候每次都是对数据集进行随机抽样，所以每个模型</p>
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p>周志华. 机器学习[M]. Qing hua da xue chu ban she，2016.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p><a href="https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d" class="uri">https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>Boosting</tag>
-        <tag>Ensemble</tag>
-        <tag>Gradient</tag>
-        <tag>Bagging</tag>
       </tags>
   </entry>
   <entry>
@@ -925,6 +888,43 @@ L^{c}_{Grad-CAM} = \text{ReLU}(\sum_{k}\alpha^{c}_{k}A^{k})
       <tags>
         <tag>卷积可视化</tag>
         <tag>注意力</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Gradient Boosting</title>
+    <url>/2018/01/18/Gradient-Boosting/</url>
+    <content><![CDATA[<img src="/2018/01/18/Gradient-Boosting/bb1-1150x317.png" class="" title="title:difference between Bagging and Boosting">
+<p>集成学习(Ensemble Learning)通过构建并结合多个学习器来完成学习任务，有时候也被称为多分类器系统(multi-classifier system)，基于委员会的学习(committee-based learning)等。渐进梯度集成方法(Gradient Boosting)有很多优点，基于这种方法又有很多变种<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。 <a id="more"></a></p>
+<p>集成学习是通过很多个个体学习器（比如某种神经网络，某种决策树等）组合而成，假设其中一个学习器的错误率为<span class="math inline">\(\epsilon\)</span>的，并且每个个体学习器都是相互独立的。对于一个以得票超过半数为最终结果的集成规则，它的最终错误率就比较低了。</p>
+<p><span class="math display">\[
+\begin{split}
+P_{error} &amp;= \sum^{\lfloor T/2 \rfloor}_{k=0}{T \choose k} (1-\epsilon)^{k} \epsilon^{T-k} \\ &amp; \leq exp(-\frac{1}{2}T(1-2\epsilon)^{2})
+\end{split}
+\]</span></p>
+<p>这是一个指数级降低的错误率，但是其中一个前提是很难被满足的，就是对于学习器都是相互独立的这个要求。</p>
+<p>根据学习器的输入输出方式，有些集成学习中的学习器是相互依赖的，一个的输入依赖另一个输出，以Boosting为代表。有些集成学习中的学习器不存在这种强依赖，可以并行运行的，以Bagging和“随机森林”（Random Forest）为代表。</p>
+<h1 id="ensemblebagging-and-boosting">Ensemble，Bagging and Boosting</h1>
+<p>我们用机器学习算法来预测目标值时造成预测值和真实值不同的主要原因是噪声，数据变异和偏重。<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>所以集成方法(Ensemble)就是为了克服这类问题而出现的。</p>
+<ul>
+<li><strong>Bagging</strong>是简单地将多种相互独立的预测器/模型/学习器用一些模型平均的方法集成。这些方法包括加权平均，取得分最高的学习器的结果等。</li>
+</ul>
+<p>因为在进行训练的时候每次都是对数据集进行随机抽样，所以每个模型</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>周志华. 机器学习[M]. Qing hua da xue chu ban she，2016.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p><a href="https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d" class="uri">https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>Boosting</tag>
+        <tag>Ensemble</tag>
+        <tag>Gradient</tag>
+        <tag>Bagging</tag>
       </tags>
   </entry>
   <entry>
@@ -988,6 +988,30 @@ L^{c}_{Grad-CAM} = \text{ReLU}(\sum_{k}\alpha^{c}_{k}A^{k})
       </tags>
   </entry>
   <entry>
+    <title>Linux 不完全命令指南</title>
+    <url>/2020/05/03/Linux-Tool-Set/</url>
+    <content><![CDATA[<p>不定期更新的 Linux 的脚本管理片段，用于提高日常使用过程中效率。</p>
+<img src="/2020/05/03/Linux-Tool-Set/v2-01a6301b2101a984790cb8895ece7d96_1200x500.jpg" class="">
+<a id="more"></a>
+<h2 id="文件统计">文件统计</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du -sh  <span class="comment"># 显示当前文件夹的大小</span></span><br><span class="line">du -lh --max-depth=1  <span class="comment"># 列出当前文件夹下各个目录的大小</span></span><br><span class="line">df -lh  <span class="comment"># 列出当前文件系统的空间使用情况</span></span><br></pre></td></tr></table></figure>
+<p>tree 需要额外安装，是命令行常用的查看文件夹项目结构的工具 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tree dir_name -L 3  <span class="comment"># 以树形结构列出当前目录最多三级的子项目</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="文件传输">文件传输</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -avz -P source_path username@target_machine:target_path/  <span class="comment"># 传输某个文件夹到另一台机器</span></span><br></pre></td></tr></table></figure>
+<h2 id="命令行">命令行</h2>
+<p>新建一个tmux会话，可以在里面开多个窗口，把窗口分成多个面板，然后用 <code>ctrl+b+d</code> 离开这个会话，之后再通过 <code>tmux a -t name</code> 回到当前的这个会话，所有的内容都会保持原样。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux new -s name  <span class="comment"># 新建一个tmux会话</span></span><br><span class="line">tmux ls  <span class="comment"># 查看已经打开的会话列表</span></span><br><span class="line">tmux a -t name  <span class="comment"># 进入一个已有的会话</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="连接">连接</h2>
+<p>创建软连接相当于只创建了一个快捷方式指向源目标，程序访问这个软连接就会自动指向它所指向的目标。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln -s source_path target_path</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>脚本</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Introduction to Bayesian Inference</title>
     <url>/2018/04/11/Introduction-to-Bayesian-Inference/</url>
     <content><![CDATA[<p>贝叶斯推断是机器学习中常用的一种算法，在很多种情况下可以和其他数据处理技术搭配在一起。它可以处理很多种随机变量，像是参数回归、人口统计、商业KPI或者是演讲中的文字片段等。通常而言，贝叶斯推断是根据已有的数据频率分布对未知的目标进行推断，但是人们通常会用另一种方式来表述概率，像是先验和后验概率。</p>
@@ -1044,30 +1068,6 @@ L^{c}_{Grad-CAM} = \text{ReLU}(\sum_{k}\alpha^{c}_{k}A^{k})
         <tag>贝叶斯推断</tag>
         <tag>贝叶斯</tag>
         <tag>Bayesian Inference</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux 不完全命令指南</title>
-    <url>/2020/05/03/Linux-Tool-Set/</url>
-    <content><![CDATA[<p>不定期更新的 Linux 的脚本管理片段，用于提高日常使用过程中效率。</p>
-<img src="/2020/05/03/Linux-Tool-Set/v2-01a6301b2101a984790cb8895ece7d96_1200x500.jpg" class="">
-<a id="more"></a>
-<h2 id="文件统计">文件统计</h2>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du -sh  <span class="comment"># 显示当前文件夹的大小</span></span><br><span class="line">du -lh --max-depth=1  <span class="comment"># 列出当前文件夹下各个目录的大小</span></span><br><span class="line">df -lh  <span class="comment"># 列出当前文件系统的空间使用情况</span></span><br></pre></td></tr></table></figure>
-<p>tree 需要额外安装，是命令行常用的查看文件夹项目结构的工具 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tree dir_name -L 3  <span class="comment"># 以树形结构列出当前目录最多三级的子项目</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="文件传输">文件传输</h2>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -avz -P source_path username@target_machine:target_path/  <span class="comment"># 传输某个文件夹到另一台机器</span></span><br></pre></td></tr></table></figure>
-<h2 id="命令行">命令行</h2>
-<p>新建一个tmux会话，可以在里面开多个窗口，把窗口分成多个面板，然后用 <code>ctrl+b+d</code> 离开这个会话，之后再通过 <code>tmux a -t name</code> 回到当前的这个会话，所有的内容都会保持原样。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux new -s name  <span class="comment"># 新建一个tmux会话</span></span><br><span class="line">tmux ls  <span class="comment"># 查看已经打开的会话列表</span></span><br><span class="line">tmux a -t name  <span class="comment"># 进入一个已有的会话</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="连接">连接</h2>
-<p>创建软连接相当于只创建了一个快捷方式指向源目标，程序访问这个软连接就会自动指向它所指向的目标。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln -s source_path target_path</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>脚本</tag>
       </tags>
   </entry>
   <entry>
@@ -1150,95 +1150,6 @@ L^{c}_{Grad-CAM} = \text{ReLU}(\sum_{k}\alpha^{c}_{k}A^{k})
       </categories>
       <tags>
         <tag>生活</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Paper | Domain Agnostic Learning with Disentangled Representations</title>
-    <url>/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/</url>
-    <content><![CDATA[<p>假设你有两批数据，一批是在游戏中模拟进行自动驾驶的场景训练数据，一批是真实世界中的任务数据，前一批我们有无尽二点标签，但是后一批的标签收集显然就需要很大的人力物力，所以我们希望在前面无尽的数据上训练好的模型能够经过一些调整直接解决后一批数据的任务，这也就是迁移学习要做的任务。</p>
-<a id="more"></a>
-<p>比较形式化的说法就是：迁移学习主要是为了能够弥合相同任务中的两批数据集的因为边缘分布不一致导致的协变量漂移的问题。基于一个假设： 两批数据的边缘分布不同，但是条件概率分布是相同的，即 <span class="math inline">\(P(x|y)\)</span> 还是相同的，同样的特征是要对应于同样的标签，但是 <span class="math inline">\(P(X)\)</span> 是不相同的，因为数据分布是有些不同的。</p>
-<p>所以针对这样的问题人们提出了一些解决方案：</p>
-<ol type="1">
-<li>通过学习一种嵌入表示方式能够弥补源域和目标域的协变量漂移问题。</li>
-<li>通过对抗学习在保证源域性能情况下使得目标域和源域的中间特征变得难以辨别</li>
-<li>如果在目标域标签可标记的情况下还可以引入主动学习：
-<ol type="1">
-<li>挑选那些最能让源域目标域辨别出错的样本</li>
-<li>挑选那些让源域上训练过的模型最不确定的样本</li>
-</ol></li>
-</ol>
-<p>而实际进行迁移的时候也有几种不同的场景需求：</p>
-<ol type="1">
-<li>源域 <span class="math inline">\(\mathcal{S}\)</span> 单 --&gt; 目标域 <span class="math inline">\(\mathcal{T}\)</span> 单</li>
-<li>源域 <span class="math inline">\(\mathcal{S}\)</span> 多 --&gt; 目标域 <span class="math inline">\(\mathcal{T}\)</span> 单</li>
-<li>源域 <span class="math inline">\(\mathcal{S}\)</span> 单 --&gt; 目标域 <span class="math inline">\(\mathcal{T}\)</span> 多</li>
-</ol>
-<p>这篇文章要讨论的就是这第三个问题。</p>
-<h2 id="大致思路">大致思路</h2>
-<img src="/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/main.png" class="">
-<ul>
-<li>特征生成器 <span class="math inline">\(G\)</span></li>
-<li>解耦器 <span class="math inline">\(D\)</span></li>
-<li>域无关特征 <span class="math inline">\(f_{di}\)</span></li>
-<li>域特定特征 <span class="math inline">\(f_{ds}\)</span></li>
-<li>类别无关特征 <span class="math inline">\(f_{ci}\)</span></li>
-<li>特征重建器 <span class="math inline">\(R\)</span></li>
-<li>分类器 <span class="math inline">\(C\)</span></li>
-</ul>
-<p>通过学习两个解耦对迁移任务进行改进，从<strong>域不变特征</strong>和<strong>类别特征</strong>通过互信息的水平分开。</p>
-<h3 id="变分自编码">变分自编码</h3>
-<p><span class="math display">\[
-\mathcal{L}_{vae} = \|\hat{f}_{G}-f_{G}\|^{2}_{F} + KL(q(z|f_{G})\|p(z))
-\]</span></p>
-<p>其中 <span class="math inline">\(p(z_{c})\)</span> 是一个先验的分布，<span class="math inline">\(z\sim \mathcal{N}(0, I)\)</span> 因为在损失函数中没有特别定义，而且特征量又是取自一个常规的分布，仅仅通过这个自编码器是不能把域不变和域相关的特征区分开来的。</p>
-<h3 id="类别解耦">类别解耦</h3>
-<p><span class="math display">\[
-\mathcal{L}_{ce} = -\mathbb{E}_{(x_s, y_s)\sim \hat{D}_{s}}\sum^{K}_{k=1}\mathbb{1}[k=y_{s}]\log (C(f_{D}))
-\]</span> 其中 <span class="math inline">\(f_{D}\in \{f_{di}, f_{ci}\}\)</span>，用于去除类别不相关特征，通过交叉熵优化解耦器和分类器实现分类错误最小化。</p>
-<p>第二步通过固定分类器，训练解耦器 <span class="math inline">\(D\)</span> 生成类别无关的特征 <span class="math inline">\(f_{ci}\)</span> 欺骗过分类器，可以通过负熵最小化实现：</p>
-<p><span class="math display">\[
-\mathcal{L}_{ent}=-\frac{1}{n_s}\sum^{n_s}_{j=1}\log C(f^{i}_{ci})-\frac{1}{n_t}\sum^{n_t}_{j=1}\log C(f^{j}_{ci})
-\]</span></p>
-<p>也就是使得 <span class="math inline">\(C(f^{i}_{ci})\)</span> 在整体数据判断上都非常不确定。</p>
-<h3 id="域解耦">域解耦</h3>
-<p>通过训练域鉴别器 DI 实现对域指定特征的解耦，也就是能够通过 <span class="math inline">\(f_{di}\)</span> 或者 <span class="math inline">\(f_{ds}\)</span> 来分别这些特征是来自源域 <span class="math inline">\(\mathcal{S}\)</span> 的还是来自目标域 <span class="math inline">\(\mathcal{T}\)</span> 的。</p>
-<p><span class="math display">\[
-\mathcal{L}_{DI} = -\mathbb{E}[l_{f}\log P(l_{f})] + \mathbb{E}(1-l_{f})[\log P(1-l_{f})]
-\]</span></p>
-<p>这里的解耦器就是用于训练欺骗域鉴别器。</p>
-<h3 id="互信息最小化">互信息最小化</h3>
-<p>可以把互信息 <span class="math inline">\(I(X;Y)\)</span> 看成由于知道 <span class="math inline">\(y\)</span> 值而造成的 <span class="math inline">\(x\)</span> 的不确定性的减小(反之亦然)（即 <span class="math inline">\(Y\)</span> 的值透露了多少关于 <span class="math inline">\(X\)</span> 的信息量）<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。我们的目标当然是希望每种特征仅承担各自该承担的任务，也就是 <span class="math inline">\(f_{di},f_{ds}\)</span> 之间以及 <span class="math inline">\(f_{di},f_{ci}\)</span> 之间的互信息都要尽可能的小。 <span class="math display">\[
-I(\mathcal{D}_{x};\mathcal{D}_{f_{di}}) = \int_{\mathbb{X}\times\mathcal{Z}}\log \frac{d\mathbb{P}_{XZ}}{d\mathbb{P}_{X}\otimes\mathbb{P}_{Z}}d\mathbb{P}_{XZ}
-\]</span> 其中 <span class="math inline">\(x\in\{f_{ds}, f_{ci}\}\)</span>，<span class="math inline">\(\mathbb{P}_{XZ}\)</span> 是 <span class="math inline">\((\mathcal{D}_{x},\mathcal{D}_{f_{di}})\)</span> 的联合分布。<span class="math inline">\(\mathbb{P}_{X}=\int_{\mathcal{Z}}d\mathbb{P}_{XZ}\)</span> 和 <span class="math inline">\(\mathbb{P}_{Z}=\int_{\mathcal{X}}d\mathbb{P}_{XZ}\)</span> 是边缘分布，这也就是一个类似于贝叶斯概率的公式。但是这种计算复杂度过高，尤其是还用了张量积 <span class="math inline">\(\otimes\)</span> 导致复杂度到 <span class="math inline">\(O(n^2)\)</span>，所以参照 Mutual Information Neural Estimator（MINE）的做法进行了简化：</p>
-<p><span class="math display">\[
-I\hat{(X;Z)}_{n} = \sup_{\theta \in \Theta}\mathbb{E}_{\mathbb{P}^{(n)}_{XZ}}[T_{\theta}]-\log(\mathbb{E}_{\mathbb{P}^{(n)}\otimes\hat{\mathbb{P}^{(n)}_{Z}}}[e^{T_{\theta}}])
-\]</span> 可以利用神经网络 <span class="math inline">\(T_{\theta}\)</span> 无偏地估计 <span class="math inline">\(n\)</span> 个独立同分布样本的互信息。</p>
-<p>然鹅在实际操作中，用的是更加简单的方式，<span class="math inline">\(I(X;Y)=\int\int \mathbb{P}^{n}_{XZ}(x,y)T(x,z,\theta)-\log(\int\int\mathbb{P}^{n}_{X}(x)\mathbb{P}^{n}_{Z}(z)e^{T(x,z,\theta)}\)</span>，再进一步避免使用积分的形式，代码中是用蒙特卡洛采样的方式实现。</p>
-<p><span class="math display">\[
-I(X,Z) = \frac{1}{n}\sum^{n}_{i=1}T(x, z, \theta) - \log(\frac{1}{n}\sum^{n}_{i=1}e^{T(x, z&#39;,\theta)})
-\]</span> 其中 <span class="math inline">\((x,z)\)</span> 是从联合分布中采样得到的，<span class="math inline">\(z&#39;\)</span> 是从边缘分布中采样得到的。</p>
-<h3 id="改进批归一化">改进批归一化</h3>
-<p>因为一般的批归一化是来自于同一批数据，假设都是类似的分布，但是在这里，目标域有多个域的数据（你还不知道哪个样本是来自哪个域的），所以批内肯定会出现（而且得是这样）协变量漂移的问题，不能简单通过批归一化，所以采用了环样的正则约束： <span class="math display">\[
-\mathcal{L}_{ring}=\frac{1}{2n}\sum^{n}_{i=1}(\|T(x_i)\|_{2}-R)^2
-\]</span> 但是还是容易出现一些模式坍塌的问题，如果这个学习到的 <span class="math inline">\(R\)</span> 太小的话，所以做进一步改进就是引入 Geman-McClure 模型： <span class="math display">\[
-\mathcal{L}^{GM}_{ring}=\frac{\sum^{n}_{i=1}(\|T(x_i)\|_{2}-R)^2}{2n\beta +\sum^{n}_{i=1}(\|T(x_{i})\|_{2}-R)^2}
-\]</span> 其中 <span class="math inline">\(\beta\)</span> 是 Geman-McClure 模型的尺寸。</p>
-<h2 id="完整算法流程">完整算法流程</h2>
-<img src="/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/alg.png" class="">
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p><a href="https://zh.wikipedia.org/wiki/%E4%BA%92%E4%BF%A1%E6%81%AF">wiki:互信息</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>文献</category>
-      </categories>
-      <tags>
-        <tag>Domain Adaptation</tag>
-        <tag>Disentangle</tag>
       </tags>
   </entry>
   <entry>
@@ -1380,6 +1291,95 @@ U_{ij,kl}=\left\{\begin{array}{cl}1 &amp; \text{if}~i=k, j\neq l, or~i\neq k,j=l
       <tags>
         <tag>图卷积</tag>
         <tag>特征匹配</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Paper | Domain Agnostic Learning with Disentangled Representations</title>
+    <url>/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/</url>
+    <content><![CDATA[<p>假设你有两批数据，一批是在游戏中模拟进行自动驾驶的场景训练数据，一批是真实世界中的任务数据，前一批我们有无尽二点标签，但是后一批的标签收集显然就需要很大的人力物力，所以我们希望在前面无尽的数据上训练好的模型能够经过一些调整直接解决后一批数据的任务，这也就是迁移学习要做的任务。</p>
+<a id="more"></a>
+<p>比较形式化的说法就是：迁移学习主要是为了能够弥合相同任务中的两批数据集的因为边缘分布不一致导致的协变量漂移的问题。基于一个假设： 两批数据的边缘分布不同，但是条件概率分布是相同的，即 <span class="math inline">\(P(x|y)\)</span> 还是相同的，同样的特征是要对应于同样的标签，但是 <span class="math inline">\(P(X)\)</span> 是不相同的，因为数据分布是有些不同的。</p>
+<p>所以针对这样的问题人们提出了一些解决方案：</p>
+<ol type="1">
+<li>通过学习一种嵌入表示方式能够弥补源域和目标域的协变量漂移问题。</li>
+<li>通过对抗学习在保证源域性能情况下使得目标域和源域的中间特征变得难以辨别</li>
+<li>如果在目标域标签可标记的情况下还可以引入主动学习：
+<ol type="1">
+<li>挑选那些最能让源域目标域辨别出错的样本</li>
+<li>挑选那些让源域上训练过的模型最不确定的样本</li>
+</ol></li>
+</ol>
+<p>而实际进行迁移的时候也有几种不同的场景需求：</p>
+<ol type="1">
+<li>源域 <span class="math inline">\(\mathcal{S}\)</span> 单 --&gt; 目标域 <span class="math inline">\(\mathcal{T}\)</span> 单</li>
+<li>源域 <span class="math inline">\(\mathcal{S}\)</span> 多 --&gt; 目标域 <span class="math inline">\(\mathcal{T}\)</span> 单</li>
+<li>源域 <span class="math inline">\(\mathcal{S}\)</span> 单 --&gt; 目标域 <span class="math inline">\(\mathcal{T}\)</span> 多</li>
+</ol>
+<p>这篇文章要讨论的就是这第三个问题。</p>
+<h2 id="大致思路">大致思路</h2>
+<img src="/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/main.png" class="">
+<ul>
+<li>特征生成器 <span class="math inline">\(G\)</span></li>
+<li>解耦器 <span class="math inline">\(D\)</span></li>
+<li>域无关特征 <span class="math inline">\(f_{di}\)</span></li>
+<li>域特定特征 <span class="math inline">\(f_{ds}\)</span></li>
+<li>类别无关特征 <span class="math inline">\(f_{ci}\)</span></li>
+<li>特征重建器 <span class="math inline">\(R\)</span></li>
+<li>分类器 <span class="math inline">\(C\)</span></li>
+</ul>
+<p>通过学习两个解耦对迁移任务进行改进，从<strong>域不变特征</strong>和<strong>类别特征</strong>通过互信息的水平分开。</p>
+<h3 id="变分自编码">变分自编码</h3>
+<p><span class="math display">\[
+\mathcal{L}_{vae} = \|\hat{f}_{G}-f_{G}\|^{2}_{F} + KL(q(z|f_{G})\|p(z))
+\]</span></p>
+<p>其中 <span class="math inline">\(p(z_{c})\)</span> 是一个先验的分布，<span class="math inline">\(z\sim \mathcal{N}(0, I)\)</span> 因为在损失函数中没有特别定义，而且特征量又是取自一个常规的分布，仅仅通过这个自编码器是不能把域不变和域相关的特征区分开来的。</p>
+<h3 id="类别解耦">类别解耦</h3>
+<p><span class="math display">\[
+\mathcal{L}_{ce} = -\mathbb{E}_{(x_s, y_s)\sim \hat{D}_{s}}\sum^{K}_{k=1}\mathbb{1}[k=y_{s}]\log (C(f_{D}))
+\]</span> 其中 <span class="math inline">\(f_{D}\in \{f_{di}, f_{ci}\}\)</span>，用于去除类别不相关特征，通过交叉熵优化解耦器和分类器实现分类错误最小化。</p>
+<p>第二步通过固定分类器，训练解耦器 <span class="math inline">\(D\)</span> 生成类别无关的特征 <span class="math inline">\(f_{ci}\)</span> 欺骗过分类器，可以通过负熵最小化实现：</p>
+<p><span class="math display">\[
+\mathcal{L}_{ent}=-\frac{1}{n_s}\sum^{n_s}_{j=1}\log C(f^{i}_{ci})-\frac{1}{n_t}\sum^{n_t}_{j=1}\log C(f^{j}_{ci})
+\]</span></p>
+<p>也就是使得 <span class="math inline">\(C(f^{i}_{ci})\)</span> 在整体数据判断上都非常不确定。</p>
+<h3 id="域解耦">域解耦</h3>
+<p>通过训练域鉴别器 DI 实现对域指定特征的解耦，也就是能够通过 <span class="math inline">\(f_{di}\)</span> 或者 <span class="math inline">\(f_{ds}\)</span> 来分别这些特征是来自源域 <span class="math inline">\(\mathcal{S}\)</span> 的还是来自目标域 <span class="math inline">\(\mathcal{T}\)</span> 的。</p>
+<p><span class="math display">\[
+\mathcal{L}_{DI} = -\mathbb{E}[l_{f}\log P(l_{f})] + \mathbb{E}(1-l_{f})[\log P(1-l_{f})]
+\]</span></p>
+<p>这里的解耦器就是用于训练欺骗域鉴别器。</p>
+<h3 id="互信息最小化">互信息最小化</h3>
+<p>可以把互信息 <span class="math inline">\(I(X;Y)\)</span> 看成由于知道 <span class="math inline">\(y\)</span> 值而造成的 <span class="math inline">\(x\)</span> 的不确定性的减小(反之亦然)（即 <span class="math inline">\(Y\)</span> 的值透露了多少关于 <span class="math inline">\(X\)</span> 的信息量）<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。我们的目标当然是希望每种特征仅承担各自该承担的任务，也就是 <span class="math inline">\(f_{di},f_{ds}\)</span> 之间以及 <span class="math inline">\(f_{di},f_{ci}\)</span> 之间的互信息都要尽可能的小。 <span class="math display">\[
+I(\mathcal{D}_{x};\mathcal{D}_{f_{di}}) = \int_{\mathbb{X}\times\mathcal{Z}}\log \frac{d\mathbb{P}_{XZ}}{d\mathbb{P}_{X}\otimes\mathbb{P}_{Z}}d\mathbb{P}_{XZ}
+\]</span> 其中 <span class="math inline">\(x\in\{f_{ds}, f_{ci}\}\)</span>，<span class="math inline">\(\mathbb{P}_{XZ}\)</span> 是 <span class="math inline">\((\mathcal{D}_{x},\mathcal{D}_{f_{di}})\)</span> 的联合分布。<span class="math inline">\(\mathbb{P}_{X}=\int_{\mathcal{Z}}d\mathbb{P}_{XZ}\)</span> 和 <span class="math inline">\(\mathbb{P}_{Z}=\int_{\mathcal{X}}d\mathbb{P}_{XZ}\)</span> 是边缘分布，这也就是一个类似于贝叶斯概率的公式。但是这种计算复杂度过高，尤其是还用了张量积 <span class="math inline">\(\otimes\)</span> 导致复杂度到 <span class="math inline">\(O(n^2)\)</span>，所以参照 Mutual Information Neural Estimator（MINE）的做法进行了简化：</p>
+<p><span class="math display">\[
+I\hat{(X;Z)}_{n} = \sup_{\theta \in \Theta}\mathbb{E}_{\mathbb{P}^{(n)}_{XZ}}[T_{\theta}]-\log(\mathbb{E}_{\mathbb{P}^{(n)}\otimes\hat{\mathbb{P}^{(n)}_{Z}}}[e^{T_{\theta}}])
+\]</span> 可以利用神经网络 <span class="math inline">\(T_{\theta}\)</span> 无偏地估计 <span class="math inline">\(n\)</span> 个独立同分布样本的互信息。</p>
+<p>然鹅在实际操作中，用的是更加简单的方式，<span class="math inline">\(I(X;Y)=\int\int \mathbb{P}^{n}_{XZ}(x,y)T(x,z,\theta)-\log(\int\int\mathbb{P}^{n}_{X}(x)\mathbb{P}^{n}_{Z}(z)e^{T(x,z,\theta)}\)</span>，再进一步避免使用积分的形式，代码中是用蒙特卡洛采样的方式实现。</p>
+<p><span class="math display">\[
+I(X,Z) = \frac{1}{n}\sum^{n}_{i=1}T(x, z, \theta) - \log(\frac{1}{n}\sum^{n}_{i=1}e^{T(x, z&#39;,\theta)})
+\]</span> 其中 <span class="math inline">\((x,z)\)</span> 是从联合分布中采样得到的，<span class="math inline">\(z&#39;\)</span> 是从边缘分布中采样得到的。</p>
+<h3 id="改进批归一化">改进批归一化</h3>
+<p>因为一般的批归一化是来自于同一批数据，假设都是类似的分布，但是在这里，目标域有多个域的数据（你还不知道哪个样本是来自哪个域的），所以批内肯定会出现（而且得是这样）协变量漂移的问题，不能简单通过批归一化，所以采用了环样的正则约束： <span class="math display">\[
+\mathcal{L}_{ring}=\frac{1}{2n}\sum^{n}_{i=1}(\|T(x_i)\|_{2}-R)^2
+\]</span> 但是还是容易出现一些模式坍塌的问题，如果这个学习到的 <span class="math inline">\(R\)</span> 太小的话，所以做进一步改进就是引入 Geman-McClure 模型： <span class="math display">\[
+\mathcal{L}^{GM}_{ring}=\frac{\sum^{n}_{i=1}(\|T(x_i)\|_{2}-R)^2}{2n\beta +\sum^{n}_{i=1}(\|T(x_{i})\|_{2}-R)^2}
+\]</span> 其中 <span class="math inline">\(\beta\)</span> 是 Geman-McClure 模型的尺寸。</p>
+<h2 id="完整算法流程">完整算法流程</h2>
+<img src="/2019/11/25/Paper-Domain-Agnostic-Learning-with-Disentangled-Representations/alg.png" class="">
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a href="https://zh.wikipedia.org/wiki/%E4%BA%92%E4%BF%A1%E6%81%AF">wiki:互信息</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>文献</category>
+      </categories>
+      <tags>
+        <tag>Domain Adaptation</tag>
+        <tag>Disentangle</tag>
       </tags>
   </entry>
   <entry>
@@ -1794,53 +1794,6 @@ Y^x &amp; Y^y\\
       </tags>
   </entry>
   <entry>
-    <title>训练可视化</title>
-    <url>/2019/09/25/Training-Visualization/</url>
-    <content><![CDATA[<p>要认真看文档，网上虽然存在很多看起来好用的小抄，但是很多还是不如直接去看文档更方便满足你的需求。</p>
-<a id="more"></a>
-<h2 id="基于-tensorboard">基于 Tensorboard</h2>
-<p>可以用 TensorBoard 来展现 TensorFlow 图，绘制图像生成的定量指标图以及显示附加数据（如其中传递的图像）。当 TensorBoard 完全配置好后，它将显示如下：</p>
-<img src="/2019/09/25/Training-Visualization/mnist_tensorboard.png" class="">
-<ul>
-<li>Value</li>
-<li>Audio</li>
-<li>Image</li>
-<li>text</li>
-</ul>
-<h3 id="tensorflow-写法">Tensorflow 写法</h3>
-<p>下次再补，已经很久没有使用过 TensorFlow，等下次用到再来补充。</p>
-<h3 id="pytorch-写法">Pytorch 写法</h3>
-<p>Pytorch 1.2.0 之后就正式支持了 TensorBoard 的内容记录，功能都实现在 <a href="https://pytorch.org/docs/stable/tensorboard.html"><code>torch.utils.tensorboard</code></a> 内。</p>
-<p>另附，如果需要对中间的特征进行输出观察的话，可以用 PyTorch 的 hook 机制，可以在保持原始网络的结构的情况下实现中间特征的观测。</p>
-<p>基于版本 1.2.0 共有两种 hook 机制，分别是针对 Tensor 的 hook 和针对 <code>nn.Module</code> 的 hook，有不同的用法。以针对 <code>nn.Module</code> 的用法，可以按照名字将模型中你关注的模块挑出，然后注册好传播所用的函数，以 HRNet 的特征层提取为例，这里可以针对某个 Branch 做输出观测。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">feature_viz_stage4</span>(<span class="params">module, inputs, outputs</span>):</span></span><br><span class="line">    <span class="comment"># print(&quot;&lt;- Stage4 -&gt; &quot;)</span></span><br><span class="line">    <span class="keyword">for</span> idx, item <span class="keyword">in</span> enumerate(outputs):</span><br><span class="line">        <span class="comment"># print(&#x27;branch &#123;&#125; -&gt;&#x27;.format(idx), item.size())</span></span><br><span class="line">        tensors = (item[<span class="number">0</span>]-item[<span class="number">0</span>].min())/(item[<span class="number">0</span>].max()-item[<span class="number">0</span>].min())</span><br><span class="line">        writer_dict[<span class="string">&#x27;writer&#x27;</span>].add_image(<span class="string">&#x27;stage4/branch&#123;&#125;&#x27;</span>.format(idx),</span><br><span class="line">                                        make_grid(tensors.view(item.size(<span class="number">1</span>), <span class="number">1</span>, item.size(<span class="number">2</span>), item.size(<span class="number">3</span>))))</span><br></pre></td></tr></table></figure>
-<p>这里的注册需要的是一个回调函数，所有接口的定义要与官方文档中所给的一致，分别为：</p>
-<ul>
-<li><code>module</code>：子模块</li>
-<li><code>inputs</code>：这个子模块的输入</li>
-<li><code>outputs</code>：这个子模块的输出</li>
-</ul>
-<p>同样还有另外几个函数，可以在官方文档中找到详细的描述：</p>
-<ul>
-<li><a href="https://pytorch.org/docs/stable/nn.html?highlight=hook#torch.nn.Module.register_backward_hook"><code>register_backward_hook(hook)</code></a></li>
-<li><a href="https://pytorch.org/docs/stable/nn.html?highlight=hook#torch.nn.Module.register_forward_pre_hook"><code>register_forward_pre_hook(hook)</code></a></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add feature monitor</span></span><br><span class="line"><span class="keyword">for</span> idx, (name, m) <span class="keyword">in</span> enumerate(model.module.named_modules()):</span><br><span class="line">    <span class="keyword">if</span> name == <span class="string">&#x27;stage4&#x27;</span>:</span><br><span class="line">        m.register_forward_hook(feature_viz_stage4)</span><br><span class="line">        print(idx, <span class="string">&#x27;-&gt;&#x27;</span>, name, <span class="string">&#x27;hooked!&#x27;</span>)</span><br><span class="line">    <span class="keyword">elif</span> name == <span class="string">&#x27;stage3&#x27;</span>:</span><br><span class="line">        m.register_forward_hook(feature_viz_stage3)</span><br><span class="line">        print(idx, <span class="string">&#x27;-&gt;&#x27;</span>, name, <span class="string">&#x27;hooked!&#x27;</span>)</span><br><span class="line">    <span class="keyword">elif</span> name == <span class="string">&#x27;stage2&#x27;</span>:</span><br><span class="line">        m.register_forward_hook(feature_viz_stage2)</span><br><span class="line">        print(idx, <span class="string">&#x27;-&gt;&#x27;</span>, name, <span class="string">&#x27;hooked!&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>另外，上面用的是 <code>model.module</code> 是因为在实际训练过程中使用了 <code>model = torch.nn.DataParallel(model, device_ids=cfg.GPUS).cuda()</code> 所以需要通过这一步拿到真正对应的模块名字。</p>
-<figure>
-<img src="feature_training.png" alt="中间的特征可视化结果" /><figcaption aria-hidden="true">中间的特征可视化结果</figcaption>
-</figure>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>可视化</tag>
-        <tag>Pytorch</tag>
-        <tag>Tensorflow</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>转置卷积</title>
     <url>/2019/08/27/Transposed-Convolution/</url>
     <content><![CDATA[<p>反卷积（Deconvolution）很容易和信号处理中的反卷积混淆起来，其实在常见的卷积神经网络文献中应该指的是转置卷积（Transposed Convolution），下文见更准确地使用转置卷积来指代这一过程。</p>
@@ -1887,71 +1840,50 @@ Y^x &amp; Y^y\\
       </tags>
   </entry>
   <entry>
-    <title>理解 ELBO</title>
-    <url>/2020/06/26/Understanding-ELBO/</url>
-    <content><![CDATA[<p>变分贝叶斯的一个优势就在于它的优化对偶性。我们回顾统计推断问题（也就是通过给定其他随机变量的值来推断某一个随机变量的值）作为一个优化问题（也就是找到一批参数能够最小化某些目标函数）。更进一步的这种变分下界也称为证据下界，它时一种变分贝叶斯方法中的基本角色，我们将主要介绍这种下界的关键角色和推导。</p>
+    <title>训练可视化</title>
+    <url>/2019/09/25/Training-Visualization/</url>
+    <content><![CDATA[<p>要认真看文档，网上虽然存在很多看起来好用的小抄，但是很多还是不如直接去看文档更方便满足你的需求。</p>
 <a id="more"></a>
-<p>变分贝叶斯是一类用于贝叶斯估计和机器学习领域中近似计算复杂（intractable）积分的技术。在贝叶斯推断中，参数和隐变量统称为不可观测变量（unobserved variables）。变分贝叶斯方法的主要目的有两个：</p>
-<ol type="1">
-<li>近似不可观测变量的后验概率，以便通过这些变量做出统计推断</li>
-<li>对于一个特定的模型，给出观测变量的边缘似然函数（或者称为证据，evidence）的下界。主要用于模型的选择，我们认为模型的边缘似然值越高，则模型对于数据的拟合程度越好，该模型产生数据的概率也越高。</li>
-</ol>
-<h1 id="变分下界推导">变分下界推导</h1>
-<img src="/2020/06/26/Understanding-ELBO/graphical_model.png" class="">
-<p>这里的 <span class="math inline">\(X\)</span> 是我们观测到的值，这里的 <span class="math inline">\(Z\)</span> 是隐藏的变量，通常情况下这种隐藏变量可能会有一些参数，<span class="math inline">\(X\)</span> 和 <span class="math inline">\(Z\)</span> 之间的关系可以用下面的这种图结构来表示。 更进一步的，大写的 <span class="math inline">\(P(X)\)</span> 表示这个变量的概率分布，小写的这个 <span class="math inline">\(p(X)\)</span> 表示它的概率密度函数，这个隐藏变量的后验概率分布写成贝叶斯定理也就有：</p>
-<p><span class="math display">\[
-P(Z|X) = \frac{p(X|Z)p(Z)}{p(X)}=\frac{p(X|Z)p(Z)}{\int_{Z}p(X,Z)}
-\]</span></p>
-<h2 id="jensen-不等式">Jensen 不等式</h2>
-<p><span class="math display">\[
-\begin{aligned}
-\log p(X) &amp;=\log \int_{Z} p(X, Z) \\
-&amp;=\log \int_{Z} p(X, Z) \frac{q(Z)}{q(Z)} \\
-&amp;=\log \left(\mathbb{E}_{q}\left[\frac{p(X, Z)}{q(Z)}\right]\right) \\
-&amp; \geq \mathbb{E}_{q}\left[\log \frac{p(X, Z)}{q(Z)}\right] \\
-&amp;=\mathbb{E}_{q}[\log p(X, Z)]+H[Z]
-\end{aligned}
-\]</span></p>
-<p>最后得到的也就是变分下界，我们也成为 ELBO。这里的<span class="math inline">\(q(Z)\)</span>就是一个我们在变分贝叶斯中用来逼近真实的后验分布的<span class="math inline">\(p(Z|X)\)</span>，在这里我们把它看成任意分布，求导仍然成立。</p>
-<p>对于凹对数方程，可以使用 Jensen 不等式，最后一项 <span class="math inline">\(H[Z]\)</span> 就是香侬熵 <span class="math inline">\(f(\mathbb{E}[X])\leq \mathbb{E}[f(X)]\)</span>。那么很显然了最后得到的就是观测得到的对数似然的下界，所以，如果优化使得边缘分布概率，我们可以转而使用它的下界。</p>
-<h2 id="kl-散度">KL 散度</h2>
-<p>因为在前面的贝叶斯公式中，<span class="math inline">\(p(Z)\)</span> 是比较难以获得的，但是它又是我们进行分布推导的动机。在很多情况下对 <span class="math inline">\(p(Z|X)\)</span> 的计算是很难准确获得的，举个例子也就是我们需要把隐藏变量积分起来才能得到公式中的分母。</p>
-<p>所以变分方法背后的主要思想也就是：找到一个近似的分布 <span class="math inline">\(q(Z)\)</span> 并且尽可能使得它能够接近 <span class="math inline">\(p(Z|X)\)</span> 的真实分布。这种近似分布可以有它们自己的变分参数：<span class="math inline">\(p(Z|θ)\)</span> 我们就是需要找到一组这样的参数能够让 <span class="math inline">\(q\)</span> 尽量地逼近我们感兴趣的那种。很显然分布 <span class="math inline">\(q(Z)\)</span> 应该尽可能相对简单，并且更容易被用于推断。</p>
-<p>为了衡量 <span class="math inline">\(q(Z)\)</span> 和 <span class="math inline">\(p(Z|X)\)</span> 两个分布之间的近似程度，一个常用的度量就是 KL 散度。所以用于变分推断的 KL 散度也就有：</p>
-<p><span class="math display">\[
-\begin{aligned}
-K L[q(Z) \| p(Z \mid X)] &amp;=\int_{Z} q(Z) \log \frac{q(Z)}{p(Z \mid X)} \\
-&amp;=-\int_{Z} q(Z) \log \frac{p(Z \mid X)}{q(Z)} \\
-&amp;=-\left(\int_{Z} q(Z) \log \frac{p(X, Z)}{q(Z)}-\int_{Z} q(Z) \log p(X)\right) \\
-&amp;=-\int_{Z} q(Z) \log \frac{p(X, Z)}{q(Z)}+\log p(X) \int_{Z} q(Z) \\
-&amp;=-L+\log p(X)
-\end{aligned}
-\]</span></p>
-<p>其中 <span class="math inline">\(q(Z)\)</span> 需要使用归一化的方式进行限制，也就是 <span class="math inline">\(\int_{Z}q(Z)=1\)</span> ，重新写过最后就有：</p>
-<p><span class="math display">\[
-L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
-\]</span></p>
-<h1 id="例子">例子</h1>
-<h2 id="多目标分类">多目标分类</h2>
-<p>输入为图像 <span class="math inline">\(I\)</span>，模型由参数 <span class="math inline">\(W\)</span> 构成，其中 <span class="math inline">\(y\)</span> 为类别标签，优化的目标就是最大化对数似然 <span class="math inline">\(\log p(y|I,W)\)</span>。以上的这些随机变量都可以被认为是可观测到的。所以对于那些不能观测到的隐藏变量 <span class="math inline">\(l\)</span>：</p>
-<p><span class="math display">\[
-\log p(y|I,W) = \log\sum_{l}p(l|I,W)p(y|l,I,W)
-\]</span></p>
-<p>通过带入 Jensen 不等式可以得到它的下界就是：</p>
-<p><span class="math display">\[
-\log\sum_{l}p(l|I,W)p(y|l,I,W) \geq \sum_{l}p(l|I,W)\log p(y|I,W)
-\]</span></p>
-<p>用观测所得的边缘概率分布概率的变分下界也可以得到相同的结果：</p>
-<p><span class="math display">\[
-\log p(y|I,W)\geq \sum_{l}q(l)\log \frac{p(y,l|I,W)}{q(l)} = \sum_{l}p(l|I,W)\log p(y|l,I,W)
-\]</span></p>
-<p>然后就可以通过对模型参数 <span class="math inline">\(W\)</span> 求导来最大化变分下界。</p>
+<h2 id="基于-tensorboard">基于 Tensorboard</h2>
+<p>可以用 TensorBoard 来展现 TensorFlow 图，绘制图像生成的定量指标图以及显示附加数据（如其中传递的图像）。当 TensorBoard 完全配置好后，它将显示如下：</p>
+<img src="/2019/09/25/Training-Visualization/mnist_tensorboard.png" class="">
+<ul>
+<li>Value</li>
+<li>Audio</li>
+<li>Image</li>
+<li>text</li>
+</ul>
+<h3 id="tensorflow-写法">Tensorflow 写法</h3>
+<p>下次再补，已经很久没有使用过 TensorFlow，等下次用到再来补充。</p>
+<h3 id="pytorch-写法">Pytorch 写法</h3>
+<p>Pytorch 1.2.0 之后就正式支持了 TensorBoard 的内容记录，功能都实现在 <a href="https://pytorch.org/docs/stable/tensorboard.html"><code>torch.utils.tensorboard</code></a> 内。</p>
+<p>另附，如果需要对中间的特征进行输出观察的话，可以用 PyTorch 的 hook 机制，可以在保持原始网络的结构的情况下实现中间特征的观测。</p>
+<p>基于版本 1.2.0 共有两种 hook 机制，分别是针对 Tensor 的 hook 和针对 <code>nn.Module</code> 的 hook，有不同的用法。以针对 <code>nn.Module</code> 的用法，可以按照名字将模型中你关注的模块挑出，然后注册好传播所用的函数，以 HRNet 的特征层提取为例，这里可以针对某个 Branch 做输出观测。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">feature_viz_stage4</span>(<span class="params">module, inputs, outputs</span>):</span></span><br><span class="line">    <span class="comment"># print(&quot;&lt;- Stage4 -&gt; &quot;)</span></span><br><span class="line">    <span class="keyword">for</span> idx, item <span class="keyword">in</span> enumerate(outputs):</span><br><span class="line">        <span class="comment"># print(&#x27;branch &#123;&#125; -&gt;&#x27;.format(idx), item.size())</span></span><br><span class="line">        tensors = (item[<span class="number">0</span>]-item[<span class="number">0</span>].min())/(item[<span class="number">0</span>].max()-item[<span class="number">0</span>].min())</span><br><span class="line">        writer_dict[<span class="string">&#x27;writer&#x27;</span>].add_image(<span class="string">&#x27;stage4/branch&#123;&#125;&#x27;</span>.format(idx),</span><br><span class="line">                                        make_grid(tensors.view(item.size(<span class="number">1</span>), <span class="number">1</span>, item.size(<span class="number">2</span>), item.size(<span class="number">3</span>))))</span><br></pre></td></tr></table></figure>
+<p>这里的注册需要的是一个回调函数，所有接口的定义要与官方文档中所给的一致，分别为：</p>
+<ul>
+<li><code>module</code>：子模块</li>
+<li><code>inputs</code>：这个子模块的输入</li>
+<li><code>outputs</code>：这个子模块的输出</li>
+</ul>
+<p>同样还有另外几个函数，可以在官方文档中找到详细的描述：</p>
+<ul>
+<li><a href="https://pytorch.org/docs/stable/nn.html?highlight=hook#torch.nn.Module.register_backward_hook"><code>register_backward_hook(hook)</code></a></li>
+<li><a href="https://pytorch.org/docs/stable/nn.html?highlight=hook#torch.nn.Module.register_forward_pre_hook"><code>register_forward_pre_hook(hook)</code></a></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add feature monitor</span></span><br><span class="line"><span class="keyword">for</span> idx, (name, m) <span class="keyword">in</span> enumerate(model.module.named_modules()):</span><br><span class="line">    <span class="keyword">if</span> name == <span class="string">&#x27;stage4&#x27;</span>:</span><br><span class="line">        m.register_forward_hook(feature_viz_stage4)</span><br><span class="line">        print(idx, <span class="string">&#x27;-&gt;&#x27;</span>, name, <span class="string">&#x27;hooked!&#x27;</span>)</span><br><span class="line">    <span class="keyword">elif</span> name == <span class="string">&#x27;stage3&#x27;</span>:</span><br><span class="line">        m.register_forward_hook(feature_viz_stage3)</span><br><span class="line">        print(idx, <span class="string">&#x27;-&gt;&#x27;</span>, name, <span class="string">&#x27;hooked!&#x27;</span>)</span><br><span class="line">    <span class="keyword">elif</span> name == <span class="string">&#x27;stage2&#x27;</span>:</span><br><span class="line">        m.register_forward_hook(feature_viz_stage2)</span><br><span class="line">        print(idx, <span class="string">&#x27;-&gt;&#x27;</span>, name, <span class="string">&#x27;hooked!&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>另外，上面用的是 <code>model.module</code> 是因为在实际训练过程中使用了 <code>model = torch.nn.DataParallel(model, device_ids=cfg.GPUS).cuda()</code> 所以需要通过这一步拿到真正对应的模块名字。</p>
+<figure>
+<img src="feature_training.png" alt="中间的特征可视化结果" /><figcaption aria-hidden="true">中间的特征可视化结果</figcaption>
+</figure>
 ]]></content>
       <categories>
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>变分方法</tag>
+        <tag>可视化</tag>
+        <tag>Pytorch</tag>
+        <tag>Tensorflow</tag>
       </tags>
   </entry>
   <entry>
@@ -2043,62 +1975,71 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       </tags>
   </entry>
   <entry>
-    <title>主旨写作技巧</title>
-    <url>/2017/12/14/WillBeBetter/</url>
-    <content><![CDATA[<p>为了使论文具备更高的可读性，本文分条收录了论文撰写中需要注意和保持要点。论文作为传播学术成果的一种载体，还是应当以可读性为一个很重要的评判要点，我们要推翻学术的墙，让知识的传播更为容易。</p>
+    <title>理解 ELBO</title>
+    <url>/2020/06/26/Understanding-ELBO/</url>
+    <content><![CDATA[<p>变分贝叶斯的一个优势就在于它的优化对偶性。我们回顾统计推断问题（也就是通过给定其他随机变量的值来推断某一个随机变量的值）作为一个优化问题（也就是找到一批参数能够最小化某些目标函数）。更进一步的这种变分下界也称为证据下界，它时一种变分贝叶斯方法中的基本角色，我们将主要介绍这种下界的关键角色和推导。</p>
 <a id="more"></a>
-<h2 id="论文有一个中心主旨体现在标题中">论文有一个中心主旨体现在标题中</h2>
-<ul>
-<li>在有数据和逻辑支持的前提下使主旨和/或模型最为简单</li>
-</ul>
-<h2 id="假设写作对象对论文内容一无所知">假设写作对象对论文内容一无所知</h2>
-<ul>
-<li>清晰界定技术术语，不要使用缩写和首字母缩略（除非那种一眼见了就不会忘记的那种）</li>
-<li>人类的记忆机制只能记住少量的术语，相比中间的内容，开头和结尾的内容更容易给人留下印象。</li>
-</ul>
-<h2 id="坚持原因内容和结论">坚持原因，内容和结论</h2>
-<p>（Contex-Content-Conclusion/C-C-C）结构</p>
-<ul>
-<li>我们活动中的大部分细节都是无关紧要的---读者不会关心达成结果之前的事情，他们只关心论文最终的结果和支持它的逻辑</li>
-<li>它不是我们实验日记，我们所有的工作都必须重新格式化，这样才能让内容变得有意义，结论能够被人理解和记住</li>
-</ul>
-<h2 id="避免委婉">避免委婉</h2>
-<p>使用并行优化的逻辑流</p>
-<ul>
-<li>只有论文的中心思想才需要被多次提及</li>
-<li>每个主题只需要覆盖它自己的章节，从而减少主题变化的次数</li>
-</ul>
-<h2 id="在摘要中总结所有要点">在摘要中总结所有要点</h2>
-<ul>
-<li>第一句先介绍具体研究所属的更宽泛的领域，为读者做一个思维定位，然后将背景逐渐缩小，直到研究这提出的开放性问题为止</li>
-<li>最后，结论中将解释论文的结果，以回答背景介绍部分结尾提出的问题</li>
-<li>通常在结论部分还会有第二部分用于强调该结论是如何推动领域发展的<strong>【重大意义】</strong></li>
-</ul>
-<h2 id="在介绍中讨论这篇论文的重要性">在介绍中讨论这篇论文的重要性</h2>
-<ul>
-<li>通常会使用多个逐渐具体化描述的段落，并在最后清晰地指出文献的缺失，然后再用一个段落总结这篇论文会如何解决这个问题</li>
-</ul>
-<h2 id="用多个逻辑相关的陈述句">用多个逻辑相关的陈述句</h2>
-<p>可以辅以图表，给出支持论文中心思想点的结果</p>
-<ul>
-<li>概述论文结果支持观点的逻辑结构，并将其转化为一系列的陈述句</li>
-<li>每一段的最后一句是总结句，就像数学文献中的定理一样</li>
-</ul>
-<h2 id="讨论如何填补差距">讨论如何填补差距</h2>
-<p>论文的局限性和论文与该领域的相关性</p>
-<ul>
-<li>讨论部分后面的段落，首先描述该论文的优缺点，然后通过与相关文献对比来评估该论文的优缺点，讨论部分通常会用一种聪明，非正式的方式谈论论文的贡献，或者该贡献可以扩展的方向</li>
-</ul>
-<h2 id="获取反馈">获取反馈</h2>
-<p>重新使用，再次构造这个故事</p>
-<h2 id="题目摘要图和大纲">题目、摘要、图和大纲</h2>
+<p>变分贝叶斯是一类用于贝叶斯估计和机器学习领域中近似计算复杂（intractable）积分的技术。在贝叶斯推断中，参数和隐变量统称为不可观测变量（unobserved variables）。变分贝叶斯方法的主要目的有两个：</p>
+<ol type="1">
+<li>近似不可观测变量的后验概率，以便通过这些变量做出统计推断</li>
+<li>对于一个特定的模型，给出观测变量的边缘似然函数（或者称为证据，evidence）的下界。主要用于模型的选择，我们认为模型的边缘似然值越高，则模型对于数据的拟合程度越好，该模型产生数据的概率也越高。</li>
+</ol>
+<h1 id="变分下界推导">变分下界推导</h1>
+<img src="/2020/06/26/Understanding-ELBO/graphical_model.png" class="">
+<p>这里的 <span class="math inline">\(X\)</span> 是我们观测到的值，这里的 <span class="math inline">\(Z\)</span> 是隐藏的变量，通常情况下这种隐藏变量可能会有一些参数，<span class="math inline">\(X\)</span> 和 <span class="math inline">\(Z\)</span> 之间的关系可以用下面的这种图结构来表示。 更进一步的，大写的 <span class="math inline">\(P(X)\)</span> 表示这个变量的概率分布，小写的这个 <span class="math inline">\(p(X)\)</span> 表示它的概率密度函数，这个隐藏变量的后验概率分布写成贝叶斯定理也就有：</p>
+<p><span class="math display">\[
+P(Z|X) = \frac{p(X|Z)p(Z)}{p(X)}=\frac{p(X|Z)p(Z)}{\int_{Z}p(X,Z)}
+\]</span></p>
+<h2 id="jensen-不等式">Jensen 不等式</h2>
+<p><span class="math display">\[
+\begin{aligned}
+\log p(X) &amp;=\log \int_{Z} p(X, Z) \\
+&amp;=\log \int_{Z} p(X, Z) \frac{q(Z)}{q(Z)} \\
+&amp;=\log \left(\mathbb{E}_{q}\left[\frac{p(X, Z)}{q(Z)}\right]\right) \\
+&amp; \geq \mathbb{E}_{q}\left[\log \frac{p(X, Z)}{q(Z)}\right] \\
+&amp;=\mathbb{E}_{q}[\log p(X, Z)]+H[Z]
+\end{aligned}
+\]</span></p>
+<p>最后得到的也就是变分下界，我们也成为 ELBO。这里的<span class="math inline">\(q(Z)\)</span>就是一个我们在变分贝叶斯中用来逼近真实的后验分布的<span class="math inline">\(p(Z|X)\)</span>，在这里我们把它看成任意分布，求导仍然成立。</p>
+<p>对于凹对数方程，可以使用 Jensen 不等式，最后一项 <span class="math inline">\(H[Z]\)</span> 就是香侬熵 <span class="math inline">\(f(\mathbb{E}[X])\leq \mathbb{E}[f(X)]\)</span>。那么很显然了最后得到的就是观测得到的对数似然的下界，所以，如果优化使得边缘分布概率，我们可以转而使用它的下界。</p>
+<h2 id="kl-散度">KL 散度</h2>
+<p>因为在前面的贝叶斯公式中，<span class="math inline">\(p(Z)\)</span> 是比较难以获得的，但是它又是我们进行分布推导的动机。在很多情况下对 <span class="math inline">\(p(Z|X)\)</span> 的计算是很难准确获得的，举个例子也就是我们需要把隐藏变量积分起来才能得到公式中的分母。</p>
+<p>所以变分方法背后的主要思想也就是：找到一个近似的分布 <span class="math inline">\(q(Z)\)</span> 并且尽可能使得它能够接近 <span class="math inline">\(p(Z|X)\)</span> 的真实分布。这种近似分布可以有它们自己的变分参数：<span class="math inline">\(p(Z|θ)\)</span> 我们就是需要找到一组这样的参数能够让 <span class="math inline">\(q\)</span> 尽量地逼近我们感兴趣的那种。很显然分布 <span class="math inline">\(q(Z)\)</span> 应该尽可能相对简单，并且更容易被用于推断。</p>
+<p>为了衡量 <span class="math inline">\(q(Z)\)</span> 和 <span class="math inline">\(p(Z|X)\)</span> 两个分布之间的近似程度，一个常用的度量就是 KL 散度。所以用于变分推断的 KL 散度也就有：</p>
+<p><span class="math display">\[
+\begin{aligned}
+K L[q(Z) \| p(Z \mid X)] &amp;=\int_{Z} q(Z) \log \frac{q(Z)}{p(Z \mid X)} \\
+&amp;=-\int_{Z} q(Z) \log \frac{p(Z \mid X)}{q(Z)} \\
+&amp;=-\left(\int_{Z} q(Z) \log \frac{p(X, Z)}{q(Z)}-\int_{Z} q(Z) \log p(X)\right) \\
+&amp;=-\int_{Z} q(Z) \log \frac{p(X, Z)}{q(Z)}+\log p(X) \int_{Z} q(Z) \\
+&amp;=-L+\log p(X)
+\end{aligned}
+\]</span></p>
+<p>其中 <span class="math inline">\(q(Z)\)</span> 需要使用归一化的方式进行限制，也就是 <span class="math inline">\(\int_{Z}q(Z)=1\)</span> ，重新写过最后就有：</p>
+<p><span class="math display">\[
+L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
+\]</span></p>
+<h1 id="例子">例子</h1>
+<h2 id="多目标分类">多目标分类</h2>
+<p>输入为图像 <span class="math inline">\(I\)</span>，模型由参数 <span class="math inline">\(W\)</span> 构成，其中 <span class="math inline">\(y\)</span> 为类别标签，优化的目标就是最大化对数似然 <span class="math inline">\(\log p(y|I,W)\)</span>。以上的这些随机变量都可以被认为是可观测到的。所以对于那些不能观测到的隐藏变量 <span class="math inline">\(l\)</span>：</p>
+<p><span class="math display">\[
+\log p(y|I,W) = \log\sum_{l}p(l|I,W)p(y|l,I,W)
+\]</span></p>
+<p>通过带入 Jensen 不等式可以得到它的下界就是：</p>
+<p><span class="math display">\[
+\log\sum_{l}p(l|I,W)p(y|l,I,W) \geq \sum_{l}p(l|I,W)\log p(y|I,W)
+\]</span></p>
+<p>用观测所得的边缘概率分布概率的变分下界也可以得到相同的结果：</p>
+<p><span class="math display">\[
+\log p(y|I,W)\geq \sum_{l}q(l)\log \frac{p(y,l|I,W)}{q(l)} = \sum_{l}p(l|I,W)\log p(y|l,I,W)
+\]</span></p>
+<p>然后就可以通过对模型参数 <span class="math inline">\(W\)</span> 求导来最大化变分下界。</p>
 ]]></content>
       <categories>
-        <category>摘记</category>
+        <category>机器学习</category>
       </categories>
       <tags>
-        <tag>生活</tag>
-        <tag>论文</tag>
+        <tag>变分方法</tag>
       </tags>
   </entry>
   <entry>
@@ -2179,56 +2120,62 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       </tags>
   </entry>
   <entry>
-    <title>Word Vector</title>
-    <url>/2018/02/12/Word-Vector/</url>
-    <content><![CDATA[<h2 id="skip-gram-model">Skip gram model</h2>
-<p>The main idea behind the skip-gram model is this: it takes every words in a large corpora and also takes one-by-one the words that surround it within a defined 'windows' to then feed a neural network that after training will predict the probability for each word to actually appear in the window around the focus word.</p>
-<img src="/2018/02/12/Word-Vector/1_yiH5sZI-IBxDSQMKhvbcHw.png" class="">
+    <title>主旨写作技巧</title>
+    <url>/2017/12/14/WillBeBetter/</url>
+    <content><![CDATA[<p>为了使论文具备更高的可读性，本文分条收录了论文撰写中需要注意和保持要点。论文作为传播学术成果的一种载体，还是应当以可读性为一个很重要的评判要点，我们要推翻学术的墙，让知识的传播更为容易。</p>
+<a id="more"></a>
+<h2 id="论文有一个中心主旨体现在标题中">论文有一个中心主旨体现在标题中</h2>
+<ul>
+<li>在有数据和逻辑支持的前提下使主旨和/或模型最为简单</li>
+</ul>
+<h2 id="假设写作对象对论文内容一无所知">假设写作对象对论文内容一无所知</h2>
+<ul>
+<li>清晰界定技术术语，不要使用缩写和首字母缩略（除非那种一眼见了就不会忘记的那种）</li>
+<li>人类的记忆机制只能记住少量的术语，相比中间的内容，开头和结尾的内容更容易给人留下印象。</li>
+</ul>
+<h2 id="坚持原因内容和结论">坚持原因，内容和结论</h2>
+<p>（Contex-Content-Conclusion/C-C-C）结构</p>
+<ul>
+<li>我们活动中的大部分细节都是无关紧要的---读者不会关心达成结果之前的事情，他们只关心论文最终的结果和支持它的逻辑</li>
+<li>它不是我们实验日记，我们所有的工作都必须重新格式化，这样才能让内容变得有意义，结论能够被人理解和记住</li>
+</ul>
+<h2 id="避免委婉">避免委婉</h2>
+<p>使用并行优化的逻辑流</p>
+<ul>
+<li>只有论文的中心思想才需要被多次提及</li>
+<li>每个主题只需要覆盖它自己的章节，从而减少主题变化的次数</li>
+</ul>
+<h2 id="在摘要中总结所有要点">在摘要中总结所有要点</h2>
+<ul>
+<li>第一句先介绍具体研究所属的更宽泛的领域，为读者做一个思维定位，然后将背景逐渐缩小，直到研究这提出的开放性问题为止</li>
+<li>最后，结论中将解释论文的结果，以回答背景介绍部分结尾提出的问题</li>
+<li>通常在结论部分还会有第二部分用于强调该结论是如何推动领域发展的<strong>【重大意义】</strong></li>
+</ul>
+<h2 id="在介绍中讨论这篇论文的重要性">在介绍中讨论这篇论文的重要性</h2>
+<ul>
+<li>通常会使用多个逐渐具体化描述的段落，并在最后清晰地指出文献的缺失，然后再用一个段落总结这篇论文会如何解决这个问题</li>
+</ul>
+<h2 id="用多个逻辑相关的陈述句">用多个逻辑相关的陈述句</h2>
+<p>可以辅以图表，给出支持论文中心思想点的结果</p>
+<ul>
+<li>概述论文结果支持观点的逻辑结构，并将其转化为一系列的陈述句</li>
+<li>每一段的最后一句是总结句，就像数学文献中的定理一样</li>
+</ul>
+<h2 id="讨论如何填补差距">讨论如何填补差距</h2>
+<p>论文的局限性和论文与该领域的相关性</p>
+<ul>
+<li>讨论部分后面的段落，首先描述该论文的优缺点，然后通过与相关文献对比来评估该论文的优缺点，讨论部分通常会用一种聪明，非正式的方式谈论论文的贡献，或者该贡献可以扩展的方向</li>
+</ul>
+<h2 id="获取反馈">获取反馈</h2>
+<p>重新使用，再次构造这个故事</p>
+<h2 id="题目摘要图和大纲">题目、摘要、图和大纲</h2>
 ]]></content>
       <categories>
-        <category>机器学习</category>
+        <category>摘记</category>
       </categories>
       <tags>
-        <tag>NLP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>conda包组织工具</title>
-    <url>/2018/01/08/condaGuide/</url>
-    <content><![CDATA[<p>使用Anaconda的过程中一种常见的使用手段就是使用conda来管理各类的Python第三方库。但是这个包管理工具不仅在Anaconda生态系统中起到非常重要的作用，也可以作为我们自己的软件开发管理工具。本文将对conda的软件开发管理工具做一定的介绍。 <a id="more"></a></p>
-<h2 id="conda是什么">conda是什么</h2>
-<p>conda是一个用于任何语言的开源环境管理系统，它只是在Python的社区中特别的受欢迎而已。Anaconda是conda的一个发行版而已，它集成了很多开源的科学分析工具库。</p>
-<h2 id="conda环境">conda环境</h2>
-<p>如果在同一台电脑上有多个版本的Python，可以用Python环境管理将这些环境完全隔离开来互不影响。在一开始这个环境中就只有一个环境，也就是通用的主环境<code>conda env list</code>：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># conda environments:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">root                  *  /home/username/anaconda3</span><br></pre></td></tr></table></figure>
-<p>然后在这些环境的基础上我们可以根据我们自己的需要新建一些环境。在这些环境下的内容互不影响，每个环境都可以用于多个工程。下面是新建两个环境的例子：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create --name python35 python=3.5</span><br><span class="line">conda create --name python27 python=2.7</span><br></pre></td></tr></table></figure>
-<p>也可以使用更加自定义的方式来进行环境配置（environment.yml）：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">name: playenv</span><br><span class="line">channels:</span><br><span class="line">- conda-forge</span><br><span class="line">dependencies:</span><br><span class="line">- python=3.6</span><br><span class="line">- pip</span><br><span class="line">- pip:</span><br><span class="line">    - pyjokes</span><br></pre></td></tr></table></figure>
-<p>然后通过执行<code>conda env create --file environment.yml</code>在这个环境中将会装入Python3.6，python-pip和用pip装的pyjokes。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Using Anaconda Cloud api site https://api.anaconda.org</span><br><span class="line">Fetching package metadata .........</span><br><span class="line">Solving package specifications: ..........</span><br><span class="line">Linking packages ...</span><br><span class="line">[      COMPLETE      ]|###################################################################################################################################################################| 100%</span><br><span class="line">Collecting pyjokes</span><br><span class="line">  Downloading pyjokes-0.5.0-py2.py3-none-any.whl</span><br><span class="line">Installing collected packages: pyjokes</span><br><span class="line">Successfully installed pyjokes-0.5.0</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> To activate this environment, use:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> &gt; <span class="built_in">source</span> activate playenv</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> To deactivate this environment, use:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> &gt; <span class="built_in">source</span> deactivate playenv</span></span><br><span class="line"><span class="meta">#</span></span><br></pre></td></tr></table></figure>
-<p>或者通过指定各类需要的包来安装也是可以的：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create -c conda-forge -n test_env python=2.7 numpy matplotlib pandas</span><br></pre></td></tr></table></figure>
-<p>以上的<code>-c</code>是用于指定安装来源，<code>-n</code>后面紧跟的是环境名字，最后面跟的是要安装的包的名字，以空格隔开。</p>
-<h3 id="分享环境">分享环境</h3>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env export -f test_env.yml -n test_env</span><br></pre></td></tr></table></figure>
-<p>这样可以生成详尽的环境文件用于与他人分享，但是这个环境是不能跨平台的。</p>
-<h3 id="复制环境">复制环境</h3>
-<p>可以把当前的环境复制到另一份名字不相同的环境中去。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create --name live_env --clone test_env</span><br></pre></td></tr></table></figure>
-<h3 id="删除环境">删除环境</h3>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env remove -n live_env</span><br></pre></td></tr></table></figure>
-<h3 id="指定环境操作">指定环境操作</h3>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda list -n test_env</span><br><span class="line">conda remove -n test_env rasterio</span><br></pre></td></tr></table></figure>
-<hr />
-<p>参考：https://geohackweek.github.io/Introductory/01-conda-tutorial/</p>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>开发</tag>
-        <tag>conda</tag>
+        <tag>生活</tag>
+        <tag>论文</tag>
       </tags>
   </entry>
   <entry>
@@ -2304,6 +2251,59 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       <tags>
         <tag>测试</tag>
         <tag>GoogleTest</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Word Vector</title>
+    <url>/2018/02/12/Word-Vector/</url>
+    <content><![CDATA[<h2 id="skip-gram-model">Skip gram model</h2>
+<p>The main idea behind the skip-gram model is this: it takes every words in a large corpora and also takes one-by-one the words that surround it within a defined 'windows' to then feed a neural network that after training will predict the probability for each word to actually appear in the window around the focus word.</p>
+<img src="/2018/02/12/Word-Vector/1_yiH5sZI-IBxDSQMKhvbcHw.png" class="">
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>conda包组织工具</title>
+    <url>/2018/01/08/condaGuide/</url>
+    <content><![CDATA[<p>使用Anaconda的过程中一种常见的使用手段就是使用conda来管理各类的Python第三方库。但是这个包管理工具不仅在Anaconda生态系统中起到非常重要的作用，也可以作为我们自己的软件开发管理工具。本文将对conda的软件开发管理工具做一定的介绍。 <a id="more"></a></p>
+<h2 id="conda是什么">conda是什么</h2>
+<p>conda是一个用于任何语言的开源环境管理系统，它只是在Python的社区中特别的受欢迎而已。Anaconda是conda的一个发行版而已，它集成了很多开源的科学分析工具库。</p>
+<h2 id="conda环境">conda环境</h2>
+<p>如果在同一台电脑上有多个版本的Python，可以用Python环境管理将这些环境完全隔离开来互不影响。在一开始这个环境中就只有一个环境，也就是通用的主环境<code>conda env list</code>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># conda environments:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">root                  *  /home/username/anaconda3</span><br></pre></td></tr></table></figure>
+<p>然后在这些环境的基础上我们可以根据我们自己的需要新建一些环境。在这些环境下的内容互不影响，每个环境都可以用于多个工程。下面是新建两个环境的例子：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create --name python35 python=3.5</span><br><span class="line">conda create --name python27 python=2.7</span><br></pre></td></tr></table></figure>
+<p>也可以使用更加自定义的方式来进行环境配置（environment.yml）：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">name: playenv</span><br><span class="line">channels:</span><br><span class="line">- conda-forge</span><br><span class="line">dependencies:</span><br><span class="line">- python=3.6</span><br><span class="line">- pip</span><br><span class="line">- pip:</span><br><span class="line">    - pyjokes</span><br></pre></td></tr></table></figure>
+<p>然后通过执行<code>conda env create --file environment.yml</code>在这个环境中将会装入Python3.6，python-pip和用pip装的pyjokes。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Using Anaconda Cloud api site https://api.anaconda.org</span><br><span class="line">Fetching package metadata .........</span><br><span class="line">Solving package specifications: ..........</span><br><span class="line">Linking packages ...</span><br><span class="line">[      COMPLETE      ]|###################################################################################################################################################################| 100%</span><br><span class="line">Collecting pyjokes</span><br><span class="line">  Downloading pyjokes-0.5.0-py2.py3-none-any.whl</span><br><span class="line">Installing collected packages: pyjokes</span><br><span class="line">Successfully installed pyjokes-0.5.0</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> To activate this environment, use:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> &gt; <span class="built_in">source</span> activate playenv</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> To deactivate this environment, use:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> &gt; <span class="built_in">source</span> deactivate playenv</span></span><br><span class="line"><span class="meta">#</span></span><br></pre></td></tr></table></figure>
+<p>或者通过指定各类需要的包来安装也是可以的：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create -c conda-forge -n test_env python=2.7 numpy matplotlib pandas</span><br></pre></td></tr></table></figure>
+<p>以上的<code>-c</code>是用于指定安装来源，<code>-n</code>后面紧跟的是环境名字，最后面跟的是要安装的包的名字，以空格隔开。</p>
+<h3 id="分享环境">分享环境</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env export -f test_env.yml -n test_env</span><br></pre></td></tr></table></figure>
+<p>这样可以生成详尽的环境文件用于与他人分享，但是这个环境是不能跨平台的。</p>
+<h3 id="复制环境">复制环境</h3>
+<p>可以把当前的环境复制到另一份名字不相同的环境中去。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create --name live_env --clone test_env</span><br></pre></td></tr></table></figure>
+<h3 id="删除环境">删除环境</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env remove -n live_env</span><br></pre></td></tr></table></figure>
+<h3 id="指定环境操作">指定环境操作</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda list -n test_env</span><br><span class="line">conda remove -n test_env rasterio</span><br></pre></td></tr></table></figure>
+<hr />
+<p>参考：https://geohackweek.github.io/Introductory/01-conda-tutorial/</p>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>开发</tag>
+        <tag>conda</tag>
       </tags>
   </entry>
   <entry>
@@ -2586,6 +2586,40 @@ V(s)=\mathbb{E}_{\pi}[ \sum^{\infty}_{t=0}\gamma&#39;R(s_{t})\mid s_{0}=s]
       </tags>
   </entry>
   <entry>
+    <title>VTK笔记-01</title>
+    <url>/2018/01/09/vtkGuide01/</url>
+    <content><![CDATA[<p>VTK是一个开源面向对象的软件系统，可以用于计算机图形学，可视化，和图像处理。提供了很多的非常简单容易使用的面向对象的设计和实现。</p>
+<img src="/2018/01/09/vtkGuide01/vtk_logo-main1.png" class="">
+<a id="more"></a>
+<h2 id="smartpointer设计">SmartPointer设计</h2>
+<p>在VTK中的很多对象操作都是基于SmartPointer实现的，这个在官方文档中提到，它背后的思想是引用计数和更加自动化的内存管理，在使用这个模板类不需要自己去指定释放资源，因为根据引用计数，一旦这个指针没有再被引用了之后就会被被自动释放很好地保护了内存资源<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
+<p>如果不用智能指针，对于一个VTK对象则要</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vtkObject* MyObject = vtkObject::New();</span><br></pre></td></tr></table></figure>
+<p>然后使用完成后还必须要对其进行释放</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">MyObject-&gt;Delete();</span><br></pre></td></tr></table></figure>
+<p>但是加入智能指针之后，就可以避免这些资源释放的问题</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vtkSmartPointer.h&gt;</span></span></span><br><span class="line">vtkSmartPointer&lt;vtkObject&gt; MyObject = vtkSmartPointer&lt;vtkObject&gt;::New();</span><br></pre></td></tr></table></figure>
+<p>把指针传递给一个函数</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MyFunction</span><span class="params">(vtkSmartPointer&lt;vtkPolyData&gt; polydata)</span> </span>&#123; ... &#125;</span><br><span class="line">...</span><br><span class="line">vtkSmartPointer&lt;vtkPolyData&gt; polydata = vtkSmartPointer&lt;vtkPolyData&gt;::New();</span><br><span class="line">MyFunction(polydata);</span><br></pre></td></tr></table></figure>
+<p>还可以将智能指针作为类的成员变量，这样的好处之一就是避免总是看到星星<code>*</code>，当然最重要的事情是我们不必再劳心于程序设计中的内存管理，因为智能指针已经通过引用计数来解决了这类问题，有点Java的感觉了。</p>
+<h2 id="vtkpolydatamapper">vtkPolyDataMapper</h2>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>https://www.vtk.org/Wiki/VTK/Tutorials/SmartPointers<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>VTK</tag>
+        <tag>基础</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>在Vultr上搭建SSR服务</title>
     <url>/2018/03/03/vlutr-ssr/</url>
     <content><![CDATA[<p>用过很多第三方提供的梯子，因为是多人使用的，总是出现这样或那样的问题，使人非常困扰。还是自己动手搭建一个看看效果如何。</p>
@@ -2646,40 +2680,6 @@ V(s)=\mathbb{E}_{\pi}[ \sum^{\infty}_{t=0}\gamma&#39;R(s_{t})\mid s_{0}=s]
       <tags>
         <tag>SSR</tag>
         <tag>Vultr</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VTK笔记-01</title>
-    <url>/2018/01/09/vtkGuide01/</url>
-    <content><![CDATA[<p>VTK是一个开源面向对象的软件系统，可以用于计算机图形学，可视化，和图像处理。提供了很多的非常简单容易使用的面向对象的设计和实现。</p>
-<img src="/2018/01/09/vtkGuide01/vtk_logo-main1.png" class="">
-<a id="more"></a>
-<h2 id="smartpointer设计">SmartPointer设计</h2>
-<p>在VTK中的很多对象操作都是基于SmartPointer实现的，这个在官方文档中提到，它背后的思想是引用计数和更加自动化的内存管理，在使用这个模板类不需要自己去指定释放资源，因为根据引用计数，一旦这个指针没有再被引用了之后就会被被自动释放很好地保护了内存资源<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
-<p>如果不用智能指针，对于一个VTK对象则要</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vtkObject* MyObject = vtkObject::New();</span><br></pre></td></tr></table></figure>
-<p>然后使用完成后还必须要对其进行释放</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">MyObject-&gt;Delete();</span><br></pre></td></tr></table></figure>
-<p>但是加入智能指针之后，就可以避免这些资源释放的问题</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vtkSmartPointer.h&gt;</span></span></span><br><span class="line">vtkSmartPointer&lt;vtkObject&gt; MyObject = vtkSmartPointer&lt;vtkObject&gt;::New();</span><br></pre></td></tr></table></figure>
-<p>把指针传递给一个函数</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MyFunction</span><span class="params">(vtkSmartPointer&lt;vtkPolyData&gt; polydata)</span> </span>&#123; ... &#125;</span><br><span class="line">...</span><br><span class="line">vtkSmartPointer&lt;vtkPolyData&gt; polydata = vtkSmartPointer&lt;vtkPolyData&gt;::New();</span><br><span class="line">MyFunction(polydata);</span><br></pre></td></tr></table></figure>
-<p>还可以将智能指针作为类的成员变量，这样的好处之一就是避免总是看到星星<code>*</code>，当然最重要的事情是我们不必再劳心于程序设计中的内存管理，因为智能指针已经通过引用计数来解决了这类问题，有点Java的感觉了。</p>
-<h2 id="vtkpolydatamapper">vtkPolyDataMapper</h2>
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p>https://www.vtk.org/Wiki/VTK/Tutorials/SmartPointers<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-        <tag>VTK</tag>
-        <tag>基础</tag>
       </tags>
   </entry>
   <entry>
@@ -3763,16 +3763,16 @@ d_{M}(\mu,\nu):=\min_{P\in U(\mu,\nu)}\langle P, M\rangle.
 U_{\alpha}(\mu,\nu):=\{P\in U(\mu, \nu)|KL(P||\mu\nu^{T})\leq \alpha\}=\{P\in U(\mu, \nu)|h(P)\geq h(\mu)+h(\nu)-\alpha\}
 \]</span> 因此，就可以把对<span class="math inline">\(\mu\nu^{T}\)</span>的KL散度小于某个阈值的<span class="math inline">\(P\)</span>的集合解释为一系列在<span class="math inline">\(U(\mu,\nu)\)</span>中的联合分布<span class="math inline">\(P\)</span>，它对<span class="math inline">\(h(\mu)\)</span>和<span class="math inline">\(h(\nu)\)</span>有足够的熵，或者足够小的互信息。</p>
 <p>所以定义Sinkhorn Distance为： <span class="math display">\[
-d_{M,\alpha}(\mu,\nu):=\min_{P\in U_{\alpha}(\mu,\nu)}\lang P, M\rang.
+d_{M,\alpha}(\mu,\nu):=\min_{P\in U_{\alpha}(\mu,\nu)}\langle P, M\rangle.
 \]</span></p>
 <blockquote>
 <p>之所以考虑在最优传输中使用熵的限制是因为，经典的线性规划的结果都是在可行域的顶点上取到。这样的一个<span class="math inline">\(d\times d\)</span>维度的顶点通常最多只有<span class="math inline">\(2d-1\)</span>个非零的元素。从概率的角度看这个顶点则是一个准确定性联合分布，因为一旦某一行有个元素<span class="math inline">\(p_{ij}&gt;0\)</span>，这一行的其他元素<span class="math inline">\(p_{ij&#39;}\)</span>其中<span class="math inline">\(j&#39;\neq j\)</span>就很少是非零的了。</p>
 </blockquote>
 <img src="/2020/01/30/optimal-transport/image-20210307110425631.png" class="" title="image-20210307110425631">
 <p>另外再证明了三角不等式： <span class="math display">\[
-d_{M,\alpha}(x,z)=\min_{P\in U_{\alpha}(x,z)}\lang P,M\rang \leq\lang S, M\rang\leq d_{M,\alpha}(x,y)+d_{M,\alpha}(y,z)
+d_{M,\alpha}(x,z)=\min_{P\in U_{\alpha}(x,z)}\langle P,M\rangle \leq\langle S, M\rangle\leq d_{M,\alpha}(x,y)+d_{M,\alpha}(y,z)
 \]</span> 可以大致确认通过一些优化手段是可以找到最优解的，然后考虑有熵限制条件的优化问题： <span class="math display">\[
-{\rm For}~\lambda&gt;0,d^{\lambda}_{M}(\mu,\nu):=\lang P^{\lambda},M\rang,~{\rm where}~P^{\lambda}={\rm argmin}_{P\in U(\mu, \nu)}\lang P,M\rang-\frac{1}{\lambda}h(P).
+{\rm For}~\lambda&gt;0,d^{\lambda}_{M}(\mu,\nu):=\langle P^{\lambda},M\rangle,~{\rm where}~P^{\lambda}={\rm argmin}_{P\in U(\mu, \nu)}\langle P,M\rangle-\frac{1}{\lambda}h(P).
 \]</span> 基于对偶理论有任意的<span class="math inline">\(\alpha\)</span>对应于一个<span class="math inline">\(\lambda\in[0, +\infty]\)</span>使得<span class="math inline">\(d_{M,\alpha}(\mu,\nu)=d^{\lambda}_{M}(\mu, \nu)\)</span>，这个<span class="math inline">\(d^{\lambda}_{M}\)</span>就叫做dual-Sinkhorn divergence，它可以被很方便地计算得到。</p>
 <p>从上图也可以看到传输方案<span class="math inline">\(P^{\lambda}\)</span>的熵随着<span class="math inline">\(\lambda\)</span>的增大而单调递增，我们可以通过不断增大<span class="math inline">\(\lambda\)</span>直到<span class="math inline">\(h(P^{\lambda})\)</span>到达<span class="math inline">\(h(\mu)+h(\nu)-\alpha\)</span>。</p>
 <p><strong>通过Matrix Scaling Algorithm来对<span class="math inline">\(d^{\lambda}_{M}\)</span>进行求解</strong>，对于任意<span class="math inline">\(\lambda&gt;0\)</span>有唯一解<span class="math inline">\(P^{\lambda}={\rm diag}(\mu)K{\rm diag}(\nu)\)</span>，其中<span class="math inline">\(K:=e^{-\lambda M}\)</span>。</p>
