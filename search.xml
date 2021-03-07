@@ -130,29 +130,6 @@ L_{\text {target }}(\hat{y}, y)+\lambda \cdot L_{\operatorname{loss}}(\hat{l}, l
       </tags>
   </entry>
   <entry>
-    <title>午间休息</title>
-    <url>/2017/12/20/AfternoonTime/</url>
-    <content><![CDATA[<p>可以在午间休息的时间换换脑子，似乎写的文章都是想要对身边的好朋友们絮叨的话。这篇文章中将针对基于Python的数据预览和简单预处理问题进行简单介绍，包括环境的配置和具体操作，同时也将不全面地叙述一些数据预处理的技巧。 <a id="more"></a></p>
-<h2 id="anaconda">Anaconda</h2>
-<p>Python（蟒蛇）---&gt; Anaconda（巨蟒），可想而知Anaconda是在纯Python的基础上进行扩展的，Anaconda中集成了很多科学计算程序包（modules），可以通过conda指令很方便地组织和管理这些包。</p>
-<p>你可以到Anaconda的<a href="https://www.anaconda.com/download/">官方下载网站</a>上去下载和安装，都是可视化的安装界面（如果只用Anaconda建议安装过程中勾选加入PATH），想装哪个版本的就仁者见仁智者见智了。考虑到很多工具正在放弃2.7的维护，个人偏向于3.+的版本，但是还是有些代码是完全由2.7写成的，所以自行决定，语法是相差不大的。</p>
-<p>Anaconda安装完成之后，考虑到中国特色网络环境，建议去清华的镜像站更换Anaconda的更新源。更换源的操作在<a href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/">TUNA</a>上有很详尽的说明了，在此对这些镜像站致以敬意。</p>
-<h2 id="jupyter">Jupyter</h2>
-<p>这是一个颜值高交互方便的工具，在Ubuntu的Terminal或者Windows的命令行提示符中输入下面的命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Ubuntu：请把文件夹替换成自己的目录路径</span></span><br><span class="line">jupyter notebook /home/username/Documents/myscifolder</span><br><span class="line"><span class="meta">#</span><span class="bash"> Windows：请把文件夹替换成自己的目录路径</span></span><br><span class="line">jupyter notebook E:/templateuse/myscifolder</span><br></pre></td></tr></table></figure>
-<p>然后启动之后可以直接在新打开的网页上编写代码了，下面是一个Jupyter Notebook的预览界面，只是简单展示一下这项工具的功能。</p>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>数学建模</tag>
-        <tag>Jupyter</tag>
-        <tag>Python</tag>
-        <tag>数据预处理</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Apex Cuda Acceleration</title>
     <url>/2019/12/23/Apex-Cuda-Acceleration/</url>
     <content><![CDATA[<p>在使用 Pytorch 进行训练的时候有些步骤可以进一步优化和提高整体训练的速度。其本质是通过将很多操作转化为 <code>Float16</code> 进行计算，其他仍保持原有的 <code>Float32</code> 精度计算，这样做的好处在于可以显著减小显存的占用。在不减少模型参数规模的前提下提高计算的速度和 <code>batchsize</code> 的调整空间。</p>
@@ -175,6 +152,29 @@ L_{\text {target }}(\hat{y}, y)+\lambda \cdot L_{\operatorname{loss}}(\hat{l}, l
       </categories>
       <tags>
         <tag>Apex</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>午间休息</title>
+    <url>/2017/12/20/AfternoonTime/</url>
+    <content><![CDATA[<p>可以在午间休息的时间换换脑子，似乎写的文章都是想要对身边的好朋友们絮叨的话。这篇文章中将针对基于Python的数据预览和简单预处理问题进行简单介绍，包括环境的配置和具体操作，同时也将不全面地叙述一些数据预处理的技巧。 <a id="more"></a></p>
+<h2 id="anaconda">Anaconda</h2>
+<p>Python（蟒蛇）---&gt; Anaconda（巨蟒），可想而知Anaconda是在纯Python的基础上进行扩展的，Anaconda中集成了很多科学计算程序包（modules），可以通过conda指令很方便地组织和管理这些包。</p>
+<p>你可以到Anaconda的<a href="https://www.anaconda.com/download/">官方下载网站</a>上去下载和安装，都是可视化的安装界面（如果只用Anaconda建议安装过程中勾选加入PATH），想装哪个版本的就仁者见仁智者见智了。考虑到很多工具正在放弃2.7的维护，个人偏向于3.+的版本，但是还是有些代码是完全由2.7写成的，所以自行决定，语法是相差不大的。</p>
+<p>Anaconda安装完成之后，考虑到中国特色网络环境，建议去清华的镜像站更换Anaconda的更新源。更换源的操作在<a href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/">TUNA</a>上有很详尽的说明了，在此对这些镜像站致以敬意。</p>
+<h2 id="jupyter">Jupyter</h2>
+<p>这是一个颜值高交互方便的工具，在Ubuntu的Terminal或者Windows的命令行提示符中输入下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Ubuntu：请把文件夹替换成自己的目录路径</span></span><br><span class="line">jupyter notebook /home/username/Documents/myscifolder</span><br><span class="line"><span class="meta">#</span><span class="bash"> Windows：请把文件夹替换成自己的目录路径</span></span><br><span class="line">jupyter notebook E:/templateuse/myscifolder</span><br></pre></td></tr></table></figure>
+<p>然后启动之后可以直接在新打开的网页上编写代码了，下面是一个Jupyter Notebook的预览界面，只是简单展示一下这项工具的功能。</p>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>数学建模</tag>
+        <tag>Jupyter</tag>
+        <tag>Python</tag>
+        <tag>数据预处理</tag>
       </tags>
   </entry>
   <entry>
@@ -835,6 +835,43 @@ P(\mathbf{X}=e_i)=f(e_i)=p_i
       </tags>
   </entry>
   <entry>
+    <title>Gradient Boosting</title>
+    <url>/2018/01/18/Gradient-Boosting/</url>
+    <content><![CDATA[<img src="/2018/01/18/Gradient-Boosting/bb1-1150x317.png" class="" title="title:difference between Bagging and Boosting">
+<p>集成学习(Ensemble Learning)通过构建并结合多个学习器来完成学习任务，有时候也被称为多分类器系统(multi-classifier system)，基于委员会的学习(committee-based learning)等。渐进梯度集成方法(Gradient Boosting)有很多优点，基于这种方法又有很多变种<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。 <a id="more"></a></p>
+<p>集成学习是通过很多个个体学习器（比如某种神经网络，某种决策树等）组合而成，假设其中一个学习器的错误率为<span class="math inline">\(\epsilon\)</span>的，并且每个个体学习器都是相互独立的。对于一个以得票超过半数为最终结果的集成规则，它的最终错误率就比较低了。</p>
+<p><span class="math display">\[
+\begin{split}
+P_{error} &amp;= \sum^{\lfloor T/2 \rfloor}_{k=0}{T \choose k} (1-\epsilon)^{k} \epsilon^{T-k} \\ &amp; \leq exp(-\frac{1}{2}T(1-2\epsilon)^{2})
+\end{split}
+\]</span></p>
+<p>这是一个指数级降低的错误率，但是其中一个前提是很难被满足的，就是对于学习器都是相互独立的这个要求。</p>
+<p>根据学习器的输入输出方式，有些集成学习中的学习器是相互依赖的，一个的输入依赖另一个输出，以Boosting为代表。有些集成学习中的学习器不存在这种强依赖，可以并行运行的，以Bagging和“随机森林”（Random Forest）为代表。</p>
+<h1 id="ensemblebagging-and-boosting">Ensemble，Bagging and Boosting</h1>
+<p>我们用机器学习算法来预测目标值时造成预测值和真实值不同的主要原因是噪声，数据变异和偏重。<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>所以集成方法(Ensemble)就是为了克服这类问题而出现的。</p>
+<ul>
+<li><strong>Bagging</strong>是简单地将多种相互独立的预测器/模型/学习器用一些模型平均的方法集成。这些方法包括加权平均，取得分最高的学习器的结果等。</li>
+</ul>
+<p>因为在进行训练的时候每次都是对数据集进行随机抽样，所以每个模型</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>周志华. 机器学习[M]. Qing hua da xue chu ban she，2016.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p><a href="https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d" class="uri">https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>Boosting</tag>
+        <tag>Ensemble</tag>
+        <tag>Gradient</tag>
+        <tag>Bagging</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Good Will Hunting</title>
     <url>/2018/03/29/Good-Will-Hunting/</url>
     <content><![CDATA[<p>你只是个孩子，你根本不晓得你在说什么。所以问你艺术，你可能会提出艺术书籍中的粗浅论调，有关米开朗基罗，你知道很多，他的满腔政治热情，与教皇相交莫逆，耽于性爱，你对他很清楚吧？但你连西斯汀教堂的气味也不知道吧？你没试过站在那里，昂首眺望天花板上的名画吧？肯定未见过吧？如果我问关于女人的事，你大可以向我如数家珍，你可能上过几次床，但你没法说出在女人身旁醒来时，那份内心真正的喜悦。 <img src="/2018/03/29/Good-Will-Hunting/p1094498312.jpg" class=""> <a id="more"></a></p>
@@ -888,43 +925,6 @@ L^{c}_{Grad-CAM} = \text{ReLU}(\sum_{k}\alpha^{c}_{k}A^{k})
       <tags>
         <tag>卷积可视化</tag>
         <tag>注意力</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Gradient Boosting</title>
-    <url>/2018/01/18/Gradient-Boosting/</url>
-    <content><![CDATA[<img src="/2018/01/18/Gradient-Boosting/bb1-1150x317.png" class="" title="title:difference between Bagging and Boosting">
-<p>集成学习(Ensemble Learning)通过构建并结合多个学习器来完成学习任务，有时候也被称为多分类器系统(multi-classifier system)，基于委员会的学习(committee-based learning)等。渐进梯度集成方法(Gradient Boosting)有很多优点，基于这种方法又有很多变种<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。 <a id="more"></a></p>
-<p>集成学习是通过很多个个体学习器（比如某种神经网络，某种决策树等）组合而成，假设其中一个学习器的错误率为<span class="math inline">\(\epsilon\)</span>的，并且每个个体学习器都是相互独立的。对于一个以得票超过半数为最终结果的集成规则，它的最终错误率就比较低了。</p>
-<p><span class="math display">\[
-\begin{split}
-P_{error} &amp;= \sum^{\lfloor T/2 \rfloor}_{k=0}{T \choose k} (1-\epsilon)^{k} \epsilon^{T-k} \\ &amp; \leq exp(-\frac{1}{2}T(1-2\epsilon)^{2})
-\end{split}
-\]</span></p>
-<p>这是一个指数级降低的错误率，但是其中一个前提是很难被满足的，就是对于学习器都是相互独立的这个要求。</p>
-<p>根据学习器的输入输出方式，有些集成学习中的学习器是相互依赖的，一个的输入依赖另一个输出，以Boosting为代表。有些集成学习中的学习器不存在这种强依赖，可以并行运行的，以Bagging和“随机森林”（Random Forest）为代表。</p>
-<h1 id="ensemblebagging-and-boosting">Ensemble，Bagging and Boosting</h1>
-<p>我们用机器学习算法来预测目标值时造成预测值和真实值不同的主要原因是噪声，数据变异和偏重。<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>所以集成方法(Ensemble)就是为了克服这类问题而出现的。</p>
-<ul>
-<li><strong>Bagging</strong>是简单地将多种相互独立的预测器/模型/学习器用一些模型平均的方法集成。这些方法包括加权平均，取得分最高的学习器的结果等。</li>
-</ul>
-<p>因为在进行训练的时候每次都是对数据集进行随机抽样，所以每个模型</p>
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p>周志华. 机器学习[M]. Qing hua da xue chu ban she，2016.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p><a href="https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d" class="uri">https://medium.com/mlreview/gradient-boosting-from-scratch-1e317ae4587d</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>Boosting</tag>
-        <tag>Ensemble</tag>
-        <tag>Gradient</tag>
-        <tag>Bagging</tag>
       </tags>
   </entry>
   <entry>
@@ -2043,6 +2043,65 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       </tags>
   </entry>
   <entry>
+    <title>主旨写作技巧</title>
+    <url>/2017/12/14/WillBeBetter/</url>
+    <content><![CDATA[<p>为了使论文具备更高的可读性，本文分条收录了论文撰写中需要注意和保持要点。论文作为传播学术成果的一种载体，还是应当以可读性为一个很重要的评判要点，我们要推翻学术的墙，让知识的传播更为容易。</p>
+<a id="more"></a>
+<h2 id="论文有一个中心主旨体现在标题中">论文有一个中心主旨体现在标题中</h2>
+<ul>
+<li>在有数据和逻辑支持的前提下使主旨和/或模型最为简单</li>
+</ul>
+<h2 id="假设写作对象对论文内容一无所知">假设写作对象对论文内容一无所知</h2>
+<ul>
+<li>清晰界定技术术语，不要使用缩写和首字母缩略（除非那种一眼见了就不会忘记的那种）</li>
+<li>人类的记忆机制只能记住少量的术语，相比中间的内容，开头和结尾的内容更容易给人留下印象。</li>
+</ul>
+<h2 id="坚持原因内容和结论">坚持原因，内容和结论</h2>
+<p>（Contex-Content-Conclusion/C-C-C）结构</p>
+<ul>
+<li>我们活动中的大部分细节都是无关紧要的---读者不会关心达成结果之前的事情，他们只关心论文最终的结果和支持它的逻辑</li>
+<li>它不是我们实验日记，我们所有的工作都必须重新格式化，这样才能让内容变得有意义，结论能够被人理解和记住</li>
+</ul>
+<h2 id="避免委婉">避免委婉</h2>
+<p>使用并行优化的逻辑流</p>
+<ul>
+<li>只有论文的中心思想才需要被多次提及</li>
+<li>每个主题只需要覆盖它自己的章节，从而减少主题变化的次数</li>
+</ul>
+<h2 id="在摘要中总结所有要点">在摘要中总结所有要点</h2>
+<ul>
+<li>第一句先介绍具体研究所属的更宽泛的领域，为读者做一个思维定位，然后将背景逐渐缩小，直到研究这提出的开放性问题为止</li>
+<li>最后，结论中将解释论文的结果，以回答背景介绍部分结尾提出的问题</li>
+<li>通常在结论部分还会有第二部分用于强调该结论是如何推动领域发展的<strong>【重大意义】</strong></li>
+</ul>
+<h2 id="在介绍中讨论这篇论文的重要性">在介绍中讨论这篇论文的重要性</h2>
+<ul>
+<li>通常会使用多个逐渐具体化描述的段落，并在最后清晰地指出文献的缺失，然后再用一个段落总结这篇论文会如何解决这个问题</li>
+</ul>
+<h2 id="用多个逻辑相关的陈述句">用多个逻辑相关的陈述句</h2>
+<p>可以辅以图表，给出支持论文中心思想点的结果</p>
+<ul>
+<li>概述论文结果支持观点的逻辑结构，并将其转化为一系列的陈述句</li>
+<li>每一段的最后一句是总结句，就像数学文献中的定理一样</li>
+</ul>
+<h2 id="讨论如何填补差距">讨论如何填补差距</h2>
+<p>论文的局限性和论文与该领域的相关性</p>
+<ul>
+<li>讨论部分后面的段落，首先描述该论文的优缺点，然后通过与相关文献对比来评估该论文的优缺点，讨论部分通常会用一种聪明，非正式的方式谈论论文的贡献，或者该贡献可以扩展的方向</li>
+</ul>
+<h2 id="获取反馈">获取反馈</h2>
+<p>重新使用，再次构造这个故事</p>
+<h2 id="题目摘要图和大纲">题目、摘要、图和大纲</h2>
+]]></content>
+      <categories>
+        <category>摘记</category>
+      </categories>
+      <tags>
+        <tag>生活</tag>
+        <tag>论文</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>什么科研</title>
     <url>/2018/01/06/WhyExplore/</url>
     <content><![CDATA[<h3 id="好的研究">好的研究</h3>
@@ -2120,62 +2179,17 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       </tags>
   </entry>
   <entry>
-    <title>主旨写作技巧</title>
-    <url>/2017/12/14/WillBeBetter/</url>
-    <content><![CDATA[<p>为了使论文具备更高的可读性，本文分条收录了论文撰写中需要注意和保持要点。论文作为传播学术成果的一种载体，还是应当以可读性为一个很重要的评判要点，我们要推翻学术的墙，让知识的传播更为容易。</p>
-<a id="more"></a>
-<h2 id="论文有一个中心主旨体现在标题中">论文有一个中心主旨体现在标题中</h2>
-<ul>
-<li>在有数据和逻辑支持的前提下使主旨和/或模型最为简单</li>
-</ul>
-<h2 id="假设写作对象对论文内容一无所知">假设写作对象对论文内容一无所知</h2>
-<ul>
-<li>清晰界定技术术语，不要使用缩写和首字母缩略（除非那种一眼见了就不会忘记的那种）</li>
-<li>人类的记忆机制只能记住少量的术语，相比中间的内容，开头和结尾的内容更容易给人留下印象。</li>
-</ul>
-<h2 id="坚持原因内容和结论">坚持原因，内容和结论</h2>
-<p>（Contex-Content-Conclusion/C-C-C）结构</p>
-<ul>
-<li>我们活动中的大部分细节都是无关紧要的---读者不会关心达成结果之前的事情，他们只关心论文最终的结果和支持它的逻辑</li>
-<li>它不是我们实验日记，我们所有的工作都必须重新格式化，这样才能让内容变得有意义，结论能够被人理解和记住</li>
-</ul>
-<h2 id="避免委婉">避免委婉</h2>
-<p>使用并行优化的逻辑流</p>
-<ul>
-<li>只有论文的中心思想才需要被多次提及</li>
-<li>每个主题只需要覆盖它自己的章节，从而减少主题变化的次数</li>
-</ul>
-<h2 id="在摘要中总结所有要点">在摘要中总结所有要点</h2>
-<ul>
-<li>第一句先介绍具体研究所属的更宽泛的领域，为读者做一个思维定位，然后将背景逐渐缩小，直到研究这提出的开放性问题为止</li>
-<li>最后，结论中将解释论文的结果，以回答背景介绍部分结尾提出的问题</li>
-<li>通常在结论部分还会有第二部分用于强调该结论是如何推动领域发展的<strong>【重大意义】</strong></li>
-</ul>
-<h2 id="在介绍中讨论这篇论文的重要性">在介绍中讨论这篇论文的重要性</h2>
-<ul>
-<li>通常会使用多个逐渐具体化描述的段落，并在最后清晰地指出文献的缺失，然后再用一个段落总结这篇论文会如何解决这个问题</li>
-</ul>
-<h2 id="用多个逻辑相关的陈述句">用多个逻辑相关的陈述句</h2>
-<p>可以辅以图表，给出支持论文中心思想点的结果</p>
-<ul>
-<li>概述论文结果支持观点的逻辑结构，并将其转化为一系列的陈述句</li>
-<li>每一段的最后一句是总结句，就像数学文献中的定理一样</li>
-</ul>
-<h2 id="讨论如何填补差距">讨论如何填补差距</h2>
-<p>论文的局限性和论文与该领域的相关性</p>
-<ul>
-<li>讨论部分后面的段落，首先描述该论文的优缺点，然后通过与相关文献对比来评估该论文的优缺点，讨论部分通常会用一种聪明，非正式的方式谈论论文的贡献，或者该贡献可以扩展的方向</li>
-</ul>
-<h2 id="获取反馈">获取反馈</h2>
-<p>重新使用，再次构造这个故事</p>
-<h2 id="题目摘要图和大纲">题目、摘要、图和大纲</h2>
+    <title>Word Vector</title>
+    <url>/2018/02/12/Word-Vector/</url>
+    <content><![CDATA[<h2 id="skip-gram-model">Skip gram model</h2>
+<p>The main idea behind the skip-gram model is this: it takes every words in a large corpora and also takes one-by-one the words that surround it within a defined 'windows' to then feed a neural network that after training will predict the probability for each word to actually appear in the window around the focus word.</p>
+<img src="/2018/02/12/Word-Vector/1_yiH5sZI-IBxDSQMKhvbcHw.png" class="">
 ]]></content>
       <categories>
-        <category>摘记</category>
+        <category>机器学习</category>
       </categories>
       <tags>
-        <tag>生活</tag>
-        <tag>论文</tag>
+        <tag>NLP</tag>
       </tags>
   </entry>
   <entry>
@@ -2215,20 +2229,6 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       <tags>
         <tag>开发</tag>
         <tag>conda</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Word Vector</title>
-    <url>/2018/02/12/Word-Vector/</url>
-    <content><![CDATA[<h2 id="skip-gram-model">Skip gram model</h2>
-<p>The main idea behind the skip-gram model is this: it takes every words in a large corpora and also takes one-by-one the words that surround it within a defined 'windows' to then feed a neural network that after training will predict the probability for each word to actually appear in the window around the focus word.</p>
-<img src="/2018/02/12/Word-Vector/1_yiH5sZI-IBxDSQMKhvbcHw.png" class="">
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
       </tags>
   </entry>
   <entry>
@@ -2304,201 +2304,6 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       <tags>
         <tag>测试</tag>
         <tag>GoogleTest</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>最优传输理论</title>
-    <url>/2020/01/30/optimal-transport/</url>
-    <content><![CDATA[<p>最优传输问题的描述，如果用两个沙堆的问题表示：一个沙堆如何通过最小的代价推成和另一个沙堆一样的形状。或者另外一个电商的问题：电商有 <span class="math inline">\(N\)</span> 个储存区域，同时 <span class="math inline">\(M\)</span> 个订购电子书阅读器的客户。假设第 <span class="math inline">\(n\)</span> 个存储区域 <span class="math inline">\(x_n\)</span> 有 <span class="math inline">\(m_n\)</span> 个阅读器，第 <span class="math inline">\(k\)</span> 个客户 <span class="math inline">\(y_k\)</span> 订购 <span class="math inline">\(h_k\)</span> 个阅读器。传输代价 <span class="math inline">\(c(x,y)\)</span> 是存储区域 <span class="math inline">\(y\)</span> 与客户 <span class="math inline">\(x\)</span> 之间的距离。最优传输问题就是要找到最合适的方式，将存储区域中的所有阅读器运送到订购它们的客户那里。传输地图 <span class="math inline">\(\Pi\)</span> 可以视为一个矩阵，矩阵的条目或元素 <span class="math inline">\(\Pi_{nk}\)</span> 表示从第 <span class="math inline">\(n\)</span> 个存储区域发送到第 <span class="math inline">\(k\)</span> 个客户的电子阅读器数量。为了保持一致，离开第 <span class="math inline">\(n\)</span> 个存储区域的所有阅读器总数必须等于在该区域中存储的阅读器总数，同时所有顾客收到的阅读器总和必须等于顾客订购的电子书阅读器的数量<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
-<a id="more"></a>
-<h2 id="问题形式化">问题形式化</h2>
-<p>传输地图的形式有一个确定的约束，也就是两个分布中的元素数量都是固定的传输的东西不会超过某个分布本身有的数量之和。 <span class="math display">\[
-\begin{array}{c}{\sum_{k} \Pi_{n k}=m_{n}} \\ {\sum_{n} \Pi_{n k}=h_{k}}\end{array}
-\]</span> 另外，要服从一个约束，所有矩阵的元素必须为正的，约束下的最优解则为： <span class="math display">\[
-\hat{\gamma}=\operatorname{argmin}_{\Pi} \sum \Pi_{n k} c\left(x_{n}, y_{k}\right)
-\]</span> 其中 <span class="math inline">\(\gamma\)</span> 表示要把一个分布 <span class="math inline">\(P(X)\)</span> 变换成另一个分布 <span class="math inline">\(Q(Y)\)</span> 的传输方案，是传输地图 <span class="math inline">\(\Pi\)</span> 中的一个子集，这个子集能够使二者之间的传输的代价最小化。虽然在现实中，一次可以运多个，运输成本和运输量不会是线性关系，但是出于分析方便下面使用这种简化的表述形式。</p>
-<p>其中为了方面分析的过程，约定下面的符号：</p>
-<ul>
-<li>度量空间 <span class="math inline">\(\mathcal{X}\)</span> 和 <span class="math inline">\(\mathcal{Y}\)</span> （完全的，可分的）</li>
-<li>代价函数 <span class="math inline">\(c:\mathcal{X}\times \mathcal{Y}\rightarrow \mathbb{R}\cup \{\infty \}\)</span> （下界，lsc）</li>
-<li>概率测度 <span class="math inline">\(\mu\in \mathcal{P}(\mathcal{X})\)</span> 和 <span class="math inline">\(\upsilon\in \mathcal{P}(\mathcal{Y})\)</span> 或者可以写成 <span class="math inline">\(\mu=\frac{1}{N}\sum^{N}_{i=1}\delta_{x^{i}},\nu=\frac{1}{M}\sum^{M}_{i=1}\delta_{y^{i}}\)</span> (离散的情况下可以立即成一种计数统计手段，只有两个完全一样的数据会被加两次，离散情况下很可能分布统计中的每个bin都一样高且为<span class="math inline">\(\frac{1}{N}\)</span>或<span class="math inline">\(\frac{1}{M}\)</span>)</li>
-</ul>
-<h3 id="原始形式">原始形式</h3>
-<img src="/2020/01/30/optimal-transport/image-20210210161415614.png" class="" title="image-20210210161415614">
-<ul>
-<li>如何用做最小的功把一堆沙子从一批坑里到另一批坑里</li>
-<li>找到各个坑之间的对应关系<span class="math inline">\(T\)</span>（传输）</li>
-<li>从x搬到y做功<span class="math inline">\(c(x,y)\)</span>，目标是让它最小化</li>
-</ul>
-<h3 id="monge形式">Monge形式</h3>
-<p>给定两个概率分布<span class="math inline">\(\mu_s,\mu_t\)</span>和代价函数<span class="math inline">\(c:\Omega_{s}\times \Omega_{t}\rightarrow\mathbb{R}^{+}\)</span>，Monge形式就是要找到一个代价最小的传输方案<span class="math inline">\(T\)</span>： <span class="math display">\[
-T^{*}=\inf_{T\#\mu_{s}=\mu_{t}}\int_{\Omega_{s}}c(\mathbf{x},T(\mathbf{x}))\mu_{s}(\mathbf{x})d\mathbf{x}
-\]</span> 通过把传输方案<span class="math inline">\(T\)</span>应用到(<span class="math inline">\(\#\)</span>)某个源分布<span class="math inline">\(\mu_{s}\)</span>上就可以把它变换成目标分布<span class="math inline">\(\mu_{t}\)</span>。使代价综合最小的方案就是我们要的最优传输方案。</p>
-<img src="/2020/01/30/optimal-transport/image-20210210162343753.png" class="" title="image-20210210162343753">
-<p>如上图所示随便取一个源分布中的子集（粗糙的说是某块区域，严格的说是任意Borel集），就可以通过传输方案映射（<span class="math inline">\(T\#\)</span>）到目标域中去。</p>
-<p>但是因为有这个<span class="math inline">\(T\#\mu_{s}=\mu_{t}\)</span>限制条件的存在，这就变成了一个难以求解的非凸问题。总结成下面几点使我们不得再寻找更好的形式化：</p>
-<ul>
-<li><span class="math inline">\(T\#\mu_{s}=\mu_{t}\)</span> 是非凸的约束</li>
-<li>最优传输方案<span class="math inline">\(T\)</span>并不一定存在</li>
-<li>最优传输方案<span class="math inline">\(T\)</span>并不一定是唯一的
-<ul>
-<li>[Brenier, 1991]证明了当<span class="math inline">\(c(x,y)=\|x-y\|^{2}\)</span>时最优传输方案存在且唯一</li>
-</ul></li>
-</ul>
-<h3 id="kantorovich-形式">Kantorovich 形式</h3>
-<p>为了和蒙日形式的最优传输方案做符号区分，这里的传输方案用<span class="math inline">\(\gamma\)</span>来表示。</p>
-<img src="/2020/01/30/optimal-transport/image-20210212142637523.png" class="" title="image-20210212142637523">
-<p>Kantorovich提出不一定要按照整数的方式去传输，可以把大石子打碎了传输，所以提出用两个集合耦合的概率分布来表示传输方案： <span class="math display">\[
-\begin{equation}
-\begin{split}
-\gamma_{0}=&amp;\text{argmin}_{\gamma}\int_{\Omega_{s}\times\Omega{t}}c(\mathbf{x},\mathbf{y})\gamma(\mathbf{x},\mathbf{y})d\mathbf{x}d\mathbf{y},\\
-\text{s.t.}&amp;\quad \gamma\in\mathcal{P}\{\gamma\geq0, \int_{\Omega_{t}}\gamma(\mathbf{x},\mathbf{y})d\mathbf{y}=\mu_{s},\int_{\Omega_{s}}\gamma(\mathbf{x},\mathbf{y})d\mathbf{x}=\mu_{t}\}\end{split}
-\end{equation}
-\]</span></p>
-<ul>
-<li><span class="math inline">\(\gamma\)</span>是<span class="math inline">\(\mu_{s},\mu_{t}\)</span>的联合分布</li>
-<li>线形规划总是会有一个解</li>
-</ul>
-<p>在对最优传输的求解和相关理论证明推广的过程中，对偶理论是一项非常重要的基础理论。</p>
-<p><strong>Kantorovich 对偶：</strong>Let <span class="math inline">\(\mu\in\mathcal{P}(X),\nu\in\mathcal{P}(Y)\)</span> where <span class="math inline">\(X,Y\)</span> are Polish spaces. Let <span class="math inline">\(c:X\times Y\rightarrow [0, +\infty]\)</span> be a lower semi-continuous cost function. Define <span class="math inline">\(\mathbb{K}\)</span> as (given <span class="math inline">\(\mu\in\mathcal{P}(X)\)</span> and <span class="math inline">\(\nu\in\mathcal{P}(Y)\)</span> then <span class="math inline">\(\mathbb{K}(\pi)=\int_{X\times Y}c(x,y)d\pi(x,y)\)</span>) and <span class="math inline">\(\mathbb{J}\)</span> by: <span class="math display">\[
-\mathbb{J}:L^{1}(\mu)\times L^{1}(\nu)\rightarrow \mathbb{R}, \quad \mathbb{J}(\varphi, \psi)=\int_{X}\varphi d\mu+\int_{Y}\psi d\nu.
-\]</span> Let <span class="math inline">\(\Phi_{c}\)</span> be defined by: <span class="math display">\[
-\Phi_{c}=\{(\varphi, \psi)\in L^{1}(\mu)\times L^{1}(\nu): \varphi(x)+\psi(y)\leq c(x,y)\},
-\]</span> where the inequality is understood to hold for <span class="math inline">\(\mu-almost\)</span> every <span class="math inline">\(x\in X\)</span> and <span class="math inline">\(\nu-almost\)</span> every <span class="math inline">\(y\in Y\)</span>. Then: <span class="math display">\[
-\min_{\pi\in \prod(\mu, \nu)}\mathbb{K}(\pi)=\sup_{(\varphi,\psi)\in\Phi_{c}}\mathbb{J}(\varphi, \psi).
-\]</span> 我们通过运货商问题直观地证明上面的这个结论，假设我们现在有一批煤矿和一些工厂，每个煤矿的产量和每个工厂的需求量都是固定的。从煤矿<span class="math inline">\(x\)</span>运输到工厂<span class="math inline">\(y\)</span>的成本是<span class="math inline">\(c(x,y)\)</span>，使成本总和最小的运输方案就是Kantorovich的最优传输方案。后来，有一个聪明的运输员来找你，说你只要付<span class="math inline">\(\varphi(x)\)</span>用于装车，<span class="math inline">\(\psi(y)\)</span>用于卸货。为了使你更加感兴趣，他还提出他保证装车成本<span class="math inline">\(\varphi\)</span>和卸货成本<span class="math inline">\(\psi\)</span>一定不会超过原来的运输方案<span class="math inline">\(c(x,y)\)</span>，即<span class="math inline">\(\varphi(x)+\psi(y)\leq c(x,y)\)</span>。<strong>也就是Kantorovich对偶告诉我们可以找到<span class="math inline">\(\varphi\)</span>和<span class="math inline">\(\psi\)</span>使得价格组成方案最多都不会超过原形式的运输方案</strong>。</p>
-<p>借助这个直观的解释（一部分给自己运，一部分交给运货商的话）给出非正式的证明过程，令<span class="math inline">\(M=\inf_{\pi\in\prod(\mu,\nu)}\mathbb{K{(\pi)} }\)</span>，可以观察到： 
-$$
-M=\inf_{\pi\in \mathcal{M}_{+}(X\times Y)}\sup_{(\varphi, \psi)}\left(\int_{X\times Y}c(x,y)d\pi+\int_{X}\varphi d(\mu-P^{X}_{\#}\pi)+\int_{Y}\psi d(\nu-P^{Y}_{\#}\pi)\right)\label{eq:M}
-$$
-
-</p>
-<p>我们在<span class="math inline">\((\varphi,\psi)\in C^{0}_{b}(X)\times C^{0}_{b}(Y)\)</span>取方程右边的上界，如下：</p>
-
-$$
-\sup_{\varphi\in C^{0}_{b}(X)}\int_{X}\varphi d(\mu-P^{X}_{\#}\pi)=\left\{\begin{array}{ll}+\infty & {\rm if}~\mu\neq P^{X}_{\#}\pi\\0 & {\rm else.} \end{array}\right.
-$$
-
-<p>因此，在<span class="math inline">\(\pi\)</span>上的下界就在<span class="math inline">\(P^{X}_{\# }\pi=\mu\)</span>的时候取到，同理，<span class="math inline">\(P^{Y}_{ \# }\pi=\nu\)</span>，重写公式<span class="math inline">\(\ref{eq:M}\)</span>有 <span class="math display">\[
-M=\inf_{\pi\in\mathcal{M}_{+}(X\times Y)}\sup_{(\varphi,\psi)}\left(\int_{X\times Y}c(x,y)-\varphi(x)-\psi(y)d\pi+\int_{X}\varphi d\mu + \int_{Y}\psi d\nu\right).
-\]</span> 根据自变量的影响范围整理上面公式得到： <span class="math display">\[
-M=\sup_{(\varphi,\psi)}\left(\int_{X}\varphi d\mu+\int_{Y}\psi d\nu+\inf_{\pi\in\mathcal{M}_{+}(X\times Y)}\int_{X\times Y}c(x,y)-\varphi(x)-\psi(y)d\pi\right).
-\]</span> 假如存在<span class="math inline">\((x_{0},y_{0})\in X\times Y\)</span>和<span class="math inline">\(\epsilon&gt;0\)</span>使得<span class="math inline">\(\varphi(x_{0})+\psi(y_{0})-c(x_{0},y_{0})=\epsilon&gt;0\)</span>，然后通过令<span class="math inline">\(\pi_{\lambda}=\lambda\delta_{(x_{0}, y_{0})}\)</span>，对于任意的<span class="math inline">\(\lambda&gt;0\)</span>我们有： <span class="math display">\[
-\inf_{\pi\in\mathcal{M}_{+}(X\times Y)}\int_{X\times Y}c(x,y)-\varphi(x)-\psi(y)d\pi\leq -\lambda\epsilon \rightarrow -\infty~~~{\rm as}~~~\lambda\rightarrow\infty.
-\]</span></p>
-<p>因此，<span class="math inline">\(M\)</span>的下界可以限制为当<span class="math inline">\(\varphi(x)+\psi(y)\leq c(x,y)\)</span>时，所有<span class="math inline">\((x,y)\in X\times Y\)</span>，也就是<span class="math inline">\((\varphi,\psi)\in \Phi_{c}\)</span>（这种启发式的争论其实是用<span class="math inline">\((\varphi,\psi)\in C^{0}_b(X)\times C^{0}_{b}(Y)\)</span>而不是<span class="math inline">\(L^{1}(\mu)\times L^{1}(\nu)\)</span>这和限制<span class="math inline">\(\varphi(x)+\psi(y)\leq c(x,y)\)</span>处处存在有些不同，是几乎处处存在的，不过这些更深入的细节这里暂时不做讨论），当<span class="math inline">\((\varphi,\psi)\in\Phi_{c}\)</span>有： <span class="math display">\[
-\inf_{\pi\in\mathcal{M}_{+}(X\times Y)}\int_{X\times Y}c(x,y)-\varphi(x)-\psi(y)d\pi=0
-\]</span> 在<span class="math inline">\(\pi \equiv 0\)</span>成立（例如），因此： <span class="math display">\[
-\inf_{\pi\in\prod(\mu, \nu)}\mathbb{K}(\pi)=\sup_{(\varphi,\psi)\in \Phi_{c}}\int_{X}\varphi(x)d\mu(x)+\int_{Y}\psi(y)d\nu(y)
-\]</span> 这就是Kantorovich对偶的形式了，关于它的详细证明还需要很多篇幅。可以参考<em>Introduction to Optimal Transport</em>。</p>
-<h3 id="sinkhorn-距离">Sinkhorn 距离</h3>
-<p>随着最优传输所使用的维度升高，最优传输的求解复杂度很快就会变得不可接受。所以Marco Cuturi,2013<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>等提出从熵最大化的角度来看待传输问题。在原始的最优传输形式中加入传输方案熵正则化项来平滑经典的最优传输问题，这种新形式下的优化就可以通过Sinkhorn's matrix scaling算法来解决。这种修改后的计算方式可以大大加快原始的最优传输优化形式的求解。</p>
-<p>对于任意两个概率向量<span class="math inline">\(\mu,\nu\in\Sigma_{d}:=\{x\in \mathbb{R}^{d}_{+}:x^{T}\mathbf{1}_{d}=1\}\)</span>，用<span class="math inline">\(U(\mu,\nu)\)</span>表示<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>的传输可行空间： <span class="math display">\[
-U(\mu,\nu):=\{P\in\mathbb{R}^{d\times d}_{+}|P\mathbf{1}_{d}=\nu,P^{T}\mathbf{1}_{d}=\nu\}
-\]</span> 其中任意矩阵<span class="math inline">\(P\in U(\mu,\nu)\)</span>其中<span class="math inline">\(p(X=i,Y=j)=p_{ij}\)</span>，然后定义熵<span class="math inline">\(h(P)\)</span>： <span class="math display">\[
-h(P)=-\sum^{d}_{i,j=1}p_{ij}\log p_{ij}
-\]</span> 给定一个<span class="math inline">\(d\times d\)</span>的代价矩阵<span class="math inline">\(M\)</span>，那么从<span class="math inline">\(\mu\)</span>传输到<span class="math inline">\(\nu\)</span>的传输代价就可以写成： <span class="math display">\[
-d_{M}(\mu,\nu):=\min_{P\in U(\mu,\nu)}\langle P, M\rangle.
-\]</span> 当矩阵<span class="math inline">\(M\)</span>本身是一个度量矩阵时，即当<span class="math inline">\(M\)</span>属于距离矩阵的锥时： <span class="math display">\[
-\mathcal{M}=\{M\in\mathbb{R}^{d\times d}_{+}:\forall i,j\leq d,m_{ij}=0\Leftrightarrow i=j,\forall i,j,k\leq d,m_{ij}\leq m_{ik}+m_{kj}\}
-\]</span> <strong>联合分布中的熵限制</strong>(<em>Cover and Thomas,1991,section 2</em>): <span class="math display">\[
-\forall \mu,\nu\in\Sigma_{d},\forall P\in U(\mu,\nu),h(P)\leq h(\mu)+h(\nu),
-\]</span> 当<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>相互独立的时候有<span class="math inline">\(h(\mu\nu^{T})=h(\mu)+h(\nu)\)</span>，利用这个熵的凸性质，可以有： <span class="math display">\[
-U_{\alpha}(\mu,\nu):=\{P\in U(\mu, \nu)|KL(P||\mu\nu^{T})\leq \alpha\}=\{P\in U(\mu, \nu)|h(P)\geq h(\mu)+h(\nu)-\alpha\}
-\]</span> 因此，就可以把对<span class="math inline">\(\mu\nu^{T}\)</span>的KL散度小于某个阈值的<span class="math inline">\(P\)</span>的集合解释为一系列在<span class="math inline">\(U(\mu,\nu)\)</span>中的联合分布<span class="math inline">\(P\)</span>，它对<span class="math inline">\(h(\mu)\)</span>和<span class="math inline">\(h(\nu)\)</span>有足够的熵，或者足够小的互信息。</p>
-<p>所以定义Sinkhorn Distance为： <span class="math display">\[
-d_{M,\alpha}(\mu,\nu):=\min_{P\in U_{\alpha}(\mu,\nu)}\lang P, M\rang.
-\]</span></p>
-<blockquote>
-<p>之所以考虑在最优传输中使用熵的限制是因为，经典的线性规划的结果都是在可行域的顶点上取到。这样的一个<span class="math inline">\(d\times d\)</span>维度的顶点通常最多只有<span class="math inline">\(2d-1\)</span>个非零的元素。从概率的角度看这个顶点则是一个准确定性联合分布，因为一旦某一行有个元素<span class="math inline">\(p_{ij}&gt;0\)</span>，这一行的其他元素<span class="math inline">\(p_{ij&#39;}\)</span>其中<span class="math inline">\(j&#39;\neq j\)</span>就很少是非零的了。</p>
-</blockquote>
-<img src="/2020/01/30/optimal-transport/image-20210307110425631.png" class="" title="image-20210307110425631">
-<p>另外再证明了三角不等式： <span class="math display">\[
-d_{M,\alpha}(x,z)=\min_{P\in U_{\alpha}(x,z)}\lang P,M\rang \leq\lang S, M\rang\leq d_{M,\alpha}(x,y)+d_{M,\alpha}(y,z)
-\]</span> 可以大致确认通过一些优化手段是可以找到最优解的，然后考虑有熵限制条件的优化问题： <span class="math display">\[
-{\rm For}~\lambda&gt;0,d^{\lambda}_{M}(\mu,\nu):=\lang P^{\lambda},M\rang,~{\rm where}~P^{\lambda}={\rm argmin}_{P\in U(\mu, \nu)}\lang P,M\rang-\frac{1}{\lambda}h(P).
-\]</span> 基于对偶理论有任意的<span class="math inline">\(\alpha\)</span>对应于一个<span class="math inline">\(\lambda\in[0, +\infty]\)</span>使得<span class="math inline">\(d_{M,\alpha}(\mu,\nu)=d^{\lambda}_{M}(\mu, \nu)\)</span>，这个<span class="math inline">\(d^{\lambda}_{M}\)</span>就叫做dual-Sinkhorn divergence，它可以被很方便地计算得到。</p>
-<p>从上图也可以看到传输方案<span class="math inline">\(P^{\lambda}\)</span>的熵随着<span class="math inline">\(\lambda\)</span>的增大而单调递增，我们可以通过不断增大<span class="math inline">\(\lambda\)</span>直到<span class="math inline">\(h(P^{\lambda})\)</span>到达<span class="math inline">\(h(\mu)+h(\nu)-\alpha\)</span>。</p>
-<p><strong>通过Matrix Scaling Algorithm来对<span class="math inline">\(d^{\lambda}_{M}\)</span>进行求解</strong>，对于任意<span class="math inline">\(\lambda&gt;0\)</span>有唯一解<span class="math inline">\(P^{\lambda}={\rm diag}(\mu)K{\rm diag}(\nu)\)</span>，其中<span class="math inline">\(K:=e^{-\lambda M}\)</span>。</p>
-<p>利用拉格朗日乘子法和对偶变量<span class="math inline">\(\alpha,\beta\in\mathbb{R}^{d}\)</span>代入<span class="math inline">\(U(\mu,\nu)\)</span>中的限制条件： <span class="math display">\[
-\mathcal{L}(P,\alpha,\beta)=\sum_{ij}\frac{1}{\lambda}p_{ij}\log p_{ij}+p_{ij}m_{ij}+\alpha^{T}(P\mathbf{1}_{d}-\mu)+\beta^{T}(P\mathbf{1}_{d}-\nu).
-\]</span> 取<span class="math inline">\(\frac{\partial \mathcal{L}}{\partial p_{ij}}=0\)</span>可以推出<span class="math inline">\(p_{ij}=e^{-1/2-\lambda\alpha_{i}}e^{-\lambda m_{ij}}e^{-1/2-\lambda\beta_{i}}\)</span>，<span class="math inline">\(P^{\lambda}\)</span>因此就必定是对应的矩阵，可以通过Sinkhorn's固定点迭代<span class="math inline">\((r,c)\leftarrow(\mu./Kr,\nu./K&#39;c)\)</span>得到。</p>
-<img src="/2020/01/30/optimal-transport/image-20210307110537149.png" class="" title="image-20210307110537149">
-<h2 id="补充资料">补充资料</h2>
-<h3 id="符号说明">符号说明</h3>
-<ul>
-<li><span class="math inline">\(C^{0}_{b}(Z)\)</span> 是定义在<span class="math inline">\(Z\)</span>上的全体连续有界函数</li>
-<li><span class="math inline">\(\mathcal{M}_{+}(Z)\)</span> 是<span class="math inline">\(Z\)</span>上正的拉东测度的集合</li>
-<li><span class="math inline">\(\mathcal{P}(Z)\)</span>是在<span class="math inline">\(Z\)</span>上的概率测度的集合，也就是<span class="math inline">\(\mathcal{M}_{+}(Z)\)</span>有单位质量的子集</li>
-</ul>
-<h3 id="测度">测度</h3>
-<p>测度用于表示我们对于大小的直观概念，比如长度、面积、体积和质量等，有了这种度量我们才能将严格地讨论它们，并且将它们扩展一些直观上无法理解其大小的领域，比如函数空间。</p>
-<p>一个测度就是一个函数，例如 <span class="math inline">\(\mu\)</span> 从一个 <span class="math inline">\(\sigma\)</span>-代数到一个非负的实数值，0 就表示一个空集，而当一个集合由很多<strong>互斥的子集</strong> <span class="math inline">\(\{X_{i}\}\)</span> 组成时，我们则有： <span class="math display">\[
-\mu(\cup X_{i})=\sum\mu(X_{i})
-\]</span> 直观的理解就是，如果两个集合它们之间没有任何交集，则把它们合在一起获得的新的并集大小就是它们各自的大小之和。</p>
-<h3 id="概率测度">概率测度</h3>
-<p>如果全集的测度值被定义为 1，那这个测度就可以称为一个概率测度。在理论测量概率中，我们定义一个 <span class="math inline">\(\sigma\)</span>-代数集，是一个包括了所有可能性的集合。我们拿出其中的一个子集来举例，扔出去的一个骰子可能是 1 也可能不是 1（某个子集），可能是偶数也可能是其他（另一个子集）。子集的度量称为定义它的事件的概率。</p>
-<ul>
-<li><strong>概率空间</strong>：一个概率空间是一个 <span class="math inline">\(X\)</span> 集合的三倍，一个超过它的 <span class="math inline">\(\sigma\)</span>-代数，<span class="math inline">\(\mathcal{X}\)</span>，和一个概率测度 <span class="math inline">\(\mu\)</span></li>
-<li><strong>可测空间</strong>：一个可测空间是一组集合 <span class="math inline">\(X\)</span> 连同其子集的 <span class="math inline">\(\sigma\)</span>-代数的对</li>
-<li><strong>测度空间</strong>：一个测度空间是一个 <span class="math inline">\(X\)</span> 集合的三倍，一个其子集的 <span class="math inline">\(\sigma\)</span>-代数，和一个测度 <span class="math inline">\(\mu\)</span></li>
-</ul>
-<h3 id="推进测度">推进测度</h3>
-<p>假设有一个映射满足 <span class="math inline">\(T:\mathcal{X}\rightarrow \mathcal{Y}\)</span>，那么<span class="math inline">\(\mu\)</span> 通过 <span class="math inline">\(T\)</span> 映射的推进测度（pushforward measure）满足 <span class="math display">\[
-T_{\# }\mu(\mathcal{Y})=\mu(T^{-1}(\mathcal{X}))
-\]</span> 其中，因为 <span class="math inline">\(\mu\)</span> 是测度，<span class="math inline">\(\mathcal{X},\mathcal{Y}\)</span> 是数据集，所以二者计算的符号不同用以区别。这里的 <span class="math inline">\(T^{-1}(\mathcal{X})\)</span> 表示集合 <span class="math inline">\(A\)</span> 的原像，而不是将 <span class="math inline">\(T\)</span> 的逆函数应用到 <span class="math inline">\(A\)</span> 上。</p>
-<p>概率形式的边缘分布约束 <span class="math inline">\(\text{proj}_{ \# }^{x}\gamma = \mu\)</span>，也就相当于上面提到的 <span class="math inline">\(\sum_{k} \Pi_{n k}=m_{n}\)</span>。</p>
-<h3 id="传输方案">传输方案</h3>
-<p>假如 <span class="math inline">\(\gamma\)</span> 有一个密度函数 <span class="math inline">\(p(x,y)\)</span> 它的意思就是指把 <span class="math inline">\(x\)</span> 上的土运到对应的 <span class="math inline">\(y\)</span> 上形成一个分布，而不是某个单点。假如最优的传输方案如下图所示，右边就是 Monge problem 的解法，而 Kantorovich 的形式则约束更为宽松。 <img src="/2020/01/30/optimal-transport/distribution.png" class="" title="二维形式下可以表示成图中的内容"></p>
-<p>两个分布的联合分布如上图所示<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>，同样的离散表示形式可以表示成下面的形式：</p>
-<img src="/2020/01/30/optimal-transport/discrete_distribution.png" class="" title="离散二维形式下可以表示成图中的内容">
-<p>更一般的传输方案优化目标可以写成下面的形式： <span class="math display">\[
-C(\mu, \upsilon):=\min_{\gamma\in \Pi(\mu, \upsilon)}\int_{\mathcal{X}\times\mathcal{Y}}c(x,y)d\gamma(x, y)
-\]</span></p>
-<h2 id="最优传输散度">最优传输散度</h2>
-<p>在很多应用场景中，我们更加关心两个分布之间的距离而不是要把一个分布转化到另一个分布的传输方案。所以用最优传输的代价来表示这两个分布之间的差异下界。</p>
-<p>假如输入是两个分布 <span class="math inline">\(\mu\)</span> 和 <span class="math inline">\(\upsilon\)</span>，我们有两个分布之间的最优传输代价为： <span class="math display">\[
-\text{OT}_{c}[\mu, \upsilon] = \int_{\mathcal{X}\times\mathcal{Y}}c(x,y)d\gamma(x, y),
-\]</span> 其中的代价函数 <span class="math inline">\(c(x,y)\)</span> 可以有很多种选择：</p>
-<ul>
-<li><span class="math inline">\(\|x-y\|_{1}\)</span></li>
-<li><span class="math inline">\(\|x-y\|_{2}\)</span></li>
-<li><span class="math inline">\(\|x-y\|_{2}^{2}\)</span></li>
-</ul>
-<p>如果将 <span class="math inline">\(\|x-y\|_{2}^{2}\)</span> 代入则有 Wasserstein 距离为：</p>
-<p><span class="math display">\[
-W_{2}[\mu,\upsilon]=\inf_{\gamma}\int \|x-y\|_{2}^{2}d\gamma(x,y)
-\]</span></p>
-<p>对于两个分布（概率测度）<span class="math inline">\(\mu\in\mathcal{P}(\mathcal{X}),\upsilon\in\mathcal{P}(\mathcal{Y})\)</span>，他们之间的最优传输代价总和即为 <span class="math inline">\(C(\mu,\upsilon)\)</span>，但是原始问题不太好求解，因为有时候可能根本没有解法，所以采取对偶问题来进行求解： <span class="math display">\[
-\begin{aligned}
-    \min_{\gamma\in \Pi(\mu, \upsilon)} &amp; \int_{\mathcal{X}\times\mathcal{Y}}c(x,y)d\gamma(x, y)\quad &amp; (\text{Primal}) \\
-    \max_{\phi\in L^{1}(\mu)\\\psi \in L^{1}(\upsilon)} &amp; \{\int_{\mathcal{X}}\phi(x)d\mu(x)+\int_{\mathcal{Y}}\psi(y)d\upsilon(y):\phi(x)+\psi(y) \leq c(x,y)\}\quad &amp; (Dual)
-\end{aligned}
-\]</span> 其中既要满足边缘分布的约束，也要保证两个相同分布之间的散度为零。<span class="math inline">\(\phi,\psi\)</span> 分别表示两个分布的移动策略，这个策略能够使它们相互靠近。</p>
-<p>当最优条件满足的时候下面成立：</p>
-<ul>
-<li>对于 <span class="math inline">\(\gamma\)</span> 而言，<span class="math inline">\(\phi(x)+\psi(y)=c(x,y)\)</span> 几乎在每一个 <span class="math inline">\((x,y)\)</span> 位置上都成立</li>
-<li><span class="math inline">\(\gamma\)</span> 集中在一个 c-周期性单调集上。</li>
-</ul>
-<p>最优传输是线性规划的问题的一个特例，因为要优化的函数和约束都是传输图的线性函数。线性规划的一个基本结果就是所有的线性问题都存在对偶问题。</p>
-<h2 id="参考">参考</h2>
-<p>关于对偶问题在离散化最优传输及线性规划中的解释可以进一步看_从Wasserstein距离、对偶理论到WGAN_<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p><a href="https://www.jiqizhixin.com/articles/2018-10-04-3" class="uri">https://www.jiqizhixin.com/articles/2018-10-04-3</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>M. Cuturi, “Sinkhorn Distances: Lightspeed Computation of Optimal Transport,” Advances in Neural Information Processing Systems, vol. 26, 2013, Accessed: Mar. 04, 2021. [Online]. Available: https://papers.nips.cc/paper/2013/hash/af21d0c97db2e27e13572cbf59eb343d-Abstract.html.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3" role="doc-endnote"><p><em>Tutorial on Optimal Transport Theory</em> L´ena¨ıc Chizat<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4" role="doc-endnote"><p><a href="https://kexue.fm/archives/6280#%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E5%AF%B9%E5%81%B6" class="uri">https://kexue.fm/archives/6280#%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E5%AF%B9%E5%81%B6</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>最优传输</tag>
-        <tag>optimal transport</tag>
       </tags>
   </entry>
   <entry>
@@ -2904,22 +2709,6 @@ V(s)=\mathbb{E}_{\pi}[ \sum^{\infty}_{t=0}\gamma&#39;R(s_{t})\mid s_{0}=s]
       </tags>
   </entry>
   <entry>
-    <title>尼采</title>
-    <url>/2018/01/02/%E5%B0%BC%E9%87%87/</url>
-    <content><![CDATA[<p>一个真正的思想者的永远具有人性光辉的独立和批判精神，但是大多数人都是精神寄生虫，十九世纪他们依附在苏格拉底等古代大师，后来又有很多人依附于马克思，但是毫无疑问，这个世界就是需要一个这样庞大的群体，易于欺骗和调动情绪，形成社会变革的中坚力量，也是社会稳定发展的中坚力量。<a id="more"></a> 从一个年轻人成长形成他自己的人生观世界观的时候，这么几种，有人引导他们，帮助他们去认识这个世界，帮助他们成长为</p>
-<ol type="1">
-<li>神是一种假想，但我希望你们的假想别超过你们创造意志的范围</li>
-</ol>
-]]></content>
-      <categories>
-        <category>摘记</category>
-      </categories>
-      <tags>
-        <tag>生活</tag>
-        <tag>书摘</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>密钥交换问题</title>
     <url>/2017/12/14/%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<p>人与人之间原始的欲望通过气味相互吸引，我的直觉是这些气味其实是有指向性的，它们和其他类型的气味不同，不是分子直接刺激到鼻腔内的受体直接表达的，而是要与自身某些挥发性物质混合才传达出来的气味，是间接表达的。这个气味对于其他人却是加密的，仅仅在恋人之间能够传达。这样我们可以再引出一个很有意思很形象的问题。</p>
@@ -2942,6 +2731,22 @@ V(s)=\mathbb{E}_{\pi}[ \sum^{\infty}_{t=0}\gamma&#39;R(s_{t})\mid s_{0}=s]
         <tag>生活</tag>
         <tag>Network</tag>
         <tag>Encryption</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>尼采</title>
+    <url>/2018/01/02/%E5%B0%BC%E9%87%87/</url>
+    <content><![CDATA[<p>一个真正的思想者的永远具有人性光辉的独立和批判精神，但是大多数人都是精神寄生虫，十九世纪他们依附在苏格拉底等古代大师，后来又有很多人依附于马克思，但是毫无疑问，这个世界就是需要一个这样庞大的群体，易于欺骗和调动情绪，形成社会变革的中坚力量，也是社会稳定发展的中坚力量。<a id="more"></a> 从一个年轻人成长形成他自己的人生观世界观的时候，这么几种，有人引导他们，帮助他们去认识这个世界，帮助他们成长为</p>
+<ol type="1">
+<li>神是一种假想，但我希望你们的假想别超过你们创造意志的范围</li>
+</ol>
+]]></content>
+      <categories>
+        <category>摘记</category>
+      </categories>
+      <tags>
+        <tag>生活</tag>
+        <tag>书摘</tag>
       </tags>
   </entry>
   <entry>
@@ -3855,6 +3660,201 @@ x^{i}_{t+1}\leftarrow x^{i}_{t}-\alpha m^{i}_{t}/\sqrt{\hat{v}^{i}_{t}},\quad {\
       </categories>
       <tags>
         <tag>庞加莱球</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>最优传输理论</title>
+    <url>/2020/01/30/optimal-transport/</url>
+    <content><![CDATA[<p>最优传输问题的描述，如果用两个沙堆的问题表示：一个沙堆如何通过最小的代价推成和另一个沙堆一样的形状。或者另外一个电商的问题：电商有 <span class="math inline">\(N\)</span> 个储存区域，同时 <span class="math inline">\(M\)</span> 个订购电子书阅读器的客户。假设第 <span class="math inline">\(n\)</span> 个存储区域 <span class="math inline">\(x_n\)</span> 有 <span class="math inline">\(m_n\)</span> 个阅读器，第 <span class="math inline">\(k\)</span> 个客户 <span class="math inline">\(y_k\)</span> 订购 <span class="math inline">\(h_k\)</span> 个阅读器。传输代价 <span class="math inline">\(c(x,y)\)</span> 是存储区域 <span class="math inline">\(y\)</span> 与客户 <span class="math inline">\(x\)</span> 之间的距离。最优传输问题就是要找到最合适的方式，将存储区域中的所有阅读器运送到订购它们的客户那里。传输地图 <span class="math inline">\(\Pi\)</span> 可以视为一个矩阵，矩阵的条目或元素 <span class="math inline">\(\Pi_{nk}\)</span> 表示从第 <span class="math inline">\(n\)</span> 个存储区域发送到第 <span class="math inline">\(k\)</span> 个客户的电子阅读器数量。为了保持一致，离开第 <span class="math inline">\(n\)</span> 个存储区域的所有阅读器总数必须等于在该区域中存储的阅读器总数，同时所有顾客收到的阅读器总和必须等于顾客订购的电子书阅读器的数量<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>。</p>
+<a id="more"></a>
+<h2 id="问题形式化">问题形式化</h2>
+<p>传输地图的形式有一个确定的约束，也就是两个分布中的元素数量都是固定的传输的东西不会超过某个分布本身有的数量之和。 <span class="math display">\[
+\begin{array}{c}{\sum_{k} \Pi_{n k}=m_{n}} \\ {\sum_{n} \Pi_{n k}=h_{k}}\end{array}
+\]</span> 另外，要服从一个约束，所有矩阵的元素必须为正的，约束下的最优解则为： <span class="math display">\[
+\hat{\gamma}=\operatorname{argmin}_{\Pi} \sum \Pi_{n k} c\left(x_{n}, y_{k}\right)
+\]</span> 其中 <span class="math inline">\(\gamma\)</span> 表示要把一个分布 <span class="math inline">\(P(X)\)</span> 变换成另一个分布 <span class="math inline">\(Q(Y)\)</span> 的传输方案，是传输地图 <span class="math inline">\(\Pi\)</span> 中的一个子集，这个子集能够使二者之间的传输的代价最小化。虽然在现实中，一次可以运多个，运输成本和运输量不会是线性关系，但是出于分析方便下面使用这种简化的表述形式。</p>
+<p>其中为了方面分析的过程，约定下面的符号：</p>
+<ul>
+<li>度量空间 <span class="math inline">\(\mathcal{X}\)</span> 和 <span class="math inline">\(\mathcal{Y}\)</span> （完全的，可分的）</li>
+<li>代价函数 <span class="math inline">\(c:\mathcal{X}\times \mathcal{Y}\rightarrow \mathbb{R}\cup \{\infty \}\)</span> （下界，lsc）</li>
+<li>概率测度 <span class="math inline">\(\mu\in \mathcal{P}(\mathcal{X})\)</span> 和 <span class="math inline">\(\upsilon\in \mathcal{P}(\mathcal{Y})\)</span> 或者可以写成 <span class="math inline">\(\mu=\frac{1}{N}\sum^{N}_{i=1}\delta_{x^{i}},\nu=\frac{1}{M}\sum^{M}_{i=1}\delta_{y^{i}}\)</span> (离散的情况下可以立即成一种计数统计手段，只有两个完全一样的数据会被加两次，离散情况下很可能分布统计中的每个bin都一样高且为<span class="math inline">\(\frac{1}{N}\)</span>或<span class="math inline">\(\frac{1}{M}\)</span>)</li>
+</ul>
+<h3 id="原始形式">原始形式</h3>
+<img src="/2020/01/30/optimal-transport/image-20210210161415614.png" class="" title="image-20210210161415614">
+<ul>
+<li>如何用做最小的功把一堆沙子从一批坑里到另一批坑里</li>
+<li>找到各个坑之间的对应关系<span class="math inline">\(T\)</span>（传输）</li>
+<li>从x搬到y做功<span class="math inline">\(c(x,y)\)</span>，目标是让它最小化</li>
+</ul>
+<h3 id="monge形式">Monge形式</h3>
+<p>给定两个概率分布<span class="math inline">\(\mu_s,\mu_t\)</span>和代价函数<span class="math inline">\(c:\Omega_{s}\times \Omega_{t}\rightarrow\mathbb{R}^{+}\)</span>，Monge形式就是要找到一个代价最小的传输方案<span class="math inline">\(T\)</span>： <span class="math display">\[
+T^{*}=\inf_{T\#\mu_{s}=\mu_{t}}\int_{\Omega_{s}}c(\mathbf{x},T(\mathbf{x}))\mu_{s}(\mathbf{x})d\mathbf{x}
+\]</span> 通过把传输方案<span class="math inline">\(T\)</span>应用到(<span class="math inline">\(\#\)</span>)某个源分布<span class="math inline">\(\mu_{s}\)</span>上就可以把它变换成目标分布<span class="math inline">\(\mu_{t}\)</span>。使代价综合最小的方案就是我们要的最优传输方案。</p>
+<img src="/2020/01/30/optimal-transport/image-20210210162343753.png" class="" title="image-20210210162343753">
+<p>如上图所示随便取一个源分布中的子集（粗糙的说是某块区域，严格的说是任意Borel集），就可以通过传输方案映射（<span class="math inline">\(T\#\)</span>）到目标域中去。</p>
+<p>但是因为有这个<span class="math inline">\(T\#\mu_{s}=\mu_{t}\)</span>限制条件的存在，这就变成了一个难以求解的非凸问题。总结成下面几点使我们不得再寻找更好的形式化：</p>
+<ul>
+<li><span class="math inline">\(T\#\mu_{s}=\mu_{t}\)</span> 是非凸的约束</li>
+<li>最优传输方案<span class="math inline">\(T\)</span>并不一定存在</li>
+<li>最优传输方案<span class="math inline">\(T\)</span>并不一定是唯一的
+<ul>
+<li>[Brenier, 1991]证明了当<span class="math inline">\(c(x,y)=\|x-y\|^{2}\)</span>时最优传输方案存在且唯一</li>
+</ul></li>
+</ul>
+<h3 id="kantorovich-形式">Kantorovich 形式</h3>
+<p>为了和蒙日形式的最优传输方案做符号区分，这里的传输方案用<span class="math inline">\(\gamma\)</span>来表示。</p>
+<img src="/2020/01/30/optimal-transport/image-20210212142637523.png" class="" title="image-20210212142637523">
+<p>Kantorovich提出不一定要按照整数的方式去传输，可以把大石子打碎了传输，所以提出用两个集合耦合的概率分布来表示传输方案： <span class="math display">\[
+\begin{equation}
+\begin{split}
+\gamma_{0}=&amp;\text{argmin}_{\gamma}\int_{\Omega_{s}\times\Omega{t}}c(\mathbf{x},\mathbf{y})\gamma(\mathbf{x},\mathbf{y})d\mathbf{x}d\mathbf{y},\\
+\text{s.t.}&amp;\quad \gamma\in\mathcal{P}\{\gamma\geq0, \int_{\Omega_{t}}\gamma(\mathbf{x},\mathbf{y})d\mathbf{y}=\mu_{s},\int_{\Omega_{s}}\gamma(\mathbf{x},\mathbf{y})d\mathbf{x}=\mu_{t}\}\end{split}
+\end{equation}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\gamma\)</span>是<span class="math inline">\(\mu_{s},\mu_{t}\)</span>的联合分布</li>
+<li>线形规划总是会有一个解</li>
+</ul>
+<p>在对最优传输的求解和相关理论证明推广的过程中，对偶理论是一项非常重要的基础理论。</p>
+<p><strong>Kantorovich 对偶：</strong>Let <span class="math inline">\(\mu\in\mathcal{P}(X),\nu\in\mathcal{P}(Y)\)</span> where <span class="math inline">\(X,Y\)</span> are Polish spaces. Let <span class="math inline">\(c:X\times Y\rightarrow [0, +\infty]\)</span> be a lower semi-continuous cost function. Define <span class="math inline">\(\mathbb{K}\)</span> as (given <span class="math inline">\(\mu\in\mathcal{P}(X)\)</span> and <span class="math inline">\(\nu\in\mathcal{P}(Y)\)</span> then <span class="math inline">\(\mathbb{K}(\pi)=\int_{X\times Y}c(x,y)d\pi(x,y)\)</span>) and <span class="math inline">\(\mathbb{J}\)</span> by: <span class="math display">\[
+\mathbb{J}:L^{1}(\mu)\times L^{1}(\nu)\rightarrow \mathbb{R}, \quad \mathbb{J}(\varphi, \psi)=\int_{X}\varphi d\mu+\int_{Y}\psi d\nu.
+\]</span> Let <span class="math inline">\(\Phi_{c}\)</span> be defined by: <span class="math display">\[
+\Phi_{c}=\{(\varphi, \psi)\in L^{1}(\mu)\times L^{1}(\nu): \varphi(x)+\psi(y)\leq c(x,y)\},
+\]</span> where the inequality is understood to hold for <span class="math inline">\(\mu-almost\)</span> every <span class="math inline">\(x\in X\)</span> and <span class="math inline">\(\nu-almost\)</span> every <span class="math inline">\(y\in Y\)</span>. Then: <span class="math display">\[
+\min_{\pi\in \prod(\mu, \nu)}\mathbb{K}(\pi)=\sup_{(\varphi,\psi)\in\Phi_{c}}\mathbb{J}(\varphi, \psi).
+\]</span> 我们通过运货商问题直观地证明上面的这个结论，假设我们现在有一批煤矿和一些工厂，每个煤矿的产量和每个工厂的需求量都是固定的。从煤矿<span class="math inline">\(x\)</span>运输到工厂<span class="math inline">\(y\)</span>的成本是<span class="math inline">\(c(x,y)\)</span>，使成本总和最小的运输方案就是Kantorovich的最优传输方案。后来，有一个聪明的运输员来找你，说你只要付<span class="math inline">\(\varphi(x)\)</span>用于装车，<span class="math inline">\(\psi(y)\)</span>用于卸货。为了使你更加感兴趣，他还提出他保证装车成本<span class="math inline">\(\varphi\)</span>和卸货成本<span class="math inline">\(\psi\)</span>一定不会超过原来的运输方案<span class="math inline">\(c(x,y)\)</span>，即<span class="math inline">\(\varphi(x)+\psi(y)\leq c(x,y)\)</span>。<strong>也就是Kantorovich对偶告诉我们可以找到<span class="math inline">\(\varphi\)</span>和<span class="math inline">\(\psi\)</span>使得价格组成方案最多都不会超过原形式的运输方案</strong>。</p>
+<p>借助这个直观的解释（一部分给自己运，一部分交给运货商的话）给出非正式的证明过程，令<span class="math inline">\(M=\inf_{\pi\in\prod(\mu,\nu)}\mathbb{K{(\pi)} }\)</span>，可以观察到： 
+$$
+M=\inf_{\pi\in \mathcal{M}_{+}(X\times Y)}\sup_{(\varphi, \psi)}\left(\int_{X\times Y}c(x,y)d\pi+\int_{X}\varphi d(\mu-P^{X}_{\#}\pi)+\int_{Y}\psi d(\nu-P^{Y}_{\#}\pi)\right)\label{eq:M}
+$$
+
+</p>
+<p>我们在<span class="math inline">\((\varphi,\psi)\in C^{0}_{b}(X)\times C^{0}_{b}(Y)\)</span>取方程右边的上界，如下：</p>
+
+$$
+\sup_{\varphi\in C^{0}_{b}(X)}\int_{X}\varphi d(\mu-P^{X}_{\#}\pi)=\left\{\begin{array}{ll}+\infty & {\rm if}~\mu\neq P^{X}_{\#}\pi\\0 & {\rm else.} \end{array}\right.
+$$
+
+<p>因此，在<span class="math inline">\(\pi\)</span>上的下界就在<span class="math inline">\(P^{X}_{\# }\pi=\mu\)</span>的时候取到，同理，<span class="math inline">\(P^{Y}_{ \# }\pi=\nu\)</span>，重写公式<span class="math inline">\(\ref{eq:M}\)</span>有 <span class="math display">\[
+M=\inf_{\pi\in\mathcal{M}_{+}(X\times Y)}\sup_{(\varphi,\psi)}\left(\int_{X\times Y}c(x,y)-\varphi(x)-\psi(y)d\pi+\int_{X}\varphi d\mu + \int_{Y}\psi d\nu\right).
+\]</span> 根据自变量的影响范围整理上面公式得到： <span class="math display">\[
+M=\sup_{(\varphi,\psi)}\left(\int_{X}\varphi d\mu+\int_{Y}\psi d\nu+\inf_{\pi\in\mathcal{M}_{+}(X\times Y)}\int_{X\times Y}c(x,y)-\varphi(x)-\psi(y)d\pi\right).
+\]</span> 假如存在<span class="math inline">\((x_{0},y_{0})\in X\times Y\)</span>和<span class="math inline">\(\epsilon&gt;0\)</span>使得<span class="math inline">\(\varphi(x_{0})+\psi(y_{0})-c(x_{0},y_{0})=\epsilon&gt;0\)</span>，然后通过令<span class="math inline">\(\pi_{\lambda}=\lambda\delta_{(x_{0}, y_{0})}\)</span>，对于任意的<span class="math inline">\(\lambda&gt;0\)</span>我们有： <span class="math display">\[
+\inf_{\pi\in\mathcal{M}_{+}(X\times Y)}\int_{X\times Y}c(x,y)-\varphi(x)-\psi(y)d\pi\leq -\lambda\epsilon \rightarrow -\infty~~~{\rm as}~~~\lambda\rightarrow\infty.
+\]</span></p>
+<p>因此，<span class="math inline">\(M\)</span>的下界可以限制为当<span class="math inline">\(\varphi(x)+\psi(y)\leq c(x,y)\)</span>时，所有<span class="math inline">\((x,y)\in X\times Y\)</span>，也就是<span class="math inline">\((\varphi,\psi)\in \Phi_{c}\)</span>（这种启发式的争论其实是用<span class="math inline">\((\varphi,\psi)\in C^{0}_b(X)\times C^{0}_{b}(Y)\)</span>而不是<span class="math inline">\(L^{1}(\mu)\times L^{1}(\nu)\)</span>这和限制<span class="math inline">\(\varphi(x)+\psi(y)\leq c(x,y)\)</span>处处存在有些不同，是几乎处处存在的，不过这些更深入的细节这里暂时不做讨论），当<span class="math inline">\((\varphi,\psi)\in\Phi_{c}\)</span>有： <span class="math display">\[
+\inf_{\pi\in\mathcal{M}_{+}(X\times Y)}\int_{X\times Y}c(x,y)-\varphi(x)-\psi(y)d\pi=0
+\]</span> 在<span class="math inline">\(\pi \equiv 0\)</span>成立（例如），因此： <span class="math display">\[
+\inf_{\pi\in\prod(\mu, \nu)}\mathbb{K}(\pi)=\sup_{(\varphi,\psi)\in \Phi_{c}}\int_{X}\varphi(x)d\mu(x)+\int_{Y}\psi(y)d\nu(y)
+\]</span> 这就是Kantorovich对偶的形式了，关于它的详细证明还需要很多篇幅。可以参考<em>Introduction to Optimal Transport</em>。</p>
+<h3 id="sinkhorn-距离">Sinkhorn 距离</h3>
+<p>随着最优传输所使用的维度升高，最优传输的求解复杂度很快就会变得不可接受。所以Marco Cuturi,2013<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>等提出从熵最大化的角度来看待传输问题。在原始的最优传输形式中加入传输方案熵正则化项来平滑经典的最优传输问题，这种新形式下的优化就可以通过Sinkhorn's matrix scaling算法来解决。这种修改后的计算方式可以大大加快原始的最优传输优化形式的求解。</p>
+<p>对于任意两个概率向量<span class="math inline">\(\mu,\nu\in\Sigma_{d}:=\{x\in \mathbb{R}^{d}_{+}:x^{T}\mathbf{1}_{d}=1\}\)</span>，用<span class="math inline">\(U(\mu,\nu)\)</span>表示<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>的传输可行空间： <span class="math display">\[
+U(\mu,\nu):=\{P\in\mathbb{R}^{d\times d}_{+}|P\mathbf{1}_{d}=\nu,P^{T}\mathbf{1}_{d}=\nu\}
+\]</span> 其中任意矩阵<span class="math inline">\(P\in U(\mu,\nu)\)</span>其中<span class="math inline">\(p(X=i,Y=j)=p_{ij}\)</span>，然后定义熵<span class="math inline">\(h(P)\)</span>： <span class="math display">\[
+h(P)=-\sum^{d}_{i,j=1}p_{ij}\log p_{ij}
+\]</span> 给定一个<span class="math inline">\(d\times d\)</span>的代价矩阵<span class="math inline">\(M\)</span>，那么从<span class="math inline">\(\mu\)</span>传输到<span class="math inline">\(\nu\)</span>的传输代价就可以写成： <span class="math display">\[
+d_{M}(\mu,\nu):=\min_{P\in U(\mu,\nu)}\langle P, M\rangle.
+\]</span> 当矩阵<span class="math inline">\(M\)</span>本身是一个度量矩阵时，即当<span class="math inline">\(M\)</span>属于距离矩阵的锥时： <span class="math display">\[
+\mathcal{M}=\{M\in\mathbb{R}^{d\times d}_{+}:\forall i,j\leq d,m_{ij}=0\Leftrightarrow i=j,\forall i,j,k\leq d,m_{ij}\leq m_{ik}+m_{kj}\}
+\]</span> <strong>联合分布中的熵限制</strong>(<em>Cover and Thomas,1991,section 2</em>): <span class="math display">\[
+\forall \mu,\nu\in\Sigma_{d},\forall P\in U(\mu,\nu),h(P)\leq h(\mu)+h(\nu),
+\]</span> 当<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\nu\)</span>相互独立的时候有<span class="math inline">\(h(\mu\nu^{T})=h(\mu)+h(\nu)\)</span>，利用这个熵的凸性质，可以有： <span class="math display">\[
+U_{\alpha}(\mu,\nu):=\{P\in U(\mu, \nu)|KL(P||\mu\nu^{T})\leq \alpha\}=\{P\in U(\mu, \nu)|h(P)\geq h(\mu)+h(\nu)-\alpha\}
+\]</span> 因此，就可以把对<span class="math inline">\(\mu\nu^{T}\)</span>的KL散度小于某个阈值的<span class="math inline">\(P\)</span>的集合解释为一系列在<span class="math inline">\(U(\mu,\nu)\)</span>中的联合分布<span class="math inline">\(P\)</span>，它对<span class="math inline">\(h(\mu)\)</span>和<span class="math inline">\(h(\nu)\)</span>有足够的熵，或者足够小的互信息。</p>
+<p>所以定义Sinkhorn Distance为： <span class="math display">\[
+d_{M,\alpha}(\mu,\nu):=\min_{P\in U_{\alpha}(\mu,\nu)}\lang P, M\rang.
+\]</span></p>
+<blockquote>
+<p>之所以考虑在最优传输中使用熵的限制是因为，经典的线性规划的结果都是在可行域的顶点上取到。这样的一个<span class="math inline">\(d\times d\)</span>维度的顶点通常最多只有<span class="math inline">\(2d-1\)</span>个非零的元素。从概率的角度看这个顶点则是一个准确定性联合分布，因为一旦某一行有个元素<span class="math inline">\(p_{ij}&gt;0\)</span>，这一行的其他元素<span class="math inline">\(p_{ij&#39;}\)</span>其中<span class="math inline">\(j&#39;\neq j\)</span>就很少是非零的了。</p>
+</blockquote>
+<img src="/2020/01/30/optimal-transport/image-20210307110425631.png" class="" title="image-20210307110425631">
+<p>另外再证明了三角不等式： <span class="math display">\[
+d_{M,\alpha}(x,z)=\min_{P\in U_{\alpha}(x,z)}\lang P,M\rang \leq\lang S, M\rang\leq d_{M,\alpha}(x,y)+d_{M,\alpha}(y,z)
+\]</span> 可以大致确认通过一些优化手段是可以找到最优解的，然后考虑有熵限制条件的优化问题： <span class="math display">\[
+{\rm For}~\lambda&gt;0,d^{\lambda}_{M}(\mu,\nu):=\lang P^{\lambda},M\rang,~{\rm where}~P^{\lambda}={\rm argmin}_{P\in U(\mu, \nu)}\lang P,M\rang-\frac{1}{\lambda}h(P).
+\]</span> 基于对偶理论有任意的<span class="math inline">\(\alpha\)</span>对应于一个<span class="math inline">\(\lambda\in[0, +\infty]\)</span>使得<span class="math inline">\(d_{M,\alpha}(\mu,\nu)=d^{\lambda}_{M}(\mu, \nu)\)</span>，这个<span class="math inline">\(d^{\lambda}_{M}\)</span>就叫做dual-Sinkhorn divergence，它可以被很方便地计算得到。</p>
+<p>从上图也可以看到传输方案<span class="math inline">\(P^{\lambda}\)</span>的熵随着<span class="math inline">\(\lambda\)</span>的增大而单调递增，我们可以通过不断增大<span class="math inline">\(\lambda\)</span>直到<span class="math inline">\(h(P^{\lambda})\)</span>到达<span class="math inline">\(h(\mu)+h(\nu)-\alpha\)</span>。</p>
+<p><strong>通过Matrix Scaling Algorithm来对<span class="math inline">\(d^{\lambda}_{M}\)</span>进行求解</strong>，对于任意<span class="math inline">\(\lambda&gt;0\)</span>有唯一解<span class="math inline">\(P^{\lambda}={\rm diag}(\mu)K{\rm diag}(\nu)\)</span>，其中<span class="math inline">\(K:=e^{-\lambda M}\)</span>。</p>
+<p>利用拉格朗日乘子法和对偶变量<span class="math inline">\(\alpha,\beta\in\mathbb{R}^{d}\)</span>代入<span class="math inline">\(U(\mu,\nu)\)</span>中的限制条件： <span class="math display">\[
+\mathcal{L}(P,\alpha,\beta)=\sum_{ij}\frac{1}{\lambda}p_{ij}\log p_{ij}+p_{ij}m_{ij}+\alpha^{T}(P\mathbf{1}_{d}-\mu)+\beta^{T}(P\mathbf{1}_{d}-\nu).
+\]</span> 取<span class="math inline">\(\frac{\partial \mathcal{L}}{\partial p_{ij}}=0\)</span>可以推出<span class="math inline">\(p_{ij}=e^{-1/2-\lambda\alpha_{i}}e^{-\lambda m_{ij}}e^{-1/2-\lambda\beta_{i}}\)</span>，<span class="math inline">\(P^{\lambda}\)</span>因此就必定是对应的矩阵，可以通过Sinkhorn's固定点迭代<span class="math inline">\((r,c)\leftarrow(\mu./Kr,\nu./K&#39;c)\)</span>得到。</p>
+<img src="/2020/01/30/optimal-transport/image-20210307110537149.png" class="" title="image-20210307110537149">
+<h2 id="补充资料">补充资料</h2>
+<h3 id="符号说明">符号说明</h3>
+<ul>
+<li><span class="math inline">\(C^{0}_{b}(Z)\)</span> 是定义在<span class="math inline">\(Z\)</span>上的全体连续有界函数</li>
+<li><span class="math inline">\(\mathcal{M}_{+}(Z)\)</span> 是<span class="math inline">\(Z\)</span>上正的拉东测度的集合</li>
+<li><span class="math inline">\(\mathcal{P}(Z)\)</span>是在<span class="math inline">\(Z\)</span>上的概率测度的集合，也就是<span class="math inline">\(\mathcal{M}_{+}(Z)\)</span>有单位质量的子集</li>
+</ul>
+<h3 id="测度">测度</h3>
+<p>测度用于表示我们对于大小的直观概念，比如长度、面积、体积和质量等，有了这种度量我们才能将严格地讨论它们，并且将它们扩展一些直观上无法理解其大小的领域，比如函数空间。</p>
+<p>一个测度就是一个函数，例如 <span class="math inline">\(\mu\)</span> 从一个 <span class="math inline">\(\sigma\)</span>-代数到一个非负的实数值，0 就表示一个空集，而当一个集合由很多<strong>互斥的子集</strong> <span class="math inline">\(\{X_{i}\}\)</span> 组成时，我们则有： <span class="math display">\[
+\mu(\cup X_{i})=\sum\mu(X_{i})
+\]</span> 直观的理解就是，如果两个集合它们之间没有任何交集，则把它们合在一起获得的新的并集大小就是它们各自的大小之和。</p>
+<h3 id="概率测度">概率测度</h3>
+<p>如果全集的测度值被定义为 1，那这个测度就可以称为一个概率测度。在理论测量概率中，我们定义一个 <span class="math inline">\(\sigma\)</span>-代数集，是一个包括了所有可能性的集合。我们拿出其中的一个子集来举例，扔出去的一个骰子可能是 1 也可能不是 1（某个子集），可能是偶数也可能是其他（另一个子集）。子集的度量称为定义它的事件的概率。</p>
+<ul>
+<li><strong>概率空间</strong>：一个概率空间是一个 <span class="math inline">\(X\)</span> 集合的三倍，一个超过它的 <span class="math inline">\(\sigma\)</span>-代数，<span class="math inline">\(\mathcal{X}\)</span>，和一个概率测度 <span class="math inline">\(\mu\)</span></li>
+<li><strong>可测空间</strong>：一个可测空间是一组集合 <span class="math inline">\(X\)</span> 连同其子集的 <span class="math inline">\(\sigma\)</span>-代数的对</li>
+<li><strong>测度空间</strong>：一个测度空间是一个 <span class="math inline">\(X\)</span> 集合的三倍，一个其子集的 <span class="math inline">\(\sigma\)</span>-代数，和一个测度 <span class="math inline">\(\mu\)</span></li>
+</ul>
+<h3 id="推进测度">推进测度</h3>
+<p>假设有一个映射满足 <span class="math inline">\(T:\mathcal{X}\rightarrow \mathcal{Y}\)</span>，那么<span class="math inline">\(\mu\)</span> 通过 <span class="math inline">\(T\)</span> 映射的推进测度（pushforward measure）满足 <span class="math display">\[
+T_{\# }\mu(\mathcal{Y})=\mu(T^{-1}(\mathcal{X}))
+\]</span> 其中，因为 <span class="math inline">\(\mu\)</span> 是测度，<span class="math inline">\(\mathcal{X},\mathcal{Y}\)</span> 是数据集，所以二者计算的符号不同用以区别。这里的 <span class="math inline">\(T^{-1}(\mathcal{X})\)</span> 表示集合 <span class="math inline">\(A\)</span> 的原像，而不是将 <span class="math inline">\(T\)</span> 的逆函数应用到 <span class="math inline">\(A\)</span> 上。</p>
+<p>概率形式的边缘分布约束 <span class="math inline">\(\text{proj}_{ \# }^{x}\gamma = \mu\)</span>，也就相当于上面提到的 <span class="math inline">\(\sum_{k} \Pi_{n k}=m_{n}\)</span>。</p>
+<h3 id="传输方案">传输方案</h3>
+<p>假如 <span class="math inline">\(\gamma\)</span> 有一个密度函数 <span class="math inline">\(p(x,y)\)</span> 它的意思就是指把 <span class="math inline">\(x\)</span> 上的土运到对应的 <span class="math inline">\(y\)</span> 上形成一个分布，而不是某个单点。假如最优的传输方案如下图所示，右边就是 Monge problem 的解法，而 Kantorovich 的形式则约束更为宽松。 <img src="/2020/01/30/optimal-transport/distribution.png" class="" title="二维形式下可以表示成图中的内容"></p>
+<p>两个分布的联合分布如上图所示<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>，同样的离散表示形式可以表示成下面的形式：</p>
+<img src="/2020/01/30/optimal-transport/discrete_distribution.png" class="" title="离散二维形式下可以表示成图中的内容">
+<p>更一般的传输方案优化目标可以写成下面的形式： <span class="math display">\[
+C(\mu, \upsilon):=\min_{\gamma\in \Pi(\mu, \upsilon)}\int_{\mathcal{X}\times\mathcal{Y}}c(x,y)d\gamma(x, y)
+\]</span></p>
+<h2 id="最优传输散度">最优传输散度</h2>
+<p>在很多应用场景中，我们更加关心两个分布之间的距离而不是要把一个分布转化到另一个分布的传输方案。所以用最优传输的代价来表示这两个分布之间的差异下界。</p>
+<p>假如输入是两个分布 <span class="math inline">\(\mu\)</span> 和 <span class="math inline">\(\upsilon\)</span>，我们有两个分布之间的最优传输代价为： <span class="math display">\[
+\text{OT}_{c}[\mu, \upsilon] = \int_{\mathcal{X}\times\mathcal{Y}}c(x,y)d\gamma(x, y),
+\]</span> 其中的代价函数 <span class="math inline">\(c(x,y)\)</span> 可以有很多种选择：</p>
+<ul>
+<li><span class="math inline">\(\|x-y\|_{1}\)</span></li>
+<li><span class="math inline">\(\|x-y\|_{2}\)</span></li>
+<li><span class="math inline">\(\|x-y\|_{2}^{2}\)</span></li>
+</ul>
+<p>如果将 <span class="math inline">\(\|x-y\|_{2}^{2}\)</span> 代入则有 Wasserstein 距离为：</p>
+<p><span class="math display">\[
+W_{2}[\mu,\upsilon]=\inf_{\gamma}\int \|x-y\|_{2}^{2}d\gamma(x,y)
+\]</span></p>
+<p>对于两个分布（概率测度）<span class="math inline">\(\mu\in\mathcal{P}(\mathcal{X}),\upsilon\in\mathcal{P}(\mathcal{Y})\)</span>，他们之间的最优传输代价总和即为 <span class="math inline">\(C(\mu,\upsilon)\)</span>，但是原始问题不太好求解，因为有时候可能根本没有解法，所以采取对偶问题来进行求解： <span class="math display">\[
+\begin{aligned}
+    \min_{\gamma\in \Pi(\mu, \upsilon)} &amp; \int_{\mathcal{X}\times\mathcal{Y}}c(x,y)d\gamma(x, y)\quad &amp; (\text{Primal}) \\
+    \max_{\phi\in L^{1}(\mu)\\\psi \in L^{1}(\upsilon)} &amp; \{\int_{\mathcal{X}}\phi(x)d\mu(x)+\int_{\mathcal{Y}}\psi(y)d\upsilon(y):\phi(x)+\psi(y) \leq c(x,y)\}\quad &amp; (Dual)
+\end{aligned}
+\]</span> 其中既要满足边缘分布的约束，也要保证两个相同分布之间的散度为零。<span class="math inline">\(\phi,\psi\)</span> 分别表示两个分布的移动策略，这个策略能够使它们相互靠近。</p>
+<p>当最优条件满足的时候下面成立：</p>
+<ul>
+<li>对于 <span class="math inline">\(\gamma\)</span> 而言，<span class="math inline">\(\phi(x)+\psi(y)=c(x,y)\)</span> 几乎在每一个 <span class="math inline">\((x,y)\)</span> 位置上都成立</li>
+<li><span class="math inline">\(\gamma\)</span> 集中在一个 c-周期性单调集上。</li>
+</ul>
+<p>最优传输是线性规划的问题的一个特例，因为要优化的函数和约束都是传输图的线性函数。线性规划的一个基本结果就是所有的线性问题都存在对偶问题。</p>
+<h2 id="参考">参考</h2>
+<p>关于对偶问题在离散化最优传输及线性规划中的解释可以进一步看_从Wasserstein距离、对偶理论到WGAN_<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a href="https://www.jiqizhixin.com/articles/2018-10-04-3" class="uri">https://www.jiqizhixin.com/articles/2018-10-04-3</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>M. Cuturi, “Sinkhorn Distances: Lightspeed Computation of Optimal Transport,” Advances in Neural Information Processing Systems, vol. 26, 2013, Accessed: Mar. 04, 2021. [Online]. Available: https://papers.nips.cc/paper/2013/hash/af21d0c97db2e27e13572cbf59eb343d-Abstract.html.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p><em>Tutorial on Optimal Transport Theory</em> L´ena¨ıc Chizat<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p><a href="https://kexue.fm/archives/6280#%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E5%AF%B9%E5%81%B6" class="uri">https://kexue.fm/archives/6280#%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E5%AF%B9%E5%81%B6</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>最优传输</tag>
+        <tag>optimal transport</tag>
       </tags>
   </entry>
   <entry>
