@@ -4086,4 +4086,49 @@ x &amp; 0 &amp; 0 &amp; 0\\\\
         <tag>翻译</tag>
       </tags>
   </entry>
+  <entry>
+    <title>通过命令行从 Google Drive下载数据</title>
+    <url>/2021/05/15/Download-from-Google-Drive/</url>
+    <content><![CDATA[<p>本文介绍了通过<code>wget</code>和<code>curl</code>从Google Drive上下载文件的脚本。因为大量的数据集都存放在Google Drive上，而计算任务通常都是在计算服务器上，直接从Google Drive这类云盘下载到服务器上显然是最合适的方式。</p>
+<a id="more"></a>
+<h2 id="分享链接">分享链接</h2>
+<p>Google Drive的分享链接格式通常为：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="attribute">https://drive.google.com/file/d/&lt;fileid&gt;/view</span></span><br></pre></td></tr></table></figure>
+<p>其中这个<code>&lt;fileid&gt;</code>就是对应文件在服务器上的唯一标识符。</p>
+<p>例如OfficeHome数据集在Google Drive上的链接即为：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="attribute">https://drive.google.com/file/d/0B81rNlvomiwed0V1YUxQdC1uOTg/view</span></span><br></pre></td></tr></table></figure>
+<p>其中的<code>&lt;fileid&gt;</code>为<code>0B81rNlvomiwed0V1YUxQdC1uOTg</code>，文件名可以自己取。</p>
+<p>所以提取到的关键变量为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">filename=<span class="string">&#x27;OfficeHomeDataset_10072016.zip&#x27;</span></span><br><span class="line">fileid=<span class="string">&#x27;0B81rNlvomiwed0V1YUxQdC1uOTg&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="wget-下载指令">wget 下载指令</h2>
+<p>针对小文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget --no-check-certificate <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -O <span class="variable">$&#123;filename&#125;</span></span><br></pre></td></tr></table></figure>
+<p>如果文件大的话，需要对cookie进行处理：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget --load-cookies /tmp/cookies.txt <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=<span class="subst">$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate &#x27;https://drive.google.com/uc?export=download&amp;id=$&#123;fileid&#125;&#x27; -O- | sed -rn &#x27;s/.confirm=([0-9A-Za-z_]+)</span>./\1\n/p&#x27;)&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -O <span class="variable">$&#123;filename&#125;</span> &amp;&amp; rm -rf /tmp/cookies.txt</span><br></pre></td></tr></table></figure>
+<p>整理成更方便的脚本示例为：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># cd scratch place</span></span><br><span class="line"><span class="built_in">cd</span> data/</span><br><span class="line"></span><br><span class="line"><span class="comment"># Download zip dataset from Google Drive</span></span><br><span class="line">filename=<span class="string">&#x27;OfficeHomeDataset_10072016.zip&#x27;</span></span><br><span class="line">fileid=<span class="string">&#x27;0B81rNlvomiwed0V1YUxQdC1uOTg&#x27;</span></span><br><span class="line">wget --load-cookies /tmp/cookies.txt <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=<span class="subst">$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate &#x27;https://drive.google.com/uc?export=download&amp;id=$&#123;fileid&#125;&#x27; -O- | sed -rn &#x27;s/.confirm=([0-9A-Za-z_]+)</span>./\1\n/p&#x27;)&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -O <span class="variable">$&#123;filename&#125;</span> &amp;&amp; rm -rf /tmp/cookies.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Unzip</span></span><br><span class="line">unzip -q <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm <span class="variable">$&#123;filename&#125;</span></span><br><span class="line"><span class="built_in">cd</span></span><br></pre></td></tr></table></figure>
+<h2 id="curl-下载指令">curl 下载指令</h2>
+<p>小文件 &lt; 40MB：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -L -o <span class="variable">$&#123;filename&#125;</span> <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
+<p>大文件 &gt; 40MB：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -c ./cookie -s -L <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> &gt; /dev/null</span><br><span class="line">curl -Lb ./cookie <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=`awk &#x27;/download/ &#123;print <span class="variable">$NF</span>&#125;&#x27; ./cookie`&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -o <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm ./cookie</span><br></pre></td></tr></table></figure>
+<p>整理成脚本：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># cd scratch place</span></span><br><span class="line"><span class="built_in">cd</span> scratch/</span><br><span class="line">  </span><br><span class="line"><span class="comment"># Download zip dataset from Google Drive</span></span><br><span class="line">filename=<span class="string">&#x27;OfficeHomeDataset_10072016.zip&#x27;</span></span><br><span class="line">fileid=<span class="string">&#x27;0B81rNlvomiwed0V1YUxQdC1uOTg&#x27;</span></span><br><span class="line">curl -c ./cookie -s -L <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> &gt; /dev/null</span><br><span class="line">curl -Lb ./cookie <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=`awk &#x27;/download/ &#123;print <span class="variable">$NF</span>&#125;&#x27; ./cookie`&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -o <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm ./cookie</span><br><span class="line">  </span><br><span class="line"><span class="comment"># Unzip</span></span><br><span class="line">unzip -q <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># cd out</span></span><br><span class="line"><span class="built_in">cd</span></span><br></pre></td></tr></table></figure>
+<p>但是如果连不上外网，那就需要一个梯子的选项，即<code>proxychains4</code>这个命令行代理工具，或者需要通过其他机器进行联网的中转可以参考<a href="https://lccurious.github.io/2020/07/27/Local-Server-Proxy/">离线服务器通过PC中转连接公网</a>。</p>
+<p>对于不能直接联网的机器运行脚本方式为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">proxychains4 sh download_google_drive.sh</span><br></pre></td></tr></table></figure>
+<h2 id="参考资源">参考资源</h2>
+<ul>
+<li>https://github.com/JinhangZhu/yolov3/blob/custom/data/get_coco2014.sh</li>
+<li>https://www.jinhang.work/tech/download-shared-files-using-wget-or-curl/</li>
+</ul>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Download</tag>
+      </tags>
+  </entry>
 </search>
