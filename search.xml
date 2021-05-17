@@ -23,6 +23,31 @@
       </tags>
   </entry>
   <entry>
+    <title>Apex Cuda Acceleration</title>
+    <url>/2019/12/23/Apex-Cuda-Acceleration/</url>
+    <content><![CDATA[<p>在使用 Pytorch 进行训练的时候有些步骤可以进一步优化和提高整体训练的速度。其本质是通过将很多操作转化为 <code>Float16</code> 进行计算，其他仍保持原有的 <code>Float32</code> 精度计算，这样做的好处在于可以显著减小显存的占用。在不减少模型参数规模的前提下提高计算的速度和 <code>batchsize</code> 的调整空间。</p>
+<a id="more"></a>
+<h2 id="安装">安装</h2>
+<p>基于 Ubuntu 机器，在 CUDA 和 CUDNN 已经预备好的环境中，具体请以官方代码库为准。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/NVIDIA/apex</span><br><span class="line"><span class="built_in">cd</span> apex</span><br><span class="line">pip install -v --no-cache-dir --global-option=<span class="string">&quot;--cpp_ext&quot;</span> --global-option=<span class="string">&quot;--cuda_ext&quot;</span> ./</span><br></pre></td></tr></table></figure>
+<h2 id="使用">使用</h2>
+<p>Apex 是一个辅助 Pytorch 的包，用以优化其运行过程的计算资源平衡，根据用户对于精度的敏感程度可以选择下面几种取舍等级。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 带检查的导入方式</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> apex.parallel <span class="keyword">import</span> DistributedDataParallel <span class="keyword">as</span> DDP</span><br><span class="line">    <span class="keyword">from</span> apex.fp16_utils <span class="keyword">import</span> *</span><br><span class="line">    <span class="keyword">from</span> apex <span class="keyword">import</span> amp, optimizers</span><br><span class="line">    <span class="keyword">from</span> apex.multi_tensor_apply <span class="keyword">import</span> multi_tensor_applier</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">raise</span> ImportError(<span class="string">&quot;Please install apex from https://www.github.com/nvidia/apex to run this example.&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialization</span></span><br><span class="line">opt_level = <span class="string">&#x27;O1&#x27;</span></span><br><span class="line">model, optimizer = amp.initialize(model, optimizer, opt_level=opt_level)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train your model</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">with</span> amp.scale_loss(loss, optimizer) <span class="keyword">as</span> scaled_loss:</span><br><span class="line">    scaled_loss.backward()</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Save checkpoint</span></span><br><span class="line">checkpoint = &#123;</span><br><span class="line">    <span class="string">&#x27;model&#x27;</span>: model.state_dict(),</span><br><span class="line">    <span class="string">&#x27;optimizer&#x27;</span>: optimizer.state_dict(),</span><br><span class="line">    <span class="string">&#x27;amp&#x27;</span>: amp.state_dict()</span><br><span class="line">&#125;</span><br><span class="line">torch.save(checkpoint, <span class="string">&#x27;amp_checkpoint.pt&#x27;</span>)</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Restore</span></span><br><span class="line">model = ...</span><br><span class="line">optimizer = ...</span><br><span class="line">checkpoint = torch.load(<span class="string">&#x27;amp_checkpoint.pt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">model, optimizer = amp.initialize(model, optimizer, opt_level=opt_level)</span><br><span class="line">model.load_state_dict(checkpoint[<span class="string">&#x27;model&#x27;</span>])</span><br><span class="line">optimizer.load_state_dict(checkpoint[<span class="string">&#x27;optimizer&#x27;</span>])</span><br><span class="line">amp.load_state_dict(checkpoint[<span class="string">&#x27;amp&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Continue training</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>O0：纯FP32训练，可以作为accuracy的baseline；</li>
+<li>O1：混合精度训练（推荐使用），根据黑白名单自动决定使用FP16（GEMM, 卷积）还是FP32（Softmax）进行计算。</li>
+<li>O2：“几乎FP16”混合精度训练，不存在黑白名单，除了Batch norm，几乎都是用FP16计算。</li>
+<li>O3：纯FP16训练，很不稳定，但是可以作为speed的baseline；</li>
+</ul>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>Apex</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>主动学习</title>
     <url>/2019/08/27/Active-Learning/</url>
     <content><![CDATA[<p>主动学习是指通过自动的机器学习算法，从数据集中自动挑选出部分数据请求标签，在统计上也称为查询学习或者最优实验设计。主动学习通过设计合理的查询函数，不断从未标注的数据中挑选出数据加入标注后放入训练集。有效的主动学习数据选择策略可以有效地降低训练的代价并同时提高模型的识别能力。赋予你的模型好奇心，让其有一些如何去学习的智能。</p>
@@ -153,75 +178,6 @@ L_{\text {target }}(\hat{y}, y)+\lambda \cdot L_{\operatorname{loss}}(\hat{l}, l
       </tags>
   </entry>
   <entry>
-    <title>Apex Cuda Acceleration</title>
-    <url>/2019/12/23/Apex-Cuda-Acceleration/</url>
-    <content><![CDATA[<p>在使用 Pytorch 进行训练的时候有些步骤可以进一步优化和提高整体训练的速度。其本质是通过将很多操作转化为 <code>Float16</code> 进行计算，其他仍保持原有的 <code>Float32</code> 精度计算，这样做的好处在于可以显著减小显存的占用。在不减少模型参数规模的前提下提高计算的速度和 <code>batchsize</code> 的调整空间。</p>
-<a id="more"></a>
-<h2 id="安装">安装</h2>
-<p>基于 Ubuntu 机器，在 CUDA 和 CUDNN 已经预备好的环境中，具体请以官方代码库为准。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/NVIDIA/apex</span><br><span class="line"><span class="built_in">cd</span> apex</span><br><span class="line">pip install -v --no-cache-dir --global-option=<span class="string">&quot;--cpp_ext&quot;</span> --global-option=<span class="string">&quot;--cuda_ext&quot;</span> ./</span><br></pre></td></tr></table></figure>
-<h2 id="使用">使用</h2>
-<p>Apex 是一个辅助 Pytorch 的包，用以优化其运行过程的计算资源平衡，根据用户对于精度的敏感程度可以选择下面几种取舍等级。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 带检查的导入方式</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> apex.parallel <span class="keyword">import</span> DistributedDataParallel <span class="keyword">as</span> DDP</span><br><span class="line">    <span class="keyword">from</span> apex.fp16_utils <span class="keyword">import</span> *</span><br><span class="line">    <span class="keyword">from</span> apex <span class="keyword">import</span> amp, optimizers</span><br><span class="line">    <span class="keyword">from</span> apex.multi_tensor_apply <span class="keyword">import</span> multi_tensor_applier</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">raise</span> ImportError(<span class="string">&quot;Please install apex from https://www.github.com/nvidia/apex to run this example.&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialization</span></span><br><span class="line">opt_level = <span class="string">&#x27;O1&#x27;</span></span><br><span class="line">model, optimizer = amp.initialize(model, optimizer, opt_level=opt_level)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train your model</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">with</span> amp.scale_loss(loss, optimizer) <span class="keyword">as</span> scaled_loss:</span><br><span class="line">    scaled_loss.backward()</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Save checkpoint</span></span><br><span class="line">checkpoint = &#123;</span><br><span class="line">    <span class="string">&#x27;model&#x27;</span>: model.state_dict(),</span><br><span class="line">    <span class="string">&#x27;optimizer&#x27;</span>: optimizer.state_dict(),</span><br><span class="line">    <span class="string">&#x27;amp&#x27;</span>: amp.state_dict()</span><br><span class="line">&#125;</span><br><span class="line">torch.save(checkpoint, <span class="string">&#x27;amp_checkpoint.pt&#x27;</span>)</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># Restore</span></span><br><span class="line">model = ...</span><br><span class="line">optimizer = ...</span><br><span class="line">checkpoint = torch.load(<span class="string">&#x27;amp_checkpoint.pt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">model, optimizer = amp.initialize(model, optimizer, opt_level=opt_level)</span><br><span class="line">model.load_state_dict(checkpoint[<span class="string">&#x27;model&#x27;</span>])</span><br><span class="line">optimizer.load_state_dict(checkpoint[<span class="string">&#x27;optimizer&#x27;</span>])</span><br><span class="line">amp.load_state_dict(checkpoint[<span class="string">&#x27;amp&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Continue training</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<ul>
-<li>O0：纯FP32训练，可以作为accuracy的baseline；</li>
-<li>O1：混合精度训练（推荐使用），根据黑白名单自动决定使用FP16（GEMM, 卷积）还是FP32（Softmax）进行计算。</li>
-<li>O2：“几乎FP16”混合精度训练，不存在黑白名单，除了Batch norm，几乎都是用FP16计算。</li>
-<li>O3：纯FP16训练，很不稳定，但是可以作为speed的baseline；</li>
-</ul>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>Apex</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++ 动态内存分配</title>
-    <url>/2018/04/28/C-Dynamic-Memory-Allocation/</url>
-    <content><![CDATA[<p>C++中经常涉及对于内存的操作，包括指针的使用，new操作符，还有原来C语言中有的malloc等，为了使写出来的程序更加健壮，需要对这些有比较深刻的理解能力。对于动态内存分配， 有些操作对象只在程序运行时才能确定，这样编译时就无法为他们预定存储空间，只能在程序运行时，系统根据运行时的要求进行内存分配，这种方法称为动态存储分配。所有动态存储分配都在堆区中进行。</p>
-<p>当程序运行到需要一个动态分配的变量或对象时，必须向系统申请取得堆中的一块所需大小的存贮空间，用于存贮该变量或对象。当不再使用该变量或对象时，也就是它的生命结束时，要显式释放它所占用的存贮空间，这样系统就能对该堆空间进行再次分配，做到重复使用有限的资源。</p>
-<a id="more"></a>
-<p><strong>内存的分配方式：</strong></p>
-<ol type="1">
-<li>从静态存储区分配 &gt; 内存在程序编译的时候就已经分配好了，这些内存空间在程序运行期间都存在。</li>
-<li>在堆栈上分配 &gt; 在函数执行期间，函数内部变量，包括形参等的存储单元都创建在堆栈上，函数结束的时候这些存储单元会自动释放。 &gt; 堆栈内存分配运算内置在处理器的指令集中，效率很高，并且一般不存在失败的危险，但是分配的内存空间有限，可能会出现栈溢出的现象。</li>
-<li>从堆栈或者自由存储空间上分配 &gt; 程序在运行期间用malloc()或者new申请任意数量的内存，由程序员决定释放的时间。</li>
-</ol>
-<blockquote>
-<p>malloc/free、new/delete、new[]/delete[]一定要匹配使用，否则可能会出现内存泄漏问题。</p>
-</blockquote>
-<h2 id="针对内置类型">针对内置类型</h2>
-<p>函数原型</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *)</span><span class="title">throw</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
-<p>用法</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *p2 = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1</span>);<span class="comment">//开辟了一个int类型的空间，并用1进行了初始化</span></span><br><span class="line"><span class="keyword">int</span> *p3 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">3</span>];<span class="comment">//开辟了具有3个int类型的空间，类似于数组（都是连续的）</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> p1;</span><br><span class="line"><span class="keyword">delete</span> p2;</span><br><span class="line"><span class="keyword">delete</span>[] p3;<span class="comment">//注意匹配使用</span></span><br></pre></td></tr></table></figure>
-<h2 id="针对自定义类型">针对自定义类型</h2>
-<p>自定义类型的内存分配函数的工作流程为：operator new-&gt;malloc函数-&gt;如果开辟失败，则抛出异常-&gt;如果开辟成功就调用构造函数。</p>
-<p>对于在自定义对象的新建和释放一定要确保析构函数和构造函数能够统一，保证这个对象能够被明确的析构，从内存中清除，否则也将会产生不可预料的内存访问冲突(异常0xC0000005)。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// new_scalar.cpp</span></span><br><span class="line"><span class="comment">////////////////////////////////////</span></span><br><span class="line"><span class="comment">// new() Fallback Ordering</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// +----------+</span></span><br><span class="line"><span class="comment">// |new_scalar&lt;---------------+</span></span><br><span class="line"><span class="comment">// +----^-----+               |</span></span><br><span class="line"><span class="comment">//      |                     |</span></span><br><span class="line"><span class="comment">// +----+-------------+  +----+----+</span></span><br><span class="line"><span class="comment">// |new_scalar_nothrow|  |new_array|</span></span><br><span class="line"><span class="comment">// +------------------+  +----^----+</span></span><br><span class="line"><span class="comment">//                            |</span></span><br><span class="line"><span class="comment">//               +------------+----+</span></span><br><span class="line"><span class="comment">//               |new_array_nothrow|</span></span><br><span class="line"><span class="comment">//               +-----------------+</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span>* __CRTDECL <span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span> <span class="keyword">const</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (;;)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">void</span>* <span class="keyword">const</span> block = <span class="built_in">malloc</span>(size))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> block;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (_callnewh(size) == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (size == SIZE_MAX)</span><br><span class="line">            &#123;</span><br><span class="line">                __scrt_throw_std_bad_array_new_length();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                __scrt_throw_std_bad_alloc();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The new handler was successful; try to allocate again...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="异常0xc0000005">异常0xC0000005</h2>
-<p>这种错误的意思一般是指访问了不属于自己的内存空间，这种错误出现的原因有：</p>
-<ol type="1">
-<li>给一个数组分配了较小的内存空间，然后又给该数组赋了一个比较大的值。</li>
-<li>句柄或指针在使用前被释放。</li>
-</ol>
-<h3 id="堆栈">堆栈</h3>
-<p>栈：在Windows下，栈是向低地址扩展的数据结构，是一块连续内存的空间，也就是系统在程序编译的过程种就已经确定好大小的空间，如果申请的空间超过栈的剩余空间将会提示stack overflow.</p>
-<p>堆：是向高地址扩展的数据结构，是不连续的内存区域，堆的大小受限于计算机系统中有效的虚拟内存，比较灵活也比较大。</p>
-<p>栈是由系统自动分配，速度较快，但是无法自定义地址。堆是由new分配内存，一般速度比较慢，容易产生内存碎片，不过用起来非常方便。</p>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-        <tag>动态内存</tag>
-        <tag>内存分配</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Black First Won</title>
     <url>/2018/05/01/Black-First-Won/</url>
     <content><![CDATA[<p>五子棋中存在先手黑棋必赢的策略，所以职业比赛中会设置带禁手和不带禁手的区别。在没有计算机的年代里，人们只是感觉黑棋可能存在绝对的赢面，后来到1992年Victor Allis通过编程证明不带禁手的五子棋，是黑必胜的。后来在2001年Janos Wagner第一次证明带禁手的五子棋，也是黑必胜的。</p>
@@ -296,6 +252,50 @@ L_{\text {target }}(\hat{y}, y)+\lambda \cdot L_{\operatorname{loss}}(\hat{l}, l
       <tags>
         <tag>五子棋</tag>
         <tag>游戏策略</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++ 动态内存分配</title>
+    <url>/2018/04/28/C-Dynamic-Memory-Allocation/</url>
+    <content><![CDATA[<p>C++中经常涉及对于内存的操作，包括指针的使用，new操作符，还有原来C语言中有的malloc等，为了使写出来的程序更加健壮，需要对这些有比较深刻的理解能力。对于动态内存分配， 有些操作对象只在程序运行时才能确定，这样编译时就无法为他们预定存储空间，只能在程序运行时，系统根据运行时的要求进行内存分配，这种方法称为动态存储分配。所有动态存储分配都在堆区中进行。</p>
+<p>当程序运行到需要一个动态分配的变量或对象时，必须向系统申请取得堆中的一块所需大小的存贮空间，用于存贮该变量或对象。当不再使用该变量或对象时，也就是它的生命结束时，要显式释放它所占用的存贮空间，这样系统就能对该堆空间进行再次分配，做到重复使用有限的资源。</p>
+<a id="more"></a>
+<p><strong>内存的分配方式：</strong></p>
+<ol type="1">
+<li>从静态存储区分配 &gt; 内存在程序编译的时候就已经分配好了，这些内存空间在程序运行期间都存在。</li>
+<li>在堆栈上分配 &gt; 在函数执行期间，函数内部变量，包括形参等的存储单元都创建在堆栈上，函数结束的时候这些存储单元会自动释放。 &gt; 堆栈内存分配运算内置在处理器的指令集中，效率很高，并且一般不存在失败的危险，但是分配的内存空间有限，可能会出现栈溢出的现象。</li>
+<li>从堆栈或者自由存储空间上分配 &gt; 程序在运行期间用malloc()或者new申请任意数量的内存，由程序员决定释放的时间。</li>
+</ol>
+<blockquote>
+<p>malloc/free、new/delete、new[]/delete[]一定要匹配使用，否则可能会出现内存泄漏问题。</p>
+</blockquote>
+<h2 id="针对内置类型">针对内置类型</h2>
+<p>函数原型</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *)</span><span class="title">throw</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>用法</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *p2 = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1</span>);<span class="comment">//开辟了一个int类型的空间，并用1进行了初始化</span></span><br><span class="line"><span class="keyword">int</span> *p3 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">3</span>];<span class="comment">//开辟了具有3个int类型的空间，类似于数组（都是连续的）</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> p1;</span><br><span class="line"><span class="keyword">delete</span> p2;</span><br><span class="line"><span class="keyword">delete</span>[] p3;<span class="comment">//注意匹配使用</span></span><br></pre></td></tr></table></figure>
+<h2 id="针对自定义类型">针对自定义类型</h2>
+<p>自定义类型的内存分配函数的工作流程为：operator new-&gt;malloc函数-&gt;如果开辟失败，则抛出异常-&gt;如果开辟成功就调用构造函数。</p>
+<p>对于在自定义对象的新建和释放一定要确保析构函数和构造函数能够统一，保证这个对象能够被明确的析构，从内存中清除，否则也将会产生不可预料的内存访问冲突(异常0xC0000005)。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// new_scalar.cpp</span></span><br><span class="line"><span class="comment">////////////////////////////////////</span></span><br><span class="line"><span class="comment">// new() Fallback Ordering</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// +----------+</span></span><br><span class="line"><span class="comment">// |new_scalar&lt;---------------+</span></span><br><span class="line"><span class="comment">// +----^-----+               |</span></span><br><span class="line"><span class="comment">//      |                     |</span></span><br><span class="line"><span class="comment">// +----+-------------+  +----+----+</span></span><br><span class="line"><span class="comment">// |new_scalar_nothrow|  |new_array|</span></span><br><span class="line"><span class="comment">// +------------------+  +----^----+</span></span><br><span class="line"><span class="comment">//                            |</span></span><br><span class="line"><span class="comment">//               +------------+----+</span></span><br><span class="line"><span class="comment">//               |new_array_nothrow|</span></span><br><span class="line"><span class="comment">//               +-----------------+</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span>* __CRTDECL <span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span> <span class="keyword">const</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (;;)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">void</span>* <span class="keyword">const</span> block = <span class="built_in">malloc</span>(size))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> block;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (_callnewh(size) == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (size == SIZE_MAX)</span><br><span class="line">            &#123;</span><br><span class="line">                __scrt_throw_std_bad_array_new_length();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                __scrt_throw_std_bad_alloc();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The new handler was successful; try to allocate again...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="异常0xc0000005">异常0xC0000005</h2>
+<p>这种错误的意思一般是指访问了不属于自己的内存空间，这种错误出现的原因有：</p>
+<ol type="1">
+<li>给一个数组分配了较小的内存空间，然后又给该数组赋了一个比较大的值。</li>
+<li>句柄或指针在使用前被释放。</li>
+</ol>
+<h3 id="堆栈">堆栈</h3>
+<p>栈：在Windows下，栈是向低地址扩展的数据结构，是一块连续内存的空间，也就是系统在程序编译的过程种就已经确定好大小的空间，如果申请的空间超过栈的剩余空间将会提示stack overflow.</p>
+<p>堆：是向高地址扩展的数据结构，是不连续的内存区域，堆的大小受限于计算机系统中有效的虚拟内存，比较灵活也比较大。</p>
+<p>栈是由系统自动分配，速度较快，但是无法自定义地址。堆是由new分配内存，一般速度比较慢，容易产生内存碎片，不过用起来非常方便。</p>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>动态内存</tag>
+        <tag>内存分配</tag>
       </tags>
   </entry>
   <entry>
@@ -695,6 +695,51 @@ r_{0}=\left\|x_{0}-x^{*}\right\|&lt;\overline{r}=\frac{2 \mu}{M}
       </tags>
   </entry>
   <entry>
+    <title>通过命令行从 Google Drive下载数据</title>
+    <url>/2021/05/15/Download-from-Google-Drive/</url>
+    <content><![CDATA[<p>本文介绍了通过<code>wget</code>和<code>curl</code>从Google Drive上下载文件的脚本。因为大量的数据集都存放在Google Drive上，而计算任务通常都是在计算服务器上，直接从Google Drive这类云盘下载到服务器上显然是最合适的方式。</p>
+<a id="more"></a>
+<h2 id="分享链接">分享链接</h2>
+<p>Google Drive的分享链接格式通常为：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="attribute">https://drive.google.com/file/d/&lt;fileid&gt;/view</span></span><br></pre></td></tr></table></figure>
+<p>其中这个<code>&lt;fileid&gt;</code>就是对应文件在服务器上的唯一标识符。</p>
+<p>例如OfficeHome数据集在Google Drive上的链接即为：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="attribute">https://drive.google.com/file/d/0B81rNlvomiwed0V1YUxQdC1uOTg/view</span></span><br></pre></td></tr></table></figure>
+<p>其中的<code>&lt;fileid&gt;</code>为<code>0B81rNlvomiwed0V1YUxQdC1uOTg</code>，文件名可以自己取。</p>
+<p>所以提取到的关键变量为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">filename=<span class="string">&#x27;OfficeHomeDataset_10072016.zip&#x27;</span></span><br><span class="line">fileid=<span class="string">&#x27;0B81rNlvomiwed0V1YUxQdC1uOTg&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="wget-下载指令">wget 下载指令</h2>
+<p>针对小文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget --no-check-certificate <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -O <span class="variable">$&#123;filename&#125;</span></span><br></pre></td></tr></table></figure>
+<p>如果文件大的话，需要对cookie进行处理：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget --load-cookies /tmp/cookies.txt <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=<span class="subst">$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate &#x27;https://drive.google.com/uc?export=download&amp;id=$&#123;fileid&#125;&#x27; -O- | sed -rn &#x27;s/.confirm=([0-9A-Za-z_]+)</span>./\1\n/p&#x27;)&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -O <span class="variable">$&#123;filename&#125;</span> &amp;&amp; rm -rf /tmp/cookies.txt</span><br></pre></td></tr></table></figure>
+<p>整理成更方便的脚本示例为：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># cd scratch place</span></span><br><span class="line"><span class="built_in">cd</span> data/</span><br><span class="line"></span><br><span class="line"><span class="comment"># Download zip dataset from Google Drive</span></span><br><span class="line">filename=<span class="string">&#x27;OfficeHomeDataset_10072016.zip&#x27;</span></span><br><span class="line">fileid=<span class="string">&#x27;0B81rNlvomiwed0V1YUxQdC1uOTg&#x27;</span></span><br><span class="line">wget --load-cookies /tmp/cookies.txt <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=<span class="subst">$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate &#x27;https://drive.google.com/uc?export=download&amp;id=$&#123;fileid&#125;&#x27; -O- | sed -rn &#x27;s/.confirm=([0-9A-Za-z_]+)</span>./\1\n/p&#x27;)&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -O <span class="variable">$&#123;filename&#125;</span> &amp;&amp; rm -rf /tmp/cookies.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Unzip</span></span><br><span class="line">unzip -q <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm <span class="variable">$&#123;filename&#125;</span></span><br><span class="line"><span class="built_in">cd</span></span><br></pre></td></tr></table></figure>
+<h2 id="curl-下载指令">curl 下载指令</h2>
+<p>小文件 &lt; 40MB：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -L -o <span class="variable">$&#123;filename&#125;</span> <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
+<p>大文件 &gt; 40MB：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -c ./cookie -s -L <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> &gt; /dev/null</span><br><span class="line">curl -Lb ./cookie <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=`awk &#x27;/download/ &#123;print <span class="variable">$NF</span>&#125;&#x27; ./cookie`&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -o <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm ./cookie</span><br></pre></td></tr></table></figure>
+<p>整理成脚本：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># cd scratch place</span></span><br><span class="line"><span class="built_in">cd</span> scratch/</span><br><span class="line">  </span><br><span class="line"><span class="comment"># Download zip dataset from Google Drive</span></span><br><span class="line">filename=<span class="string">&#x27;OfficeHomeDataset_10072016.zip&#x27;</span></span><br><span class="line">fileid=<span class="string">&#x27;0B81rNlvomiwed0V1YUxQdC1uOTg&#x27;</span></span><br><span class="line">curl -c ./cookie -s -L <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> &gt; /dev/null</span><br><span class="line">curl -Lb ./cookie <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=`awk &#x27;/download/ &#123;print <span class="variable">$NF</span>&#125;&#x27; ./cookie`&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -o <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm ./cookie</span><br><span class="line">  </span><br><span class="line"><span class="comment"># Unzip</span></span><br><span class="line">unzip -q <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># cd out</span></span><br><span class="line"><span class="built_in">cd</span></span><br></pre></td></tr></table></figure>
+<p>但是如果连不上外网，那就需要一个梯子的选项，即<code>proxychains4</code>这个命令行代理工具，或者需要通过其他机器进行联网的中转可以参考<a href="https://lccurious.github.io/2020/07/27/Local-Server-Proxy/">离线服务器通过PC中转连接公网</a>。</p>
+<p>对于不能直接联网的机器运行脚本方式为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">proxychains4 sh download_google_drive.sh</span><br></pre></td></tr></table></figure>
+<h2 id="参考资源">参考资源</h2>
+<ul>
+<li><a href="https://github.com/JinhangZhu/yolov3/blob/custom/data/get_coco2014.sh" class="uri">https://github.com/JinhangZhu/yolov3/blob/custom/data/get_coco2014.sh</a></li>
+<li><a href="https://www.jinhang.work/tech/download-shared-files-using-wget-or-curl/" class="uri">https://www.jinhang.work/tech/download-shared-files-using-wget-or-curl/</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Download</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Empirical Mode Decomposition</title>
     <url>/2020/12/01/Empirical-Mode-Decomposotion/</url>
     <content><![CDATA[<p>经验模态分解（Empirical Mode Decomposition, EMD）是一种适用于非线性、非平稳信号的自适应信号分解方法。EMD方法把原始信号分解成多个固有模态函数（Intrinsic Mode Functions, IMF），EMD的提出者黄锷认为，任何信号都可以拆分成若干个固有模态函数之和，这种函数符合下面两种特征：</p>
@@ -810,23 +855,6 @@ P(\mathbf{X}=e_i)=f(e_i)=p_i
       </tags>
   </entry>
   <entry>
-    <title>Good Will Hunting</title>
-    <url>/2018/03/29/Good-Will-Hunting/</url>
-    <content><![CDATA[<p>你只是个孩子，你根本不晓得你在说什么。所以问你艺术，你可能会提出艺术书籍中的粗浅论调，有关米开朗基罗，你知道很多，他的满腔政治热情，与教皇相交莫逆，耽于性爱，你对他很清楚吧？但你连西斯汀教堂的气味也不知道吧？你没试过站在那里，昂首眺望天花板上的名画吧？肯定未见过吧？如果我问关于女人的事，你大可以向我如数家珍，你可能上过几次床，但你没法说出在女人身旁醒来时，那份内心真正的喜悦。 <img src="/2018/03/29/Good-Will-Hunting/p1094498312.jpg" class=""> <a id="more"></a></p>
-<h2 id="q1才能并不能带来幸福">Q1：才能并不能带来幸福</h2>
-<p>威尔是一个极具天赋的人，简单的说，他是一个天才。但是他是一个孤儿，他有不幸的童年，总是带着非常强的防备和攻击性。可以阅读大量的书籍，可以得心应手地运用这些知识，解开数学难题、让那些自以为是的高材生自愧不如。但是始终带着防备，他不能接受别人再走进他的生活，也不愿意发现对方的不完美，让对方发现自己也并非那个想象中希望展示给其他人的一面。所以其实可以引申到另一个问题中去“在一段关系中，我们是更喜欢这一段关系还是这段关系中的自己？”</p>
-<h2 id="q2关系or自己">Q2：关系OR自己</h2>
-<p>每个人都是独自来到世界上的，唯有自己的大脑能真的感受自己，而我们中的少部分人能够以多种多样的方式确切地表达这类感受，而其他都是他人表达地内容产生共情，产生一种强烈的解脱感。所以人们去追求艺术、和他人产生关系等。</p>
-<p>而对于人与人之间的联系，或者更直接的讲情侣之间的关系。也许在一段关系的萌芽阶段，人们都为了能够引起对方的注意而努力去表现出一些在自己认知范围内是好的一面的内容，并期望这些能够让对方产生同样好的印象。在这一阶段，我们应该是要更喜欢我们自己的，因为自认为是好的方便正逐渐在自己身上体现。之后，这一阶段的结果将分为两种，一种是追求失败了，但的确给自己带来了好的改变，我们更爱自己。另一种结果是追求成功，两个人的生活线开始有了各种各样的重合，在这一阶段，尽管随着荷尔蒙水平的变动，我们似乎总是被对方吸引，也许依然是喜欢自己更多一些，我们开始感觉到自己对他人的关心，发现自己也会细腻温柔等。但是随着时间的推移，会开始发现很多事情的主动权不再掌握在自己手里了，之所以这么说是因为在开始追求对方的时候，我们尝试以各种自己的方式去吸引对方，去赢得关注，但是到关系稳定以后，那种渴求关注的心理逐渐发生变化，将逐渐发现自己在作某些决定时会不由自主地想到对方的影响。甚至双方生活上不确定的某些小事都会成为两个人共同的事情，你会以一种被动的方式去迎接这些小事。我们的角色也从主动去争取转变到被动接受处理这些大大小小的事物，并且这种不由自主成了一段关系的纽带，我们很自然地在自己的性格上作出一些让步，这个时候也许就转变到更喜欢这段关系，我们会主动去维系这段关系而非去享受自己的角色了。</p>
-]]></content>
-      <categories>
-        <category>生活</category>
-      </categories>
-      <tags>
-        <tag>心灵捕手</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git手册</title>
     <url>/2018/01/11/Git%E6%8C%87%E5%8D%97/</url>
     <content><![CDATA[<img src="/2018/01/11/Git%E6%8C%87%E5%8D%97/18133.png" class="">
@@ -849,6 +877,23 @@ P(\mathbf{X}=e_i)=f(e_i)=p_i
       </categories>
       <tags>
         <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Good Will Hunting</title>
+    <url>/2018/03/29/Good-Will-Hunting/</url>
+    <content><![CDATA[<p>你只是个孩子，你根本不晓得你在说什么。所以问你艺术，你可能会提出艺术书籍中的粗浅论调，有关米开朗基罗，你知道很多，他的满腔政治热情，与教皇相交莫逆，耽于性爱，你对他很清楚吧？但你连西斯汀教堂的气味也不知道吧？你没试过站在那里，昂首眺望天花板上的名画吧？肯定未见过吧？如果我问关于女人的事，你大可以向我如数家珍，你可能上过几次床，但你没法说出在女人身旁醒来时，那份内心真正的喜悦。 <img src="/2018/03/29/Good-Will-Hunting/p1094498312.jpg" class=""> <a id="more"></a></p>
+<h2 id="q1才能并不能带来幸福">Q1：才能并不能带来幸福</h2>
+<p>威尔是一个极具天赋的人，简单的说，他是一个天才。但是他是一个孤儿，他有不幸的童年，总是带着非常强的防备和攻击性。可以阅读大量的书籍，可以得心应手地运用这些知识，解开数学难题、让那些自以为是的高材生自愧不如。但是始终带着防备，他不能接受别人再走进他的生活，也不愿意发现对方的不完美，让对方发现自己也并非那个想象中希望展示给其他人的一面。所以其实可以引申到另一个问题中去“在一段关系中，我们是更喜欢这一段关系还是这段关系中的自己？”</p>
+<h2 id="q2关系or自己">Q2：关系OR自己</h2>
+<p>每个人都是独自来到世界上的，唯有自己的大脑能真的感受自己，而我们中的少部分人能够以多种多样的方式确切地表达这类感受，而其他都是他人表达地内容产生共情，产生一种强烈的解脱感。所以人们去追求艺术、和他人产生关系等。</p>
+<p>而对于人与人之间的联系，或者更直接的讲情侣之间的关系。也许在一段关系的萌芽阶段，人们都为了能够引起对方的注意而努力去表现出一些在自己认知范围内是好的一面的内容，并期望这些能够让对方产生同样好的印象。在这一阶段，我们应该是要更喜欢我们自己的，因为自认为是好的方便正逐渐在自己身上体现。之后，这一阶段的结果将分为两种，一种是追求失败了，但的确给自己带来了好的改变，我们更爱自己。另一种结果是追求成功，两个人的生活线开始有了各种各样的重合，在这一阶段，尽管随着荷尔蒙水平的变动，我们似乎总是被对方吸引，也许依然是喜欢自己更多一些，我们开始感觉到自己对他人的关心，发现自己也会细腻温柔等。但是随着时间的推移，会开始发现很多事情的主动权不再掌握在自己手里了，之所以这么说是因为在开始追求对方的时候，我们尝试以各种自己的方式去吸引对方，去赢得关注，但是到关系稳定以后，那种渴求关注的心理逐渐发生变化，将逐渐发现自己在作某些决定时会不由自主地想到对方的影响。甚至双方生活上不确定的某些小事都会成为两个人共同的事情，你会以一种被动的方式去迎接这些小事。我们的角色也从主动去争取转变到被动接受处理这些大大小小的事物，并且这种不由自主成了一段关系的纽带，我们很自然地在自己的性格上作出一些让步，这个时候也许就转变到更喜欢这段关系，我们会主动去维系这段关系而非去享受自己的角色了。</p>
+]]></content>
+      <categories>
+        <category>生活</category>
+      </categories>
+      <tags>
+        <tag>心灵捕手</tag>
       </tags>
   </entry>
   <entry>
@@ -1047,6 +1092,30 @@ P_{error} &amp;= \sum^{\lfloor T/2 \rfloor}_{k=0}{T \choose k} (1-\epsilon)^{k} 
       </tags>
   </entry>
   <entry>
+    <title>Linux 不完全命令指南</title>
+    <url>/2020/05/03/Linux-Tool-Set/</url>
+    <content><![CDATA[<p>不定期更新的 Linux 的脚本管理片段，用于提高日常使用过程中效率。</p>
+<img src="/2020/05/03/Linux-Tool-Set/v2-01a6301b2101a984790cb8895ece7d96_1200x500.jpg" class="">
+<a id="more"></a>
+<h2 id="文件统计">文件统计</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du -sh  <span class="comment"># 显示当前文件夹的大小</span></span><br><span class="line">du -lh --max-depth=1  <span class="comment"># 列出当前文件夹下各个目录的大小</span></span><br><span class="line">df -lh  <span class="comment"># 列出当前文件系统的空间使用情况</span></span><br></pre></td></tr></table></figure>
+<p>tree 需要额外安装，是命令行常用的查看文件夹项目结构的工具 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tree dir_name -L 3  <span class="comment"># 以树形结构列出当前目录最多三级的子项目</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="文件传输">文件传输</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -avz -P source_path username@target_machine:target_path/  <span class="comment"># 传输某个文件夹到另一台机器</span></span><br></pre></td></tr></table></figure>
+<h2 id="命令行">命令行</h2>
+<p>新建一个tmux会话，可以在里面开多个窗口，把窗口分成多个面板，然后用 <code>ctrl+b+d</code> 离开这个会话，之后再通过 <code>tmux a -t name</code> 回到当前的这个会话，所有的内容都会保持原样。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux new -s name  <span class="comment"># 新建一个tmux会话</span></span><br><span class="line">tmux ls  <span class="comment"># 查看已经打开的会话列表</span></span><br><span class="line">tmux a -t name  <span class="comment"># 进入一个已有的会话</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="连接">连接</h2>
+<p>创建软连接相当于只创建了一个快捷方式指向源目标，程序访问这个软连接就会自动指向它所指向的目标。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln -s source_path target_path</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>脚本</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>离线服务器通过PC中转连接公网</title>
     <url>/2020/07/27/Local-Server-Proxy/</url>
     <content><![CDATA[<p>不愧是学校的网络，让人在科研以外还学到了各种各样的知识。<strong>前情提要：1. 学校的网络账号是一个IP一个账号 2. 即使登录了账号，连从阿里云下载内容都无法顺利实现（不知道是到公网的哪条路受到了阻碍）</strong>。所以只有通过与服务器直接相连的控制端提供公网的访问中转。</p>
@@ -1095,30 +1164,6 @@ P_{error} &amp;= \sum^{\lfloor T/2 \rfloor}_{k=0}{T \choose k} (1-\epsilon)^{k} 
       </categories>
       <tags>
         <tag>CCProxy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux 不完全命令指南</title>
-    <url>/2020/05/03/Linux-Tool-Set/</url>
-    <content><![CDATA[<p>不定期更新的 Linux 的脚本管理片段，用于提高日常使用过程中效率。</p>
-<img src="/2020/05/03/Linux-Tool-Set/v2-01a6301b2101a984790cb8895ece7d96_1200x500.jpg" class="">
-<a id="more"></a>
-<h2 id="文件统计">文件统计</h2>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du -sh  <span class="comment"># 显示当前文件夹的大小</span></span><br><span class="line">du -lh --max-depth=1  <span class="comment"># 列出当前文件夹下各个目录的大小</span></span><br><span class="line">df -lh  <span class="comment"># 列出当前文件系统的空间使用情况</span></span><br></pre></td></tr></table></figure>
-<p>tree 需要额外安装，是命令行常用的查看文件夹项目结构的工具 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tree dir_name -L 3  <span class="comment"># 以树形结构列出当前目录最多三级的子项目</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="文件传输">文件传输</h2>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -avz -P source_path username@target_machine:target_path/  <span class="comment"># 传输某个文件夹到另一台机器</span></span><br></pre></td></tr></table></figure>
-<h2 id="命令行">命令行</h2>
-<p>新建一个tmux会话，可以在里面开多个窗口，把窗口分成多个面板，然后用 <code>ctrl+b+d</code> 离开这个会话，之后再通过 <code>tmux a -t name</code> 回到当前的这个会话，所有的内容都会保持原样。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux new -s name  <span class="comment"># 新建一个tmux会话</span></span><br><span class="line">tmux ls  <span class="comment"># 查看已经打开的会话列表</span></span><br><span class="line">tmux a -t name  <span class="comment"># 进入一个已有的会话</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="连接">连接</h2>
-<p>创建软连接相当于只创建了一个快捷方式指向源目标，程序访问这个软连接就会自动指向它所指向的目标。 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln -s source_path target_path</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>脚本</tag>
       </tags>
   </entry>
   <entry>
@@ -1841,6 +1886,52 @@ Y^x &amp; Y^y\\
       </tags>
   </entry>
   <entry>
+    <title>转置卷积</title>
+    <url>/2019/08/27/Transposed-Convolution/</url>
+    <content><![CDATA[<p>反卷积（Deconvolution）很容易和信号处理中的反卷积混淆起来，其实在常见的卷积神经网络文献中应该指的是转置卷积（Transposed Convolution），下文见更准确地使用转置卷积来指代这一过程。</p>
+<img src="/2019/08/27/Transposed-Convolution/no_padding_no_strides_transposed.gif" class="">
+<a id="more"></a>
+<p>如封面示意图<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>，这里的卷积都是 2 维规则方形的：</p>
+<ul>
+<li>stride：卷积核滑动步长</li>
+<li>padding：卷积前对原始图像进行边缘补充所用宽度的像素个数，补全方式由用户定义，一般默认补零</li>
+<li>kernel size：方形卷积核的边长像素个数</li>
+</ul>
+<h2 id="卷积操作">卷积操作</h2>
+<img src="/2019/08/27/Transposed-Convolution/no_padding_no_strides.gif" class="">
+<p>如图<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>这样的卷积操作都可以写成矩阵相乘的形式：</p>
+<img src="/2019/08/27/Transposed-Convolution/1_NoXQbZqPnxSnjdAwo93XcQ.png" class="">
+<p>首先看到这样的卷积操作可以通过把计算顺序写进矩阵中，然后将目标图像展平成向量，实际上在很多卷积数值实现中，都是使用这种步骤可以加速程序的执行。</p>
+<img src="/2019/08/27/Transposed-Convolution/1_ql2ZxrS_h8D7KHNCrGndug.png" class="">
+<p>通过这种重排卷积核以对应和展平成向量的图像做卷积可以得到同样展平的卷积后图像，然后对这个图像进行重排可以简单地恢复其空间结构。</p>
+<h2 id="转置卷积">转置卷积</h2>
+<p>这样转置卷积的问题就好理解了，如果要做的操作为 <span class="math display">\[I_{4\times 4}\otimes K_{3\times 3} = C_{2\times 2}\]</span> 经过对卷积重排和图像展平之后就变成 <span class="math display">\[K_{4\times 16} \cdot I_{16} = C_{4}\]</span> 那么要从卷积后的图像 <span class="math inline">\(C_{2\times 2}\)</span> 得到原图像 <span class="math inline">\(I_{4\times 4}\)</span> 就做个矩阵乘逆吧：<span class="math display">\[I_{16} = (K_{4\times 16})^{-1} \cdot C_{4}\]</span></p>
+<img src="/2019/08/27/Transposed-Convolution/1_JDAuBt3aS9mz3aQQ7JKYKA.png" class="">
+<p>将上面的过程可视化成图像计算过程。</p>
+<h2 id="总结">总结</h2>
+<ul>
+<li>卷积操作可以通过矩阵重排用更高效的方式实现</li>
+<li>在矩阵实现的基础上很容易理解反卷积的规则</li>
+<li>实际中不一定会严格按照这种反卷积的操作，更多的是为了保持这种卷积形状，然后通过神经网络学习得到</li>
+<li>这里只说明了转置卷积的做法，在实际构建模型的时候可以有更多的操作</li>
+</ul>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>反卷积</tag>
+        <tag>转置卷积</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>理解 ELBO</title>
     <url>/2020/06/26/Understanding-ELBO/</url>
     <content><![CDATA[<p>变分贝叶斯的一个优势就在于它的优化对偶性。我们回顾统计推断问题（也就是通过给定其他随机变量的值来推断某一个随机变量的值）作为一个优化问题（也就是找到一批参数能够最小化某些目标函数）。更进一步的这种变分下界也称为证据下界，它时一种变分贝叶斯方法中的基本角色，我们将主要介绍这种下界的关键角色和推导。</p>
@@ -1906,52 +1997,6 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       </categories>
       <tags>
         <tag>变分方法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>转置卷积</title>
-    <url>/2019/08/27/Transposed-Convolution/</url>
-    <content><![CDATA[<p>反卷积（Deconvolution）很容易和信号处理中的反卷积混淆起来，其实在常见的卷积神经网络文献中应该指的是转置卷积（Transposed Convolution），下文见更准确地使用转置卷积来指代这一过程。</p>
-<img src="/2019/08/27/Transposed-Convolution/no_padding_no_strides_transposed.gif" class="">
-<a id="more"></a>
-<p>如封面示意图<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>，这里的卷积都是 2 维规则方形的：</p>
-<ul>
-<li>stride：卷积核滑动步长</li>
-<li>padding：卷积前对原始图像进行边缘补充所用宽度的像素个数，补全方式由用户定义，一般默认补零</li>
-<li>kernel size：方形卷积核的边长像素个数</li>
-</ul>
-<h2 id="卷积操作">卷积操作</h2>
-<img src="/2019/08/27/Transposed-Convolution/no_padding_no_strides.gif" class="">
-<p>如图<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>这样的卷积操作都可以写成矩阵相乘的形式：</p>
-<img src="/2019/08/27/Transposed-Convolution/1_NoXQbZqPnxSnjdAwo93XcQ.png" class="">
-<p>首先看到这样的卷积操作可以通过把计算顺序写进矩阵中，然后将目标图像展平成向量，实际上在很多卷积数值实现中，都是使用这种步骤可以加速程序的执行。</p>
-<img src="/2019/08/27/Transposed-Convolution/1_ql2ZxrS_h8D7KHNCrGndug.png" class="">
-<p>通过这种重排卷积核以对应和展平成向量的图像做卷积可以得到同样展平的卷积后图像，然后对这个图像进行重排可以简单地恢复其空间结构。</p>
-<h2 id="转置卷积">转置卷积</h2>
-<p>这样转置卷积的问题就好理解了，如果要做的操作为 <span class="math display">\[I_{4\times 4}\otimes K_{3\times 3} = C_{2\times 2}\]</span> 经过对卷积重排和图像展平之后就变成 <span class="math display">\[K_{4\times 16} \cdot I_{16} = C_{4}\]</span> 那么要从卷积后的图像 <span class="math inline">\(C_{2\times 2}\)</span> 得到原图像 <span class="math inline">\(I_{4\times 4}\)</span> 就做个矩阵乘逆吧：<span class="math display">\[I_{16} = (K_{4\times 16})^{-1} \cdot C_{4}\]</span></p>
-<img src="/2019/08/27/Transposed-Convolution/1_JDAuBt3aS9mz3aQQ7JKYKA.png" class="">
-<p>将上面的过程可视化成图像计算过程。</p>
-<h2 id="总结">总结</h2>
-<ul>
-<li>卷积操作可以通过矩阵重排用更高效的方式实现</li>
-<li>在矩阵实现的基础上很容易理解反卷积的规则</li>
-<li>实际中不一定会严格按照这种反卷积的操作，更多的是为了保持这种卷积形状，然后通过神经网络学习得到</li>
-<li>这里只说明了转置卷积的做法，在实际构建模型的时候可以有更多的操作</li>
-</ul>
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p>https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>https://github.com/vdumoulin/conv_arithmetic#transposed-convolution-animations<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>反卷积</tag>
-        <tag>转置卷积</tag>
       </tags>
   </entry>
   <entry>
@@ -2193,6 +2238,45 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       </tags>
   </entry>
   <entry>
+    <title>conda包组织工具</title>
+    <url>/2018/01/08/condaGuide/</url>
+    <content><![CDATA[<p>使用Anaconda的过程中一种常见的使用手段就是使用conda来管理各类的Python第三方库。但是这个包管理工具不仅在Anaconda生态系统中起到非常重要的作用，也可以作为我们自己的软件开发管理工具。本文将对conda的软件开发管理工具做一定的介绍。 <a id="more"></a></p>
+<h2 id="conda是什么">conda是什么</h2>
+<p>conda是一个用于任何语言的开源环境管理系统，它只是在Python的社区中特别的受欢迎而已。Anaconda是conda的一个发行版而已，它集成了很多开源的科学分析工具库。</p>
+<h2 id="conda环境">conda环境</h2>
+<p>如果在同一台电脑上有多个版本的Python，可以用Python环境管理将这些环境完全隔离开来互不影响。在一开始这个环境中就只有一个环境，也就是通用的主环境<code>conda env list</code>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># conda environments:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">root                  *  /home/username/anaconda3</span><br></pre></td></tr></table></figure>
+<p>然后在这些环境的基础上我们可以根据我们自己的需要新建一些环境。在这些环境下的内容互不影响，每个环境都可以用于多个工程。下面是新建两个环境的例子：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create --name python35 python=3.5</span><br><span class="line">conda create --name python27 python=2.7</span><br></pre></td></tr></table></figure>
+<p>也可以使用更加自定义的方式来进行环境配置（environment.yml）：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">name: playenv</span><br><span class="line">channels:</span><br><span class="line">- conda-forge</span><br><span class="line">dependencies:</span><br><span class="line">- python=3.6</span><br><span class="line">- pip</span><br><span class="line">- pip:</span><br><span class="line">    - pyjokes</span><br></pre></td></tr></table></figure>
+<p>然后通过执行<code>conda env create --file environment.yml</code>在这个环境中将会装入Python3.6，python-pip和用pip装的pyjokes。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Using Anaconda Cloud api site https://api.anaconda.org</span><br><span class="line">Fetching package metadata .........</span><br><span class="line">Solving package specifications: ..........</span><br><span class="line">Linking packages ...</span><br><span class="line">[      COMPLETE      ]|###################################################################################################################################################################| 100%</span><br><span class="line">Collecting pyjokes</span><br><span class="line">  Downloading pyjokes-0.5.0-py2.py3-none-any.whl</span><br><span class="line">Installing collected packages: pyjokes</span><br><span class="line">Successfully installed pyjokes-0.5.0</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> To activate this environment, use:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> &gt; <span class="built_in">source</span> activate playenv</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> To deactivate this environment, use:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> &gt; <span class="built_in">source</span> deactivate playenv</span></span><br><span class="line"><span class="meta">#</span></span><br></pre></td></tr></table></figure>
+<p>或者通过指定各类需要的包来安装也是可以的：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create -c conda-forge -n test_env python=2.7 numpy matplotlib pandas</span><br></pre></td></tr></table></figure>
+<p>以上的<code>-c</code>是用于指定安装来源，<code>-n</code>后面紧跟的是环境名字，最后面跟的是要安装的包的名字，以空格隔开。</p>
+<h3 id="分享环境">分享环境</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env export -f test_env.yml -n test_env</span><br></pre></td></tr></table></figure>
+<p>这样可以生成详尽的环境文件用于与他人分享，但是这个环境是不能跨平台的。</p>
+<h3 id="复制环境">复制环境</h3>
+<p>可以把当前的环境复制到另一份名字不相同的环境中去。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create --name live_env --clone test_env</span><br></pre></td></tr></table></figure>
+<h3 id="删除环境">删除环境</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env remove -n live_env</span><br></pre></td></tr></table></figure>
+<h3 id="指定环境操作">指定环境操作</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda list -n test_env</span><br><span class="line">conda remove -n test_env rasterio</span><br></pre></td></tr></table></figure>
+<hr />
+<p>参考：https://geohackweek.github.io/Introductory/01-conda-tutorial/</p>
+]]></content>
+      <categories>
+        <category>工程</category>
+      </categories>
+      <tags>
+        <tag>开发</tag>
+        <tag>conda</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Google Test 基础</title>
     <url>/2018/03/10/googletest/</url>
     <content><![CDATA[<p>Google Test是一个C++的测试框架, 在Linux, Windows和Mac上都可以使用这个工具来对C++代码进行测试. Google Test的一些特性:</p>
@@ -2265,45 +2349,6 @@ L=\log p(X)-K L[q(Z) \| p(Z \mid X)]
       <tags>
         <tag>测试</tag>
         <tag>GoogleTest</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>conda包组织工具</title>
-    <url>/2018/01/08/condaGuide/</url>
-    <content><![CDATA[<p>使用Anaconda的过程中一种常见的使用手段就是使用conda来管理各类的Python第三方库。但是这个包管理工具不仅在Anaconda生态系统中起到非常重要的作用，也可以作为我们自己的软件开发管理工具。本文将对conda的软件开发管理工具做一定的介绍。 <a id="more"></a></p>
-<h2 id="conda是什么">conda是什么</h2>
-<p>conda是一个用于任何语言的开源环境管理系统，它只是在Python的社区中特别的受欢迎而已。Anaconda是conda的一个发行版而已，它集成了很多开源的科学分析工具库。</p>
-<h2 id="conda环境">conda环境</h2>
-<p>如果在同一台电脑上有多个版本的Python，可以用Python环境管理将这些环境完全隔离开来互不影响。在一开始这个环境中就只有一个环境，也就是通用的主环境<code>conda env list</code>：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># conda environments:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">root                  *  /home/username/anaconda3</span><br></pre></td></tr></table></figure>
-<p>然后在这些环境的基础上我们可以根据我们自己的需要新建一些环境。在这些环境下的内容互不影响，每个环境都可以用于多个工程。下面是新建两个环境的例子：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create --name python35 python=3.5</span><br><span class="line">conda create --name python27 python=2.7</span><br></pre></td></tr></table></figure>
-<p>也可以使用更加自定义的方式来进行环境配置（environment.yml）：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">name: playenv</span><br><span class="line">channels:</span><br><span class="line">- conda-forge</span><br><span class="line">dependencies:</span><br><span class="line">- python=3.6</span><br><span class="line">- pip</span><br><span class="line">- pip:</span><br><span class="line">    - pyjokes</span><br></pre></td></tr></table></figure>
-<p>然后通过执行<code>conda env create --file environment.yml</code>在这个环境中将会装入Python3.6，python-pip和用pip装的pyjokes。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Using Anaconda Cloud api site https://api.anaconda.org</span><br><span class="line">Fetching package metadata .........</span><br><span class="line">Solving package specifications: ..........</span><br><span class="line">Linking packages ...</span><br><span class="line">[      COMPLETE      ]|###################################################################################################################################################################| 100%</span><br><span class="line">Collecting pyjokes</span><br><span class="line">  Downloading pyjokes-0.5.0-py2.py3-none-any.whl</span><br><span class="line">Installing collected packages: pyjokes</span><br><span class="line">Successfully installed pyjokes-0.5.0</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> To activate this environment, use:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> &gt; <span class="built_in">source</span> activate playenv</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> To deactivate this environment, use:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> &gt; <span class="built_in">source</span> deactivate playenv</span></span><br><span class="line"><span class="meta">#</span></span><br></pre></td></tr></table></figure>
-<p>或者通过指定各类需要的包来安装也是可以的：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create -c conda-forge -n test_env python=2.7 numpy matplotlib pandas</span><br></pre></td></tr></table></figure>
-<p>以上的<code>-c</code>是用于指定安装来源，<code>-n</code>后面紧跟的是环境名字，最后面跟的是要安装的包的名字，以空格隔开。</p>
-<h3 id="分享环境">分享环境</h3>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env export -f test_env.yml -n test_env</span><br></pre></td></tr></table></figure>
-<p>这样可以生成详尽的环境文件用于与他人分享，但是这个环境是不能跨平台的。</p>
-<h3 id="复制环境">复制环境</h3>
-<p>可以把当前的环境复制到另一份名字不相同的环境中去。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create --name live_env --clone test_env</span><br></pre></td></tr></table></figure>
-<h3 id="删除环境">删除环境</h3>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda env remove -n live_env</span><br></pre></td></tr></table></figure>
-<h3 id="指定环境操作">指定环境操作</h3>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda list -n test_env</span><br><span class="line">conda remove -n test_env rasterio</span><br></pre></td></tr></table></figure>
-<hr />
-<p>参考：https://geohackweek.github.io/Introductory/01-conda-tutorial/</p>
-]]></content>
-      <categories>
-        <category>工程</category>
-      </categories>
-      <tags>
-        <tag>开发</tag>
-        <tag>conda</tag>
       </tags>
   </entry>
   <entry>
@@ -4087,48 +4132,39 @@ x &amp; 0 &amp; 0 &amp; 0\\\\
       </tags>
   </entry>
   <entry>
-    <title>通过命令行从 Google Drive下载数据</title>
-    <url>/2021/05/15/Download-from-Google-Drive/</url>
-    <content><![CDATA[<p>本文介绍了通过<code>wget</code>和<code>curl</code>从Google Drive上下载文件的脚本。因为大量的数据集都存放在Google Drive上，而计算任务通常都是在计算服务器上，直接从Google Drive这类云盘下载到服务器上显然是最合适的方式。</p>
+    <title>Zotero 使用配置</title>
+    <url>/2021/05/16/Zotero-Config/</url>
+    <content><![CDATA[<p>文献管理软件多如牛毛，EndNote、Papers、Mendeley、Citavi、NoteExpress等要么是生态封闭，在文献同步导入插件支持方面有所欠缺，要么是收费并且同时存在这些问题。但是Zotero这款开源软件的出现让人可以以合理的方式更加方便地管理我们的文献。</p>
+<img src="/2021/05/16/Zotero-Config/image-20210516160905361.png" class="" title="image-20210516160905361">
 <a id="more"></a>
-<h2 id="分享链接">分享链接</h2>
-<p>Google Drive的分享链接格式通常为：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="attribute">https://drive.google.com/file/d/&lt;fileid&gt;/view</span></span><br></pre></td></tr></table></figure>
-<p>其中这个<code>&lt;fileid&gt;</code>就是对应文件在服务器上的唯一标识符。</p>
-<p>例如OfficeHome数据集在Google Drive上的链接即为：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="attribute">https://drive.google.com/file/d/0B81rNlvomiwed0V1YUxQdC1uOTg/view</span></span><br></pre></td></tr></table></figure>
-<p>其中的<code>&lt;fileid&gt;</code>为<code>0B81rNlvomiwed0V1YUxQdC1uOTg</code>，文件名可以自己取。</p>
-<p>所以提取到的关键变量为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">filename=<span class="string">&#x27;OfficeHomeDataset_10072016.zip&#x27;</span></span><br><span class="line">fileid=<span class="string">&#x27;0B81rNlvomiwed0V1YUxQdC1uOTg&#x27;</span></span><br></pre></td></tr></table></figure>
-<h2 id="wget-下载指令">wget 下载指令</h2>
-<p>针对小文件：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget --no-check-certificate <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -O <span class="variable">$&#123;filename&#125;</span></span><br></pre></td></tr></table></figure>
-<p>如果文件大的话，需要对cookie进行处理：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget --load-cookies /tmp/cookies.txt <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=<span class="subst">$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate &#x27;https://drive.google.com/uc?export=download&amp;id=$&#123;fileid&#125;&#x27; -O- | sed -rn &#x27;s/.confirm=([0-9A-Za-z_]+)</span>./\1\n/p&#x27;)&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -O <span class="variable">$&#123;filename&#125;</span> &amp;&amp; rm -rf /tmp/cookies.txt</span><br></pre></td></tr></table></figure>
-<p>整理成更方便的脚本示例为：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># cd scratch place</span></span><br><span class="line"><span class="built_in">cd</span> data/</span><br><span class="line"></span><br><span class="line"><span class="comment"># Download zip dataset from Google Drive</span></span><br><span class="line">filename=<span class="string">&#x27;OfficeHomeDataset_10072016.zip&#x27;</span></span><br><span class="line">fileid=<span class="string">&#x27;0B81rNlvomiwed0V1YUxQdC1uOTg&#x27;</span></span><br><span class="line">wget --load-cookies /tmp/cookies.txt <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=<span class="subst">$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate &#x27;https://drive.google.com/uc?export=download&amp;id=$&#123;fileid&#125;&#x27; -O- | sed -rn &#x27;s/.confirm=([0-9A-Za-z_]+)</span>./\1\n/p&#x27;)&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -O <span class="variable">$&#123;filename&#125;</span> &amp;&amp; rm -rf /tmp/cookies.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Unzip</span></span><br><span class="line">unzip -q <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm <span class="variable">$&#123;filename&#125;</span></span><br><span class="line"><span class="built_in">cd</span></span><br></pre></td></tr></table></figure>
-<h2 id="curl-下载指令">curl 下载指令</h2>
-<p>小文件 &lt; 40MB：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -L -o <span class="variable">$&#123;filename&#125;</span> <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
-<p>大文件 &gt; 40MB：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -c ./cookie -s -L <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> &gt; /dev/null</span><br><span class="line">curl -Lb ./cookie <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=`awk &#x27;/download/ &#123;print <span class="variable">$NF</span>&#125;&#x27; ./cookie`&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -o <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm ./cookie</span><br></pre></td></tr></table></figure>
-<p>整理成脚本：</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># cd scratch place</span></span><br><span class="line"><span class="built_in">cd</span> scratch/</span><br><span class="line">  </span><br><span class="line"><span class="comment"># Download zip dataset from Google Drive</span></span><br><span class="line">filename=<span class="string">&#x27;OfficeHomeDataset_10072016.zip&#x27;</span></span><br><span class="line">fileid=<span class="string">&#x27;0B81rNlvomiwed0V1YUxQdC1uOTg&#x27;</span></span><br><span class="line">curl -c ./cookie -s -L <span class="string">&quot;https://drive.google.com/uc?export=download&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> &gt; /dev/null</span><br><span class="line">curl -Lb ./cookie <span class="string">&quot;https://drive.google.com/uc?export=download&amp;confirm=`awk &#x27;/download/ &#123;print <span class="variable">$NF</span>&#125;&#x27; ./cookie`&amp;id=<span class="variable">$&#123;fileid&#125;</span>&quot;</span> -o <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm ./cookie</span><br><span class="line">  </span><br><span class="line"><span class="comment"># Unzip</span></span><br><span class="line">unzip -q <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">rm <span class="variable">$&#123;filename&#125;</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># cd out</span></span><br><span class="line"><span class="built_in">cd</span></span><br></pre></td></tr></table></figure>
-<p>但是如果连不上外网，那就需要一个梯子的选项，即<code>proxychains4</code>这个命令行代理工具，或者需要通过其他机器进行联网的中转可以参考<a href="https://lccurious.github.io/2020/07/27/Local-Server-Proxy/">离线服务器通过PC中转连接公网</a>。</p>
-<p>对于不能直接联网的机器运行脚本方式为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">proxychains4 sh download_google_drive.sh</span><br></pre></td></tr></table></figure>
-<h2 id="参考资源">参考资源</h2>
-<ul>
-<li>https://github.com/JinhangZhu/yolov3/blob/custom/data/get_coco2014.sh</li>
-<li>https://www.jinhang.work/tech/download-shared-files-using-wget-or-curl/</li>
-</ul>
+<h2 id="zotero-特点">Zotero 特点</h2>
+<p>Zotero的数据库是基于SLQlite，这里面主要存储了你的文献信息和各种关系信息，文献的源PDF等文件则是存储在单独存储在<code>storage</code>这类文件夹内的。其中这些关联信息可以直接通过它配置的免费服务器进行同步，这意味着可以在多台机器上同步文献，而源文件则可以通过<code>OneDrive</code>等云盘进行多平台的同步。</p>
+<h2 id="添加文献">添加文献</h2>
+<h3 id="文献识别码">文献识别码</h3>
+<p>通过直接输入文献的识别码，Zotero会自动搜索文献相关的信息。</p>
+<img src="/2021/05/16/Zotero-Config/image-20210516161415958.png" class="" title="image-20210516161415958">
+<p>或者还可以直接导入Bibtex、EndNote等格式的数据库文本进行文献的批量添加。</p>
+<h3 id="zotero-connector">Zotero Connector</h3>
+<p>Zotero 软件本体和浏览器插件 Zotero Connector，其中 Zotero Connector 支持 Chrome、Firefox，Edge等浏览器。</p>
+<img src="/2021/05/16/Zotero-Config/2021-05-16.png" class="" title="2021-05-16">
+<p>当我们浏览数据库时，Zotero Connector 会自动读取当前页面的信息，图标也会随着内容进行变化。比如，打开中国知网之后，点击 Chrome 浏览器右上角的 Zotero Connector 图标，就会自动将该页面的数据保存到 Zotero 中，如果有下载全文的权限，还会将 PDF 附件一同保存下来。然后打开 Zotero，会发现文献信息连同 PDF 一起保存了下来，并且光标自动定位到了刚刚保存的这条文献条目上。</p>
+<h2 id="文件同步">文件同步</h2>
+<p>Zotero的文件同步与索引同步是分开的，所有索引的内容都存储在Zotero文件夹下的<code>.sqlite</code>里，对应的PDF文件存在<code>storage</code>文件夹下，其中的每一个子文件夹都对应于其中的一个文件。所以只要每台机器同步这两份数据即可以保证所有的信息在机器之间的共享。这里我采用<code>OneDrive</code>作为主要的同步工具，它可以以近乎无感的方式检查文件的变动并进行同步，而且还有文件随选功能。</p>
+<p>在正式工作时，通常会一直开着Zotero编辑，这就会不停的修改数据中的信息，所以<code>.sqlite</code>文件就会不断变动。随这种变动而来的一个问题就是，如果多台机器同时开机，并且<code>OneDrive</code>都在线的情况下会容易导致不同机器间的同步冲突问题。所以这个<code>.sqlite</code>文件不能直接放在<code>OneDrive</code>内部进行同步，只对<code>sotrage</code>文件夹进行同步。</p>
+<p>Unix对<code>storage</code>采用软链接：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ln -s <span class="string">&quot;/Users/username/OneDrive - zju.edu.cn/Zotero/storage&quot;</span> storage</span><br></pre></td></tr></table></figure>
+<p>Windows下用管理员权限的<code>mklink</code>。</p>
+<h2 id="阅读更多">阅读更多</h2>
+<ol type="1">
+<li><a href="https://sspai.com/post/59035" class="uri">https://sspai.com/post/59035</a></li>
+</ol>
 ]]></content>
       <categories>
-        <category>工程</category>
+        <category>工具</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
-        <tag>Download</tag>
+        <tag>文献管理</tag>
+        <tag>Zotero</tag>
       </tags>
   </entry>
 </search>
