@@ -3,6 +3,7 @@ layout: post
 title: MST-Analysis
 typora-root-url: MST-Analysis
 date: 2023-02-24 19:21:44
+description: 蛋白质或者小分子在生物液体（例如血清或细胞裂解物）中会发生相互作用，可以把这种作用想象成你穿着毛衣经过长满苍耳的灌木丛时，那些满是钩子的种子粘的你满身都是，但是如果你穿的是冲锋衣，那么可能就一颗也粘不上。这些分子化合物之间也是如此，它们之间有选择性地相互结合。了解这些结合的亲和度是研发新药的关键参考。
 categories:
   - 自然科学
 tags:
@@ -12,6 +13,7 @@ tags:
   - 配体
   - 受体
   - 荧光
+thumbnail: assets/img/2023-02-24-MST-Analysis/bg.jpeg 
 giscus_comments: true
 ---
 

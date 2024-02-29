@@ -15,6 +15,8 @@
   issn = {1941-0042},
   doi = {10.1109/TIP.2023.3235583},
   copyright = {All rights reserved},
+  html={https://lccurious.github.io/projects/001_drda},
+  abstract={Domain adaptation methods reduce domain shift typically by learning domain-invariant features. Most existing methods are built on distribution matching, e.g., adversarial domain adaptation, which tends to corrupt feature discriminability. In this paper, we propose Discriminative Radial Domain Adaptation (DRDA) which bridges source and target domains via a shared radial structure. It’s motivated by the observation that as the model is trained to be progressively discriminative, features of different categories expand outwards in different directions, forming a radial structure. We show that transferring such an inherently discriminative structure would enable to enhance feature transferability and discriminability simultaneously. Speciﬁcally, we represent each domain with a global anchor and each category a local anchor to form a radial structure and reduce domain shift via structure matching. It consists of two parts, namely isometric transformation to align the structure globally and local reﬁnement to match each category. To enhance the discriminability of the structure, we further encourage samples to cluster close to the corresponding local anchors based on optimal-transport assignment. Extensively experimenting on multiple benchmarks, our method is shown to consistently outperforms state-of-the-art approaches on varied tasks, including the typical unsupervised domain adaptation, multi-source domain adaptation, domainagnostic learning, and domain generalization.},
   selected={true}
 }
 
@@ -30,6 +32,9 @@
   urldate = {2023-11-28},
   copyright = {All rights reserved},
   langid = {english},
+  abstract = {Existing machine learning (ML) models are often fragile in open environments because the data distribution frequently shifts. To address this problem, domain generalization (DG) aims to explore underlying invariant patterns for stable prediction across domains. In this work, we first characterize that this failure of conventional ML models in DG attributes to an inadequate identification of causal structures. We further propose a novel invariant Directed Acyclic Graph (dubbed iDAG) searching framework that attains an invariant graphical relation as the proxy to the causality structure from the intrinsic data-generating process. To enable tractable computation, iDAG solves a constrained optimization objective built on a set of representative class-conditional prototypes. Additionally, we integrate a hierarchical contrastive learning module, which poses a strong effect of clustering, for enhanced prototypes as well as stabler prediction. Extensive experiments on the synthetic and real-world benchmarks demonstrate that iDAG outperforms the state-of-the-art approaches, verifying the superiority of causal structure identification for DG. The code of iDAG is available at https://github.com/lccurious/iDAG.},
+  award={Oral},
+	honor={Oral Presentation [Top 1.6\%]},
   selected={true}
 }
 
@@ -49,6 +54,7 @@
   urldate = {2023-08-27},
   copyright = {All rights reserved},
   langid = {english},
+  abstract = {Understanding the dynamics of time series data typically requires identifying the unique latent factors for data generation, a.k.a., latent processes identification. Driven by the independent assumption, existing works have made great progress in handling single-view data. However, it is a nontrivial problem that extends them to multi-view time series data because of two main challenges: (i) the complex data structure, such as temporal dependency, can result in violation of the independent assumption; (ii) the factors from different views are generally overlapped and are hard to be aggregated to a complete set. In this work, we propose a novel framework MuLTI that employs the contrastive learning technique to invert the data generative process for enhanced identifiability. Additionally, MuLTI integrates a permutation mechanism that merges corresponding overlapped variables by the establishment of an optimal transport formula. Extensive experimental results on synthetic and real-world datasets demonstrate the superiority of our method in recovering identifiable latent variables on multi-view time series. The code is available on https://github.com/lccurious/MuLTI.},
   selected={true}
 }
 
@@ -100,7 +106,7 @@
   bibtex_show={true},
   abbr={AAAI},
   title = {A {{Separation}} and {{Alignment Framework}} for {{Black-box Domain Adaptation}}},
-  booktitle = {Proceedings of the {{AAAI Conference}} on {{Artificial Intelligence}} ({{AAAI}}), 2024},
+  booktitle = {Proceedings of the {{AAAI Conference}} on {{Artificial Intelligence}} ({{AAAI}})},
   author = {Xia, Mingxuan and Zhao, Junbo and Gengyu, Lyu and Huang, Zenan and Hu, Tianlei and Chen, Gang and Wang, Haobo},
   year = {2024},
   copyright = {All rights reserved}
@@ -120,12 +126,5 @@
   archiveprefix = {bioRxiv},
   chapter = {New Results},
   copyright = {{\copyright} 2021, Posted by Cold Spring Harbor Laboratory. This pre-print is available under a Creative Commons License (Attribution 4.0 International), CC BY 4.0, as described at http://creativecommons.org/licenses/by/4.0/},
-  langid = {english},
-  url={http://link.aps.org/doi/10.1103/PhysRev.47.777},
-  html={https://journals.aps.org/pr/abstract/10.1103/PhysRev.47.777},
-  pdf={example_pdf.pdf},
-  altmetric={248277},
-  dimensions={true},
-  google_scholar_id={qyhmnyLat1gC},
-  preview={brownian-motion.gif}
+  langid = {english}
 }

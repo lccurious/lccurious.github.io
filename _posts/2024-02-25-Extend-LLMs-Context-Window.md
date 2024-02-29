@@ -6,7 +6,10 @@ tags:
   - LLMs
 categories:
   - Machine Learning
+thumbnail: assets/img/2024-02-25-Extend-LLMs-Context-Window/9448554a_Untitled.png
 giscus_comments: true
+toc:
+  sidebar: true
 ---
 
 
