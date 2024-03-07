@@ -25,9 +25,11 @@ But with limited resources on the hand, most user are not able to retrain the mo
 
 ## Methodology
 
-Currently, there is no fine-tuning free methods available. As LongRoPE [📑Ding et al., 2024](http://arxiv.org/abs/2402.13753) extend the context length by rescaling the RoPE positional encoding [📑Su et al., 2023](http://arxiv.org/abs/2104.09864)  frequencies to gradually extend the context window. For a LLM targeting a context window size of  $$L’$$  and lengthy input document  $$\bm{X}$$ ,
+Currently, there is no fine-tuning free methods available. As LongRoPE [📑Ding et al., 2024](http://arxiv.org/abs/2402.13753) extend the context length by rescaling the RoPE positional encoding [📑Su et al., 2023](http://arxiv.org/abs/2104.09864)  frequencies to gradually extend the context window. For a LLM targeting a context window size of  $$L’$$  and lengthy input document $$\boldsymbol{X}$$,
 
- $$$$\mathop{\arg\min}_{\bm{x}\in \bm{X};|\bm{x}|\geq L'}\mathcal{L}(LLM(RoPE,\bm{X}))$$$$ 
+$$
+\mathop{\arg\min}_{\boldsymbol{x}\in \boldsymbol{X};|\boldsymbol{x}|\geq L'}\mathcal{L}(LLM(RoPE,\boldsymbol{X}))
+$$ 
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">

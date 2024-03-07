@@ -1,9 +1,9 @@
 ---
 layout: distill
-title: Discriminative Radial Domain Adaptation
+title: Latent Processes Identification From Multi-View Time Series
 description: >
-  IEEE Transactions on Image Processing 2023 
-img: assets/img/001_drda/motivation.png
+  IJCAI-23
+img: assets/img/002_multi/motivation.png
 importance: 1
 category: research
 tags:
@@ -19,15 +19,11 @@ authors:
     url: "https://lccurious.github.io/about"
     affiliations:
       name: Zhejiang University
-  - name: Jun Wen 
+  - name: Haobo Wang
     url: ""
     affiliations:
-      name: Harvard Medical School
-  - name: Siheng Chen
-    url: ""
-    affiliations:
-      name: Shanghai Jiao Tong University
-  - name: Linchao Zhu
+      name: Zhejiang University
+  - name: Junbo Zhao
     url: ""
     affiliations:
       name: Zhejiang University
@@ -35,16 +31,6 @@ authors:
     url: ""
     affiliations:
       name: Zhejiang University
-
-toc:
-  - name: Abstract
-  - name: Motivation
-    subsections:
-      - name: Feature Discriminability
-      - name: Global Alignment
-      - name: Local Finetune
-  - name: DRDA
-  - name: Acknowledgements
 ---
 
 
@@ -86,10 +72,10 @@ We can naturally model the latent sketches of the two domain by just using their
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/001_drda/radial_expansion.gif" title="Radial Expansion" caption="Radial Expansion" class="img-fluid rounded z-depth-0" %}
+        {% include figure.liquid loading="eager" path="assets/img/001_drda/radial_expansion.gif" title="Radial Expansion" caption="Radial Expansion" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/001_drda/drda_gwd.gif" title="GWD adaptation" caption="GWD adaptation" class="img-fluid rounded z-depth-0" %}
+        {% include figure.liquid loading="eager" path="assets/img/001_drda/drda_gwd.gif" title="GWD adaptation" caption="GWD adaptation" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
@@ -137,7 +123,7 @@ To give a intuitive illustration of the feature evolution during model training,
 
 <div class="l-page">
     <div class="col-lg mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/001_drda/feature_evolution.png" title="Feature Evolution" caption="Feature Evolution" class="img-fluid z-depth-0" %}
+        {% include figure.liquid loading="eager" path="assets/img/001_drda/feature_evolution.png" title="Feature Evolution" caption="Feature Evolution" class="img-fluid z-depth-1" %}
     </div>
 </div>
 
