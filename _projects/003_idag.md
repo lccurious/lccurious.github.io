@@ -1,16 +1,14 @@
 ---
 layout: distill
-title: Discriminative Radial Domain Adaptation
-description: >
-  IEEE Transactions on Image Processing 2023 
-img: assets/img/001_drda/motivation.png
+title: iDAG
+description: Invariant DAG Searching for Domain Generalization
+img: assets/img/003_idag/motivation.png
 importance: 1
 category: research
 tags:
   - Transfer Learning
   - Domain Adaptation
   - Low dimensional Structure
-related_publications: true
 date: 2023-01-01
 toc:
   sidebar: left
@@ -21,19 +19,19 @@ authors:
     affiliations:
       name: Zhejiang University
   - name: Jun Wen 
-    url: ""
+    url: "https://jungel2star.github.io/"
     affiliations:
       name: Harvard Medical School
   - name: Siheng Chen
-    url: ""
+    url: "https://siheng-chen.github.io/"
     affiliations:
       name: Shanghai Jiao Tong University
   - name: Linchao Zhu
-    url: ""
+    url: "https://ffmpbgrnn.github.io/"
     affiliations:
       name: Zhejiang University
   - name: Nenggan Zheng
-    url: ""
+    url: "https://person.zju.edu.cn/en/nengganzheng"
     affiliations:
       name: Zhejiang University
 ---

@@ -1,38 +1,34 @@
 ---
 layout: distill
-title: Discriminative Radial Domain Adaptation
-description: >
-  IEEE Transactions on Image Processing 2023 
+title: DRDA
+description: Discriminative Radial Domain Adaptation, IEEE Transactions on Image Processing 2023 
 img: assets/img/001_drda/motivation.png
-importance: 1
 category: research
-tags:
-  - Transfer Learning
-  - Domain Adaptation
-  - Low dimensional Structure
-related_publications: true
-horizontal: true
+tags: 
+  - transfer learning
+  - domain adaptation
+  - low-dimensional structure
 date: 2023-01-01
 
 authors:
   - name: Zenan Huang
-    url: "https://lccurious.github.io/about"
+    url: "https://lccurious.github.io/about/"
     affiliations:
       name: Zhejiang University
   - name: Jun Wen 
-    url: ""
+    url: "https://jungel2star.github.io/"
     affiliations:
       name: Harvard Medical School
   - name: Siheng Chen
-    url: ""
+    url: "https://siheng-chen.github.io/"
     affiliations:
       name: Shanghai Jiao Tong University
   - name: Linchao Zhu
-    url: ""
+    url: "https://ffmpbgrnn.github.io/"
     affiliations:
       name: Zhejiang University
   - name: Nenggan Zheng
-    url: ""
+    url: "https://person.zju.edu.cn/en/nengganzheng"
     affiliations:
       name: Zhejiang University
 
@@ -46,7 +42,6 @@ toc:
   - name: DRDA
   - name: Acknowledgements
 ---
-
 
 ## Abstract
 
@@ -143,4 +138,4 @@ To give a intuitive illustration of the feature evolution during model training,
 
 ## Acknowledgements
 
-Special thanks to [Weijie Liu](https://lccurious.github.io/projects/DRDA/) and [Changjian Shui](https://cjshui.github.io/) for their constructive suggestions.
+Special thanks to [Weijie Liu](https://cxxszz.github.io/) and [Changjian Shui](https://cjshui.github.io/) for their constructive suggestions.
