@@ -6,6 +6,7 @@ date: 2022-01-03 15:51:46
 tags:
  - Word
  - 排版
+thumbnail: assets/img/2022-01-03-Word-Tricks/give_me_an_equation.gif
 giscus_comments: true
 ---
 

@@ -8,6 +8,7 @@ tags:
  - 搜索引擎
  - 搜索技巧
  - 效率
+thumbnail: assets/img/2022-01-19-Search-Skills/title.png
 giscus_comments: true
 ---
 

@@ -7,6 +7,7 @@ tags:
 categories:
   - Machine Learning
 date: 2023-12-14 01:01:21
+thumbnail: assets/img/2023-12-14-Introduction-to-LLMs/GPTs-tree.png
 giscus_comments: true
 ---
 
