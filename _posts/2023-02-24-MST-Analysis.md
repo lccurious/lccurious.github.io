@@ -21,7 +21,7 @@ giscus_comments: true
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/bg.jpeg" title="图片来源：战斗细胞" class="img-fluid rounded z-depth-1" caption="图片来源：战斗细胞" %}
+        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/bg.jpeg" title="图片来源：战斗细胞" class="img-fluid rounded z-depth-0" caption="图片来源：战斗细胞" %}
     </div>
 </div>
 
@@ -31,7 +31,7 @@ giscus_comments: true
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/mst-motivation.png" title="MST 原理" class="img-fluid rounded z-depth-1" caption="MST 原理" %}
+        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/mst-motivation.png" title="MST 原理" class="img-fluid rounded z-depth-0" caption="MST 原理" %}
     </div>
 </div>
 a. 观测这个微观过程的设备结构，b. 刚开始因为温度不合适，分子之间不结合，加热之后它们就快速行动起来，并呈现出宏观的变化，c. 从侧面的荧光强度曲线可以观测到它们的结合强度
@@ -86,7 +86,7 @@ f(c)=\frac{c+c\_T+K\_d-\sqrt{\left(c+c\_{T} + K\_d\right)^2+4 c c\_T}}{2 c\_T}
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/fluorescence-region.png" title="fluorescence-region" class="img-fluid rounded z-depth-1" caption="fluorescence-region" %}
+        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/fluorescence-region.png" title="fluorescence-region" class="img-fluid rounded z-depth-0" caption="fluorescence-region" %}
     </div>
 </div>
 
@@ -94,7 +94,7 @@ f(c)=\frac{c+c\_T+K\_d-\sqrt{\left(c+c\_{T} + K\_d\right)^2+4 c c\_T}}{2 c\_T}
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/fluorescence-curve.png" title="fluorescence-curve" class="img-fluid rounded z-depth-1" caption="fluorescence-curve" %}
+        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/fluorescence-curve.png" title="fluorescence-curve" class="img-fluid rounded z-depth-0" caption="fluorescence-curve" %}
     </div>
 </div>
 
@@ -158,19 +158,16 @@ print(f"K_d: {res.x[0]}, F_unbound: {res.x[1]}, F_bound: {res.x[2]}")
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/receptor1.png" title="rl-1" class="img-fluid rounded z-depth-1" caption="rl-1" %}
+        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/receptor1.png" title="rl-1" class="img-fluid rounded z-depth-0" caption="rl-1" %}
+    </div>
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/receptor2.png" title="rl-2" class="img-fluid rounded z-depth-0" caption="rl-2" %}
     </div>
 </div>
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/receptor2.png" title="rl-2" class="img-fluid rounded z-depth-1" caption="rl-2" %}
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/response.png" title="response" class="img-fluid rounded z-depth-1" caption="response" %}
+        {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/response.png" title="response" class="img-fluid rounded z-depth-0" caption="response" %}
     </div>
 </div>
 

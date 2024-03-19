@@ -37,13 +37,15 @@ P(Z|X) = \frac{p(X|Z)p(Z)}{p(X)}=\frac{p(X|Z)p(Z)}{\int\_{Z}p(X,Z)}
 
 ## Jensen 不等式
 
-$$\begin{aligned}
+$$
+\begin{aligned}
 \log p(X) &=\log \int_{Z} p(X, Z) \\\\
 &=\log \int_{Z} p(X, Z) \frac{q(Z)}{q(Z)} \\\\
 &=\log \left(\mathbb{E}_{q}\left[\frac{p(X, Z)}{q(Z)}\right]\right) \\\\
 & \geq \mathbb{E}_{q}\left[\log \frac{p(X, Z)}{q(Z)}\right] \\\\
 &=\mathbb{E}_{q}[\log p(X, Z)]+H[Z]
-\end{aligned}$$
+\end{aligned}
+$$
 
 最后得到的也就是变分下界，我们也成为 ELBO。这里的$$q(Z)$$就是一个我们在变分贝叶斯中用来逼近真实的后验分布的$$p(Z\vert X)$$，在这里我们把它看成任意分布，求导仍然成立。
 
@@ -57,13 +59,15 @@ $$\begin{aligned}
 
 为了衡量 $$q(Z)$$ 和 $$p(Z\vert X)$$ 两个分布之间的近似程度，一个常用的度量就是 KL 散度。所以用于变分推断的 KL 散度也就有：
 
-$$\begin{aligned}
+$$
+\begin{aligned}
 K L[q(Z) \| p(Z \mid X)] &=\int_{Z} q(Z) \log \frac{q(Z)}{p(Z \mid X)} \\\\
 &=-\int_{Z} q(Z) \log \frac{p(Z \mid X)}{q(Z)} \\\\
 &=-\left(\int_{Z} q(Z) \log \frac{p(X, Z)}{q(Z)}-\int_{Z} q(Z) \log p(X)\right) \\\\
 &=-\int_{Z} q(Z) \log \frac{p(X, Z)}{q(Z)}+\log p(X) \int_{Z} q(Z) \\\\
 &=-L+\log p(X)
-\end{aligned}$$
+\end{aligned}
+$$
 
 其中 $$q(Z)$$ 需要使用归一化的方式进行限制，也就是 $$\int_{Z}q(Z)=1$$ ，重新写过最后就有：
 
