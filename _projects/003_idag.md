@@ -18,118 +18,118 @@ authors:
     url: "https://lccurious.github.io/about"
     affiliations:
       name: Zhejiang University
-  - name: Jun Wen 
-    url: "https://jungel2star.github.io/"
+  - name: Haobo Wang
+    url: "https://hbzju.github.io/"
     affiliations:
-      name: Harvard Medical School
-  - name: Siheng Chen
-    url: "https://siheng-chen.github.io/"
-    affiliations:
-      name: Shanghai Jiao Tong University
-  - name: Linchao Zhu
-    url: "https://ffmpbgrnn.github.io/"
+      name: Zhejiang University
+  - name: Junbo Zhao
+    url: "http://jakezhao.net/"
     affiliations:
       name: Zhejiang University
   - name: Nenggan Zheng
     url: "https://person.zju.edu.cn/en/nengganzheng"
     affiliations:
       name: Zhejiang University
+
+bibliography: 003_idag.bib
+
+toc:
+  - name: Abstract
+  - name: Motivation
+    subsections:
+      - name: Data-generating process
+      - name: Stable DAG for Domains
+  - name: iDAG
+    subsections:
+      - name: DAG
+      - name: Stable Feature Mask
 ---
 
 
 ## Abstract
 
-<div class="row">
-    <iframe src="{{ '/assets/plotly/001_drda/tetrahedron_animation.html' | relative_url }}" frameborder='0' scrolling='no' height="400px" width="100%" style="border: 1px dashed grey;"></iframe>
-</div>
-
-Domain adaptation methods reduce domain shift typically by learning domain-invariant features. Most existing methods are built on distribution matching, e.g., adversarial domain adaptation, which tends to corrupt feature discriminability. In this paper, we propose Discriminative Radial Domain Adaptation (DRDA) which bridges source and target domains via a shared radial structure. It’s motivated by the observation that as the model is trained to be progressively discriminative, features of different categories expand outwards in different directions, forming a radial structure. We show that transferring such an inherently discriminative structure would enable to enhance feature transferability and discriminability simultaneously. Speciﬁcally, we represent each domain with a global anchor and each category a local anchor to form a radial structure and reduce domain shift via structure matching. It consists of two parts, namely isometric transformation to align the structure globally and local reﬁnement to match each category. To enhance the discriminability of the structure, we further encourage samples to cluster close to the corresponding local anchors based on optimal-transport assignment. Extensively experimenting on multiple benchmarks, our method is shown to consistently outperforms state-of-the-art approaches on varied tasks, including the typical unsupervised domain adaptation, multi-source domain adaptation, domainagnostic learning, and domain generalization.
+Existing machine learning (ML) models are often fragile in open environments because the data distribution frequently shifts. To address this problem, domain generalization (DG) aims to explore underlying invariant patterns for stable prediction across domains. In this work, we first characterize that this failure of conventional ML models in DG attributes to an inadequate identification of causal structures. We further propose a novel invariant Directed Acyclic Graph (dubbed iDAG) searching framework that attains an invariant graphical relation as the proxy to the causality structure from the intrinsic data-generating process. To enable tractable computation, iDAG solves a constrained optimization objective built on a set of representative class-conditional prototypes. Additionally, we integrate a hierarchical contrastive learning module, which poses a strong effect of clustering, for enhanced prototypes as well as stabler prediction. Extensive experiments on the synthetic and real-world benchmarks demonstrate that iDAG outperforms the state-of-the-art approaches, verifying the superiority of causal structure identification for DG.
 
 ## Motivation
 
-### Feature Discriminability
-
-When using the linear classifier formulation, the likelihood of $$i$$-th sample belonging to $$k$$-th category is:
-
-$$
-\begin{equation}
-p_{ik}\propto \exp(\boldsymbol{W}^{\top}_{k}\boldsymbol{z}_{i}+b)
-\end{equation}
-$$
-
-which means that the feature of each category expands outwards in different directions:
-
-$$
-\begin{equation}
-p_{ik}\propto \exp(\|\boldsymbol{W}_{k}\| \|\boldsymbol{z}_{i}\|\cos(\boldsymbol{W}_{k},
-                \boldsymbol{z}_{i})+b)
-\end{equation}
-$$
-
-thereby, for enhancing the discriminability of the feature, model is trained to be progressively expand the feature of each category outwards in different directions:
-
-
-Hereafter, a radial structure is formed, which is inherently discriminative.
-
-We can naturally model the latent sketches of the two domain by just using their corresponding domain centroids and category centroids.
-
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/001_drda/radial_expansion.gif" title="Radial Expansion" caption="Radial Expansion" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/001_drda/drda_gwd.gif" title="GWD adaptation" caption="GWD adaptation" class="img-fluid rounded z-depth-1" %}
+    <div class="col-sm-8 mt-3 mt-md-0 mx-auto">
+      {% include figure.liquid loading="eager" path="assets/img/003_idag/motivation.png" title="Causal structure of visual data" class="img-fluid" %}
     </div>
 </div>
+<div class="caption">
+Multiple causally related factors may be present in visual data, and these factors are structurally organized together and present a higher level of semantics. However, due to domain diversity, the learned color factors in one domain can be useless in others; the spurious factors that dominate classification in one domain can be misleading in others. iDAG seeks to estimate the DAG which represents the directed causal relations between factors.
+</div>
 
-### Global Alignment
+### Data-generating process
 
-Consider there is a global transformation $$\mathcal{T}(\cdot): \mathcal{V} \mapsto \mathcal{V}$$.
+**Domain Generalization**. The goal of domain/out-ofdistribution generalization is to explore the invariant pattern from multi-domain data to mitigate potential domain shifts when testing.
 
-### Local Finetune
+There is a group of injective data-generating functions $$g^{e}_{y}(\cdot), g^{e}_{s}(\cdot), g^{e}_{r}(\cdot)$$, or each environment, the underlying factors of observational data follow the rule:
+$$
+\begin{equation}
+  y^{e}=g_{y}(\boldsymbol{z}^{e}_{y})+\epsilon_{y},\quad \boldsymbol{z}^{e}_{s}=g_{s}(y^{e})+\boldsymbol{\epsilon}^{e}_{s},\quad \boldsymbol{z}^{e}_{r}=\boldsymbol{\epsilon}^{e}_{r},
+\end{equation}
+$$
+where $$\boldsymbol{z}^{e}_{y}$$ denotes invariant features, $$\boldsymbol{z}^{e}_{s}$$ denotes the easier-to-fit spurious features, $$\boldsymbol{z}^{e}_{r}$$ denotes the domain-private features, $$\boldsymbol{\epsilon}^{e}_{y}$$, $$\boldsymbol{\epsilon}^{e}_{s}$$, $$\epsilon^{e}_{r}$$ are mutually independent exogenous noises.
 
-Consider the follow shapes, which have different details. More details about the optimal transport can be found in optimal transport and Gromov-Wasserstein Distance:
+### Stable DAG for Domains
+
+For the sake of notational simplicity, we will use $$v_{i}$$ to uniformly represent feature element $$z_{i}$$ and label $$y$$. Thereafter, we can define a structural causal model (SCM) on the whole collection of causal factors $$\mathcal{V}=\{v_{i}\}^{d}_{i=1}=\{z_{i}\}^{d}_{i=1}\cup \{y\}$$.
+
+> **Definition 1.** (Domain Invariant DAG). A domain-specific SCM $$\mathcal{M}^{e}$$ on a set of nodes $$\boldsymbol{V}^{e}$$ with joint distribution $$p(\boldsymbol{v}^{e})$$, according to Markov condition, it can be factorized by:
+> $$
+> \begin{equation}
+> p_{\mathcal{M}^{e}}=\prod_{i}p_{\mathcal{M}^{e}}(v^{e}_{i} | \textbf{Pa}^{e}_{i})
+> \end{equation}
+> $$
+
+Once the causal graph is reconstructed, the relations/factors of the task is determinined.
+(Please see the paper for details.)
+
+## iDAG
+
+<div class="l-body-outset">
+    <div class="col-sm mt-3 mt-md-0 mx-auto">
+      {% include figure.liquid loading="eager" path="assets/img/003_idag/02-framework.png" title="iDAG" class="img-fluid" %}
+    </div>
+</div>
+<div class="caption">
+The features are used to update the domain-specific prototypes. The prototypes concatenated with labels are then used to optimize a Directed Acyclic Graph. The shaded green regime on DAG indicates the factors have total effects on label y, and the invariant features corresponding to these factors are used for final prediction.
+</div>
+
+### DAG
+
+Let $$\boldsymbol{V} \in \mathbb{R}^{d\times n}$$ be the values matrix of a set of vertices $$\mathcal{V}$$, and $$\boldsymbol{v} \sim \mathcal{N}(0, \boldsymbol{\Sigma})$$ (without the loss of generality, we assume the values are preprocessed by a simple bias term with zero means). The linear DAG model is given by:
 
 $$
 \begin{equation}
-GW^{2}_{2}(c_{s}, c_{t}, \mu, \nu) = \min_{\pi \in \Pi(\mathcal{V}^{s},\mathcal{V}^{t})} J(c_{s},
-              c_{t}, \pi)
+\boldsymbol{V} = \boldsymbol{A}^{e} \boldsymbol{V} + \boldsymbol{N}
 \end{equation}
 $$
 
-where
+Therefore, we can find the causal graph by exploring the joint distribution of $$\boldsymbol{V}$$:
 
 $$
 \begin{equation}
-J(c_{s}, c_{t}, \pi) = \sum_{i,j,k,l}|c_{s}(\boldsymbol{v}^{s}_{i},
-              \boldsymbol{v}^{s}_{j})-c_{t}(\boldsymbol{v}^{t}_{k}, \boldsymbol{v}^{t}_{l})|\pi_{i,j}\pi_{k,l}
+\mathcal{L}_{\rm rec}(\boldsymbol{A}^{e};\boldsymbol{\Sigma})=\frac{1}{2}\mathrm{Tr} \left((\boldsymbol{I} - \boldsymbol{A}^{e})^{\top}\boldsymbol{\Sigma}(\boldsymbol{I} - \boldsymbol{A}^{e})\right).
 \end{equation}
 $$
 
-By minimizing the Gromov-Wasserstein distance, we can finetnue the two shapes to be similar.
+The optimization problem is:
+$$
+\begin{equation}
+\min_{\boldsymbol{A}^{e}} \mathcal{L}_{\rm rec}(\boldsymbol{A}^{e};\boldsymbol{\Sigma}) \quad \text{s.t.} \quad h(\boldsymbol{A}^{e})= e^{\boldsymbol{A}^{e}\odot \boldsymbol{A}^{e}} = 0 ~ (\boldsymbol{A}^{e} \in \mathrm{DAG})
+\end{equation}
+$$
 
-Please see the paper for details.
+### Stable Feature Mask
 
-## DRDA
+To obtain a more stable prediction, it is required to collect not only the parent factors but also the ancestral factors of $$y$$ in the DAG. Thus, we define invariant features by including all direct and indirect causal factors. Follow the idea of the fact that the positivity of the $$(i,j)$$ element of the $$k$$-th power of $$\boldsymbol{A}$$ indicates the existence of a length-$$k$$ path $$v_{i}\to \cdots \to v_{j}$$, we derive the $$\boldsymbol{P}^{\text{tol}}$$ to analogy the directed pairwise total effects,
+$$
+\begin{equation}
+\boldsymbol{P}^{\text{tol}}=\left[\sum^{\infty}_{k=0}\frac{1}{k!}(\boldsymbol{A}\odot \boldsymbol{A})^{k} \right]=e^{\boldsymbol{A}\odot \boldsymbol{A}}
+\end{equation}
+$$
 
-The DRDA framework is a straightforward extension to Nerfies. The key difference is that the template NeRF is conditioned on additional higher-dimensional coordinates, where the higher dimensional coordinates are given by an "ambient slicing surface" which can be thought of as a higher dimensional analog to the deformation field.
-
-<div class="l-page">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/001_drda/DRDA-Framework.png" title="Framework" caption="DRDA handles domain shifts by modeling a low-dimensional structure in high-dimensional space, thereby producing more reliable alignment on the different domains. (rotate and translate the target structure to align the source structure)" class="img-fluid" %}
-    </div>
-</div>
-
-
-To give a intuitive illustration of the feature evolution during model training, we built a simpliﬁed LetNet while reducing the bottleneck dimension to 2 and training it with the task MNIST→USPS.
-
-
-<div class="l-page">
-    <div class="col-lg mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/001_drda/feature_evolution.png" title="Feature Evolution" caption="Feature Evolution" class="img-fluid z-depth-1" %}
-    </div>
-</div>
-
-## Acknowledgements
-
-Special thanks to [Weijie Liu](https://lccurious.github.io/projects/DRDA/) and [Changjian Shui](https://cjshui.github.io/) for their constructive suggestions.
+Then, the invariant features $$\boldsymbol{z}^{e}_{y}:=\boldsymbol{z}^{e}\odot [\boldsymbol{P}^{\text{tol}}]^{\top}_{d+1,1:d}\in\mathbb{R}^{d}$$ contains all the direct and indirect causal features of $$y$$.
