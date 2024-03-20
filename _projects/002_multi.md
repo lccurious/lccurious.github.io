@@ -76,7 +76,7 @@ $$
 $$
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
+    <div class="col-lg-10 mt-3 mt-md-0 mx-auto">
       {% include figure.liquid loading="eager" path="assets/img/002_multi/problem_formulation.png" title="Problem formulation" caption="" class="img-fluid" %}
     </div>
 </div>

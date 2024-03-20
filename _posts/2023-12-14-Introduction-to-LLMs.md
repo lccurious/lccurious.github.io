@@ -9,12 +9,24 @@ categories:
 date: 2023-12-14 01:01:21
 thumbnail: assets/img/2023-12-14-Introduction-to-LLMs/GPTs-tree.png
 giscus_comments: true
+
+_styles: >
+  .row p {
+    mjx-container[jax="CHTML"][display="true"] {
+      display: unset;
+    }
+  }
+  .caption {
+    mjx-container[jax="CHTML"][display="true"] {
+      display: unset;
+    }
+  }
 ---
 
 准确地说这里是指 GPT，OpenAI 团队也发布了一篇简短的文章用于解释这个生成式预训练 Transformer[^gpt]。
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
+    <div class="col-lg-10 mt-3 mt-md-0 mx-auto">
         {% include figure.liquid loading="eager" path="assets/img/2023-12-14-Introduction-to-LLMs/GPTs-tree.png" title="GPTs Tree" class="img-fluid rounded z-depth-1" caption="GPTs Tree" %}
     </div>
 </div>
@@ -36,19 +48,12 @@ giscus_comments: true
 </div>
 
 所以后来除了 OpenAI 团队以外，很多其他团队也发现了随着模型规模的增加，Decoder-Only 的架构确实能够非常好地完成任务[^zhihu]，也有着更高的上限和多样性。 
-
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2023-12-14-Introduction-to-LLMs/GPTs-tree.png" title="GPTs Tree" class="img-fluid rounded z-depth-1" caption="GPTs Tree" %}
-    </div>
-</div>
-
 目前的主流 GPT 系列是以 Transformer [Vaswani et al., 2017](https://proceedings.neurips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html) 作为基本模块进行组合实现的。尽管它们都遵从类似的架构形式，但是也还是有可能使用其他架构的模块进行组装。例如 RetNet [Sun et al., 2023](http://arxiv.org/abs/2307.08621) 提出针对 Transformer 的三种改进，降低模型的计算开销并提升推理阶段的并行性能。RWKV [Peng et al., 2023](http://arxiv.org/abs/2305.13048) 也是一种针对 Transformer 的改进。
 
 ### 关键模块
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
+    <div class="col-lg-8 mt-3 mt-md-0 mx-auto">
         {% include figure.liquid loading="eager" path="assets/img/2023-12-14-Introduction-to-LLMs/GPTs-modules.png" title="GPTs modules" class="img-fluid rounded z-depth-1" caption="GPTs modules" %}
     </div>
 </div>
@@ -145,18 +150,17 @@ DeepMind 的研究表示模型即使没有针对压缩任务进行特别设计�
 5. 在 $$[0.322, 0.341]$$ 这个区间内任意取一个小数即可，因为这个编码肯定是小数，所以只要用01编码小数点后的数字即可，图中示意的编码即为 `b0101010` 
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
+    <div class="col-sm-4 mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="assets/img/2023-12-14-Introduction-to-LLMs/arithmetic_algorithm.png" title="Wiki arithmetic algorithm" class="img-fluid rounded z-depth-1" caption="Wiki arithmetic algorithm" %}
     </div>
+    <div class="col-sm-8 mt-3 mt-md-0">
+        <p>算数编码的原理与哈夫曼编码类似，一个长串最终会被映射到某个01字符串上，算数编码的理论极限更加接近于香农熵的极限：</p>
+        <p>\begin{equation}
+        H=-\sum^{N}_{i=1}P(i)\log_{b}P(i)
+        \end{equation}</p>
+        <p>如果 $$b=2$$，熵的单位为bit，如果 $$b=e$$，熵的单位为 奈特。</p>
+    </div>
 </div>
-
-算数编码的原理与哈夫曼编码类似，一个长串最终会被映射到某个01字符串上，算数编码的理论极限更加接近于香农熵的极限：
-
-\begin{equation}
-H=-\sum^{N}\_{i=1}P(i)\log\_{b}P(i)
-\end{equation}
-
-如果 $$b=2$$，熵的单位为bit，如果 $$b=e$$，熵的单位为 奈特。
 
 在算数编码的流程开始时，需要所有基本字符对应的边缘概率，这个边缘概率反应了每个字符在这个场景中的统计概率。对于纯粹的文件压缩任务而言，这可以通过先读一遍文件所有的信息来获取。但是对于通用压缩的模型而言，它得掌握全宇宙中每个字符对应的基本出现概率。这显然无法做到，所以只能通过近似的方式来做。这个提升这个近似的过程其实就与我们的模型训练过程对应：
 

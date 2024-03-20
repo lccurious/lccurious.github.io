@@ -81,10 +81,16 @@ We can naturally model the latent sketches of the two domain by just using their
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/001_drda/radial_expansion.gif" title="Radial Expansion" caption="Radial Expansion" class="img-fluid rounded z-depth-0" %}
+        {% include figure.liquid loading="eager" path="assets/img/001_drda/radial_expansion.gif" class="img-fluid rounded z-depth-0" %}
+        <div class="caption">
+          <p>Radial Expansion</p>
+        </div>
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/001_drda/drda_gwd.gif" title="GWD adaptation" caption="GWD adaptation" class="img-fluid rounded z-depth-0" %}
+        {% include figure.liquid loading="eager" path="assets/img/001_drda/drda_gwd.gif" class="img-fluid rounded z-depth-0" %}
+        <div class="caption">
+          <p>GWD adaptation</p>
+        </div>
     </div>
 </div>
 
@@ -122,7 +128,10 @@ The DRDA framework is a straightforward extension to Nerfies. The key difference
 
 <div class="l-page">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/001_drda/DRDA-Framework.png" title="Framework" caption="DRDA handles domain shifts by modeling a low-dimensional structure in high-dimensional space, thereby producing more reliable alignment on the different domains. (rotate and translate the target structure to align the source structure)" class="img-fluid" %}
+        {% include figure.liquid loading="eager" path="assets/img/001_drda/DRDA-Framework.png" class="img-fluid" %}
+    </div>
+    <div class="caption">
+    <p>DRDA handles domain shifts by modeling a low-dimensional structure in high-dimensional space, thereby producing more reliable alignment on the different domains. (rotate and translate the target structure to align the source structure)</p>
     </div>
 </div>
 
@@ -132,7 +141,10 @@ To give a intuitive illustration of the feature evolution during model training,
 
 <div class="l-page">
     <div class="col-lg mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/001_drda/feature_evolution.png" title="Feature Evolution" caption="Feature Evolution" class="img-fluid z-depth-0" %}
+        {% include figure.liquid loading="eager" path="assets/img/001_drda/feature_evolution.png" class="img-fluid z-depth-0" %}
+    </div>
+    <div class="caption">
+    <p>Feature Evolution</p>
     </div>
 </div>
 
