@@ -96,5 +96,5 @@ $$
 
 [^1]: <https://en.wikipedia.org/wiki/Prior_probability>
 [^2]: <https://en.wikipedia.org/wiki/Posterior_probability>
-[^3]: 似然性是用于在已知某些观测所得到的结果时，对有关食物的性质进行估计，就像是条件概率的逆反，从我们根据什么条件得出某些事件发生概率到根据某些事件的频率推断出背后的证据来。参见：<https://en.wikipedia.org/wiki/Likelihood_function>
+[^3]: 似然性是用于在已知某些观测所得到的结果时，对有关食物的性质进行估计，就像是条件概率的逆反，从我们根据什么条件得出某些事件发生概率到根据某些事件的频率推断出背后的证据来。参见： <https://en.wikipedia.org/wiki/Likelihood_function>
 [^4]: 就是一些严格的公式,给出任意的自变量就可以求出其因变量,也就是问题的解。他人可以利用这些公式计算各自的问题。所谓的解析解是一种包含：分式、三角函数、指数、对数甚至无限级数等基本函数的解的形式。用来求得解析解的方法称为解析法〈analytic techniques、analytic methods〉，解析法即是常见的微积分技巧，例如分离变量法等。解析解为一封闭形式〈closed-form〉的函数，因此对任一独立变量，我们皆可将其带入解析函数求得正确的相依变量。因此，解析解也被称为闭式解（closed-form solution）。
