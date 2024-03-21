@@ -2,7 +2,7 @@
 <span class="kn">import</span> <span class="n">MSTProcess</span> <span class="k">as</span> <span class="n">MST</span>
 <span class="kn">from</span> <span class="n">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span><span class="p">,</span> <span class="n">minimize</span>
 
-<span class="c1"># 导入MST实验数据 
+<span class="c1"># 导入MST实验数据
 </span><span class="n">MOCfile</span> <span class="o">=</span> <span class="n">MST</span><span class="p">.</span><span class="nf">openMOCFile</span><span class="p">(</span><span class="sh">'</span><span class="s">../data/xxxx.moc</span><span class="sh">'</span><span class="p">)</span>
 </code></pre></div></div> <p>然后定义结合比例公式：</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">K_d_model</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">K_d</span><span class="p">,</span> <span class="n">F_unbound</span><span class="p">,</span> <span class="n">F_bound</span><span class="p">,</span> <span class="n">c_T</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">K_d</span><span class="p">):</span>

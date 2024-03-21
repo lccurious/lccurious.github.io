@@ -245,7 +245,7 @@
         <span class="nf">glutMotionFunc</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">handle_mouse_move</span><span class="p">)</span>
         <span class="nf">glutKeyboardFunc</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">handle_keystroke</span><span class="p">)</span>
         <span class="nf">glutSpecialFunc</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">handle_keystroke</span><span class="p">)</span>
-</code></pre></div></div> <h3 id="操作系统回调函数">操作系统回调函数</h3> <p>为了有意义地解释用户输入，我们需要结合鼠标位置，鼠标按钮和键盘的知识。 因为将用户输入解释为有意义的动作需要很多代码行，所以我们将它封装在一个独立的类中，远离主代码路径。 <code class="language-plaintext highlighter-rouge">Interaction</code>类隐藏了与代码库其余部分无关的复杂性，并将操作系统事件转换为应用程序级事件。</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># class Interaction 
+</code></pre></div></div> <h3 id="操作系统回调函数">操作系统回调函数</h3> <p>为了有意义地解释用户输入，我们需要结合鼠标位置，鼠标按钮和键盘的知识。 因为将用户输入解释为有意义的动作需要很多代码行，所以我们将它封装在一个独立的类中，远离主代码路径。 <code class="language-plaintext highlighter-rouge">Interaction</code>类隐藏了与代码库其余部分无关的复杂性，并将操作系统事件转换为应用程序级事件。</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># class Interaction
 </span>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sh">"""</span><span class="s"> translate the camera </span><span class="sh">"""</span>
         <span class="n">self</span><span class="p">.</span><span class="n">translation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span>
@@ -319,12 +319,12 @@
 </code></pre></div></div> <p>这个应用程序级回调系统抽象了系统其余部分了解操作系统输入的需求。 每个应用程序级别的回调代表了应用程序中的有意义的请求。 <code class="language-plaintext highlighter-rouge">Interaction</code>类充当操作系统事件和应用程序级事件之间的转换器。 这意味着如果我们决定将建模器移植到除GLUT之外的另一个工具包中，我们只需要用一个将新工具箱的输入转换为同一组有意义的应用级回调的类来替换<code class="language-plaintext highlighter-rouge">Interaction</code>类。 我们在下表中使用回调和参数</p> <table> <thead> <tr> <th style="text-align: left">回调函数</th> <th style="text-align: left">参数</th> <th style="text-align: left">作用</th> </tr> </thead> <tbody> <tr> <td style="text-align: left">pick</td> <td style="text-align: left">x:number, y:number</td> <td style="text-align: left">Selects the node at the mouse pointer location.</td> </tr> <tr> <td style="text-align: left">move</td> <td style="text-align: left">x:number, y:number</td> <td style="text-align: left">Moves the currently selected node to the mouse pointer location.</td> </tr> <tr> <td style="text-align: left">place</td> <td style="text-align: left">shape:string, x:number, y:number</td> <td style="text-align: left">Places a shape of the specified type at the mouse pointer location.</td> </tr> <tr> <td style="text-align: left">rotate_color</td> <td style="text-align: left">forward:boolean</td> <td style="text-align: left">Rotates the color of the currently selected node through the list of colors, forwards or backwards.</td> </tr> <tr> <td style="text-align: left">scale</td> <td style="text-align: left">up:boolean</td> <td style="text-align: left">Scales the currently selected node up or down, according to parameter.</td> </tr> </tbody> </table> <p>这个简单的回调系统提供了我们在这个项目中需要的所有功能。 然而，在构建3D建模器中，用户界面对象通常是动态创建和销毁的。 在这种情况下，我们需要一个更复杂的事件监听系统，其中对象既可以注册也可以取消注册事件回调。</p> <h2 id="接入场景">接入场景</h2> <p>通过我们的回调机制，我们可以从<code class="language-plaintext highlighter-rouge">Interaction</code>类接收关于用户输入事件的有意义的信息。 我们准备将这些操作应用到场景中。</p> <h3 id="移动场景">移动场景</h3> <p>在这个项目中，我们通过变换场景来完成相机运动。换句话说，相机处于固定位置，用户输入移动场景而不是移动相机。相机放置在\([0, 0, -15]\)并且对着世界空间的中心（或者，我们可以改变透视矩阵来移动相机而不是场景。 这个设计决定对其余的项目影响很小。）重新浏览<code class="language-plaintext highlighter-rouge">Viewer</code>中的<code class="language-plaintext highlighter-rouge">render</code>函数，我们看到<code class="language-plaintext highlighter-rouge">Interaction</code>状态用于在渲染场景之前转换OpenGL矩阵状态。 有两种与<code class="language-plaintext highlighter-rouge">Scene</code>交互的类型：旋转和平移。</p> <h3 id="用一个轨迹球旋转场景">用一个轨迹球旋转场景</h3> <p>我们通过使用轨迹球算法来完成场景的旋转。 轨迹球是用于三维操纵场景的直观界面。 从概念上讲，轨迹球界面的功能就好像场景在透明球体内一样。 将一只手放在地球表面并推动它旋转地球。 同样，单击鼠标右键并在屏幕上移动它可以旋转场景。你可以在<a href="http://www.opengl.org/wiki/Object_Mouse_Trackball" rel="external nofollow noopener" target="_blank">OpenGL Wiki</a>中找到更多关于轨迹球理论的信息。 在这个项目中，我们使用作为<a href="https://code.google.com/p/glumpy/source/browse/glumpy/trackball.py" rel="external nofollow noopener" target="_blank">Glumpy</a>的一部分提供的轨迹球实施。</p> <p>我们使用<code class="language-plaintext highlighter-rouge">drag_to</code>函数与轨迹球进行交互，将鼠标的当前位置作为起始位置，并将鼠标位置的变化作为参数。</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">self</span><span class="p">.</span><span class="n">trackball</span><span class="p">.</span><span class="nf">drag_to</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">mouse_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">self</span><span class="p">.</span><span class="n">mouse_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
 </code></pre></div></div> <p>当渲染场景时，生成的旋转矩阵是<code class="language-plaintext highlighter-rouge">Viewer</code>中的<code class="language-plaintext highlighter-rouge">trackball.matrix</code>。</p> <h3 id="补充四元数">补充：四元数</h3> <p>旋转有两种传统的方式表示。 第一个是围绕每个轴的旋转值; 你可以将它存储为浮点数的三元组。 旋转的另一种常见表示是四元数，由具有\(x\)，\(y\)和\(z\)坐标的矢量以及\(w\)旋转组成的元素。 使用四元数对于每轴旋转有许多好处; 特别是它们在数值上更稳定。 使用四元数可以避免类似万向节锁的问题。 四元数的缺点是它们不太直观，难以理解。 如果你很勇敢并想了解更多关于四元数的内容，可以参考<a href="http://3dgep.com/?p=1815" rel="external nofollow noopener" target="_blank">这个解释</a>。</p> <p>轨迹球的实现使通过在内部使用四元数存储场景的旋转来避免万向节锁定。 幸运的是，我们不需要直接使用四元数，因为轨迹球上的矩阵成员会将旋转转换为矩阵。</p> <h3 id="场景转换">场景转换</h3> <p>场景转移（即滑动场景）比旋转场景要简单得多。 提供随鼠标滚轮和鼠标左键一起的场景转换。 鼠标左键在\(x\)和\(y\)坐标中转换场景。 滚动鼠标滚轮可以将场景转换为\(z\)坐标（朝向或远离摄像机）。 <code class="language-plaintext highlighter-rouge">Interaction</code>类存储当前的场景转换并使用平移功能修改它。 查看器在渲染过程中检索交互摄像头位置以用于<code class="language-plaintext highlighter-rouge">glTranslated</code>调用。</p> <h3 id="选择场景对象">选择场景对象</h3> <p>现在，用户可以移动和旋转整个场景以获得他们想要的视角，下一步是允许用户修改和操作构成场景的对象。</p> <p>为了让用户操作场景中的对象，他们需要能够选择场景中的对象。</p> <p>要选择一个项目，我们使用当前投影矩阵生成代表鼠标点击的光线，就好像鼠标指针将射线投射到场景中一样。 所选节点是射线与射线相交的最近节点。 因此，拾取问题简化为在光线和场景中的节点之间找到交点的问题。 所以问题是：我们如何判断光线是否碰到节点？</p> <p>准确计算光线是否与节点相交是一个在代码复杂性和性能方面具有挑战性的问题。 我们需要为每种类型的基元编写一个光线对象交叉检查。 对于具有许多面的复杂网格几何形状的场景节点，计算精确的光线对象相交将需要测试每个面的光线，并且计算起来会有很高的代价。</p> <p>为了保持代码紧凑和性能合理，我们使用简单，快速的近似值进行光线对象相交测试。 在我们的实现中，每个节点都保存一个轴对齐的边界框（AABB），它是节点占据的空间的近似值。 为了测试光线是否与节点相交，我们测试光线是否与节点的AABB相交。 这种实现意味着所有节点共享相同的代码进行相交测试，对于所有节点类型而言这意味着性能开销都是固定的小的。</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># class Viewer
 </span>    <span class="k">def</span> <span class="nf">get_ray</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="sh">"""</span><span class="s"> 
+        <span class="sh">"""</span><span class="s">
         Generate a ray beginning at the near plane, in the direction that
-        the x, y coordinates are facing 
+        the x, y coordinates are facing
 
-        Consumes: x, y coordinates of mouse on screen 
-        Return: start, direction of the ray 
+        Consumes: x, y coordinates of mouse on screen
+        Return: start, direction of the ray
         </span><span class="sh">"""</span>
         <span class="n">self</span><span class="p">.</span><span class="nf">init_view</span><span class="p">()</span>
 
@@ -350,7 +350,7 @@
         <span class="sh">"""</span><span class="s">
         Execute selection.
 
-        start, direction describe a Ray. 
+        start, direction describe a Ray.
         mat is the inverse of the current modelview matrix for the scene.
         </span><span class="sh">"""</span>
         <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">selected_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
@@ -373,17 +373,17 @@
             <span class="n">self</span><span class="p">.</span><span class="n">selected_node</span> <span class="o">=</span> <span class="n">closest_node</span>
 </code></pre></div></div> <p>在<code class="language-plaintext highlighter-rouge">Node</code>类中，<code class="language-plaintext highlighter-rouge">pick</code>函数测试光线是否与节点的轴对齐边界框相交。 如果选择了节点，则选择功能切换节点的选定状态。 请注意，AABB的<code class="language-plaintext highlighter-rouge">ray_hit</code>函数接受框的坐标空间和光线坐标空间之间的变换矩阵作为第三个参数。 在进行<code class="language-plaintext highlighter-rouge">ray_hit</code>函数调用之前，每个节点都将自己的变换应用于矩阵。</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># class Node
 </span>    <span class="k">def</span> <span class="nf">pick</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">mat</span><span class="p">):</span>
-        <span class="sh">"""</span><span class="s"> 
+        <span class="sh">"""</span><span class="s">
         Return whether or not the ray hits the object
 
-        Consume:  
+        Consume:
         start, direction form the ray to check
-        mat is the modelview matrix to transform the ray by 
+        mat is the modelview matrix to transform the ray by
         </span><span class="sh">"""</span>
 
         <span class="c1"># transform the modelview matrix by the current translation
 </span>        <span class="n">newmat</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span>
-            <span class="n">numpy</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">translation_matrix</span><span class="p">),</span> 
+            <span class="n">numpy</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">translation_matrix</span><span class="p">),</span>
             <span class="n">numpy</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">inv</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">scaling_matrix</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">aabb</span><span class="p">.</span><span class="nf">ray_hit</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">newmat</span><span class="p">)</span>
@@ -402,9 +402,9 @@
         <span class="n">self</span><span class="p">.</span><span class="n">scene</span><span class="p">.</span><span class="nf">move_selected</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">inverseModelView</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">rotate_color</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">forward</span><span class="p">):</span>
-        <span class="sh">"""</span><span class="s"> 
-        Rotate the color of the selected Node. 
-        Boolean </span><span class="sh">'</span><span class="s">forward</span><span class="sh">'</span><span class="s"> indicates direction of rotation. 
+        <span class="sh">"""</span><span class="s">
+        Rotate the color of the selected Node.
+        Boolean </span><span class="sh">'</span><span class="s">forward</span><span class="sh">'</span><span class="s"> indicates direction of rotation.
         </span><span class="sh">"""</span>
         <span class="n">self</span><span class="p">.</span><span class="n">scene</span><span class="p">.</span><span class="nf">rotate_selected_color</span><span class="p">(</span><span class="n">forward</span><span class="p">)</span>
 
@@ -440,7 +440,7 @@
 
         Consume:
         start, direction describes the Ray to move to
-        mat is the modelview matrix for the scene 
+        mat is the modelview matrix for the scene
         </span><span class="sh">"""</span>
         <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">selected_node</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span>
 
@@ -463,7 +463,7 @@
 </code></pre></div></div> <p>请注意，新位置和旧位置是在相机坐标空间中定义的。 我们需要在世界坐标空间中定义我们的平移。 因此，我们通过乘以模型视图矩阵的逆，从摄像机空间平移到世界空间。</p> <p>与缩放一样，每个节点存储代表其平移的矩阵。平移矩阵如下所示：</p> <p>\begin{equation} \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; x \\\<br> 0 &amp; 1 &amp; 0 &amp; y \\\<br> 0 &amp; 0 &amp; 1 &amp; z \\\<br> 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \end{equation}</p> <p>当节点被平移时，我们为当前平移构建一个新的平移矩阵，并将其乘以节点的平移矩阵以便在渲染过程中使用。</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># class Node
 </span>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="n">self</span><span class="p">.</span><span class="n">translation_matrix</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span>
-            <span class="n">self</span><span class="p">.</span><span class="n">translation_matrix</span><span class="p">,</span> 
+            <span class="n">self</span><span class="p">.</span><span class="n">translation_matrix</span><span class="p">,</span>
             <span class="nf">translation</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]))</span>
 </code></pre></div></div> <p>平移函数返回给定表示x，y和z平移距离的列表的平移矩阵。</p> <h3 id="放置节点">放置节点</h3> <p>节点布局使用拾取和平移技术。 我们对当前鼠标位置使用相同的光线计算来确定放置节点的位置。</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># class Viewer
 </span>    <span class="k">def</span> <span class="nf">place</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -478,7 +478,7 @@
         Consume:
         shape the shape to add
         start, direction describes the Ray to move to
-        inv_modelview is the inverse modelview matrix for the scene 
+        inv_modelview is the inverse modelview matrix for the scene
         </span><span class="sh">"""</span>
         <span class="n">new_node</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="sh">'</span><span class="s">sphere</span><span class="sh">'</span><span class="p">:</span> <span class="n">new_node</span> <span class="o">=</span> <span class="nc">Sphere</span><span class="p">()</span>

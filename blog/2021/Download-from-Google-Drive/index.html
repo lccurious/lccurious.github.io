@@ -23,21 +23,21 @@ unzip <span class="nt">-q</span> <span class="k">${</span><span class="nv">filen
 curl <span class="nt">-Lb</span> ./cookie <span class="s2">"https://drive.google.com/uc?export=download&amp;confirm=</span><span class="sb">`</span><span class="nb">awk</span> <span class="s1">'/download/ {print $$NF}'</span> ./cookie<span class="sb">`</span><span class="s2">&amp;id=</span><span class="nv">$$</span><span class="s2">{fileid}"</span> <span class="nt">-o</span> <span class="k">${</span><span class="nv">filename</span><span class="k">}</span>
 <span class="nb">rm</span> ./cookie
 </code></pre></div></div> <p>整理成脚本：</p> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-  
+
 <span class="c"># cd scratch place</span>
 <span class="nb">cd </span>scratch/
-  
+
 <span class="c"># Download zip dataset from Google Drive</span>
 <span class="nv">filename</span><span class="o">=</span><span class="s1">'OfficeHomeDataset_10072016.zip'</span>
 <span class="nv">fileid</span><span class="o">=</span><span class="s1">'0B81rNlvomiwed0V1YUxQdC1uOTg'</span>
 curl <span class="nt">-c</span> ./cookie <span class="nt">-s</span> <span class="nt">-L</span> <span class="s2">"https://drive.google.com/uc?export=download&amp;id=</span><span class="k">${</span><span class="nv">fileid</span><span class="k">}</span><span class="s2">"</span> <span class="o">&gt;</span> /dev/null
 curl <span class="nt">-Lb</span> ./cookie <span class="s2">"https://drive.google.com/uc?export=download&amp;confirm=</span><span class="sb">`</span><span class="nb">awk</span> <span class="s1">'/download/ {print $$NF}'</span> ./cookie<span class="sb">`</span><span class="s2">&amp;id=</span><span class="nv">$$</span><span class="s2">{fileid}"</span> <span class="nt">-o</span> <span class="k">${</span><span class="nv">filename</span><span class="k">}</span>
 <span class="nb">rm</span> ./cookie
-  
+
 <span class="c"># Unzip</span>
 unzip <span class="nt">-q</span> <span class="k">${</span><span class="nv">filename</span><span class="k">}</span>
 <span class="nb">rm</span> <span class="k">${</span><span class="nv">filename</span><span class="k">}</span>
-  
+
 <span class="c"># cd out</span>
 <span class="nb">cd</span>
 </code></pre></div></div> <p>但是如果连不上外网，那就需要一个梯子的选项，即<code class="language-plaintext highlighter-rouge">proxychains4</code>这个命令行代理工具，或者需要通过其他机器进行联网的中转可以参考<a href="https://lccurious.github.io/2020/07/27/Local-Server-Proxy/">离线服务器通过PC中转连接公网</a>。</p> <p>对于不能直接联网的机器运行脚本方式为：</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>proxychains4 sh download_google_drive.sh
