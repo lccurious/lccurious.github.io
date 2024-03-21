@@ -62,9 +62,9 @@ giscus_comments: true
 ### 类别解耦
 
 \begin{equation}
-\mathcal{L}\_{ce} = -\mathbb{E}\_{(x_s, y_s)\sim \hat{D}\_{s}}\sum^{K}\_{k=1}\mathbb{1}[k=y\_{s}]\log (C(f\_{D}))
+\mathcal{L}\_{ce} = -\mathbb{E}\_{(x*s, y_s)\sim \hat{D}\_{s}}\sum^{K}\_{k=1}\mathbb{1}[k=y\_{s}]\log (C(f\_{D}))
 \end{equation}
-其中 $$f_{D}\in \{f_{di}, f_{ci}\}$$，用于去除类别不相关特征，通过交叉熵优化解耦器和分类器实现分类错误最小化。
+其中 $$f*{D}\in \{f*{di}, f*{ci}\}$$，用于去除类别不相关特征，通过交叉熵优化解耦器和分类器实现分类错误最小化。
 
 第二步通过固定分类器，训练解耦器 $$D$$ 生成类别无关的特征 $$f_{ci}$$ 欺骗过分类器，可以通过负熵最小化实现：
 

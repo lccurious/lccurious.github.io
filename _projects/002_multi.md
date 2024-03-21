@@ -64,13 +64,13 @@ $$
 $$
 
 where $$\textbf{Pa}(z_{i,t})$$ denotes causal parents of $$i$$-th factor at current step $t$, $$\epsilon_{i,t}$$ denotes a noise component of causal transition.
-While $$\boldsymbol{z}_t$$ contains a complete set of latent factors that we are truly interested in, we note that each observed view may be dependent on only a subset of it. 
+While $$\boldsymbol{z}_t$$ contains a complete set of latent factors that we are truly interested in, we note that each observed view may be dependent on only a subset of it.
 Formally, we have the following data-generating process,
 
 $$
 \begin{equation}
-    \boldsymbol{x}^{1}_{t}  = g^{1}(\boldsymbol{z}^{1}_{t}), \quad 
-    \boldsymbol{x}^{2}_{t}  = g^{2}(\boldsymbol{z}^{2}_{t}), \quad 
+    \boldsymbol{x}^{1}_{t}  = g^{1}(\boldsymbol{z}^{1}_{t}), \quad
+    \boldsymbol{x}^{2}_{t}  = g^{2}(\boldsymbol{z}^{2}_{t}), \quad
     \text{where}~~\boldsymbol{z}_{t} = \boldsymbol{z}^{1}_{t}\cup \boldsymbol{z}^{2}_{t},
 \end{equation}
 $$
@@ -81,11 +81,10 @@ $$
     </div>
 </div>
 
-
 ## Contrastive Module
 
 **Why use contrastive learning?**
- 
+
 Because we want make $$p(\tilde{\boldsymbol{z}}_{t}, \boldsymbol{z}_{H_{t}})$$ as close as possible to the ground truth $$p(\boldsymbol{z}_{t},\boldsymbol{z}_{H_{t}})$$, while contrastive learning can minimize the cross entropy between the two distributions<d-cite key="zimmermannContrastiveLearningInverts2021"></d-cite>.
 
 $$
@@ -98,7 +97,6 @@ $$
 $$
 
 where $$\delta(\boldsymbol{z},\tilde{\boldsymbol{z}})$$ is the distance between two latent factors, $$\mu$$ is the temperature parameter, and $$\mathcal{L}_{\rm contr}$$ is the loss function for contrastive learning.
-
 
 ## Permutation
 
@@ -115,7 +113,6 @@ Assume there is a common source $$\boldsymbol{c}_{t}\in \mathbb{R}^{d_{c}}$$ sha
     <p>where $$\boldsymbol{P}_i$$ is the permutation matrix, and $$\theta_{i}$$ is the corresponding weight for the permutation matrix. Once the loss function is minimized, there solution converge to a unique permutation matrix, i.e., a vetex of the Birkhoff polytope.</p>
     </div>
 </div>
-
 
 ## Framework
 

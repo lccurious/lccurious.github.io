@@ -1,10 +1,10 @@
 ---
 layout: distill
 title: DRDA
-description: Discriminative Radial Domain Adaptation, IEEE Transactions on Image Processing 2023 
+description: Discriminative Radial Domain Adaptation, IEEE Transactions on Image Processing 2023
 img: assets/img/001_drda/motivation.png
 category: research
-tags: 
+tags:
   - transfer learning
   - domain adaptation
   - low-dimensional structure
@@ -15,7 +15,7 @@ authors:
     url: "https://lccurious.github.io/about/"
     affiliations:
       name: Zhejiang University
-  - name: Jun Wen 
+  - name: Jun Wen
     url: "https://jungel2star.github.io/"
     affiliations:
       name: Harvard Medical School
@@ -73,7 +73,6 @@ p_{ik}\propto \exp(\|\boldsymbol{W}_{k}\| \|\boldsymbol{z}_{i}\|\cos(\boldsymbol
 $$
 
 thereby, for enhancing the discriminability of the feature, model is trained to be progressively expand the feature of each category outwards in different directions:
-
 
 Hereafter, a radial structure is formed, which is inherently discriminative.
 
@@ -135,9 +134,7 @@ The DRDA framework is a straightforward extension to Nerfies. The key difference
     </div>
 </div>
 
-
 To give a intuitive illustration of the feature evolution during model training, we built a simpliﬁed LetNet while reducing the bottleneck dimension to 2 and training it with the task MNIST→USPS.
-
 
 <div class="l-page">
     <div class="col-lg mt-3 mt-md-0">
