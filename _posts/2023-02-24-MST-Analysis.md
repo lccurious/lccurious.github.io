@@ -13,7 +13,7 @@ tags:
   - 配体
   - 受体
   - 荧光
-thumbnail: assets/img/2023-02-24-MST-Analysis/bg.jpeg 
+thumbnail: assets/img/2023-02-24-MST-Analysis/bg.jpeg
 giscus_comments: true
 ---
 
@@ -79,7 +79,7 @@ F=(1-f(c))F\_{\rm unbound} + f(c)F\_{\rm bound}
 **注意：**这里的 $$F_{\rm unbound}$$和$$F_{\rm bound}$$是不知道的，只能按照下面这个公式去代入数值去估计：
 
 \begin{equation}
-f(c)=\frac{c+c\_T+K\_d-\sqrt{\left(c+c\_{T} + K\_d\right)^2+4 c c\_T}}{2 c\_T}
+f(c)=\frac{c+c_T+K_d-\sqrt{\left(c+c\_{T} + K_d\right)^2+4 c c_T}}{2 c_T}
 \end{equation}
 
 以上带入的参数都应该首先进行归一化，$$\Delta c_{\rm measured}$$就对应于$$\frac{BL}{B_{0}}$$，也对应于归一化的荧光强度 $$F_{\rm norm}$$。其中，荧光的强度的归一化一般遵照一条约定俗成的规则如下图所示：
@@ -107,7 +107,7 @@ import numpy as np
 import MSTProcess as MST
 from scipy.optimize import curve_fit, minimize
 
-# 导入MST实验数据 
+# 导入MST实验数据
 MOCfile = MST.openMOCFile('../data/xxxx.moc')
 ```
 
@@ -170,8 +170,6 @@ print(f"K_d: {res.x[0]}, F_unbound: {res.x[1]}, F_bound: {res.x[2]}")
         {% include figure.liquid loading="eager" path="assets/img/2023-02-24-MST-Analysis/response.png" title="response" class="img-fluid rounded z-depth-0" caption="response" %}
     </div>
 </div>
-
-
 
 ---
 

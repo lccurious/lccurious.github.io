@@ -12,7 +12,6 @@ date: 2018-05-05 15:52:49
 giscus_comments: true
 ---
 
-
 这是500Lines项目中的A 3D modeller文章的翻译版，讲述如何使用Python，OpenGL，GLUT进行3D建模程序的设计。
 
 <div class="row">
@@ -23,7 +22,7 @@ giscus_comments: true
 
 <!-- more -->
 
-## 绪论 ##
+## 绪论
 
 人类非常具有创造力。我们在不断地设计和创造新颖有用并且非常有趣的东西。在现代，我们编写软件来辅助这一设计和创造的过程。计算机辅助设计软件让创造者们能够设计建筑、桥梁、视频游戏艺术、电影特效、3D打印的物体，以及很多构建实物之前的设计版本。
 
@@ -35,15 +34,15 @@ giscus_comments: true
 
 记住这些东西，让我们来探索如何表达3D设计，把这些展现在屏幕上，并且和它交互，用500行Python代码。
 
-## 指南 ##
+## 指南
 
 很多3D模型背后的设计决策的驱动力都是渲染过程。我们希望能够在我们的设计中存储和渲染复杂的对象，但是我们又希望能够使得存储和渲染的代码复杂度尽量低。让我们来考察渲染的过程，并且探索能让我们用简单的渲染逻辑处理任意的复杂对象。
 
-### 管理接口和主循环 ###
+### 管理接口和主循环
 
 在我们开始渲染前，有几样东西我们要先建立起来。第一，我们需要创建一个展示我们的设计的窗口。第二，我们希望能够和图形驱动交流来渲染到屏幕上。我们一般不会直接和显示驱动交流，所以我们用跨平台的抽象层称为OpenGL，还有一个叫GLUT（the OpenGL Utility Toolkit）来管理我们的窗口。
 
-### OpenGL 笔记 ##
+### OpenGL 笔记
 
 OpenGL是一个跨平台的图形程序编程接口开发工具。是一个开发跨平台图形程序的标准接口。OpenGL有两个主要的变体：传统OpenGL和现代OpenGL。
 
@@ -55,11 +54,11 @@ OpenGL是一个跨平台的图形程序编程接口开发工具。是一个开�
 
 在这个项目中，尽管Legacy OpenGL已被弃用，但我们使用它。 Legacy OpenGL提供的固定功能对于保持较小的代码尺寸非常有用。 它减少了所需的线性代数知识的数量，并简化了我们将要编写的代码。
 
-### 关于 GLUT ###
+### 关于 GLUT
 
 与OpenGL捆绑在一起的GLUT允许我们创建操作系统窗口并注册用户界面回调。 这个基本功能对我们来说已经足够了。 如果我们想要一个更全面的窗口管理和用户交互库，我们会考虑使用像GTK或Qt这样的完整窗口工具包。
 
-### 观察 ###
+### 观察
 
 为了管理GLUT和OpenGL的建立，并且驱动下面的模型，我们创建一个叫`Viewer`的类。我们一个一个`Viewer`实例，这个实例可以管理窗口的创建和渲染，并且包括很多我们程序的主循环。在`Viewer`的初始化中，我们创建一个图形化窗口，并且初始化OpenGL。
 
@@ -147,19 +146,19 @@ if __name__ == '__main__':
 
 在我们深入`render`函数之前，我们要先讨论一些线性代数。
 
-### 坐标空间 ###
+### 坐标空间
 
 根据我们的目的，坐标空间是一个原点和一组3个基向量，通常是$$x$$，$$y$$和$$z$$轴。
 
-### 点 ###
+### 点
 
 三维中的任何点都可以表示为从原点开始的$$x$$，$$y$$和$$z$$方向的偏移量。 点的表示与点所在的坐标空间有关。同一点在不同的坐标空间中有不同的表示。 三维中的任何点都可以在任何三维坐标空间中表示。
 
-### 向量 ###
+### 向量
 
 向量是一个$$x$$，$$y$$和$$z$$值，分别表示$$x$$，$$y$$和$$z$$轴中两个点之间的差异。
 
-### 变换矩阵 ###
+### 变换矩阵
 
 在计算机图形学中，为不同类型的点使用多个不同的坐标空间是很方便的。 变换矩阵将点从一个坐标空间转换为另一个坐标空间。 为了将矢量$$v$$从一个坐标空间转换到另一个坐标空间，我们乘以一个变换矩阵$$M$$：$$v'= Mv$$。 一些常见的变换矩阵是平移，缩放和旋转。
 
@@ -179,7 +178,7 @@ if __name__ == '__main__':
 
 要了解更多关于整个图形渲染流水线和涉及的坐标空间的信息，请参阅实时渲染的第2章或其他介绍性计算机图形书籍。
 
-## 用Viewer渲染 ##
+## 用Viewer渲染
 
 `render`函数首先设置渲染时需要完成的全部OpenGL状态。 它通过`init_view`初始化投影矩阵，并使用来自交互成员的数据从场景空间转换到世界空间的转换矩阵初始化ModelView矩阵。 我们将在下面看到更多关于Interaction类的内容。 它用`glClear`清除屏幕，再告诉场景渲染自己，然后呈现单元网格。
 
@@ -233,7 +232,7 @@ if __name__ == '__main__':
         glTranslated(0, 0, -15)
 ```
 
-## 要渲染什么：场景 ##
+## 要渲染什么：场景
 
 既然我们已经初始化渲染管道来处理世界坐标空间中的绘图，那么我们将渲染什么？ 回想一下，我们的目标是有一个由三维模型组成的设计。 我们需要一个数据结构来包含设计，我们需要使用这个数据结构来渲染设计。 注意上面，我们从查看器的渲染循环中调用`self.scene.render()`。 场景是什么？
 
@@ -262,7 +261,7 @@ class Scene(object):
             node.render()
 ```
 
-## Nodes ##
+## Nodes
 
 在场景的`render`函数中，我们对场景中`node_list`的每个项目调用`render`函数。但是这些列表中的元素都是什么呢？我们称他们为节点。理论上，一个节点就是可以放在场景中任何东西。在面向对象的软件中，我们把`Node`写成一个抽象基类。任何在`Scene`中表示对象的东西都是从这个`Node`继承而来的。这个基类让我们可以抽象地解释场景。代码库地其余部分不需要知道它显示对象的细节；它只需要知道它们是类节点。
 
@@ -391,7 +390,7 @@ class SnowFigure(HierarchicalNode):
 
 通过以这种方式使`Node`类可扩展，我们可以向场景添加新类型的形状，而无需更改用于场景操纵和渲染的任何其他代码。 使用节点概念来抽象出一个场景对象可能有很多孩子的事实被称为复合设计模式。
 
-## 用户交互 ##
+## 用户交互
 
 现在我们的建模器能够存储和显示场景，我们需要一种与之交互的方式。 我们需要促进两种类型的互动。 首先，我们需要改变场景观看角度的能力。 我们希望能够在场景中移动眼睛或相机。 其次，我们需要能够添加新节点并修改场景中的节点。
 
@@ -424,12 +423,12 @@ class Interaction(object):
         glutSpecialFunc(self.handle_keystroke)
 ```
 
-### 操作系统回调函数 ###
+### 操作系统回调函数
 
 为了有意义地解释用户输入，我们需要结合鼠标位置，鼠标按钮和键盘的知识。 因为将用户输入解释为有意义的动作需要很多代码行，所以我们将它封装在一个独立的类中，远离主代码路径。 `Interaction`类隐藏了与代码库其余部分无关的复杂性，并将操作系统事件转换为应用程序级事件。
 
 ```python
-    # class Interaction 
+    # class Interaction
     def translate(self, x, y, z):
         """ translate the camera """
         self.translation[0] += x
@@ -495,7 +494,7 @@ class Interaction(object):
         glutPostRedisplay()
 ```
 
-### 内部回调 ###
+### 内部回调
 
 在上面的代码片段中，您会注意到，当`Interaction`实例解释用户操作时，它会使用描述操作类型的字符串调用`self.trigger`。`Interaction`类的触发器函数是我们将用于处理应用程序级事件的简单回调系统的一部分。 回想一下，`Viewer`类的`init_interaction`函数通过调用`register_callback`来注册`Interaction`实例上的回调函数。
 
@@ -516,27 +515,27 @@ class Interaction(object):
 
 这个应用程序级回调系统抽象了系统其余部分了解操作系统输入的需求。 每个应用程序级别的回调代表了应用程序中的有意义的请求。 `Interaction`类充当操作系统事件和应用程序级事件之间的转换器。 这意味着如果我们决定将建模器移植到除GLUT之外的另一个工具包中，我们只需要用一个将新工具箱的输入转换为同一组有意义的应用级回调的类来替换`Interaction`类。 我们在下表中使用回调和参数
 
-|回调函数|参数|作用|
-|:---|:---|:---|
-|pick|x:number, y:number|Selects the node at the mouse pointer location.|
-|move|x:number, y:number|Moves the currently selected node to the mouse pointer location.|
-|place|shape:string, x:number, y:number|Places a shape of the specified type at the mouse pointer location.|
-|rotate_color|forward:boolean|Rotates the color of the currently selected node through the list of colors, forwards or backwards.|
-|scale|up:boolean|Scales the currently selected node up or down, according to parameter.|
+| 回调函数     | 参数                             | 作用                                                                                                |
+| :----------- | :------------------------------- | :-------------------------------------------------------------------------------------------------- |
+| pick         | x:number, y:number               | Selects the node at the mouse pointer location.                                                     |
+| move         | x:number, y:number               | Moves the currently selected node to the mouse pointer location.                                    |
+| place        | shape:string, x:number, y:number | Places a shape of the specified type at the mouse pointer location.                                 |
+| rotate_color | forward:boolean                  | Rotates the color of the currently selected node through the list of colors, forwards or backwards. |
+| scale        | up:boolean                       | Scales the currently selected node up or down, according to parameter.                              |
 
 这个简单的回调系统提供了我们在这个项目中需要的所有功能。 然而，在构建3D建模器中，用户界面对象通常是动态创建和销毁的。 在这种情况下，我们需要一个更复杂的事件监听系统，其中对象既可以注册也可以取消注册事件回调。
 
-## 接入场景 ##
+## 接入场景
 
 通过我们的回调机制，我们可以从`Interaction`类接收关于用户输入事件的有意义的信息。 我们准备将这些操作应用到场景中。
 
-### 移动场景 ###
+### 移动场景
 
 在这个项目中，我们通过变换场景来完成相机运动。换句话说，相机处于固定位置，用户输入移动场景而不是移动相机。相机放置在$$[0, 0, -15]$$并且对着世界空间的中心（或者，我们可以改变透视矩阵来移动相机而不是场景。 这个设计决定对其余的项目影响很小。）重新浏览`Viewer`中的`render`函数，我们看到`Interaction`状态用于在渲染场景之前转换OpenGL矩阵状态。 有两种与`Scene`交互的类型：旋转和平移。
 
-### 用一个轨迹球旋转场景 ###
+### 用一个轨迹球旋转场景
 
-我们通过使用轨迹球算法来完成场景的旋转。 轨迹球是用于三维操纵场景的直观界面。 从概念上讲，轨迹球界面的功能就好像场景在透明球体内一样。 将一只手放在地球表面并推动它旋转地球。 同样，单击鼠标右键并在屏幕上移动它可以旋转场景。你可以在[OpenGL Wiki](<http://www.opengl.org/wiki/Object_Mouse_Trackball>)中找到更多关于轨迹球理论的信息。 在这个项目中，我们使用作为[Glumpy](<https://code.google.com/p/glumpy/source/browse/glumpy/trackball.py>)的一部分提供的轨迹球实施。
+我们通过使用轨迹球算法来完成场景的旋转。 轨迹球是用于三维操纵场景的直观界面。 从概念上讲，轨迹球界面的功能就好像场景在透明球体内一样。 将一只手放在地球表面并推动它旋转地球。 同样，单击鼠标右键并在屏幕上移动它可以旋转场景。你可以在[OpenGL Wiki](http://www.opengl.org/wiki/Object_Mouse_Trackball)中找到更多关于轨迹球理论的信息。 在这个项目中，我们使用作为[Glumpy](https://code.google.com/p/glumpy/source/browse/glumpy/trackball.py)的一部分提供的轨迹球实施。
 
 我们使用`drag_to`函数与轨迹球进行交互，将鼠标的当前位置作为起始位置，并将鼠标位置的变化作为参数。
 
@@ -546,17 +545,17 @@ self.trackball.drag_to(self.mouse_loc[0], self.mouse_loc[1], dx, dy)
 
 当渲染场景时，生成的旋转矩阵是`Viewer`中的`trackball.matrix`。
 
-### 补充：四元数 ###
+### 补充：四元数
 
-旋转有两种传统的方式表示。 第一个是围绕每个轴的旋转值; 你可以将它存储为浮点数的三元组。 旋转的另一种常见表示是四元数，由具有$$x$$，$$y$$和$$z$$坐标的矢量以及$$w$$旋转组成的元素。 使用四元数对于每轴旋转有许多好处; 特别是它们在数值上更稳定。 使用四元数可以避免类似万向节锁的问题。 四元数的缺点是它们不太直观，难以理解。 如果你很勇敢并想了解更多关于四元数的内容，可以参考[这个解释](<http://3dgep.com/?p=1815>)。
+旋转有两种传统的方式表示。 第一个是围绕每个轴的旋转值; 你可以将它存储为浮点数的三元组。 旋转的另一种常见表示是四元数，由具有$$x$$，$$y$$和$$z$$坐标的矢量以及$$w$$旋转组成的元素。 使用四元数对于每轴旋转有许多好处; 特别是它们在数值上更稳定。 使用四元数可以避免类似万向节锁的问题。 四元数的缺点是它们不太直观，难以理解。 如果你很勇敢并想了解更多关于四元数的内容，可以参考[这个解释](http://3dgep.com/?p=1815)。
 
 轨迹球的实现使通过在内部使用四元数存储场景的旋转来避免万向节锁定。 幸运的是，我们不需要直接使用四元数，因为轨迹球上的矩阵成员会将旋转转换为矩阵。
 
-### 场景转换 ###
+### 场景转换
 
 场景转移（即滑动场景）比旋转场景要简单得多。 提供随鼠标滚轮和鼠标左键一起的场景转换。 鼠标左键在$$x$$和$$y$$坐标中转换场景。 滚动鼠标滚轮可以将场景转换为$$z$$坐标（朝向或远离摄像机）。 `Interaction`类存储当前的场景转换并使用平移功能修改它。 查看器在渲染过程中检索交互摄像头位置以用于`glTranslated`调用。
 
-### 选择场景对象 ###
+### 选择场景对象
 
 现在，用户可以移动和旋转整个场景以获得他们想要的视角，下一步是允许用户修改和操作构成场景的对象。
 
@@ -571,12 +570,12 @@ self.trackball.drag_to(self.mouse_loc[0], self.mouse_loc[1], dx, dy)
 ```python
     # class Viewer
     def get_ray(self, x, y):
-        """ 
+        """
         Generate a ray beginning at the near plane, in the direction that
-        the x, y coordinates are facing 
+        the x, y coordinates are facing
 
-        Consumes: x, y coordinates of mouse on screen 
-        Return: start, direction of the ray 
+        Consumes: x, y coordinates of mouse on screen
+        Return: start, direction of the ray
         """
         self.init_view()
 
@@ -607,7 +606,7 @@ self.trackball.drag_to(self.mouse_loc[0], self.mouse_loc[1], dx, dy)
         """
         Execute selection.
 
-        start, direction describe a Ray. 
+        start, direction describe a Ray.
         mat is the inverse of the current modelview matrix for the scene.
         """
         if self.selected_node is not None:
@@ -635,17 +634,17 @@ self.trackball.drag_to(self.mouse_loc[0], self.mouse_loc[1], dx, dy)
 ```python
     # class Node
     def pick(self, start, direction, mat):
-        """ 
+        """
         Return whether or not the ray hits the object
 
-        Consume:  
+        Consume:
         start, direction form the ray to check
-        mat is the modelview matrix to transform the ray by 
+        mat is the modelview matrix to transform the ray by
         """
 
         # transform the modelview matrix by the current translation
         newmat = numpy.dot(
-            numpy.dot(mat, self.translation_matrix), 
+            numpy.dot(mat, self.translation_matrix),
             numpy.linalg.inv(self.scaling_matrix)
         )
         results = self.aabb.ray_hit(start, direction, newmat)
@@ -671,7 +670,7 @@ ray-AABB选择方法非常易于理解和实施。 但是，在某些情况下�
 
 复杂性，性能和准确性之间的这种折衷在计算机图形学和软件工程的许多领域中是常见的。
 
-### 调整场景对象 ###
+### 调整场景对象
 
 接下来，我们希望允许用户操纵选定的节点。 他们可能想要移动，调整大小或更改所选节点的颜色。 当用户输入命令来操作节点时，`Interaction`类将输入转换为用户所需的操作，并调用相应的回调。
 
@@ -685,9 +684,9 @@ ray-AABB选择方法非常易于理解和实施。 但是，在某些情况下�
         self.scene.move_selected(start, direction, self.inverseModelView)
 
     def rotate_color(self, forward):
-        """ 
-        Rotate the color of the selected Node. 
-        Boolean 'forward' indicates direction of rotation. 
+        """
+        Rotate the color of the selected Node.
+        Boolean 'forward' indicates direction of rotation.
         """
         self.scene.rotate_selected_color(forward)
 
@@ -696,7 +695,7 @@ ray-AABB选择方法非常易于理解和实施。 但是，在某些情况下�
         self.scene.scale_selected(up)
 ```
 
-### 改变颜色 ###
+### 改变颜色
 
 操作颜色是通过一系列可能的颜色来完成的。 用户可以通过箭头键在列表中循环。 场景将颜色更改命令分派给当前选定的节点。
 
@@ -720,7 +719,7 @@ ray-AABB选择方法非常易于理解和实施。 但是，在某些情况下�
             self.color_index = color.MAX_COLOR
 ```
 
-### 节点缩放 ###
+### 节点缩放
 
 与颜色一样，场景会将所有缩放修改分派给所选节点（如果有的话）。
 
@@ -755,7 +754,7 @@ x & 0 & 0 & 0\\\\\\\\
 
 给定一个含$$x$$，$$y$$和$$z$$缩放因子的列表，函数`scaling`返回这样一个矩阵。
 
-### 移动节点 ###
+### 移动节点
 
 为了转化节点，我们使用与选取对象相同的射线计算方法。 我们将代表当前鼠标位置的射线传递给场景的`move`函数。 节点的新位置应该在射线上。 为了确定光线放置节点的位置，我们需要知道节点距相机的距离。 由于我们存储节点的位置和相机在选中时的位置（在`pick`函数中），我们可以在这里使用这些数据。 我们发现沿着目标光线与相机距离相同的点，并计算新旧位置之间的矢量差。 然后我们通过结果向量来转换节点。
 
@@ -767,7 +766,7 @@ x & 0 & 0 & 0\\\\\\\\
 
         Consume:
         start, direction describes the Ray to move to
-        mat is the modelview matrix for the scene 
+        mat is the modelview matrix for the scene
         """
         if self.selected_node is None: return
 
@@ -808,13 +807,13 @@ x & 0 & 0 & 0\\\\\\\\
     # class Node
     def translate(self, x, y, z):
         self.translation_matrix = numpy.dot(
-            self.translation_matrix, 
+            self.translation_matrix,
             translation([x, y, z]))
 ```
 
 平移函数返回给定表示x，y和z平移距离的列表的平移矩阵。
 
-### 放置节点 ###
+### 放置节点
 
 节点布局使用拾取和平移技术。 我们对当前鼠标位置使用相同的光线计算来确定放置节点的位置。
 
@@ -837,7 +836,7 @@ x & 0 & 0 & 0\\\\\\\\
         Consume:
         shape the shape to add
         start, direction describes the Ray to move to
-        inv_modelview is the inverse modelview matrix for the scene 
+        inv_modelview is the inverse modelview matrix for the scene
         """
         new_node = None
         if shape == 'sphere': new_node = Sphere()
@@ -856,7 +855,7 @@ x & 0 & 0 & 0\\\\\\\\
         new_node.translate(translation[0], translation[1], translation[2])
 ```
 
-## 总结 ##
+## 总结
 
 恭喜！ 我们已经成功实现了一个小型3D建模器！
 
@@ -878,12 +877,12 @@ x & 0 & 0 & 0\\\\\\\\
 - 整合渲染引擎：导出设计以用于照片级渲染器。
 - 通过精确的光线对象交叉来改善碰撞检测。
 
-## 更多拓展 ##
+## 更多拓展
 
 为了深入了解真实世界的3D建模软件，一些开源项目很有趣。
 
-[Blender](<http://www.blender.org/>)是一款开源的全功能3D动画套件。 它提供了一个完整的3D管道，用于在视频中创建特殊效果或创建游戏。 建模器是该项目的一小部分，它是将建模器集成到大型软件套件中的一个很好的例子。
+[Blender](http://www.blender.org/)是一款开源的全功能3D动画套件。 它提供了一个完整的3D管道，用于在视频中创建特殊效果或创建游戏。 建模器是该项目的一小部分，它是将建模器集成到大型软件套件中的一个很好的例子。
 
-[OpenSCAD](<http://www.openscad.org/>)是一款开源3D建模工具。 它不是互动的; 相反，它读取指定如何生成场景的脚本文件。 这可以让设计师“完全控制建模过程”。
+[OpenSCAD](http://www.openscad.org/)是一款开源3D建模工具。 它不是互动的; 相反，它读取指定如何生成场景的脚本文件。 这可以让设计师“完全控制建模过程”。
 
-有关计算机图形学算法和技术的更多信息，[Graphics Gems](<http://tog.acm.org/resources/GraphicsGems/>)是一个很好的资源。
+有关计算机图形学算法和技术的更多信息，[Graphics Gems](http://tog.acm.org/resources/GraphicsGems/)是一个很好的资源。

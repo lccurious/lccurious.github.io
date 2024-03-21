@@ -9,7 +9,6 @@ date: 2019-01-29 21:17:40
 giscus_comments: true
 ---
 
-
 给定两张图片中一些相互对应的关键点，如何能够将其中一张图片形变到另外一张图片上使得这些关键点都对应重合？这就是TPS方法所要解决的问题，TPS可以对表面进行柔性的变形。
 
 <div class="row">
@@ -24,15 +23,15 @@ Thin Plate Spline（TPS，薄板样条）插值是常用的2D插值方法。它�
 
 几乎所有的生物有关的形变都是可以用TPS来近似，Bookstein本人就是生物形态计量的大师。
 
-## 样条曲线插值 ##
+## 样条曲线插值
 
 线性插值对每个区间$$[x_k,x_{k+1}]$$使用线性函数。 样条插值在每个间隔中使用低阶多项式，并选择多项式以使它们平滑地吻合在一起。 结果函数被称为样条曲线。 例如，三次样条是分片段立方，两次连续可微。此外，它的二阶导数在终点为零。
 
-## 薄板样条 ##
+## 薄板样条
 
 薄板样条插值使薄板的弯曲能量最小，不过把2D图像看成薄板没错，但是弯曲的能量并不是$$N$$个点形变对应位置所产生在薄板内的“弯曲”。实际上，这个样条函数是对每一个维度的坐标分别进行插值，在后面也会看到代码会对坐标进行一个展平的操作。每一维的形变施加于垂直于薄板的方向，简单地说就是针对二维xy平面在它的z方向上进行变换，让在这个维度上的薄板往上凸或者往下凹从而完成这个薄板的形变。
 
-### K个控制点插值 ###
+### K个控制点插值
 
 考虑这样一个插值问题：自变量 $$\mathbf{x}$$ 是2维空间中的一点，函数值 $$\mathbf{y}$$ 也是2维空间中的一点，并且都在笛卡尔坐标系下表示。给定 $$N$$ 个自变量 $$\mathbf{x}_k$$ 和对应的函数值 $$\mathbf{y}_k$$ ，求插值函数。[^2]
 
@@ -66,7 +65,7 @@ $$
 \mathbf{s}(\mathbf{x})=(\sigma(\|\mathbf{x}-\mathbf{x}_1\|),\sigma(\|\mathbf{x}-\mathbf{x}_2\|),\dots,\sigma(\|\mathbf{x}-\mathbf{x}_N\|))^T
 $$
 
-### 能量函数 ###
+### 能量函数
 
 为了能够达到最好的求解方式，我们需要使得控制点尽可能和目标点的位置靠近，但是又要使得变形弯曲的能量最小。所以可以写成两项的共同优化（二维空间点的形式）：
 
@@ -86,7 +85,7 @@ $$
 J(\Phi)=\sum^{2}_{j=1}
 $$
 
-### 求解过程 ###
+### 求解过程
 
 在TPS插值函数$$\Phi$$中有$$1+D+N$$个参数，其中$$D$$在这里为2，所以再加上维度的约束：
 
@@ -124,7 +123,7 @@ Y^x = \left[\begin{matrix}
 {\bf y}_1^x \\
 {\bf y}_2^x  \\
 \cdots  \\
-{\bf y}_N^x 
+{\bf y}_N^x
 \end{matrix}\right]
 $$
 
@@ -161,7 +160,7 @@ $$
 把 $$\Gamma^{-1}$$ 写成下面的形式有
 
 $$
-\Gamma^{-1}=\left[ \begin{matrix} 
+\Gamma^{-1}=\left[ \begin{matrix}
 \Gamma^{11} & \Gamma^{12}\\
 \Gamma^{21} & \Gamma^{22}
 \end{matrix}\right]
@@ -172,7 +171,7 @@ $$
 将这些形变应用到所有其他点 $$\{\mathbf{x}_i, i=1,\dots, M\}$$ 上需要和用于计算形变参数的控制点 $$\{\mathbf{x}^c_i, i=1, \dots, N\}$$ 一起构造对应的计算矩阵：
 
 $$
-\left[ \begin{matrix} 
+\left[ \begin{matrix}
 1_N & X & S
 \end{matrix}\right]
 $$
@@ -180,7 +179,7 @@ $$
 其中 $$S_{ij}=\sigma(\mathbf{x}_i - \mathbf{x}_j)$$ 维度为 $$M\times N$$ 得到结果为：
 
 $$
-Y =\left[ \begin{matrix} 
+Y =\left[ \begin{matrix}
 1_N & X & S
 \end{matrix}\right] \begin{bmatrix} c \\ \mathbf{a} \\ \mathbf{w}\end{bmatrix}
 $$
@@ -250,11 +249,8 @@ def tps_transform(gallery, probe):
     return cx, cy
 ```
 
-
 ---
 
 [^1]: Kent, J. T. and Mardia, K. V. (1994a). The link between kriging and thin-plate splines. In: Probability, Statistics and Optimization: a Tribute to Peter Whittle (ed. F. P. Kelly), pp 325–339. John Wiley & Sons, Ltd, Chichester. page 282, 287, 311
-
 [^2]: <https://blog.csdn.net/VictoriaW/article/details/70161180>
-
 [^3]: <https://en.wikipedia.org/wiki/Radial_basis_function>

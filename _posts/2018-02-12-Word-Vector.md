@@ -3,14 +3,13 @@ layout: post
 title: Word Vector
 date: 2018-02-12 15:19:35
 categories:
- - 机器学习
+  - 机器学习
 tags:
- - NLP
+  - NLP
 giscus_comments: true
 ---
 
-
-## Skip gram model ##
+## Skip gram model
 
 The main idea behind the skip-gram model is this: it takes every words in a large corpora and also takes one-by-one the words that surround it within a defined 'windows' to then feed a neural network that after training will predict the probability for each word to actually appear in the window around the focus word.
 

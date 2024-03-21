@@ -47,7 +47,7 @@ _styles: >
     </div>
 </div>
 
-所以后来除了 OpenAI 团队以外，很多其他团队也发现了随着模型规模的增加，Decoder-Only 的架构确实能够非常好地完成任务[^zhihu]，也有着更高的上限和多样性。 
+所以后来除了 OpenAI 团队以外，很多其他团队也发现了随着模型规模的增加，Decoder-Only 的架构确实能够非常好地完成任务[^zhihu]，也有着更高的上限和多样性。
 目前的主流 GPT 系列是以 Transformer [Vaswani et al., 2017](https://proceedings.neurips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html) 作为基本模块进行组合实现的。尽管它们都遵从类似的架构形式，但是也还是有可能使用其他架构的模块进行组装。例如 RetNet [Sun et al., 2023](http://arxiv.org/abs/2307.08621) 提出针对 Transformer 的三种改进，降低模型的计算开销并提升推理阶段的并行性能。RWKV [Peng et al., 2023](http://arxiv.org/abs/2305.13048) 也是一种针对 Transformer 的改进。
 
 ### 关键模块
@@ -73,7 +73,7 @@ f\_{q,k}(\boldsymbol{x}\_{m},m)=\boldsymbol{R}^{d}\_{\Theta,m}\boldsymbol{W}\_{\
 其中 $$\boldsymbol{R}$$ 的具体形式为：
 
 \begin{equation}
-\boldsymbol{R}^d\_{\Theta,m} = 	\begin{pmatrix}		\cos{m\theta\_1}& -\sin{m\theta\_1}&0&0&\cdots&0&0\\\\		\sin{m\theta\_1}&\cos{m\theta\_1}&0&0&\cdots&0&0 \\\\		0&0&\cos{m\theta\_2}& -\sin{m\theta\_2}&\cdots&0&0\\\\		0&0&\sin{m\theta\_2}&\cos{m\theta\_2}&\cdots&0&0 \\\\		\vdots&\vdots&\vdots&\vdots&\ddots&\vdots&\vdots\\\\		0&0&0&0&\cdots&\cos{m\theta\_{d/2}}& -\sin{m\theta\_{d/2}}\\\\		0&0&0&0&\cdots&\sin{m\theta\_{d/2}}&\cos{m\theta\_{d/2}}	\end{pmatrix}
+\boldsymbol{R}^d\_{\Theta,m} = \begin{pmatrix} \cos{m\theta_1}& -\sin{m\theta_1}&0&0&\cdots&0&0\\\\ \sin{m\theta_1}&\cos{m\theta_1}&0&0&\cdots&0&0 \\\\ 0&0&\cos{m\theta_2}& -\sin{m\theta_2}&\cdots&0&0\\\\ 0&0&\sin{m\theta_2}&\cos{m\theta_2}&\cdots&0&0 \\\\ \vdots&\vdots&\vdots&\vdots&\ddots&\vdots&\vdots\\\\ 0&0&0&0&\cdots&\cos{m\theta\_{d/2}}& -\sin{m\theta\_{d/2}}\\\\ 0&0&0&0&\cdots&\sin{m\theta\_{d/2}}&\cos{m\theta\_{d/2}} \end{pmatrix}
 \end{equation}
 
 通过这种形式的位置编码后，计算自注意力机制时就可以推导为如下形式：
@@ -133,7 +133,6 @@ f\_{q,k}(\boldsymbol{x}\_{m},m)=\boldsymbol{R}^{d}\_{\Theta,m}\boldsymbol{W}\_{\
 DeepMind 的研究表示模型即使没有针对压缩任务进行特别设计和优化，也能够作为一种通用压缩器。[Delétang et al., 2023](http://arxiv.org/abs/2309.10668) 中表示经过预训练后的模型能够在图像、语音、文本这些类型的数据压缩能力上都不亚于专业的 gzip 等压缩软件。
 
 > We empirically demonstrate that these models, while (meta-)trained primarily on text, also achieve state-of-the-art compression rates across different data modalities, using their context to condition a general-purpose compressor to excel at a particular task.
-> 
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
@@ -147,7 +146,7 @@ DeepMind 的研究表示模型即使没有针对压缩任务进行特别设计�
 2. 下一个字符为 I，细化一下区间，编码应该落在 $$[0.09, 0.36]$$ 这个区间内
 3. 下一个字符为 X，细化一下区间，编码应该落在 $$[0.266, 0.36]$$ 这个区间内
 4. 最后一个字符为 I，细化一下区间，编码应该落在 $$[0.322, 0.341]$$ 这个区间内
-5. 在 $$[0.322, 0.341]$$ 这个区间内任意取一个小数即可，因为这个编码肯定是小数，所以只要用01编码小数点后的数字即可，图中示意的编码即为 `b0101010` 
+5. 在 $$[0.322, 0.341]$$ 这个区间内任意取一个小数即可，因为这个编码肯定是小数，所以只要用01编码小数点后的数字即可，图中示意的编码即为 `b0101010`
 
 <div class="row">
     <div class="col-sm-4 mt-3 mt-md-0">
@@ -196,11 +195,9 @@ H(\rho, \hat{\rho}):=\mathbb{E}\_{x\sim \rho}\left[\sum^{n}\_{i=1}-\log\_{2}\hat
 从实验结果可以看到各类大模型具备了比肩专业的压缩编码软件的能力。
 
 - 更多参考解释：
-    
   > [Language Modeling Is Compression?Google DeepMind 文章与Open AI的两次压缩与智能/泛化talk的笔记和想法 - beiluo的文章 - 知乎](https://zhuanlan.zhihu.com/p/657899967)
-  >   
+  >
   > [压缩下一个 token 通向超过人类的智能 - 周昕宇的文章 - 知乎](https://zhuanlan.zhihu.com/p/619511222)
-    
 
 所以本质上，任何其他可以建模为极大似然估计的任务，都可以直接作为大模型的 next-token-prediction 任务。
 
@@ -258,7 +255,6 @@ H(\rho, \hat{\rho}):=\mathbb{E}\_{x\sim \rho}\left[\sum^{n}\_{i=1}-\log\_{2}\hat
 - **Zero-shot Evaluation (零样本评估)**：这是一种测试模型在没有接受特定任务训练的情况下对新任务的处理能力的方法。零样本评估检验模型的泛化能力和对新领域、新类型数据的适应性。
 
 此外还有一些比较典型的评估指标。
-
 
 ---
 

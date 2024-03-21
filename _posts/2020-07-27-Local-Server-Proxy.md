@@ -3,12 +3,11 @@ layout: post
 title: 离线服务器通过PC中转连接公网
 date: 2020-07-27 15:25:48
 categories:
- - 工程
+  - 工程
 tags:
- - CCProxy
+  - CCProxy
 giscus_comments: true
 ---
-
 
 不愧是学校的网络，让人在科研以外还学到了各种各样的知识。**前情提要：1. 学校的网络账号是一个IP一个账号 2. 即使登录了账号，连从阿里云下载内容都无法顺利实现（不知道是到公网的哪条路受到了阻碍）**。所以只有通过与服务器直接相连的控制端提供公网的访问中转。
 
@@ -85,37 +84,44 @@ proxychains4 wget 下载地址
 似乎好像，这样还不足以解决docker的拉取等问题，所以只有为docker单独配置代理方式：
 
 创建docker服务插件目录：
+
 ```shell
 sudo mkdir -p /etc/systemd/system/docker.service.d
 ```
 
 创建一个名为http-proxy.conf的文件
+
 ```shell
 sudo touch /etc/systemd/system/docker.service.d/http-proxy.conf
 ```
 
 编辑http-proxy.conf的文件
+
 ```shell
 sudo vim /etc/systemd/system/docker.service.d/http-proxy.conf
 ```
 
 写入内容(将代理ip和代理端口修改成你自己的)
+
 ```
 [Service]
 Environment="HTTP_PROXY=socks5://代理ip:代理端口/"
 ```
 
 重新加载服务程序的配置文件
+
 ```shell
 sudo systemctl daemon-reload
 ```
 
 重启docker
+
 ```shell
 sudo systemctl restart docker
 ```
 
 验证是否配置成功
+
 ```shell
 systemctl show --property=Environment docker
 ```

@@ -8,9 +8,7 @@ date: 2021-01-18 22:55:36
 giscus_comments: true
 ---
 
-
-
-翻译自：*How to Read a Paper*
+翻译自：_How to Read a Paper_
 
 研究者们花费大量的时间用于阅读论文。然而，却很少有专门的技巧教授，这使得文章阅读事倍功半。这篇文章罗列了一个用于阅读研究型文章的实用且高效的“三遍法”。我也描述了如何用这种方法做文献综述。
 
@@ -94,4 +92,3 @@ giscus_comments: true
 
 这个文档的第一个版本是我的学生：Hossein Falaki, Earl Oliver 和 Sumair Ur Rahman起草的。我还受益于克里斯托夫·迪欧(Christophe Diot)敏锐的评论和妮可·克莎夫(Nicole Keshav)目光锐利的编辑。
 这项研究得到了加拿大国家科学与工程委员会、加拿大研究主席项目、北电网络、微软、英特尔公司和斯普林特公司的资助。
-

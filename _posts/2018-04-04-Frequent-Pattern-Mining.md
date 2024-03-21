@@ -4,32 +4,32 @@ title: 频繁模式挖掘
 draft: true
 date: 2018-04-04 18:09:09
 categories:
- - 机器学习
+  - 机器学习
 tags:
- - 频繁模式
- - Apriori
+  - 频繁模式
+  - Apriori
 giscus_comments: true
 ---
 
-
 在很多时候我们会关注两个或多个对象同时出现的频率，这些相关性往往意味着某种行为特征。例如我们可以根据网站的日志找到网站中某些的网页经常被用户访问到，这些频繁性提供了用户浏览习惯的线索，有助于提高浏览的体验。其中非常典型的应用就是<span style="color:#ff0000;">购物篮分析（market basket analysis）</span>可以通过用户经常购买的物品集合找到人们经常一起买的物品集合。之后可以提取出这些物品的<span style="color:#ff0000;">关联规则（association rule）</span>比如可以发现啤酒和尿布经常会被人组合购买，从而将这些物品放在邻近的地方销售会有更好的效果。
+
 <!-- more -->
 
-## 伯努利变量 ##
+## 伯努利变量
 
 伯努利变量其实和one-hot[^1]一样，根据标签的数量建立一个one-hot向量，$$X$$为一个定义域为$$\{ a_1,a_2,\dots,a_m \}$$的类别属性。可以将$$X$$建模为一个m维的随机变量$$\mathbf{X}=(A_1,A_2,\dots,A_m)^T$$，其中每一个$$A_i$$是一个参数为$$p_i$$（代表观察到符号$$a_i$$）的伯努利变量。因为是表示属性，所以一次只能取一个值。若$$X=a_i$$，则$$\mathbf{X}=e_i$$，其中$$e_i$$是第$$i$$个标准基向量的$$e_i\in \mathbb{R}^m$$：
 
 \begin{equation}
-e\_i=(\underbrace{0, \dots, 0}\_{i-1}, 1, \underbrace{0, \dots, 0}\_{m-i})^T
+e_i=(\underbrace{0, \dots, 0}\_{i-1}, 1, \underbrace{0, \dots, 0}\_{m-i})^T
 \end{equation}
 
 m维随机伯努利变量$$\mathbf{X}$$的值域由m个不同的向量值$$\{e_1, e_2, \dots, e_m\}$$构成，且$$\mathbf{X}$$的概率质量函数为：
 
 \begin{equation}
-P(\mathbf{X}=e\_i)=f(e\_i)=p\_i
+P(\mathbf{X}=e_i)=f(e_i)=p_i
 \end{equation}
 
-## 项繁集和事务标识符集 ##
+## 项繁集和事务标识符集
 
 令$$\mathcal{I}=\{x_1, x_2, \dots, x_m\}$$为一组称为项(item)的元素集合例如超市中售卖的所有产品的集合。集合$$X\subseteq \mathcal{I}$$称为项集。一个基数为k或者大小为k的项集称为k项集，用$$\mathcal{I}^{(k)}$$表示所有k项集。
 
@@ -43,7 +43,7 @@ P(\mathbf{X}=e\_i)=f(e\_i)=p\_i
     </div>
 </div>
 
-## 支撑集和频繁项集 ##
+## 支撑集和频繁项集
 
 数据集$$\mathbf{D}$$的一个项集$$X$$的支撑（support），表示为$$\sup(X,\mathbf{D})$$，即$$\mathbf{D}$$中所有包含$$X$$的事务的数目：
 
@@ -59,7 +59,7 @@ $$
 
 它是对包含$$X$$的项的联合概率的一个估计。
 
-## 关联规则 ##
+## 关联规则
 
 关联规则（association rule）是一个表达式$$X~^{\underrightarrow{s,c}} ~Y$$，其中$$X,Y\subseteq \mathcal{I}$$且$$X\cap Y=\emptyset$$。此处用$$XY$$表示项$$X\cup Y$$。规则的支撑是指$$X$$和$$Y$$同时出现的事务的总数：
 
@@ -81,7 +81,7 @@ $$
 
 根据规则支撑和置信度的定义，可以观察到，为了生成频繁且高置信度的关联规则，首先要枚举所有的频繁项集及其支撑值。
 
-## 暴力枚举 ##
+## 暴力枚举
 
 首先要做候选生成，因为一个集合$$\mathcal{I}$$有$$2^{\mid \mathcal{I} \mid}$$个子集也就有$$2^{\mid \mathcal{I} \mid}$$个可能的频繁项集。所以可以用前缀树通过BFS或者DFS来枚举项集。
 
@@ -95,7 +95,7 @@ $$
 
 但是这种方式的计算复杂度太大，支撑的计算在最坏的情况下需要$$O(\mid \mathcal{I} \mid \cdot\mid\mathbf{D}\mid)$$的时间。由于一共有$$O(2^{\mid \mathcal{I} \mid})$$个可能的候选，暴力枚举的复杂度为$$O(\mid \mathcal{I} \mid \cdot\mid\mathbf{D}\mid\cdot 2^{\mid \mathcal{I} \mid})$$。这种复杂度在现实中是不可接受的。
 
-## 逐层的方法：Apriori算法 ##
+## 逐层的方法：Apriori算法
 
 根据两个依据进行剪枝：
 
@@ -107,7 +107,6 @@ $$
         {% include figure.liquid loading="eager" path="assets/img/2018-04-04-Frequent-Pattern-Mining/FPM_fig3.jpg" title="FPM_fig3" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-
 
 ---
 

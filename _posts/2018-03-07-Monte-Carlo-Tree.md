@@ -13,7 +13,6 @@ date: 2018-03-07 20:19:47
 giscus_comments: true
 ---
 
-
 蒙特卡洛方法是通过统计的方式进行问题求解，最简单的例子就是使用蒙特卡洛方法估算$$\pi$$值。
 
 <div class="row">
@@ -42,7 +41,7 @@ print("pi:{0}".format((4 * counter / exm_turn)))
 
 但是很容易看出这样估算的值不仅不准确，计算速度还特别慢，但是如果换一个场景，我们并不需要非常精确的数值，但是准确的计算量又过于庞大，那么用这种基于概率的计算方式（猜）通常能更好地达到计算结果。
 
-## 发展过程 ##
+## 发展过程
 
 在博弈论中，参与博弈的个体和他们选择的方案带来的结果都可以列成一个表格进行分析，其中有一种算法为极小值极大化，这种算法通常用在零和博弈[^4]，即参与博弈的双方的利益之和为零的博弈，如果一方得利，那另一方一定受损。极大值极小化是一种找出失败得最大可能性中得最小值的算法。
 
@@ -50,13 +49,13 @@ print("pi:{0}".format((4 * counter / exm_turn)))
 - **20世纪40年代：** Monte Carlo（MC）方法被形式化为通过使用随机采样来处理不适合树搜索的不太明确的问题的方法。
 - **2006年：** RémiCoulomb和其他研究人员将这两个想法结合起来，为移动计算机Go的计划提供了一种新的方法，现在称为MCTS。Kocsis和Szepesvári将这种方法形式化为UCT算法。
 
-## 应用场景 ##
+## 应用场景
 
 在很多过程完全透明的游戏中能够很好应用，像是剪刀石头布，跳棋，翻转棋，象棋和围棋等这一类的每一步都很清楚，所有过程都直接展现给所有玩家的游戏。因为所有的步骤都是百分之百确定的。
 
-## 算法说明 ##
+## 算法说明
 
-### 统计置信区间 ###
+### 统计置信区间
 
 我们将Upper Confidence bound applied to Trees（UTC）应用于此处来描述蒙特卡洛搜索树。
 
@@ -65,13 +64,14 @@ print("pi:{0}".format((4 * counter / exm_turn)))
 \overline{x}\_{i}\pm C\times \sqrt{\frac{2\ln n}{n\_{i}}}
 \end{equation}
 其中：
+
 - $$\overline{x}_{i}$$：操作$$i$$的平均付出
 - $$n_{i}$$：操作$$i$$进行的次数
 - $$n$$：所有的操作次数
 
 根据当前所处的状态，我们可以根据自然情况构造出一个分布，之后随着我们的探索这个分布会逐渐接近真实的分布状态。
 
-### Bandit ###
+### Bandit
 
 选择比努力更重要，一般人做出了错误的决定都会感到后悔，而这个后悔的程度也可以进行度量，而且在经济学上也是有一个类似的名词称为机会成本，即选择某一个项目时的成本就是为了选择这个项目而放弃的其他项目中可获得最大的那个收益[^3]。类似的，如果我们做的选择是收益最大的，那就没什么好后悔的，但是如果不是最好的决定，那就会有点失望了。
 
@@ -85,9 +85,10 @@ print("pi:{0}".format((4 * counter / exm_turn)))
 
 TODO:完成Bandit的说明
 
-### 树形搜索 ###
+### 树形搜索
 
 下图中，wins/number表示对应节点（奖励多少次/被尝试了多少次）
+
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="assets/img/2018-03-07-Monte-Carlo-Tree/MCST-tree-search1.png" title="title:从根节点（初始状态）开始每次都选择最优的子节点（下一步），直到抵达下一步信息完全未知的一个节点" class="img-fluid rounded z-depth-1" caption="title:从根节点（初始状态）开始每次都选择最优的子节点（下一步），直到抵达下一步信息完全未知的一个节点" %}
@@ -110,7 +111,7 @@ TODO:完成Bandit的说明
     </div>
 </div>
 
-### 代码样例[^5] ###
+### 代码样例[^5]
 
 先新建一个游戏操作的类，提供合法移动和游戏状态等。
 
@@ -304,7 +305,7 @@ class MonteCarlo(object):
 
         moves_states = [(p, self.board.next_state(state, p)) for p in legal]
 
-        # Display the number of calls of 'run_simulation' and the 
+        # Display the number of calls of 'run_simulation' and the
         # time elapsed.
         print(games, datetime.datetime.utcnow() - begin)
 
@@ -402,9 +403,9 @@ class MonteCarlo(object):
 
 TODO: 实现一个类似的游戏
 
-## 更多阅读 ##
+## 更多阅读
 
-### KL距离 ###
+### KL距离
 
 KL距离是是Kullback-Leibler差异（Kullback-Leibler Divergence）的简称，也叫做相对熵（Relative Entropy）。它衡量的是相同事件空间里的两个概率分布的差异情况。其物理意义是：在相同事件空间里，概率分布$$P(x)$$的事件空间，若用概率分布$$Q(x)$$编码时，平均每个基本事件（符号）编码长度增加了多少比特。我们用$$D（P\parallel Q）$$表示KL距离，计算公式如下：
 
@@ -414,13 +415,12 @@ D(P\parallel Q) = \sum\_{x\in X}P(x)\log \frac{P(x)}{Q(x)}
 
 当两个概率分布完全相同时相对熵为0。所以我们通常用相对相对熵来衡量两个分布的差异程度。这个KL距离并不是常用意义上的距离，任意两个分布$$P$$和$$Q$$中，KL距离是不对称的即$$D(P\parallel Q) \neq D(Q\parallel P)$$。
 
-### 补充资料 ###
+### 补充资料
 
 - <http://mcts.ai/>
 - <https://jeffbradberry.com/posts/2015/09/intro-to-monte-carlo-tree-search/>
 - <http://mcts.ai/about/index.html>
 - <https://zhuanlan.zhihu.com/p/21388070>
-
 
 ---
 

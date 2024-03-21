@@ -12,9 +12,6 @@ date: 2021-05-16 19:40:14
 giscus_comments: true
 ---
 
-
-
-
 文献管理软件多如牛毛，EndNote、Papers、Mendeley、Citavi、NoteExpress等要么是生态封闭，在文献同步导入插件支持方面有所欠缺，要么是收费并且同时存在这些问题。但是Zotero这款开源软件的出现让人可以以合理的方式更加方便地管理我们的文献。
 
 <div class="row">
@@ -72,4 +69,3 @@ Windows下用管理员权限的`mklink`。
 ## 阅读更多
 
 1. <https://sspai.com/post/59035>
-

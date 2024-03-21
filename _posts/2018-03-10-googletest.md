@@ -10,7 +10,6 @@ date: 2018-03-10 09:23:36
 giscus_comments: true
 ---
 
-
 Google Test是一个C\++的测试框架, 在Linux, Windows和Mac上都可以使用这个工具来对C++代码进行测试.
 Google Test的一些特性:
 
@@ -22,15 +21,15 @@ Google Test的一些特性:
 
 <!-- more -->
 
-## 安装GoogleTest ##
+## 安装GoogleTest
 
 首先从github上获取代码然后编译安装, 通过CMake的方式进行,没有碰到什么坑.
 
-## 基本概念 ##
+## 基本概念
 
 在使用Google Test我们从断言开始熟悉整个过程, 我们通过断言来判断程序的行为是否正确. 断言的结果分别为 success, nonfatal failure, 或者 fatal failure. 如果出现fatal failure则会终端当前的函数.
 
-### 简单测试 ###
+### 简单测试
 
 通过下面的方式创建测试:
 
@@ -54,16 +53,16 @@ TEST(MyTest, Add)
 }
 ```
 
-### 基本断言 ###
+### 基本断言
 
-| **Fatal assertion** | **Nonfatal assertion** | **Verifies** |
-|:-------------------:|:----------------------:|:------------:|
-|`ASSERT_TRUE(`condition`)`;|`EXPECT_TRUE(`condition`)`;| condition is true |
-|`ASSERT_FALSE(`condition`)`;|`EXPECT_FALSE(`condition`)`;| condition is false |
+|     **Fatal assertion**      |    **Nonfatal assertion**    |    **Verifies**    |
+| :--------------------------: | :--------------------------: | :----------------: |
+| `ASSERT_TRUE(`condition`)`;  | `EXPECT_TRUE(`condition`)`;  | condition is true  |
+| `ASSERT_FALSE(`condition`)`; | `EXPECT_FALSE(`condition`)`; | condition is false |
 
 如果是`ASSERT_*`条件不成立, 则会直接报致命错误然后程序返回, 如果是`EXPECT_*`条件不成立则会继续进行.
 
-## 在测试函数之间共享数据 ##
+## 在测试函数之间共享数据
 
 同一批测试数据有时候会被多次使用，但是如果像下面那样调用就有点不太优雅。
 
@@ -119,14 +118,13 @@ int main(int argc, char *argv[])
 }
 ```
 
-## 在Qt中使用GoogleTest ##
+## 在Qt中使用GoogleTest
 
 因为如果要使用Qt内置的googletest要重新新建一个项目，还是希望能统一在同一个项目中完成这些设置，所以还是决定在当前项目中开一个测试目录专门用于测试。
 
-## Gtest进阶 ##
+## Gtest进阶
 
 - <https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md>
-
 
 ---
 

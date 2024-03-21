@@ -10,8 +10,6 @@ date: 2019-08-27 15:22:30
 giscus_comments: true
 ---
 
-
-
 主动学习是指通过自动的机器学习算法，从数据集中自动挑选出部分数据请求标签，在统计上也称为查询学习或者最优实验设计。主动学习通过设计合理的查询函数，不断从未标注的数据中挑选出数据加入标注后放入训练集。有效的主动学习数据选择策略可以有效地降低训练的代价并同时提高模型的识别能力。赋予你的模型好奇心，让其有一些如何去学习的智能。
 
 <div class="row">
@@ -82,11 +80,11 @@ giscus_comments: true
 挑选出当前的模型最没有信心的样本，通常越靠近超平面分类边缘的样本就越容易不确定。根据样本的标签分布也有几种选择方法：
 
 - Least Confident：$$x^{*}_{LC}=\text{argmax}_{x}1-P_{\theta}(\hat{y}|x)$$
-    其中 $$\hat{y}=\text{argmax}_{y}P_{\theta}(y\vert x)$$，也就是根据当前的模型状态估计得到标签量次数最少的样本将会得到更多的光顾
+  其中 $$\hat{y}=\text{argmax}_{y}P_{\theta}(y\vert x)$$，也就是根据当前的模型状态估计得到标签量次数最少的样本将会得到更多的光顾
 - Smallest Margin: $$x^{*}_{SM}=\text{argmin}_{x}P_{\theta}(\hat{y}_{1}|x)-P_{\theta}(\hat{y}_{2}|x)$$
-    其中 $$\hat{y}_{1}$$ 和 $$\hat{y}_{2}$$ 是当前样本最高可能性的两个样本。
+  其中 $$\hat{y}_{1}$$ 和 $$\hat{y}_{2}$$ 是当前样本最高可能性的两个样本。
 - Label Entropy：$$x^{*}_{LE}=\text{argmax}_{x}-\sum_{i} P_{\theta}(y_{i}|x)$$
-    其中 $$y_{i}$$ 表示当前这个样本所有可能的标签
+  其中 $$y_{i}$$ 表示当前这个样本所有可能的标签
 
 ### 基于委员会的选择
 
@@ -125,25 +123,25 @@ $$
 ### 提出更好的主动选择策略
 
 - [x] **Active Learning for Human Pose Estimation**(ICCV2017)
-  作者表示这是第一次这样深入地应用主动学习到人体姿态估计的领域中里，根据现有模型的回归能力，用多峰熵来对输出的 haetmap 进行打分，对于获得的 heatmap 给出不确定度的分值。
-  基于 $$模型对当前样本估计的不可靠度 \times 当前样本的模型影响力（代表性）+ 模型对当前样本估计的可靠程度 \times 模型对当前样本的不确定度$$ 对未标记的样本进行打分排序，选出最值得标记的样本进行人工标记，然后再基于更新的数据集训练模型。
-  
+      作者表示这是第一次这样深入地应用主动学习到人体姿态估计的领域中里，根据现有模型的回归能力，用多峰熵来对输出的 haetmap 进行打分，对于获得的 heatmap 给出不确定度的分值。
+      基于 $$模型对当前样本估计的不可靠度 \times 当前样本的模型影响力（代表性）+ 模型对当前样本估计的可靠程度 \times 模型对当前样本的不确定度$$ 对未标记的样本进行打分排序，选出最值得标记的样本进行人工标记，然后再基于更新的数据集训练模型。
+
   其中，多峰熵（Multiple Peak Entropy，MPE）的定义在下面两步，先用类似于 Sigmoid 函数确定各个关键点的标签和坐标：
-  
+
   $$
   \operatorname{Prob}\left(I_{i}, m, p\right)=\frac{\exp b_{p}^{t}\left(Y_{p}=z_{m} | I_{i}\right)}{\sum_{m} \exp b_{p}^{t}\left(Y_{p}=z_{m} | I_{i}\right)}
   $$
-  
+
   然后基于估计结果衡量：
 
   $$
   C_{M P E}\left(I_{i}, p\right)=\sum_{m}-\operatorname{Prob}\left(I_{i}, m, p\right) \log \operatorname{Prob}\left(I_{i}, m, p\right)
   $$
-  
+
   为了表示当前这个估计结果是那种几个可以明显区分的独立峰还是那些比较低矮比较模棱两可的估计结果。
 
   另外影响力这一步，就看这个图像是不是像大多数良好的识别场景一样，图像比较干净，然后人也摆的比较正等等，所以就通过这个图像是不是和数据集中较多的图像相似来确定这个图像的相似度：
-  
+
   $$
   C_{I N F}\left(I_{i}\right)=\frac{1}{\left|U_{t}\right|-1} \sum_{I_{j} \in U_{t} \backslash I_{i}} d\left(I_{i}, I_{j}\right)
   $$
@@ -151,28 +149,27 @@ $$
   基于这种探索过数据集分布和模型输出的主动学习策略，确实可以提高估计准确度，因为挑选出的数据是通例和难例，这和学生做题也比较像，常规题能拿的分数不要丢，难题挑出来重点攻克，偏题怪题就随个人能力了。
 
 - [x] **Learning Loss for Active Learning**（CVPR2019）
-  提出与任务无关的主动学习策略，用一个只包括一层卷积池化全连接的简单神经网络和解决任务的模型同步成长。根据模型的特征层输出对模型在某个样本上可能有的 Loss 进行预测，这样一同成长的主动学习模块，通过和模型一起探索未标注的数据猜测模型对哪些样本不擅长需要人们协助给出标签来学习的。相当于模型的一颗好奇心。
+      提出与任务无关的主动学习策略，用一个只包括一层卷积池化全连接的简单神经网络和解决任务的模型同步成长。根据模型的特征层输出对模型在某个样本上可能有的 Loss 进行预测，这样一同成长的主动学习模块，通过和模型一起探索未标注的数据猜测模型对哪些样本不擅长需要人们协助给出标签来学习的。相当于模型的一颗好奇心。
 
   在训练策略上，解决任务模型和 Loss 预测模型的 Loss 是被加在一起输出的：
-  
+
 \begin{equation}
-  L\_{\text {target }}(\hat{y}, y)+\lambda \cdot L\_{\operatorname{loss}}(\hat{l}, l)
+L\_{\text {target }}(\hat{y}, y)+\lambda \cdot L\_{\operatorname{loss}}(\hat{l}, l)
 \end{equation}
 
-  但是，任务执行模型的 Loss 会随着训练的进行而下降的，那么预测 Loss 的模块就算什么也学不到，它的 Loss 也会随着下降，所以需要排除任务执行模型的 Loss 下降影响，增加另外的模块：
+但是，任务执行模型的 Loss 会随着训练的进行而下降的，那么预测 Loss 的模块就算什么也学不到，它的 Loss 也会随着下降，所以需要排除任务执行模型的 Loss 下降影响，增加另外的模块：
 
-  $$\begin{aligned} L_{\operatorname{loss}}\left(\hat{l}, l^{p}\right)=\max &\left(0,-\mathbb{1}\left(l_{i}, l_{j}\right) \cdot\left(\hat{l}_{i}-\hat{l}_{j}\right)+\xi\right) \\\\ & \text { s.t. } \quad \mathbb{1}\left(l_{i}, l_{j}\right)=\left\{\begin{array}{ll}{+1,} & {\text { if } l_{i}>l_{j}} \\\\ {-1,} & {\text { otherwise }}\end{array}\right.\end{aligned}$$
+$$\begin{aligned} L_{\operatorname{loss}}\left(\hat{l}, l^{p}\right)=\max &\left(0,-\mathbb{1}\left(l_{i}, l_{j}\right) \cdot\left(\hat{l}_{i}-\hat{l}_{j}\right)+\xi\right) \\\\ & \text { s.t. } \quad \mathbb{1}\left(l_{i}, l_{j}\right)=\left\{\begin{array}{ll}{+1,} & {\text { if } l_{i}>l_{j}} \\\\ {-1,} & {\text { otherwise }}\end{array}\right.\end{aligned}$$
 
-  把训练过程中 Batch 对半，然后排除两个 batch 之间的任务执行模型的 Loss 下降，凸显出 Loss 预测模型的能力变化，其中 $$\xi$$ 表示是一个常数间隔（参考 SVM 中的间隔定义）。最终完整的组合 Loss 计算如下：
+把训练过程中 Batch 对半，然后排除两个 batch 之间的任务执行模型的 Loss 下降，凸显出 Loss 预测模型的能力变化，其中 $$\xi$$ 表示是一个常数间隔（参考 SVM 中的间隔定义）。最终完整的组合 Loss 计算如下：
 
 \begin{equation}
-  \begin{array}{c}{\frac{1}{B} \sum\_{(x, y) \in \mathcal{B}^{*}} L\_{\text {daget }}(\hat{y}, y)+\lambda \frac{2}{B} \cdot \sum\_{\left(x^{p}, y^{p}\right) \in \mathcal{B}^{s}} L\_{\text {loss }}\left(\hat{p}, l^{p}\right)} \\\\ {\hat{y}=\Theta\_{\text {taxget }}(x)} \\\\ {\text { s.t. } \quad \hat{l}^{\hat{p}}=\Theta\_{\text {losse }}\left(h^{p}\right)} \\\\ {l^{p}=L\_{\text {target }}\left(\hat{y^{p}}, y^{p}\right)}\end{array}
+\begin{array}{c}{\frac{1}{B} \sum\_{(x, y) \in \mathcal{B}^{\*}} L\_{\text {daget }}(\hat{y}, y)+\lambda \frac{2}{B} \cdot \sum\_{\left(x^{p}, y^{p}\right) \in \mathcal{B}^{s}} L\_{\text {loss }}\left(\hat{p}, l^{p}\right)} \\\\ {\hat{y}=\Theta\_{\text {taxget }}(x)} \\\\ {\text { s.t. } \quad \hat{l}^{\hat{p}}=\Theta\_{\text {losse }}\left(h^{p}\right)} \\\\ {l^{p}=L\_{\text {target }}\left(\hat{y^{p}}, y^{p}\right)}\end{array}
 \end{equation}
 
 ### 更高效的人机交互方式
 
 ### 更好的数据集模型管理
-
 
 ---
 

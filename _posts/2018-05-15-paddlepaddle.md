@@ -9,7 +9,6 @@ date: 2018-05-15 11:05:31
 giscus_comments: true
 ---
 
-
 paddlepaddle是百度开源的并行分布式全功能深度学习平台，全名为PArallel Distributed Deep LEarning，开发的动机是百度的工程师将其用在百度的各种产品中。支持CPU/GPU的单机和分布式模式，支持模型并行和数据并行。对于NLP和推荐算法、RNN等都有很好的支持。
 
 <div class="row">
@@ -20,11 +19,11 @@ paddlepaddle是百度开源的并行分布式全功能深度学习平台，全�
 
 <!-- more -->
 
-## 安装 ##
+## 安装
 
 这里针对CentOS的操作系统，常用的配置方案是Docker+Ubuntu+PaddlePaddle（这是针对Windows系统的）目前PaddlePaddle似乎还是不支持Windows系统。这里采用一种最为简单的方式进行配置，CentOS+Anaconda3+PaddlPaddle，需要声明的一点是因为很多的第三方库开始宣布不再维护Python2的代码了，所以采用Anaconda3作为主版本。
 
-### 配置Python2.7环境 ###
+### 配置Python2.7环境
 
 因为主板本使用的是Anaconda3，默认为Python3，所以通过conda环境管理机制建立一个使用Python2的版本，具体可参考另一篇文章 post_link "condaGuide" conda包组织管理 ，为了使安装更加迅速，将anaconda的源改为清华大学的开源镜像，参照anaconda下的[Anaconda 镜像使用帮助](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)进行修改。
 
@@ -41,7 +40,7 @@ conda env create --file paddlepaddle.yml
 
 通过这种方式就能将paddlepaddle的单机环境配置好了，考虑到这是在服务器上配置的，所以还是建议通过Jupyter Nodebook进行使用。
 
-## 服务器端开启Jupyter服务 ##
+## 服务器端开启Jupyter服务
 
 将paddlepaddle的环境配置好了以后可以通过下面的指令来查看：
 
@@ -72,7 +71,7 @@ jupyter notebook 文件夹路径
 
 但是通过这种方式开启的服务，一旦退出ssh界面，所有的服务都会被关闭，并且还会存在一个问题是这样开启的jupyter服务不能让远程客户端使用。
 
-### Jupyter 开启远程服务 ###
+### Jupyter 开启远程服务
 
 默认情况下，配置文件 `~/.jupyter/jupyter_notebook_config.py`并不存在，需要自行创建。使用下列命令生成配置文件：
 
@@ -135,7 +134,7 @@ c.NotebookApp.open_browser = False
 c.NotebookApp.port =8888 #可自行指定一个端口, 访问时使用该端口
 ```
 
-### 服务开启 ###
+### 服务开启
 
 以上设置完以后就可以在服务器上启动`jupyter notebook，jupyter notebook`, root用户使用`jupyter notebook --allow-root`。打开 IP:指定的端口, 输入密码就可以访问了。
 
@@ -148,4 +147,3 @@ c.NotebookApp.port =8888 #可自行指定一个端口, 访问时使用该端口
         {% include figure.liquid loading="eager" path="assets/img/2018-05-15-paddlepaddle/Snipaste_2018-05-15_10-53-49.png" title="Snipaste_2018-05-15_10-53-49" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-

@@ -11,8 +11,6 @@ date: 2020-01-30 18:40:39
 giscus_comments: true
 ---
 
-
-
 最优传输问题的描述，如果用两个沙堆的问题表示：一个沙堆如何通过最小的代价推成和另一个沙堆一样的形状。或者另外一个电商的问题：电商有 $$N$$ 个储存区域，同时 $$M$$ 个订购电子书阅读器的客户。假设第 $$n$$ 个存储区域 $$x_n$$ 有 $$m_n$$ 个阅读器，第 $$k$$ 个客户 $$y_k$$ 订购 $$h_k$$ 个阅读器。传输代价 $$c(x,y)$$ 是存储区域 $$y$$ 与客户 $$x$$ 之间的距离。最优传输问题就是要找到最合适的方式，将存储区域中的所有阅读器运送到订购它们的客户那里。传输地图 $$\Pi$$ 可以视为一个矩阵，矩阵的条目或元素 $$\Pi_{nk}$$ 表示从第 $$n$$ 个存储区域发送到第 $$k$$ 个客户的电子阅读器数量。为了保持一致，离开第 $$n$$ 个存储区域的所有阅读器总数必须等于在该区域中存储的阅读器总数，同时所有顾客收到的阅读器总和必须等于顾客订购的电子书阅读器的数量[^1]。
 
 <!-- more -->
@@ -51,7 +49,7 @@ giscus_comments: true
 
 给定两个概率分布$$\mu_s,\mu_t$$和代价函数$$c:\Omega_{s}\times \Omega_{t}\rightarrow\mathbb{R}^{+}$$，Monge形式就是要找到一个代价最小的传输方案$$T$$：
 \begin{equation}
-T^{*}=\inf\_{T\\#\mu\_{s}=\mu\_{t}}\int\_{\Omega\_{s}}c(\mathbf{x},T(\mathbf{x}))\mu\_{s}(\mathbf{x})d\mathbf{x}
+T^{\*}=\inf\_{T\\#\mu\_{s}=\mu\_{t}}\int\_{\Omega\_{s}}c(\mathbf{x},T(\mathbf{x}))\mu\_{s}(\mathbf{x})d\mathbf{x}
 \end{equation}
 通过把传输方案$$T$$应用到($$\#$$)某个源分布$$\mu_{s}$$上就可以把它变换成目标分布$$\mu_{t}$$。使代价综合最小的方案就是我们要的最优传输方案。
 
@@ -81,9 +79,12 @@ T^{*}=\inf\_{T\\#\mu\_{s}=\mu\_{t}}\int\_{\Omega\_{s}}c(\mathbf{x},T(\mathbf{x})
 </div>
 
 Kantorovich提出不一定要按照整数的方式去传输，可以把大石子打碎了传输，所以提出用两个集合耦合的概率分布来表示传输方案：
-$$\begin{split}
+
+$$
+\begin{split}
 \gamma_{0}=&\text{argmin}_{\gamma}\int_{\Omega_{s}\times\Omega{t}}c(\mathbf{x},\mathbf{y})\gamma(\mathbf{x},\mathbf{y})d\mathbf{x}d\mathbf{y},\\\\
-\text{s.t.}&\quad \gamma\in\mathcal{P}\{\gamma\geq0, \int_{\Omega_{t}}\gamma(\mathbf{x},\mathbf{y})d\mathbf{y}=\mu_{s},\int_{\Omega_{s}}\gamma(\mathbf{x},\mathbf{y})d\mathbf{x}=\mu_{t}\}\end{split}$$
+\text{s.t.}&\quad \gamma\in\mathcal{P}\{\gamma\geq0, \int_{\Omega_{t}}\gamma(\mathbf{x},\mathbf{y})d\mathbf{y}=\mu_{s},\int_{\Omega_{s}}\gamma(\mathbf{x},\mathbf{y})d\mathbf{x}=\mu_{t}\}\end{split}
+$$
 
 - $$\gamma$$是$$\mu_{s},\mu_{t}$$的联合分布
 - 线形规划总是会有一个解
@@ -159,7 +160,7 @@ d\_{M}(\mu,\nu):=\min\_{P\in U(\mu,\nu)}\langle P, M\rangle.
 \begin{equation}
 \mathcal{M}=\{M\in\mathbb{R}^{d\times d}\_{+}:\forall i,j\leq d,m\_{ij}=0\Leftrightarrow i=j,\forall i,j,k\leq d,m\_{ij}\leq m\_{ik}+m\_{kj}\}
 \end{equation}
-**联合分布中的熵限制**(*Cover and Thomas,1991,section 2*):
+**联合分布中的熵限制**(_Cover and Thomas,1991,section 2_):
 \begin{equation}
 \forall \mu,\nu\in\Sigma\_{d},\forall P\in U(\mu,\nu),h(P)\leq h(\mu)+h(\nu),
 \end{equation}
@@ -212,9 +213,9 @@ d\_{M,\alpha}(x,z)=\min\_{P\in U\_{\alpha}(x,z)}\langle P,M\rangle \leq\langle S
 
 ### 符号说明
 
-* $$C^{0}_{b}(Z)$$ 是定义在$$Z$$上的全体连续有界函数
-* $$\mathcal{M}_{+}(Z)$$ 是$$Z$$上正的拉东测度的集合
-* $$\mathcal{P}(Z)$$是在$$Z$$上的概率测度的集合，也就是$$\mathcal{M}_{+}(Z)$$有单位质量的子集
+- $$C^{0}_{b}(Z)$$ 是定义在$$Z$$上的全体连续有界函数
+- $$\mathcal{M}_{+}(Z)$$ 是$$Z$$上正的拉东测度的集合
+- $$\mathcal{P}(Z)$$是在$$Z$$上的概率测度的集合，也就是$$\mathcal{M}_{+}(Z)$$有单位质量的子集
 
 ### 测度
 
@@ -247,6 +248,7 @@ T\_{\\# }\mu(\mathcal{Y})=\mu(T^{-1}(\mathcal{X}))
 ### 传输方案
 
 假如 $$\gamma$$ 有一个密度函数 $$p(x,y)$$ 它的意思就是指把 $$x$$ 上的土运到对应的 $$y$$ 上形成一个分布，而不是某个单点。假如最优的传输方案如下图所示，右边就是 Monge problem 的解法，而 Kantorovich 的形式则约束更为宽松。
+
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="assets/img/2020-01-30-optimal-transport/distribution.png" title="二维形式下可以表示成图中的内容" class="img-fluid rounded z-depth-1" caption="二维形式下可以表示成图中的内容" %}
@@ -288,10 +290,12 @@ W\_{2}[\mu,\upsilon]=\inf\_{\gamma}\int \|x-y\|\_{2}^{2}d\gamma(x,y)
 
 对于两个分布（概率测度）$$\mu\in\mathcal{P}(\mathcal{X}),\upsilon\in\mathcal{P}(\mathcal{Y})$$，他们之间的最优传输代价总和即为 $$C(\mu,\upsilon)$$，但是原始问题不太好求解，因为有时候可能根本没有解法，所以采取对偶问题来进行求解：
 
-$$\begin{aligned}
+$$
+\begin{aligned}
     \min_{\gamma\in \Pi(\mu, \upsilon)} & \int_{\mathcal{X}\times\mathcal{Y}}c(x,y)d\gamma(x, y)\quad & (\text{Primal}) \\\\
     \max_{\phi\in L^{1}(\mu)\\\\\psi \in L^{1}(\upsilon)} & \{\int_{\mathcal{X}}\phi(x)d\mu(x)+\int_{\mathcal{Y}}\psi(y)d\upsilon(y):\phi(x)+\psi(y) \leq c(x,y)\}\quad & (Dual)
-\end{aligned}$$
+\end{aligned}
+$$
 
 其中既要满足边缘分布的约束，也要保证两个相同分布之间的散度为零。$$\phi,\psi$$ 分别表示两个分布的移动策略，这个策略能够使它们相互靠近。
 
@@ -304,9 +308,7 @@ $$\begin{aligned}
 
 ## 参考
 
-关于对偶问题在离散化最优传输及线性规划中的解释可以进一步看_从Wasserstein距离、对偶理论到WGAN_[^3]
-
-
+关于对偶问题在离散化最优传输及线性规划中的解释可以进一步看*从Wasserstein距离、对偶理论到WGAN*[^3]
 
 ---
 
@@ -314,4 +316,3 @@ $$\begin{aligned}
 [^2]: _Tutorial on Optimal Transport Theory_ L´ena¨ıc Chizat
 [^3]: <https://kexue.fm/archives/6280#%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E5%AF%B9%E5%81%B6>
 [^4]: M. Cuturi, “Sinkhorn Distances: Lightspeed Computation of Optimal Transport,” Advances in Neural Information Processing Systems, vol. 26, 2013, Accessed: Mar. 04, 2021. [Online]. Available: https://papers.nips.cc/paper/2013/hash/af21d0c97db2e27e13572cbf59eb343d-Abstract.html.
-

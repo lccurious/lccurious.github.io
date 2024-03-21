@@ -10,7 +10,6 @@ date: 2019-05-02 15:26:28
 giscus_comments: true
 ---
 
-
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="assets/img/2019-05-02-Simple-Socket-Server/simple_socket_server.png" title="simple_socket_server" class="img-fluid rounded z-depth-1" %}

@@ -9,7 +9,6 @@ date: 2019-04-15 23:39:45
 giscus_comments: true
 ---
 
-
 凸优化，或叫做凸最优化，凸最小化，是数学最优化的一个子领域，研究定义于凸集中的凸函数最小化的问题。凸优化在某种意义上说较一般情形的数学最优化问题要简单，譬如在凸优化中局部最优值必定是全局最优值。凸函数的凸性使得凸分析中的有力工具在最优化问题中得以应用，如次导数等。凸优化应用于很多学科领域，诸如自动控制系统，信号处理，通讯和网络，电子电路设计，数据分析和建模，统计学（最优化设计），以及金融。在近来运算能力提高和最优化理论发展的背景下，一般的凸优化已经接近简单的线性规划一样直捷易行。许多最优化问题都可以转化成凸优化（凸最小化）问题，例如求凹函数 $$f$$ 最大值的问题就等同于求凸函数 $$-f$$ 最小值的问题。[^1]下面的这些理论证明等主要来自于NESTEROV的书[^2]。
 
 <!-- more -->
@@ -69,9 +68,9 @@ $$
 极大似然估计法下，一个似然函数$$P(X,Y\vert \theta)$$的估计可以通过下面的公式得到。
 
 \begin{equation}
-\begin{array}{rl} 
+\begin{array}{rl}
 \theta\_{MLE} & = \text{argmin}\_{\theta}P(X,Y|\theta) = \text{argmax}\_{\theta}\log P(X, Y|\theta) \\\\\\
-& = \text{argmax}\_{\theta}\log \prod\_{i}P(x\_i, y\_i|\theta) \\\\\\
+& = \text{argmax}\_{\theta}\log \prod\_{i}P(x_i, y_i|\theta) \\\\\\
 & = \text{argmax}\_{\theta}\sum^{n}\_{i=1}\log P(x\_{i}, y\_{i}|\theta)
 \end{array}
 \end{equation}
@@ -81,7 +80,7 @@ $$
 如果将其中的极大似然估计替换成极大后验估计，可以改写成下面这样的形式。
 
 \begin{equation}
-\begin{array}{rl} 
+\begin{array}{rl}
 \theta\_{MAP} & = \text{argmax}\_{\theta}P(X, Y|\theta) P(\theta) =\text{argmax}\_{\theta} \log\\{ P(\theta)P(X,Y|\theta) \\} \\\\\\
 &=\text{argmax}\_{\theta}\log \\{ P(\theta)\prod\_{i}P(x\_{i}, y\_{i}|\theta) \\} \\\\\\
 &=\text{argmax}\_{\theta} \\{ \log P(\theta) + \sum^{n}\_{i=1}P(x\_{i}, y\_{i}|\theta) \\}
@@ -137,15 +136,15 @@ $$
 这种最优化问题中一般会存在多种解：
 
 - $$x^{*}$$ 是全局解（global solution），如果对于所有的 $$x\in Q$$， 有
-    $$
-    f_{0}(x^{*}) \leq f_{0}(x).
-    $$
-    在这种情况下，$$f_{0}(x^{*})$$ 称为问题的（全局）最优值（optimal value）。
+  $$
+  f_{0}(x^{*}) \leq f_{0}(x).
+  $$
+  在这种情况下，$$f_{0}(x^{*})$$ 称为问题的（全局）最优值（optimal value）。
 - $$x^{*}$$ 如果只是在一个局部$$x\in NBR(x^{*}, \delta)\cap Q$$，有
-    $$
-    f_{0}(x^{*}) \leq f_{0}(x).
-    $$
-    则称之为局部解。
+  $$
+  f_{0}(x^{*}) \leq f_{0}(x).
+  $$
+  则称之为局部解。
 
 非线性优化式非常重要和有前途的应用理论。它覆盖了几乎所有的运筹学和数值分析的需求（包括现在大量的机器学习内容）虽然总体上看，优化问题是无解的。
 
@@ -183,11 +182,11 @@ $$
 继续沿用上面最小化问题的问题表述形式，针对这样一种泛化模型（functional model）假定根据函数的光滑性程度，可以使用不同类型的oracle：
 
 - 零阶oracle（zero-order oracle）：
-    返回 $$f(x)$$ 的值。
+  返回 $$f(x)$$ 的值。
 - 一阶oracle（first-order oracle）：
-    返回 $$f(x)$$ 和梯度 $$f'(x)$$的值。
+  返回 $$f(x)$$ 和梯度 $$f'(x)$$的值。
 - 二阶oracle（second-order oracle）：
-    返回 $$f(x)$$，梯度 $$f'(x)$$，和Hessian $$f''(x)$$ 的值。
+  返回 $$f(x)$$，梯度 $$f'(x)$$，和Hessian $$f''(x)$$ 的值。
 
 ## 全局优化中复杂度的界
 
@@ -234,22 +233,21 @@ $$
 把这个问题推广到一系列的问题就有：
 
 $$
-\text{Find}~\bar{x}\in B_{n}:\quad f(\bar{x})-f^{*} \leq \varepsilon. 
+\text{Find}~\bar{x}\in B_{n}:\quad f(\bar{x})-f^{*} \leq \varepsilon.
 $$
 
 > 也就有如果要得到精度在 $$\varepsilon$$ 以内的解，这个方法的复杂度就在
 > $$\mathscr{A}(\mathscr{G}=(\lfloor \frac{L}{2\varepsilon}\rfloor+1)^{n}),$$
-所以令 $$p=\lfloor \frac{L}{2\varepsilon}\rfloor+1 \geq \frac{L}{2\varepsilon}$$ 也就有 $$f(\bar{x}-f^{*}) \leq \frac{L}{2p} \leq \varepsilon.$$ 也就需要调用 $$p^n$$ 次oracle，这是这个方法的复杂度上界。
+> 所以令 $$p=\lfloor \frac{L}{2\varepsilon}\rfloor+1 \geq \frac{L}{2\varepsilon}$$ 也就有 $$f(\bar{x}-f^{*}) \leq \frac{L}{2p} \leq \varepsilon.$$ 也就需要调用 $$p^n$$ 次oracle，这是这个方法的复杂度上界。
 
 实际上这还不够，也许在这种问题形式下还有更好的方法，或者实际上方法 $$\mathscr{G}$$ 的性能更好，所以再进一步分析求解这种问题的下界，下面的分析基于一些特点：
 
 - 它们基于黑盒（black box）的概念。
 - 这些界对于所有合理的迭代方案都有效，因此，它们给我们提供的是对于这个问题类的解析复杂度的下估计（lower estimate）。
 - 这些界都用了抵抗 oracle（resisting oracle）的思想。
-    - 对于每个特定方法（for example，$$\mathscr{G}(\mathscr{p})$$，一个抵抗oracle试图创建一个最坏（worst）问题：
-        - 它从一个“空”的函数开始，并且试图用最坏可能的方式回答这个方法的每一个调用。
-        - 这个回答必须和前面的回答以及问题类的描述兼容（compatible）
-
+  - 对于每个特定方法（for example，$$\mathscr{G}(\mathscr{p})$$，一个抵抗oracle试图创建一个最坏（worst）问题：
+    - 它从一个“空”的函数开始，并且试图用最坏可能的方式回答这个方法的每一个调用。
+    - 这个回答必须和前面的回答以及问题类的描述兼容（compatible）
 
 ### 下界分析
 
@@ -328,7 +326,7 @@ $$
 
 通过 Cauchy-Schwarz 不等式，
 $$-\|x\|\cdot \|y\| \leq \langle x, y\rangle \leq \|x\|\cdot \|y\|,$$
-推出 $$\Delta (s)=\langle \nabla f(\bar{x}), s\rangle \geq -\| \nabla f(\bar{x})\| .$$ 继续再让 
+推出 $$\Delta (s)=\langle \nabla f(\bar{x}), s\rangle \geq -\| \nabla f(\bar{x})\| .$$ 继续再让
 
 $$
 \bar{s}=-\nabla f(\bar{x})/\|\nabla f(\bar{x})\|.
@@ -353,6 +351,7 @@ $$f(y) = f(x^{*}) + \langle \nabla f(x^{*}, y-x^{*}\rangle + o(\|y-x^{*}\|) \geq
 ### 二阶逼近
 
 令函数 $$f(x)$$ 在 $$\bar{x}$$ 上是二次可微的，那么
+
 $$
 f(y)=f(\bar{x})+\langle \nabla f(x), y-\bar{x} \rangle + \frac{1}{2} \langle \nabla^2 f(\bar{x})(y-\bar{x}), y-\bar{x} \rangle + o(\|y-\bar{x}\|^2).
 $$
@@ -417,13 +416,12 @@ $$
 1. $$p\leq k$$ 显然成立
 1. 如果 $$q\geq k$$ 那么 $$C^{q,p}_{L}(Q)\subset C^{k, p}_{L}(Q)$$
 1. 同时，如果 $$f_1 \in C^{k, p}_{L_1}(Q)$$，$$f_2\in C^{k, p}_{L_2}(Q)$$ 且 $$\alpha, \beta\in \mathbb{R}^{1}$$ 对于
-    $$L_3 = |\alpha|L_1+|\beta|L_2$$
-    有$$\alpha f_1+\beta f_2 \in C^{k, p}_{L_3}(Q)$$
+   $$L_3 = |\alpha|L_1+|\beta|L_2$$
+   有$$\alpha f_1+\beta f_2 \in C^{k, p}_{L_3}(Q)$$
 
 ### Lipschitz Continuous Gradient
 
-> 考虑具有 Lipschitz 连续梯度的函数类，根据定义这个 $$f\in C^{1, 1}_L(\mathbb{R}^n)$$ 有对于所有的 $$x,y \in \mathbb{R}^{n}$$
-> $$\|\nabla f(x)-\nabla f(y)\| \leq L\|x-y\|.$$
+> 考虑具有 Lipschitz 连续梯度的函数类，根据定义这个 $$f\in C^{1, 1}_L(\mathbb{R}^n)$$ 有对于所有的 $$x,y \in \mathbb{R}^{n}$$ > $$\|\nabla f(x)-\nabla f(y)\| \leq L\|x-y\|.$$
 
 一个函数 $$f$$ 属于 $$C^{2, 1}_L(\mathbb{R}^{n}) \subset C^{1, 1}_L(\mathbb{R}^n)$$ 当且仅当对于所有的 $$x\in \mathbb{R}^n$$ 下面条件满足
 
@@ -488,7 +486,7 @@ $$
 > 如果 $$f \in C_{M}^{2,2}\left(\mathbb{R}^{n}\right)$$，是一个二阶可微符合 Lipschitz 连续 Hessian 的函数类型，我们有
 > $$\left\|\nabla^{2} f(x)-\nabla^{2} f(y)\right\| \leq M\|x-y\|, \quad \forall x, y \in \mathbb{R}^{n}$$
 > 则对于任意 $$x, y \in \mathbb{R}^{n}$$，做一次积分，再做一次积分
-> 
+>
 > $$
 > \begin{array}{c}{\left\|\nabla f(y)-\nabla f(x)-\nabla^{2} f(x)(y-x)\right\| \leq \frac{M}{2}\|y-x\|^{2}} \\ {\left|f(y)-f(x)-\langle\nabla f(x), y-x\rangle-\frac{1}{2}\left\langle\nabla^{2} f(x)(y-x), y-x\right\rangle\right|} \\ { \leq \frac{M}{6}\|y-x\|^{3}}\end{array}
 > $$
@@ -506,6 +504,7 @@ $$
 \end{equation}
 
 > 令 $$f \in C_{M}^{2,2}\left(\mathbb{R}^{n}\right)$$ 并且 $$x, y \in \mathbb{R}^{n}$$ with $$\| y-x\ =r$$ 可以有
+>
 > $$
 > \nabla^{2} f(x)-M r I_{n} \preceq \nabla^{2} f(y) \preceq \nabla^{2} f(x)+M r I_{n}
 > $$
@@ -517,7 +516,6 @@ $$
 $$
 -M r I_{n} \preceq G \equiv \nabla^{2} f(y)-\nabla^{2} f(x) \preceq M r I_{n}
 $$
-
 
 ---
 

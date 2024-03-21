@@ -10,8 +10,6 @@ date: 2019-10-16 17:36:06
 giscus_comments: true
 ---
 
-
-
 人们为了避免辛普森悖论等因为模型不明，混淆因素也一时无法确定而建立的各种分析方法，希望能够从大量的数据中找到满足控制变量条件的分析。主要包括建立新的表示符号，用以强调是在某个动作作用之后才有的某种结果，在这个理论基础上设计了因果图，分析方法和我们所认知的概率图分析等都比较一致。因果分析就是要在没有条件进行完全的控制变量的情况下进行数据分析，通过因果归纳得到因果结构，然后进行强度估计。
 
 <div class="row">
@@ -60,13 +58,13 @@ giscus_comments: true
 
 1. 通过计算各个倾向性评分对原始样本进行分层。
 1. 计算不同层中对于收益影响的加权平均
-$$ATT = \sum_{s\in strata}\frac{1}{N_{s,T=1}}(\bar{Y}_{s,T=1}-\bar{Y}_{s,T=0})$$ 其中，$$\bar{Y}_{s,T}$$ 是层 $$s$$ 在 $$T$$ 的干预下，$$N_{s,T=1}$$ 是在层 $$s$$ 中受到干预的样本数量。ATT 是指在对照组上控制量的影响差异（例如样本中有的对控制量起反应，有的不起反应）。
+   $$ATT = \sum_{s\in strata}\frac{1}{N_{s,T=1}}(\bar{Y}_{s,T=1}-\bar{Y}_{s,T=0})$$ 其中，$$\bar{Y}_{s,T}$$ 是层 $$s$$ 在 $$T$$ 的干预下，$$N_{s,T=1}$$ 是在层 $$s$$ 中受到干预的样本数量。ATT 是指在对照组上控制量的影响差异（例如样本中有的对控制量起反应，有的不起反应）。
 
 ### 加权
 
 数据集通常不会特别平衡，所以我们时常会根据其特征进行加权评估他们的收益效果，一些有效的加权方法可以改进这一问题。
 \begin{equation}
-ATE = \frac{1}{N\_{T=1}}\sum\_{i\in {\rm Treated}}w\_i Y\_i-\frac{1}{N\_{T=0}}\sum\_{j\in {\rm Untreated}}w\_j Y\_j
+ATE = \frac{1}{N\_{T=1}}\sum\_{i\in {\rm Treated}}w_i Y_i-\frac{1}{N\_{T=0}}\sum\_{j\in {\rm Untreated}}w_j Y_j
 \end{equation}
 其中，ATE 是指 Average Treatment Effect 表示控制组和对照组之间潜在的影响差异。
 
@@ -74,7 +72,7 @@ ATE = \frac{1}{N\_{T=1}}\sum\_{i\in {\rm Treated}}w\_i Y\_i-\frac{1}{N\_{T=0}}\s
 
 通过回归探索某项干预在模型上的作用效果：
 \begin{equation}
-E(Y|X,T)=\alpha\_1 X\_1+\alpha\_2 X\_2+\alpha\_3 X\_3\dots +\alpha\_n X\_n+\alpha\_T X\_T
+E(Y|X,T)=\alpha_1 X_1+\alpha_2 X_2+\alpha_3 X_3\dots +\alpha_n X_n+\alpha_T X_T
 \end{equation}
 
 $$\alpha$$ 越大，那么它们之间的因果性就越强。
@@ -94,14 +92,14 @@ $$\alpha$$ 越大，那么它们之间的因果性就越强。
 
 通过双重鲁棒采纳倾向性得分和回归方法中最好的组合，任意一个部分估计正确，都可以带来正确的结果，但是如果两个都估计的不好，那么双重鲁棒会带来更加严重的偏见。
 \begin{equation}
-DR\_1=\begin{cases}
+DR_1=\begin{cases}
 \frac{Y}{\hat{e}}-\frac{\hat{Y}\_{T=1}(1-\hat{e})}{\hat{e}},& T=1 \\\\
 \hat{Y}\_{T=1}, & T=0
 \end{cases}
 \end{equation}
 
 \begin{equation}
-DR\_0=\begin{cases}
+DR_0=\begin{cases}
 \hat{Y}\_{T=0}, & T=1 \\\\
 \frac{Y}{1-\hat{e}}-\frac{\hat{Y}\_{T=1}(\hat{e})}{1-\hat{e}},& T=0
 \end{cases}
@@ -148,7 +146,6 @@ DR\_0=\begin{cases}
 1. 随机或者打乱我们干预，重新进行因果分析，如果没有使分析结果改变，没有被驳倒。
 1. 把数据分成很多子集，进行分析，在各个子集内部没有明显差异，没有被驳倒。
 1. 测试协变量是否平衡。
-
 
 ## 总结
 

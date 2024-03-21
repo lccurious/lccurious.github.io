@@ -3,17 +3,18 @@ layout: post
 title: NeuTube和SWC使用指南
 date: 2018-03-16 22:04:26
 categories:
- - 自然科学
+  - 自然科学
 tags:
- - SWC
+  - SWC
 giscus_comments: true
 ---
 
-
-## SWC 格式 ##
+## SWC 格式
 
 SWC是一种直接使用文本表示的文件格式，它是一个文本文件，其中包含以＃字符开头的各种字段的标题以及包含索引，半径，类型和连接信息的一系列三维点。
+
 <!-- more -->
+
 表示点的文本文件中的行具有以下布局。
 
 ```shell
@@ -60,7 +61,7 @@ P表示当前点的父（整数标签）或-1以表示原点（soma）。
 8 6 19.420759 28.730757 9.558000 0.496217 7
 ```
 
-## 读取SWC文件 ##
+## 读取SWC文件
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
@@ -86,7 +87,7 @@ P表示当前点的父（整数标签）或-1以表示原点（soma）。
 
 TODO：NeuTube其他操作
 
-## 更多阅读 ##
+## 更多阅读
 
 - <http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html>
 - <http://research.mssm.edu/cnic/swc.html>

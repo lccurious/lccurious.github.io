@@ -11,8 +11,6 @@ date: 2019-09-25 10:29:33
 giscus_comments: true
 ---
 
-
-
 要认真看文档，网上虽然存在很多看起来好用的小抄，但是很多还是不如直接去看文档更方便满足你的需求。
 
 <!-- more -->
@@ -44,7 +42,7 @@ Pytorch 1.2.0 之后就正式支持了 TensorBoard 的内容记录，功能都�
 
 基于版本 1.2.0 共有两种 hook 机制，分别是针对 Tensor 的 hook 和针对 `nn.Module` 的 hook，有不同的用法。以针对 `nn.Module` 的用法，可以按照名字将模型中你关注的模块挑出，然后注册好传播所用的函数，以 HRNet 的特征层提取为例，这里可以针对某个 Branch 做输出观测。
 
-``` python
+```python
 def feature_viz_stage4(module, inputs, outputs):
     # print("<- Stage4 -> ")
     for idx, item in enumerate(outputs):
@@ -65,7 +63,7 @@ def feature_viz_stage4(module, inputs, outputs):
 - [`register_backward_hook(hook)`](https://pytorch.org/docs/stable/nn.html?highlight=hook#torch.nn.Module.register_backward_hook)
 - [`register_forward_pre_hook(hook)`](https://pytorch.org/docs/stable/nn.html?highlight=hook#torch.nn.Module.register_forward_pre_hook)
 
-``` python
+```python
 # add feature monitor
 for idx, (name, m) in enumerate(model.module.named_modules()):
     if name == 'stage4':

@@ -3,22 +3,22 @@ layout: post
 title: conda包组织工具
 date: 2018-01-08 21:56:58
 categories:
- - 工程
+  - 工程
 tags:
- - 开发
- - conda
+  - 开发
+  - conda
 giscus_comments: true
 ---
 
-
 使用Anaconda的过程中一种常见的使用手段就是使用conda来管理各类的Python第三方库。但是这个包管理工具不仅在Anaconda生态系统中起到非常重要的作用，也可以作为我们自己的软件开发管理工具。本文将对conda的软件开发管理工具做一定的介绍。
+
 <!-- more -->
 
-## conda是什么 ##
+## conda是什么
 
 conda是一个用于任何语言的开源环境管理系统，它只是在Python的社区中特别的受欢迎而已。Anaconda是conda的一个发行版而已，它集成了很多开源的科学分析工具库。
 
-## conda环境 ##
+## conda环境
 
 如果在同一台电脑上有多个版本的Python，可以用Python环境管理将这些环境完全隔离开来互不影响。在一开始这个环境中就只有一个环境，也就是通用的主环境`conda env list`：
 
@@ -77,7 +77,7 @@ conda create -c conda-forge -n test_env python=2.7 numpy matplotlib pandas
 
 以上的`-c`是用于指定安装来源，`-n`后面紧跟的是环境名字，最后面跟的是要安装的包的名字，以空格隔开。
 
-### 分享环境 ###
+### 分享环境
 
 ```shell
 conda env export -f test_env.yml -n test_env
@@ -85,7 +85,7 @@ conda env export -f test_env.yml -n test_env
 
 这样可以生成详尽的环境文件用于与他人分享，但是这个环境是不能跨平台的。
 
-### 复制环境 ##
+### 复制环境
 
 可以把当前的环境复制到另一份名字不相同的环境中去。
 
@@ -93,13 +93,13 @@ conda env export -f test_env.yml -n test_env
 conda create --name live_env --clone test_env
 ```
 
-### 删除环境 ##
+### 删除环境
 
 ```shell
 conda env remove -n live_env
 ```
 
-### 指定环境操作 ###
+### 指定环境操作
 
 ```shell
 conda list -n test_env
@@ -107,5 +107,6 @@ conda remove -n test_env rasterio
 ```
 
 ---
+
 layout: post
 参考：https://geohackweek.github.io/Introductory/01-conda-tutorial/

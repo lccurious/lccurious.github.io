@@ -3,15 +3,14 @@ layout: post
 title: 搜索技巧
 date: 2022-01-19 22:09:39
 categories:
- - 工具
+  - 工具
 tags:
- - 搜索引擎
- - 搜索技巧
- - 效率
+  - 搜索引擎
+  - 搜索技巧
+  - 效率
 thumbnail: assets/img/2022-01-19-Search-Skills/title.png
 giscus_comments: true
 ---
-
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
@@ -55,33 +54,33 @@ giscus_comments: true
 
 机器学习领域顶会网址(site)
 
-| 刊物缩写 | 	网址site |
-|:---:|:---:|
-| nips | 	nips.cc |
-| icml | 	icml.cc |
-| jmlr | 	jmlr.org |
-| ijcai | 	ijcai.org |
-| aaai | 	aaai.org |
-| uai | 	uai.org |
-| ML汇刊 | 	proceedings.mlr.press |
-| Springer下刊物 | 	link.springer.com |
-| IEEE下刊物 | 	ieeexplore.ieee.org |
+|    刊物缩写    |       网址site        |
+| :------------: | :-------------------: |
+|      nips      |        nips.cc        |
+|      icml      |        icml.cc        |
+|      jmlr      |       jmlr.org        |
+|     ijcai      |       ijcai.org       |
+|      aaai      |       aaai.org        |
+|      uai       |        uai.org        |
+|     ML汇刊     | proceedings.mlr.press |
+| Springer下刊物 |   link.springer.com   |
+|   IEEE下刊物   |  ieeexplore.ieee.org  |
 
 机器学习领域顶会来源(source)
 
-| 刊物缩写 | 	刊物source |
-| :---: | :---:|
-| AI | 	Artificial Intelligence |
-| TPAMI | 	IEEE Transactions on Pattern Analysis and Machine Intelligence |
-| JMLR | 	Journal of Machine Learning Research |
-| TNNLS | 	IEEE Transactions on Neural Networks and learning systems |
-| Cybernetics | 	IEEE Transactions on Cybernetics |
-| NIPS | 	Advances in Neural Information Processing Systems |
-| ICML | 	International Conference on Machine Learning |
-| IJCAI | 	International Joint Conference on Artificial Intelligence |
-| AAAI | 	AAAI Conference on Artificial Intelligence |
-| COLT | 	Annual Conference on Computational Learning Theory |
-| UAI | 	Conference on Uncertainty in Artificial Intelligence |
+|  刊物缩写   |                           刊物source                           |
+| :---------: | :------------------------------------------------------------: |
+|     AI      |                    Artificial Intelligence                     |
+|    TPAMI    | IEEE Transactions on Pattern Analysis and Machine Intelligence |
+|    JMLR     |              Journal of Machine Learning Research              |
+|    TNNLS    |   IEEE Transactions on Neural Networks and learning systems    |
+| Cybernetics |                IEEE Transactions on Cybernetics                |
+|    NIPS     |       Advances in Neural Information Processing Systems        |
+|    ICML     |          International Conference on Machine Learning          |
+|    IJCAI    |   International Joint Conference on Artificial Intelligence    |
+|    AAAI     |           AAAI Conference on Artificial Intelligence           |
+|    COLT     |       Annual Conference on Computational Learning Theory       |
+|     UAI     |      Conference on Uncertainty in Artificial Intelligence      |
 
 ## 一些语义上的搜索技巧
 
@@ -92,33 +91,32 @@ giscus_comments: true
 
 还可以在日常的使用过程中，根据自己的经验积累一些有好资源的网站，之后一些专业性较强的问题的可以优先在那些网站上搜索。
 
-
 # 其他引擎
 
 ## 常用数据源[^2]
 
 1. 最简单直接的方法就是利用[搜索技巧](http://saili.science/information-search/#search-tips)进行**谷歌搜索**（[谷歌访问配置](https://sli1989.github.io/windows-use/#google)）。
 2. 善用垂直类引擎：第一，它的信息源更专业更权威。第二，它可以更快更方便地找到你想要的东西。
-    - [国家数据](http://data.stats.gov.cn/)
-    - [中国统计信息网](http://www.tjcn.org/)
+   - [国家数据](http://data.stats.gov.cn/)
+   - [中国统计信息网](http://www.tjcn.org/)
 3. 自行使用 “网盘搜索器”，推荐资源：
-    - [盘多多](http://www.panduoduo.top/)，[盘多多](http://www.panduoduo.online/)
-    - [盘搜](http://www.pansou.com/)
-    - [fastsoso](https://www.fastsoso.cn/)
-    - [如风搜](http://www.rufengso.net/)
+   - [盘多多](http://www.panduoduo.top/)，[盘多多](http://www.panduoduo.online/)
+   - [盘搜](http://www.pansou.com/)
+   - [fastsoso](https://www.fastsoso.cn/)
+   - [如风搜](http://www.rufengso.net/)
 
 ## 书籍下载
 
 - [Library Genesis](http://libgen.rs/)
 - 英文文献：推荐 [CROSSREF 数据库](https://search.crossref.org/)），最后使用 Sci-Hub 数据库下载。
-    - [Sci-Hub 可用网址 1](http://tool.yovisun.com/scihub/)，[可用网址 2](https://www.keyanguanjia.com/thread-511-1-1.html)。或者使用 Sci-Hub 桌面客户端：[SciHub Desktop](https://zhuanlan.zhihu.com/p/31809890)，[Sci-Hub EVA](https://github.com/leovan/SciHubEVA) 。（[四款桌面客户端软件性能评测](https://zhuanlan.zhihu.com/p/37471780)）
+  - [Sci-Hub 可用网址 1](http://tool.yovisun.com/scihub/)，[可用网址 2](https://www.keyanguanjia.com/thread-511-1-1.html)。或者使用 Sci-Hub 桌面客户端：[SciHub Desktop](https://zhuanlan.zhihu.com/p/31809890)，[Sci-Hub EVA](https://github.com/leovan/SciHubEVA) 。（[四款桌面客户端软件性能评测](https://zhuanlan.zhihu.com/p/37471780)）
 - [ScienceHuβ](https://scihub.org/search/)，[The National Academies Press](https://www.nap.edu/)，[Open Access Theses and Dissertations](https://oatd.org/)
 - **英文书籍搜索推荐引擎**：[Jiumo E-Book Search 鸠摩搜书](https://www.jiumodiary.com/)，[Library Genesis](http://gen.lib.rus.ec/)，[BookFi](http://bookfi.net/)，[Electronic library](http://b-ok.xyz/)，[booksc.org](http://booksc.org/)，[AvaxHome](https://avxhm.is/)，[ebookhunter](http://ebookhunter.ch/)，[bookrix](https://www.bookrix.de/)，[Free ebooks - Project Gutenberg](http://www.gutenberg.org/)，[FreeBookSpot](http://www.freebookspot.es/) ，[hathitrust](https://www.hathitrust.org/)，[PDF Drive](https://www.pdfdrive.com/)，[PDF search engine](https://pdf-downloads.net/)
 - **中文书籍搜索推荐引擎**
-    - [Jiumo E-Book Search 鸠摩搜书](https://www.jiumodiary.com/)
-    - 全国图书馆参考咨询联盟 ：推荐使用 ISBN 检索，通过脚本[一键获取图书](https://greasyfork.org/zh-CN/scripts/388744)进行购买，
-    - 需要图书馆权限：[读秀学术搜索](http://www.duxiu.com/login.jsp)，[超星汇雅电子图书数据库](http://edu.sslibrary.com/)
-    - [中文 PDF 搜索引擎](http://www.sopdf.com/zh-hans/)
+  - [Jiumo E-Book Search 鸠摩搜书](https://www.jiumodiary.com/)
+  - 全国图书馆参考咨询联盟 ：推荐使用 ISBN 检索，通过脚本[一键获取图书](https://greasyfork.org/zh-CN/scripts/388744)进行购买，
+  - 需要图书馆权限：[读秀学术搜索](http://www.duxiu.com/login.jsp)，[超星汇雅电子图书数据库](http://edu.sslibrary.com/)
+  - [中文 PDF 搜索引擎](http://www.sopdf.com/zh-hans/)
 - [IDEAS](https://ideas.repec.org/) the largest bibliographic database dedicated to Economics and available freely on the Internet. Based on RePEc, it indexes over 2,400,000 items of research, including over 2,200,000 that can be downloaded in full text.
 - 电子书：[Free eBook PDF EPUB Download](http://www.nwcbooks.com/)，[电子书免费下载](http://www.lingocn.com/)，[SoBooks（原 "SoKindle"）](https://sobooks.cc/)，[电子书网站汇总](http://oxingtui.com/other/resource.htm)
 
@@ -162,11 +160,8 @@ giscus_comments: true
     </div>
 </div>
 
-
 ---
 
 [^1]: [18个高效使用Google搜索的技巧](http://blog.nice123.plus/2019/03/23/18%E4%B8%AA%E9%AB%98%E6%95%88%E4%BD%BF%E7%94%A8Google%E6%90%9C%E7%B4%A2%E7%9A%84%E6%8A%80%E5%B7%A7/)
-
 [^2]: [搜索引擎常用技巧](https://jeanleem6.github.io/2018/01/31/search-engine-skills/)
-
 [^3]: [学术搜索技巧](http://zhuqiannan.com/posts/2018/12/scholar-search-tricks/)

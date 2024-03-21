@@ -10,8 +10,6 @@ typora-root-url: Poincare-Ball-Model
 giscus_comments: true
 ---
 
-
-
 庞加莱（1854 - 1912）活跃在 19 世纪和 20 世纪之交的人，人类历史上最伟大的数学家之一、当时理论物理与数学物理所有分支的一流专家、爱因斯坦相对论的先驱、最伟大的天体力学家之一、著名的科学哲学家、散文家。他给出了相对论的基础之一的“光速不变原理”，是相对论的先驱。以他名字命名的庞加莱圆盘模型（Poincaré disk model）也称共形圆盘模型，是一个双曲几何模型，欧式空间中的直线概念（在这里更准确的说法是测地线）在这里就是对应到垂直于圆盘边界的圆弧或者圆盘的直径。如下图所示，图中每两个点之间的线代表的长度都是相同的，也就是说在庞加莱圆盘模型中每离中心越远，单位欧几里得空间的线段所代表的长度就越长。所以当点越靠近圆盘的边界，它们之间的实际距离就会变得无限大。
 
 <div class="row">
@@ -73,10 +71,13 @@ giscus_comments: true
 从原点出发到另外一个点的线段是垂直于下面的坐标轴的，它看起来可能是一个半圆弧形的或者直线形的。
 
 而其中任意两点$$(x_{1}, y_{1}),(x_{2},y_{2})$$之间的距离度量为：
-$$\begin{aligned}{\rm dist}(\langle x_{1}, y_{1}\rangle, \langle x_{2}, y_{2}\rangle)&={\rm arccosh}(1+\frac{(x_{2}-x_{1})^{2}+(y_{2}-y_{1})^{2}}{2y_{1}y_{2}})\\\\
+
+$$
+\begin{aligned}{\rm dist}(\langle x_{1}, y_{1}\rangle, \langle x_{2}, y_{2}\rangle)&={\rm arccosh}(1+\frac{(x_{2}-x_{1})^{2}+(y_{2}-y_{1})^{2}}{2y_{1}y_{2}})\\\\
 &=2{\rm arsinh}\frac{1}{2}\sqrt{\frac{(x_{2}-x_{1})^{2}+(y_{2}-y_{1})^{2}}{y_{1}y_{2}}}\\\\
 &=2\ln \frac{\sqrt{(x_{2}-x_{1})^{2}+(y_{2}-y_{1})^{2}}+\sqrt{(x_{2}-x_{1})^{2}+(y_{2}+y_{1})^{2}}}{2\sqrt{y_{1}y_{2}}}\\\\
-\end{aligned}$$
+\end{aligned}
+$$
 
 ## 超圆形
 
@@ -237,12 +238,8 @@ x^{i}\_{t+1}\leftarrow x^{i}\_{t}-\alpha m^{i}\_{t}/\sqrt{\hat{v}^{i}\_{t}},\qua
 
 双曲几何的性质决定了它比常规的欧几里得几何能更好地建模树形的结构，所以可以天然地应用到树形关系的表示中去。在双曲几何中两点之间的距离为他们之间的测地线的长度。越远离中心的位置，两点之间的测地距离会越大，可以很好地容纳下指数增长的子节点。
 
-
-
-
 ---
 
 [^1]: <https://zh.wikipedia.org/wiki/%E6%B5%8B%E5%9C%B0%E7%BA%BF>
 [^2]: Hyperbolic geometry of complex networks
 [^3]: First-order methods for geodesically convex optimization
-

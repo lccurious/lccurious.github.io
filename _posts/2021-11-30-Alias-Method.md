@@ -12,12 +12,9 @@ giscus_comments: true
 thumbnail: assets/img/2021-11-30-Alias-Method/Untitled.png
 ---
 
-
-
 Alias Method 是一种采样复杂度为 $$O(1)$$ 的指定离散概率随机采样算法。一种按照给定离散概率进行随机采样方法可以简单地描述为：
 
 > 给定 $$K$$ 个样本，然后按照概率 $$p_{1},\dots,p_{K}$$ 从中采样，那么只要将原始的 $$[0,1]$$ 分成 $$K$$ 个区间，然后每份的长度都对应于概率的大小，然后只要从均匀分布 $$U(0,1)$$ 采样，再看这个值落在哪个区间就可以实现任意分布的数据采样了。[^1]
-> 
 
 看起来这个问题已经解决了，接下去就是要实现一个这样的算法：给定任意随机数，返回它应该属于哪一个区间。如果用二叉树 BST 实现数据结构的话，查询的效率在 $$O(\log N)$$，距离本文要介绍的 Alias Method 还有明显的距离。
 
@@ -25,7 +22,7 @@ Alias Method 是一种采样复杂度为 $$O(1)$$ 的指定离散概率随机采
 
 # Alisa 算法
 
-根据 *Darts, Dice, and Coins: Sampling from a Discrete Distribution*[^2] 的解释，算法整理如下：
+根据 _Darts, Dice, and Coins: Sampling from a Discrete Distribution_[^2] 的解释，算法整理如下：
 
 为了解决区间查询的效率问题，Alias Method 构造了一个非常特别的数据结构。假设我们给出四个离散概率分别问 1/2、1/3、1/12、1/12。
 
@@ -102,7 +99,7 @@ def alias_method_table(probs):
     A = np.arange(0, K)
     Tl = set(list((S < 1).nonzero()[0]))
     Th = set(list((S > 1).nonzero()[0]))
-    
+
 		# 不断协调两个数组直到全部安排完
     while len(Tl) > 0 and len(Th) > 0:
         j = Tl.pop()
@@ -115,7 +112,6 @@ def alias_method_table(probs):
             Th.add(k)
     return S, A
 ```
-
 
 ---
 

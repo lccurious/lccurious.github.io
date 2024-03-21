@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Paper | GLMNet: Graph Learning-Matching Networks for Feature Matching'
+title: "Paper | GLMNet: Graph Learning-Matching Networks for Feature Matching"
 categories:
   - 文献
 tags:
@@ -9,8 +9,6 @@ tags:
 date: 2019-11-27 18:51:09
 giscus_comments: true
 ---
-
-
 
 图卷积因为有较强的特征表达能力以及可以端到端的训练，在很多基于图的场景中都有比较好的表现，像是图的节点识别，图的匹配和对齐等。但是现有图匹配通常是固定的，且和图相互独立。在进行图卷积的过程中还会有加入基于平滑的卷积层，这种平滑效果会冲淡图节点的可辨识特征。所以文中提出图学习匹配网络 (GLMNet)
 
@@ -136,7 +134,6 @@ $$
 $$
 
 其中 $$\lambda$$ 用于表示点匹配错误率和点匹配冲突率的权重倾向。
-
 
 ---
 

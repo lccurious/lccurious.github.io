@@ -4,13 +4,11 @@ title: Word 排版技巧
 typora-root-url: Word-Tricks
 date: 2022-01-03 15:51:46
 tags:
- - Word
- - 排版
+  - Word
+  - 排版
 thumbnail: assets/img/2022-01-03-Word-Tricks/give_me_an_equation.gif
 giscus_comments: true
 ---
-
-
 
 Word作为很多人每天都需要接触的工具，在2011年左右就已经引入了很多自动化的工具辅助我们完成日常的工作。除了大家熟悉的模板、引用、大纲、格式刷、图表、目录等内容，还包括自动图文集等更为便捷的工具。受到一位博主[^1]的启发，决定在他的基础上罗列自己常用的一些操作内容。本文中所使用的软件版本为Office 2019中的Word，同时类似的一些功能的在Mac版的Office 2019中也都是支持的，如果不能直接找到对应的按钮只要打开偏好设置搜索打开即可。
 
@@ -45,7 +43,7 @@ Word作为很多人每天都需要接触的工具，在2011年左右就已经引
 在一些文档格式要求中，标题的字体都和正文字体有明显不同，我的建议是让标题的设置和正文的格式相互独立。在修改标题样式时，设置标题的样式基准为”（无样式）”实现标题和正文的格式相互独立。
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
+    <div class="col-sm-8 mt-3 mt-md-0 mx-auto">
         {% include figure.liquid loading="eager" path="assets/img/2022-01-03-Word-Tricks/Untitled-2.png" title="例如这里就将样式基准设为（无样式），并且设定格式为4号黑体" class="img-fluid rounded z-depth-1" caption="例如这里就将样式基准设为（无样式），并且设定格式为4号黑体" %}
     </div>
 </div>
@@ -55,16 +53,16 @@ Word作为很多人每天都需要接触的工具，在2011年左右就已经引
 如果还有一些额外要求的可以再打开格式选项对段落等内容进行修改。例如设置段落中它的段前为18磅，段后为0磅都可以使标题的分块效果更加鲜明。
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2022-01-03-Word-Tricks/Untitled-3.png" title="Untitled" class="img-fluid rounded z-depth-1" caption="Untitled" %}
+    <div class="col-sm-6 mt-3 mt-md-0 mx-auto">
+        {% include figure.liquid loading="eager" path="assets/img/2022-01-03-Word-Tricks/Untitled-3.png" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
 其他的标题格式可以根据各个不同的场景进行分别设置，按照内容编排需要分别设置号1~4级或者更多级标题样式即可。此外，还可以通过格式设置样式选择的快捷键：
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2022-01-03-Word-Tricks/Untitled-4.png" title="Untitled" class="img-fluid rounded z-depth-1" caption="Untitled" %}
+    <div class="col-sm-6 mt-3 mt-md-0 mx-auto">
+        {% include figure.liquid loading="eager" path="assets/img/2022-01-03-Word-Tricks/Untitled-4.png" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
@@ -89,18 +87,17 @@ Word作为很多人每天都需要接触的工具，在2011年左右就已经引
 选择列表1，把文本的缩进位置改为0，把列表1链接到标题1的样式，可以看到预览框中一级标题之后就出现了标题1的字样作为占位符。对于编号的位置，在左下的文本缩进栏进行设置，点击“设置所有级别”还可以一次性设置所有子标题。
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2022-01-03-Word-Tricks/Untitled-7.png" title="Untitled" class="img-fluid rounded z-depth-1" caption="Untitled" %}
+    <div class="col-sm-4 mt-3 mt-md-0 mx-auto">
+        {% include figure.liquid loading="eager" path="assets/img/2022-01-03-Word-Tricks/Untitled-7.png" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
 此外编号之后还可以选择用什么符号作为编号的间隔，如果有特殊的要求，例如间隔一个汉字间距的场景中，可以选择不特别标注，并在左上一些的”输入编号的格式“栏中进行设置。
 
 > “输入编号的格式”这个栏中，灰色的编号表示这是word自动计算得到的，可以在其左右自己添加一些文本进行自定义，这样每次自动生成的标题编号就都会包括此类自定义符号。
-> 
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
+    <div class="col-sm-6 mt-3 mt-md-0 mx-auto">
         {% include figure.liquid loading="eager" path="assets/img/2022-01-03-Word-Tricks/Untitled-8.png" title="例如按照这类格式还可以为附录设置，更进一步还可以在字体栏中设置标题的字间距" class="img-fluid rounded z-depth-1" caption="例如按照这类格式还可以为附录设置，更进一步还可以在字体栏中设置标题的字间距" %}
     </div>
 </div>
@@ -114,8 +111,8 @@ Word作为很多人每天都需要接触的工具，在2011年左右就已经引
 所有其他题注、目录、页码、页眉页脚包括前面的标题等，默认都是继承自正文的样式的，所以这里先对正文进行设置。
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2022-01-03-Word-Tricks/Untitled-9.png" title="Untitled" class="img-fluid rounded z-depth-1" caption="Untitled" %}
+    <div class="col-sm-6 mt-3 mt-md-0 mx-auto">
+        {% include figure.liquid loading="eager" path="assets/img/2022-01-03-Word-Tricks/Untitled-9.png" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
@@ -298,7 +295,6 @@ Word作为很多人每天都需要接触的工具，在2011年左右就已经引
         {% include figure.liquid loading="eager" path="assets/img/2022-01-03-Word-Tricks/Untitled-29.png" title="Untitled" class="img-fluid rounded z-depth-1" caption="Untitled" %}
     </div>
 </div>
-
 
 ---
 

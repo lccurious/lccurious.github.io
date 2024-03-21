@@ -3,19 +3,20 @@ layout: post
 title: 午间休息
 date: 2017-12-20 12:40:09
 categories:
- - 工程
+  - 工程
 tags:
- - 数学建模
- - Jupyter
- - Python
- - 数据预处理
+  - 数学建模
+  - Jupyter
+  - Python
+  - 数据预处理
 giscus_comments: true
 ---
 
 可以在午间休息的时间换换脑子，似乎写的文章都是想要对身边的好朋友们絮叨的话。这篇文章中将针对基于Python的数据预览和简单预处理问题进行简单介绍，包括环境的配置和具体操作，同时也将不全面地叙述一些数据预处理的技巧。
+
 <!-- more -->
 
-## Anaconda ##
+## Anaconda
 
 Python（蟒蛇）---> Anaconda（巨蟒），可想而知Anaconda是在纯Python的基础上进行扩展的，Anaconda中集成了很多科学计算程序包（modules），可以通过conda指令很方便地组织和管理这些包。
 
@@ -23,7 +24,7 @@ Python（蟒蛇）---> Anaconda（巨蟒），可想而知Anaconda是在纯Pytho
 
 Anaconda安装完成之后，考虑到中国特色网络环境，建议去清华的镜像站更换Anaconda的更新源。更换源的操作在[TUNA](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)上有很详尽的说明了，在此对这些镜像站致以敬意。
 
-## Jupyter ##
+## Jupyter
 
 这是一个颜值高交互方便的工具，在Ubuntu的Terminal或者Windows的命令行提示符中输入下面的命令：
 

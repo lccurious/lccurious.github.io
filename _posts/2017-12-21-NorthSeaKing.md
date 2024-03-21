@@ -3,14 +3,14 @@ layout: post
 title: 北海若
 date: 2017-12-21 11:59:59
 categories:
- - 生活
+  - 生活
 tags:
- - 生活
+  - 生活
 giscus_comments: true
 ---
 
-
 > 秋水时至，百川灌河；泾流之大，两涘渚崖之间不辩牛马。于是焉河伯欣然自喜，以天下之美为尽在己，顺流而东行，至于北海，东面而视，不见水端。于是焉河伯始旋其面目，望洋向若而叹曰：“野语有之曰：‘闻道百，以为莫己若者。’我之谓也。---《秋水》
+
 <!-- more -->
 
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=441532&auto=0&height=66"></iframe>

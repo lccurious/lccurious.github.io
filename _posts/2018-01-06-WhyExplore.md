@@ -10,45 +10,44 @@ date: 2018-01-06 10:25:47
 giscus_comments: true
 ---
 
-
-### 好的研究 ###
+### 好的研究
 
 1. 苹果落在牛顿头上
 1. 牛顿发现了万有引力定律
 
-### 差的研究 ###
+### 差的研究
 
 1. 苹果落在牛顿头上
 1. 牛顿发表了下面这样一篇文章
-   <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2018-01-06-WhyExplore/Newton-cartoon-web.gif" title="Newton-cartoon-web" class="img-fluid rounded z-depth-1" %}
-    </div>
+ <div class="row">
+  <div class="col-sm mt-3 mt-md-0">
+      {% include figure.liquid loading="eager" path="assets/img/2018-01-06-WhyExplore/Newton-cartoon-web.gif" title="Newton-cartoon-web" class="img-fluid rounded z-depth-1" %}
   </div>
+</div>
 
 <!-- more -->
 
-# On the Impact of a 0.12 kg Apple with the Head #
+# On the Impact of a 0.12 kg Apple with the Head
 
-## Abstract ##
+## Abstract
 
 We have carried out an experimental study to determine quantitatively the risks faced by people standing under an apple tree. The Collision Induced Pain (CIP) produced by a 0.12 kg apple on the head was measured.
 
-## Introduction ##
+## Introduction
 
 Since the early days of Creation, Man has been interested in apples [1]. Its nutritive properties [2] as well as its potential toxicity have been thoroughly discussed [3]. More recently, apples have found important technological applications [4]. However, little attention has been given to the critical issue of the risks faced by the eventual fruit picker who approaches the branches of an apple tree.
 
-## Experimental procedure and results ##
+## Experimental procedure and results
 
 An experiment was carried out to determine the effect of an apple falling on the head. The experimental setup is sketched in Fig. 1. The experimenter sat under an apple tree for five consecutive days and different intervals of time ∆t (Table 1). On the fifth day an apple fell on the experimenter’s head from a distance d=1.8±0.1 metres. The mass of the apple was found to be M=0.12±0.01 kg. Immediately after the collision the experimenter reported a mild discomfort that decreased exponentially with time as he rubbed his hand against the Apple Impact Area (AIA).
 
 | Day | $$\Delta t$$(hours) | Apples fallen |
-|:---:|:---:|:---:|
-|1|1.3|0|
-|2|0.6|0|
-|3|2.1|1(*)|
-|4|1.4|0|
-|5|1.8|1|
+| :-: | :-----------------: | :-----------: |
+|  1  |         1.3         |       0       |
+|  2  |         0.6         |       0       |
+|  3  |         2.1         |     1(\*)     |
+|  4  |         1.4         |       0       |
+|  5  |         1.8         |       1       |
 
 On a scale of 0 to 10, the Collision Induced Pain (CIP) was rated as 2.3±0.1 (Fig. 2) and it decreased down to negligible values after a time τ=14.6±0.5 seconds. Some authors suggest that a more vigorous rubbing on the AIA would reduce substantially the Pain Relaxation Time (PRT) [5], although this theory has been highly disputed. No structural damage was observed in the experimenter’s skull.
 
@@ -58,11 +57,11 @@ On a scale of 0 to 10, the Collision Induced Pain (CIP) was rated as 2.3±0.1 (F
     </div>
 </div>
 
-## Conclusion ##
+## Conclusion
 
 A quantitative determination of the effect of an apple falling on the head was carried out for the first time. A 0.12 kg apple falling on the experimenter’s head from a distance of 1.8 metres was found to produce a CIP of 2.3±0.1 arbitrary units. A future development of this work includes the measurement of the CIP induced by apples of different mass and investigating the collision with pears. These studies will be carried out as soon as the author finds a PhD student as he is not very keen on repeating the experience himself.
 
-## Acknowledgments ##
+## Acknowledgments
 
 The author thanks the University of Cambridge (UK) for providing the apple tree.[6]
 
