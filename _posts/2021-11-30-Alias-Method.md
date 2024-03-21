@@ -26,13 +26,13 @@ Alias Method 是一种采样复杂度为 $$O(1)$$ 的指定离散概率随机采
 
 为了解决区间查询的效率问题，Alias Method 构造了一个非常特别的数据结构。假设我们给出四个离散概率分别问 1/2、1/3、1/12、1/12。
 
-<div class="row">
+<div class="row justify-content-center align-items-center">
     <div class="col-sm-8 mt-3 mt-md-0 mx-auto">
         {% include figure.liquid loading="eager" path="assets/img/2021-11-30-Alias-Method/Untitled.png" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
-<div class="row">
+<div class="row justify-content-center align-items-center">
     <div class="col-sm-6 mt-3 mt-md-0">
         <p>首先对离散概率的分布做归一化，使用离散概率分布的平均概率做归一化，而不是对最大概率做归一化：</p>
     </div>
@@ -41,7 +41,7 @@ Alias Method 是一种采样复杂度为 $$O(1)$$ 的指定离散概率随机采
     </div>
 </div>
 
-<div class="row">
+<div class="row justify-content-center align-items-center">
     <div class="col-sm-6 mt-3 mt-md-0">
         <p>然后取四个高度为1的矩形对应到归一化后的概率分布</p>
     </div>
@@ -50,7 +50,7 @@ Alias Method 是一种采样复杂度为 $$O(1)$$ 的指定离散概率随机采
     </div>
 </div>
 
-<div class="row">
+<div class="row justify-content-center align-items-center">
     <div class="col-sm-6 mt-3 mt-md-0">
         <p>然后把高于概率1的部分分割放入到概率不满1的区块中：</p>
     </div>
@@ -59,7 +59,7 @@ Alias Method 是一种采样复杂度为 $$O(1)$$ 的指定离散概率随机采
     </div>
 </div>
 
-<div class="row">
+<div class="row justify-content-center align-items-center">
     <div class="col-sm-6 mt-3 mt-md-0">
         <p>如果填满一个还没有把多出来的部分配完，那就再针对另一个没有满的区块把它填到满为止，即使让当前区块分到不足1: 在进行概率的重新划分时，需要严格遵守每个区块最多只能填入两个区块的概率值。</p>
     </div>
@@ -68,7 +68,7 @@ Alias Method 是一种采样复杂度为 $$O(1)$$ 的指定离散概率随机采
     </div>
 </div>
 
-<div class="row">
+<div class="row justify-content-center align-items-center">
     <div class="col-sm-6 mt-3 mt-md-0">
         <p>最后再取满出来的第二块去填满第一块的空缺：</p>
     </div>
@@ -77,7 +77,7 @@ Alias Method 是一种采样复杂度为 $$O(1)$$ 的指定离散概率随机采
     </div>
 </div>
 
-<div class="row">
+<div class="row justify-content-center align-items-center">
     <div class="col-sm-6 mt-3 mt-md-0">
         <p>最后，算法的实现方式就可以通过两个表格实现，一个用于记录原始就属于该区间的概率记作 `Prob` ，另一个存储区块编号指代第二层概率对应的区块编号记作 `Alias` 。</p>
     </div>
