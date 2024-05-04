@@ -1,7 +1,7 @@
 ---
 layout: distill
 title: DRDA
-description: Discriminative Radial Domain Adaptation, IEEE Transactions on Image Processing 2023
+description: Discriminative Radial Domain Adaptation
 img: assets/img/001_drda/motivation.png
 category: research
 tags:
