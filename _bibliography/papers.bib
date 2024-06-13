@@ -81,7 +81,8 @@
   year = {2024},
   urldate = {2024-01-19},
   copyright = {All rights reserved},
-  langid = {english}
+  langid = {english},
+  abstract = {The conventional evaluation protocols on machine learning models rely heavily on a labeled, i.i.d-assumed testing dataset, which is not often present in real-world applications. The Automated Model Evaluation (AutoEval) shows an alternative to this traditional workflow, by forming a proximal prediction pipeline of the testing performance without the presence of ground-truth labels. Despite its recent successes, the AutoEval frameworks still suffer from an overconfidence issue, substantial storage and computational cost. In that regard, we propose a novel measure --- Meta-Distribution Energy (MDE) that allows the AutoEval framework to be both more efficient and effective. The core of the MDE is to establish a meta-distribution statistic, on the information (energy) associated with individual samples, then offer a smoother representation enabled by energy-based learning. We further provide our theoretical insights by connecting the MDE with the classification loss. We provide extensive experiments across modalities, datasets and different architectural backbones to validate MDE's validity, together with its superiority compared with prior approaches. We also prove MDE's versatility by showing its seamless integration with large-scale models, and easy adaption to learning scenarios with noisy- or imbalanced- labels.}
 }
 
 @article{jiangMCAMomentChannel2024,
@@ -100,7 +101,8 @@
   doi = {10.1609/aaai.v38i3.28035},
   urldate = {2024-05-07},
   copyright = {Copyright (c) 2024 Association for the Advancement of Artificial Intelligence},
-  langid = {english}
+  langid = {english},
+  abstract = {Channel attention mechanisms endeavor to recalibrate channel weights to enhance representation abilities of networks. However, mainstream methods often rely solely on global average pooling as the feature squeezer, which significantly limits the overall potential of models. In this paper, we investigate the statistical moments of feature maps within a neural network. Our findings highlight the critical role of high-order moments in enhancing model capacity. Consequently, we introduce a flexible and comprehensive mechanism termed Extensive Moment Aggregation (EMA) to capture the global spatial context. Building upon this mechanism, we propose the Moment Channel Attention (MCA) framework, which efficiently incorporates multiple levels of moment-based information while minimizing additional computation costs through our Cross Moment Convolution (CMC) module. The CMC module via channel-wise convolution layer to capture multiple order moment information as well as cross channel features. The MCA block is designed to be lightweight and easily integrated into a variety of neural network architectures. Experimental results on classical image classification, object detection, and instance segmentation tasks demonstrate that our proposed method achieves state-of-the-art results, outperforming existing channel attention methods.}
 }
 
 @inproceedings{xiaUnbiasedMultiLabelLearning2024,
@@ -109,7 +111,8 @@
   author={Xia, Mingxuan and Huang, Zenan and Wu, Runze and Lyu, Gengyu and Zhao, Junbo and Chen, Gang and Wang, Haobo},
   booktitle={The {{Forty-first International Conference}} on {{Machine Learning}}},
   title={Unbiased Multi-Label Learning from Crowdsourced Annotations},
-  year={2024}
+  year={2024},
+  abstract={This work studies the novel Crowdsourced Multi-Label Learning (CMLL) problem, where each instance is related to multiple true labels but the model only receives unreliable labels from different annotators. Although a few Crowdsourced Multi-Label Inference (CMLI) methods have addressed learning with multiple labels under crowdsourcing, they pay more attention to directly identifying true labels given crowdsourced ones and lack of theoretical guarantees of the learned multi-label predictor. In this paper, by excavating the generation process of crowdsourced labels, we establish the first \textbf{unbiased risk estimator} for CMLL based on the crowdsourced transition matrices. To facilitate transition matrix estimation, we upgrade our unbiased risk estimator by aggregating crowdsourced labels and transition matrices from all annotators while guaranteeing its theoretical characteristics. Integrating with the unbiased risk estimator, we further propose a decoupled autoencoder framework to exploit label correlations and boost performance. We also provide a generalization error bound to ensure the convergence of the empirical risk estimator. Experiments on various CMLL scenarios demonstrate the effectiveness of our proposed method.}
 }
 
 @misc{wenInterventionalDomainAdaptation2020,
@@ -135,7 +138,8 @@
   booktitle = {Proceedings of the {{AAAI Conference}} on {{Artificial Intelligence}}},
   author = {Xia, Mingxuan and Zhao, Junbo and Gengyu, Lyu and Huang, Zenan and Hu, Tianlei and Chen, Gang and Wang, Haobo},
   year = {2024},
-  copyright = {All rights reserved}
+  copyright = {All rights reserved},
+  abstract = {Black-box domain adaptation (BDA) targets to learn a classifier on an unsupervised target domain while assuming only access to black-box predictors trained from unseen source data. Although a few BDA approaches have demonstrated promise by manipulating the transferred labels, they largely overlook the rich underlying structure in the target domain. To address this problem, we introduce a novel separation and alignment framework for BDA. Firstly, we locate those well-adapted samples via loss ranking and a flexible confidence-thresholding procedure. Then, we introduce a novel graph contrastive learning objective that aligns under-adapted samples to their local neighbors and well-adapted samples. Lastly, the adaptation is finally achieved by a nearest-centroid-augmented objective that exploits the clustering effect in the feature space. Extensive experiments demonstrate that our proposed method outperforms best baselines on benchmark datasets, e.g. improving the averaged per-class accuracy by 4.1% on the VisDA dataset. The source code is available at: https://github.com/MingxuanXia/SEAL.}
 }
 
 @misc{zhouRepresentationDrosophilaLarval2021,
