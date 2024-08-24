@@ -214,7 +214,7 @@ A explanation can be:
 
 > Consequently, the model tends to dump unnecessary attention values to specific tokens.
 
-> 📌 Extensive research has been done on applying LLMs to lengthy texts, with three main areas of focus: **Length Extrapolation, Context Window Extension, **and **Improving LLMs’s Utilization of Long Text.** While seemingly related, it’s worth nothing that progress in one direction does’t necessarily lead to progress in the other.
+> 📌 Extensive research has been done on applying LLMs to lengthy texts, with three main areas of focus: **Length Extrapolation, Context Window Extension,** and **Improving LLMs’s Utilization of Long Text.** While seemingly related, it’s worth nothing that progress in one direction does’t necessarily lead to progress in the other.
 > This paper does not expand the attention window size of LLMs or enhance the model’s memory and usage on long texts.
 {: .block-tip }
 
