@@ -107,7 +107,7 @@ zotero_username: # your zotero username
 wechat_qr: # filename of your wechat qr-code saved as an image (e.g., wechat-qr.png if saved to assets/img/wechat-qr.png)
 
 contact_note: >
-  You can even add a little note about which of these is the best way to reach you.
+  curiouspeo@gmail.com
 
 # -----------------------------------------------------------------------------
 # Analytics and search engine verification
@@ -163,9 +163,9 @@ disqus_shortname: lccurious # put your disqus shortname
 # External sources.
 # If you have blog posts published on medium.com or other external sources,
 # you can display them in your blog by adding a link to the RSS feed.
-external_sources:
-  - name: medium.com
-    rss_url: https://medium.com/@curiouspeo/feed
+# external_sources:
+#   - name: medium.com
+#     rss_url: https://medium.com/@curiouspeo/feed
 
 # -----------------------------------------------------------------------------
 # Collections
