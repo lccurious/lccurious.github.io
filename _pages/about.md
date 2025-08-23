@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>College of Computer Science and Technology</a>. Zhejiang University.
+# subtitle: <a href='https://www.antresearch.com/'>Ant Research</a>. Ant Group.
 
 profile:
   align: right
@@ -18,4 +18,4 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
-Mainly focused on causal discovery and inference methods for open‑world observational data, including **causal discovery algorithms**, **transfer learning algorithms**, interpretability of machine learning, learning strategies in loops, machine learning theory, etc. Also dedicated to applying causal discovery and inference algorithms to the interpretation of “neuro‑behavioral” data and causal effect inference in medical data. For example, discovering the characteristics of the circuit between premotor movement signals and central pattern generators of Drosophila larvae, digital twin networks in mouse V1 visual cortex, drug molecule discovery, and effect inference.
+My research focuses on **Large Language Models (LLMs)** and **reasoning**, investigating how to build intelligent systems that can perform complex reasoning across diverse domains. I work on advancing the reasoning capabilities of LLMs through novel training paradigms that combine reinforcement learning with structured feedback mechanisms, and develop rigorous benchmarks to evaluate machine intelligence in scientific reasoning tasks. This builds upon my foundational work in causal discovery and inference methods for open-world observational data, including causal discovery algorithms, transfer learning, and the application of these techniques to neuro-behavioral data analysis and medical causal effect inference.
