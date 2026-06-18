@@ -2,13 +2,13 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: Curiousity Hub # the website title (if blank, full name will be used instead)
+title: Curiosity Hub # the website title (if blank, full name will be used instead)
 first_name: Zenan
 middle_name:
 last_name: Huang
 email: curiouspeo@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
+  Personal academic homepage of Zenan Huang. Research on LLMs, reasoning, causal discovery, and transfer learning.
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
@@ -141,20 +141,19 @@ related_blog_posts:
   enabled: true
   max_related: 5
 
-# Giscus comments (RECOMMENDED)
-# Follow instructions on https://giscus.app/ to setup for your repo to fill out the information below.
-giscus:
-  repo: lccurious/lccurious.github.io # <your-github-user-name>/<your-github-repo-name>
-  repo_id: # leave empty or specify your repo_id (see https://giscus.app/)
-  category: Comments # name of the category under which discussions will be created
-  category_id: # leave empty or specify your category_id (see https://giscus.app/)
-  mapping: title # identify discussions by post title
-  strict: 1 # use strict identification mode
-  reactions_enabled: 1 # enable (1) or disable (0) emoji reactions
-  input_position: bottom # whether to display input form below (bottom) or above (top) the comments
-  theme: preferred_color_scheme # name of the color scheme (preferred works well with al-folio light/dark mode)
-  emit_metadata: 0
-  lang: en
+# Giscus comments (disabled)
+# giscus:
+#   repo: # <your-github-user-name>/<your-github-repo-name>
+#   repo_id: # leave empty or specify your repo_id (see https://giscus.app/)
+#   category: Comments # name of the category under which discussions will be created
+#   category_id: # leave empty or specify your category_id (see https://giscus.app/)
+#   mapping: title # identify discussions by post title
+#   strict: 1 # use strict identification mode
+#   reactions_enabled: 1 # enable (1) or disable (0) emoji reactions
+#   input_position: bottom # whether to display input form below (bottom) or above (top) the comments
+#   theme: preferred_color_scheme # name of the color scheme (preferred works well with al-folio light/dark mode)
+#   emit_metadata: 0
+#   lang: en
 
 # Disqus comments (DEPRECATED)
 disqus_shortname: lccurious # put your disqus shortname
