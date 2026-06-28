@@ -1,9 +1,0 @@
-github_users:
-  - lccurious
-
-repo_description_lines_max: 2
-
-github_repos:
-  - inclusionAI/dInfer
-  - inclusionAI/LLaDA2.0
-  - MingxuanXia/SEAL
