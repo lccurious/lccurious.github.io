@@ -1,0 +1,115 @@
+/*******************************************************************************
+ * Site-specific visual overrides.
+ *
+ * Keep custom design decisions here so the upstream al-folio stylesheets can
+ * be updated with minimal merge conflicts.
+ ******************************************************************************/
+
+:root {
+  --global-bg-color: #fcfbf8;
+  --global-code-bg-color: rgba(163, 52, 52, 0.06);
+  --global-text-color: #292725;
+  --global-text-color-light: #716b66;
+  --global-theme-color: #a33434;
+  --global-hover-color: #7e2424;
+  --global-hover-text-color: #ffffff;
+  --global-footer-bg-color: #2c2926;
+  --global-footer-text-color: #d8d2cc;
+  --global-footer-link-color: #fcfbf8;
+  --global-distill-app-color: #716b66;
+  --global-divider-color: rgba(41, 39, 37, 0.12);
+  --global-card-bg-color: #ffffff;
+  --global-highlight-color: #a33434;
+  --global-newsletter-bg-color: #ffffff;
+  --global-newsletter-text-color: #292725;
+}
+
+html[data-theme="dark"] {
+  --global-bg-color: #1b1a19;
+  --global-code-bg-color: #272321;
+  --global-text-color: #ebe6df;
+  --global-text-color-light: #aaa198;
+  --global-theme-color: #e08b82;
+  --global-hover-color: #f1aaa3;
+  --global-hover-text-color: #1b1a19;
+  --global-footer-bg-color: #2c2926;
+  --global-footer-text-color: #d8d2cc;
+  --global-footer-link-color: #ebe6df;
+  --global-distill-app-color: #aaa198;
+  --global-divider-color: #383431;
+  --global-card-bg-color: #242220;
+  --global-newsletter-bg-color: #242220;
+  --global-newsletter-text-color: #ebe6df;
+}
+
+body {
+  font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a,
+table.table a {
+  &:hover {
+    color: var(--global-hover-color);
+  }
+}
+
+.navbar {
+  opacity: 0.98;
+}
+
+.navbar.navbar-light .navbar-nav .nav-item.active > .nav-link {
+  font-weight: 600;
+}
+
+.article-page {
+  max-width: 780px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+footer.sticky-bottom {
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+.header-bar {
+  padding-top: 1.5rem;
+  padding-bottom: 2.5rem;
+
+  h1 {
+    color: var(--global-text-color);
+    font-size: clamp(2.75rem, 8vw, 4.25rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+  }
+
+  h2 {
+    color: var(--global-text-color-light);
+    font-size: 1.125rem;
+    font-weight: 400;
+  }
+}
+
+.post-list li h3 {
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+.post {
+  h1,
+  h2,
+  h3 {
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  p,
+  li {
+    line-height: 1.7;
+  }
+}
