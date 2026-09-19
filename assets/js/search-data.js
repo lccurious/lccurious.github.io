@@ -873,6 +873,11 @@ ninja.data = [{
           description: "LLaDA2.2-flash — an agent-oriented diffusion LM with a 128K context window, introducing Levenshtein editing (DELETE / INSERT control tokens) for long-context tool use, multi-turn interaction and robust error correction.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/007_llada22/";
+            },},{id: "projects-青甘大环线动态路书",
+          title: '青甘大环线动态路书',
+          description: "一份面向桌面与 iPad 的 7 天 6 夜自驾路书，支持分日路线、动态地图、卫星底图、高德定位与打印。",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/009_qinggan_roadbook/";
             },},{
         id: 'social-email',
         title: 'email',
