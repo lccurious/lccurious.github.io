@@ -848,6 +848,31 @@ ninja.data = [{
           description: "Latent Processes Identification From Multi-View Time Series",
           section: "Projects",handler: () => {
               window.location.href = "/projects/002_multi/";
+            },},{id: "projects-rubicon-preview-30b-a3b",
+          title: 'Rubicon-preview (30B-A3B)',
+          description: "Rubicon-preview — a 30B-A3B model trained with a novel reinforcement learning framework built on rubric anchors, targeting open-ended, creative and humanities-centric tasks where verifiable rewards are hard to define.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/004_rubicon/";
+            },},{id: "projects-grovemoe-base-inst-33b-3-28b",
+          title: 'GroveMoE-Base / -Inst (33B-3.28B)',
+          description: "GroveMoE — a sparse MoE architecture with adjugate experts for dynamic computation allocation, with 33B total parameters and only 3.14–3.28B active per token, up-cycled from Qwen3-30B-A3B-Base via mid-training and SFT.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/008_grovemoe/";
+            },},{id: "projects-llada-moe-7b-a1b",
+          title: 'LLaDA-MoE-7B-A1B',
+          description: "The first open-source sparse MoE diffusion language model — LLaDA-MoE-7B-A1B has 7B total parameters with only ~1.4B activated per token, pre-trained from scratch on ~20T tokens (Base / Instruct / Instruct-TD).",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/005_llada_moe/";
+            },},{id: "projects-llada2-0-flash-100b-a6b",
+          title: 'LLaDA2.0-flash (100B-A6B)',
+          description: "LLaDA2.0-flash — a 100B-A6B MoE diffusion language model, the instruction-tuned flagship of the LLaDA2.0 series (alongside LLaDA2.0-Uni and LLaDA2.0-mini), averaging 79.32 across knowledge, reasoning, coding, math, agent and alignment benchmarks.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/006_llada20/";
+            },},{id: "projects-llada2-2-flash-128k",
+          title: 'LLaDA2.2-flash (128K)',
+          description: "LLaDA2.2-flash — an agent-oriented diffusion LM with a 128K context window, introducing Levenshtein editing (DELETE / INSERT control tokens) for long-context tool use, multi-turn interaction and robust error correction.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/007_llada22/";
             },},{
         id: 'social-email',
         title: 'email',
