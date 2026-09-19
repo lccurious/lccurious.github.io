@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#153e3b" />
+    <meta
+      name="description"
+      content="2026年9月11日至17日，7天6夜青甘大环线逆时针自驾路书：按自定义高德路线整理的分日轨迹、导航定位、住宿与沿途备选。"
+    />
+    <title>向西北去｜青甘大环线逆时针 7天6夜</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23153e3b'/%3E%3Cpath d='M8 47 25 19l9 15 8-11 14 24' fill='none' stroke='%23f4edda' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='48' cy='15' r='5' fill='%23d65335'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="preconnect" href="https://webrd01.is.autonavi.com" />
+    <link rel="preconnect" href="https://webst01.is.autonavi.com" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="styles.css?v=20260907-2" />
+  </head>
+  <body>
+    <main class="roadbook-shell">
+      <section class="map-pane" aria-label="青甘大环线地图">
+        <div id="map"></div>
+
+        <header class="map-masthead">
+          <button class="brand-lockup" type="button" data-action="overview" aria-label="查看全程路线">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 48 48" role="img">
+                <path d="M4 36.5 16.5 16l7.2 12.2L30.6 19 44 36.5" />
+                <path d="m17 36.5 6.8-8.3 5.1 6.1 4.4-5.8 5.8 8" />
+                <circle cx="36.5" cy="11.5" r="4" />
+              </svg>
+            </span>
+            <span>
+              <strong>向西北去</strong>
+              <small>QINGHAI × GANSU</small>
+            </span>
+          </button>
+          <div class="map-actions">
+            <a class="map-tool" href="../../projects/" aria-label="返回项目列表">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m14 6-6 6 6 6M8 12h11" />
+              </svg>
+              <span>项目</span>
+            </a>
+            <button class="map-tool" type="button" data-action="fit" aria-label="路线回到视野">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" />
+              </svg>
+              <span>回到路线</span>
+            </button>
+            <button class="map-tool" type="button" data-action="layers" aria-label="切换地图样式">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m12 3-9 5 9 5 9-5-9-5Z" />
+                <path d="m3 12 9 5 9-5M3 16l9 5 9-5" />
+              </svg>
+              <span id="layer-label">卫星</span>
+            </button>
+          </div>
+        </header>
+
+        <nav class="day-rail" aria-label="选择行程日期">
+          <button class="day-chip is-overview" type="button" data-day="all" aria-pressed="true">
+            <span>全</span><small>环线</small>
+          </button>
+          <div class="rail-rule" aria-hidden="true"></div>
+          <div id="day-rail-items" class="day-rail-items"></div>
+        </nav>
+
+        <div class="map-caption" aria-live="polite">
+          <span class="route-swatch" aria-hidden="true"></span>
+          <span id="map-caption-text">青海 · 甘肃 · 柴达木 · 河西走廊</span>
+        </div>
+      </section>
+
+      <aside class="guide-pane" aria-label="行程详情">
+        <div class="paper-grain" aria-hidden="true"></div>
+        <div id="guide-content" class="guide-content"></div>
+      </aside>
+    </main>
+
+    <template id="icon-sprite">
+      <svg aria-hidden="true"></svg>
+    </template>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      crossorigin=""
+    ></script>
+    <script src="route-data.js?v=20260907-2"></script>
+    <script src="app.js?v=20260907-2"></script>
+  </body>
+</html>
