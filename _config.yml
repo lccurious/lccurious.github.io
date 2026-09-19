@@ -155,8 +155,8 @@ related_blog_posts:
 #   emit_metadata: 0
 #   lang: en
 
-# Disqus comments (DEPRECATED)
-disqus_shortname: lccurious # put your disqus shortname
+# Disqus comments (DEPRECATED, disabled)
+# disqus_shortname: lccurious # put your disqus shortname
 # https://help.disqus.com/en/articles/1717111-what-s-a-shortname
 
 # External sources.
