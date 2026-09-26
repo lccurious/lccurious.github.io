@@ -140,7 +140,7 @@ function renderOverview() {
         <button class="text-button" type="button" data-action="print" aria-label="打印路书或存为 PDF">${icon("print")} 打印 / 存为 PDF</button>
       </div>
       <h1 class="guide-title">${ROADBOOK_INFO.title}<span class="accent-dot">。</span></h1>
-      <p class="guide-lede">曹家堡机场取车后，经乌鞘岭到武威，再走张掖、嘉峪关、敦煌；进入柴达木后往返察尔汗，经翡翠湖、德令哈与茶卡，最后沿青海湖返回机场。</p>
+      <p class="guide-lede">曹家堡机场取车后，经乌鞘岭到武威，参观鸠摩罗什寺，再走张掖、嘉峪关、敦煌；进入柴达木后往返察尔汗，经青海中控发电站、德令哈、柏树山与琉璃湖抵达茶卡，最后沿青海湖经同宝山返回机场。</p>
       <div class="route-meta">
         <div class="meta-cell"><span class="meta-label">总里程</span><span class="meta-value">${ROADBOOK_INFO.distance}</span></div>
         <div class="meta-cell"><span class="meta-label">正式路线点</span><span class="meta-value">${ROADBOOK_DAYS.reduce((sum, day) => sum + day.stops.length, 0)} 个</span></div>
@@ -252,7 +252,7 @@ function renderDay(dayNumber) {
       </section>
       <div class="schedule-notice">${icon("alert")}<p><strong>行程核对</strong>${item.notice}</p></div>
       <section class="section" aria-labelledby="route-heading-${dayNumber}">
-        <div class="section-heading"><h2 id="route-heading-${dayNumber}" class="section-title">当天行车路线</h2><span class="section-note">建议时间</span></div>
+        <div class="section-heading"><h2 id="route-heading-${dayNumber}" class="section-title">当天行车路线</h2><span class="section-note">行程顺序</span></div>
         <ol class="route-timeline">${stops}</ol>
       </section>
       <section class="section" aria-labelledby="places-heading-${dayNumber}">
