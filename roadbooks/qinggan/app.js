@@ -60,13 +60,13 @@ const satelliteLabels = L.tileLayer(
   { subdomains: "1234", maxZoom: 18 },
 );
 const satelliteLayer = L.layerGroup([satelliteBase, satelliteLabels]);
-standardLayer.addTo(map);
+satelliteLayer.addTo(map);
 
 const routeLayer = L.featureGroup().addTo(map);
 const markerLayer = L.featureGroup().addTo(map);
 const routeCache = new Map();
 let activeDay = "all";
-let activeBaseLayer = "standard";
+let activeBaseLayer = "satellite";
 let renderToken = 0;
 
 function icon(name) {
