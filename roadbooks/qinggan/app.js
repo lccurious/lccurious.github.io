@@ -35,9 +35,7 @@ function toGcj02([latitude, longitude]) {
   return [latitude + deltaLat, longitude + deltaLng];
 }
 
-const overallBounds = L.latLngBounds(
-  ROADBOOK_DAYS.flatMap((day) => day.stops.map((stop) => toGcj02(stop.coord))),
-);
+const overallBounds = L.latLngBounds(ROADBOOK_DAYS.flatMap((day) => day.stops.map((stop) => toGcj02(stop.coord))));
 
 const map = L.map("map", {
   zoomControl: false,
@@ -47,18 +45,17 @@ const map = L.map("map", {
   preferCanvas: true,
 }).fitBounds(overallBounds, { padding: [55, 55] });
 
-const standardLayer = L.tileLayer(
-  "https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}",
-  { subdomains: "1234", maxZoom: 18, attribution: "© 高德地图" },
-);
-const satelliteBase = L.tileLayer(
-  "https://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
-  { subdomains: "1234", maxZoom: 18, attribution: "© 高德地图" },
-);
-const satelliteLabels = L.tileLayer(
-  "https://webst0{s}.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}",
-  { subdomains: "1234", maxZoom: 18 },
-);
+const standardLayer = L.tileLayer("https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}", {
+  subdomains: "1234",
+  maxZoom: 18,
+  attribution: "© 高德地图",
+});
+const satelliteBase = L.tileLayer("https://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}", {
+  subdomains: "1234",
+  maxZoom: 18,
+  attribution: "© 高德地图",
+});
+const satelliteLabels = L.tileLayer("https://webst0{s}.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}", { subdomains: "1234", maxZoom: 18 });
 const satelliteLayer = L.layerGroup([satelliteBase, satelliteLabels]);
 satelliteLayer.addTo(map);
 
@@ -71,7 +68,8 @@ let renderToken = 0;
 
 function icon(name) {
   const icons = {
-    print: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V3h10v6M7 17H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-3M7 14h10v7H7z"/></svg>',
+    print:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V3h10v6M7 17H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-3M7 14h10v7H7z"/></svg>',
     bed: '<svg class="stay-icon" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 30V13M34 30v-9a5 5 0 0 0-5-5H17v14M6 22h28M10 16h7v6H6v-2a4 4 0 0 1 4-4Z"/></svg>',
     arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5"/></svg>',
     alert: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 9v5M12 17.5v.1"/></svg>',
@@ -106,7 +104,7 @@ function renderRail() {
     (item) => `
       <button class="day-chip" type="button" data-day="${item.day}" aria-label="第 ${item.day} 天 ${item.date} ${item.shortRoute}" aria-pressed="false">
         <span>${item.day}</span><small>DAY</small>
-      </button>`,
+      </button>`
   ).join("");
 }
 
@@ -115,13 +113,16 @@ function renderOfficialLinks() {
     (link) => `
       <a class="official-link" href="${link.url}" target="_blank" rel="noreferrer">
         <span><strong>${link.label}</strong><small>${link.note}</small></span><b aria-hidden="true">↗</b>
-      </a>`,
+      </a>`
   ).join("");
 }
 
 function renderOverview() {
   const rows = ROADBOOK_DAYS.map((item) => {
-    const middle = item.stops.slice(1, -1).map((stop) => stop.name).join(" · ");
+    const middle = item.stops
+      .slice(1, -1)
+      .map((stop) => stop.name)
+      .join(" · ");
     return `
       <button class="overview-day" type="button" data-day="${item.day}">
         <span class="overview-index">D${item.day}</span>
@@ -143,7 +144,10 @@ function renderOverview() {
       <p class="guide-lede">曹家堡机场取车后，经乌鞘岭到武威，参观鸠摩罗什寺，再走张掖、嘉峪关、敦煌；进入柴达木后往返察尔汗，经青海中控发电站、德令哈、柏树山与琉璃湖抵达茶卡，最后沿青海湖经同宝山返回机场。</p>
       <div class="route-meta">
         <div class="meta-cell"><span class="meta-label">总里程</span><span class="meta-value">${ROADBOOK_INFO.distance}</span></div>
-        <div class="meta-cell"><span class="meta-label">正式路线点</span><span class="meta-value">${ROADBOOK_DAYS.reduce((sum, day) => sum + day.stops.length, 0)} 个</span></div>
+        <div class="meta-cell"><span class="meta-label">正式路线点</span><span class="meta-value">${ROADBOOK_DAYS.reduce(
+          (sum, day) => sum + day.stops.length,
+          0
+        )} 个</span></div>
         <div class="meta-cell"><span class="meta-label">备选标记</span><span class="meta-value">${MARKED_PLACES.length} 个</span></div>
       </div>
       <section class="section" aria-labelledby="overview-heading">
@@ -165,26 +169,33 @@ function renderOverview() {
 function renderMarkedPlaces(item) {
   const places = markedPlacesFor(item);
   const categories = ["路线标记", "餐饮", "补给", "休息", "医疗"];
-  const groups = categories.map((category) => {
-    const rows = places.filter((place) => placeCategory(place.name) === category);
-    if (!rows.length) return "";
-    return `
+  const groups = categories
+    .map((category) => {
+      const rows = places.filter((place) => placeCategory(place.name) === category);
+      if (!rows.length) return "";
+      return `
       <section class="place-group">
         <div class="place-group-heading"><h3>${category}</h3><span>${rows.length}</span></div>
         <div class="place-list">
-          ${rows.map((place) => `
+          ${rows
+            .map(
+              (place) => `
             <article class="place-card">
               <div class="place-card-copy">
                 <strong>${place.name}</strong>
                 ${place.note ? `<p>${place.note}</p>` : ""}
                 <small>${place.address}</small>
               </div>
-              <a href="${navUrl(markedPlaceKeyword(place))}" target="_blank" rel="noreferrer" aria-label="在高德地图定位 ${place.name}">高德定位 ↗</a>
-            </article>`,
-          ).join("")}
+              <a href="${navUrl(markedPlaceKeyword(place))}" target="_blank" rel="noreferrer" aria-label="在高德地图定位 ${
+                place.name
+              }">高德定位 ↗</a>
+            </article>`
+            )
+            .join("")}
         </div>
       </section>`;
-  }).join("");
+    })
+    .join("");
 
   return `
     <details class="places-drawer">
@@ -198,7 +209,7 @@ function renderMarkedPlaces(item) {
 
 function renderRoadServices() {
   const phones = EMERGENCY_PHONES.map(
-    (phone) => `<a class="phone-link" href="tel:${phone.number}"><strong>${phone.number}</strong><span>${phone.label}</span></a>`,
+    (phone) => `<a class="phone-link" href="tel:${phone.number}"><strong>${phone.number}</strong><span>${phone.label}</span></a>`
   ).join("");
   return `
     <details class="places-drawer road-service-drawer">
@@ -213,8 +224,9 @@ function renderRoadServices() {
 function renderDay(dayNumber) {
   const item = ROADBOOK_DAYS[dayNumber - 1];
   const routeChain = item.stops.map((stop) => stop.name).join(" → ");
-  const stops = item.stops.map(
-    (stop) => `
+  const stops = item.stops
+    .map(
+      (stop) => `
       <li class="stop">
         <span class="stop-dot" aria-hidden="true"></span>
         <div>
@@ -225,10 +237,14 @@ function renderDay(dayNumber) {
             <a class="stop-nav" href="${navUrl(`${stop.nav} ${stop.address}`)}" target="_blank" rel="noreferrer">高德定位 ↗</a>
           </div>
         </div>
-      </li>`,
-  ).join("");
+      </li>`
+    )
+    .join("");
   const tabs = ROADBOOK_DAYS.map(
-    (day) => `<button class="day-tab ${day.day === dayNumber ? "is-active" : ""}" type="button" data-day="${day.day}" aria-label="查看第 ${day.day} 天">${day.day}</button>`,
+    (day) =>
+      `<button class="day-tab ${day.day === dayNumber ? "is-active" : ""}" type="button" data-day="${day.day}" aria-label="查看第 ${day.day} 天">${
+        day.day
+      }</button>`
   ).join("");
   const next = dayNumber === ROADBOOK_DAYS.length ? "all" : dayNumber + 1;
   const nextLabel = dayNumber === ROADBOOK_DAYS.length ? "回到总览" : `下一程 · D${next}`;
@@ -262,7 +278,9 @@ function renderDay(dayNumber) {
       </section>
       <section class="section" aria-labelledby="stay-heading-${dayNumber}">
         <div class="stay-note">
-          <div><h3 id="stay-heading-${dayNumber}">${dayNumber === 7 ? item.stay : `住在 ${item.stay}`}</h3><p>${item.stayNote}</p><a class="stay-nav" href="${navUrl(item.stayNav)}" target="_blank" rel="noreferrer">高德定位 · ${item.stayNav} ↗</a></div>
+          <div><h3 id="stay-heading-${dayNumber}">${dayNumber === 7 ? item.stay : `住在 ${item.stay}`}</h3><p>${
+            item.stayNote
+          }</p><a class="stay-nav" href="${navUrl(item.stayNav)}" target="_blank" rel="noreferrer">高德定位 · ${item.stayNav} ↗</a></div>
           ${icon("bed")}
         </div>
       </section>
@@ -293,10 +311,9 @@ async function fetchRoadRoute(item) {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 9000);
   try {
-    const response = await fetch(
-      `https://router.project-osrm.org/route/v1/driving/${coordinates}?overview=full&geometries=geojson&steps=false`,
-      { signal: controller.signal },
-    );
+    const response = await fetch(`https://router.project-osrm.org/route/v1/driving/${coordinates}?overview=full&geometries=geojson&steps=false`, {
+      signal: controller.signal,
+    });
     if (!response.ok) throw new Error(`Route service returned ${response.status}`);
     const payload = await response.json();
     if (payload.code !== "Ok" || !payload.routes?.[0]?.geometry?.coordinates?.length) throw new Error("No route geometry");
@@ -391,9 +408,10 @@ function updateNavigation() {
 }
 
 function fitActiveRoute() {
-  const coords = activeDay === "all"
-    ? ROADBOOK_DAYS.flatMap((day) => day.stops.map((stop) => toGcj02(stop.coord)))
-    : ROADBOOK_DAYS[activeDay - 1].stops.map((stop) => toGcj02(stop.coord));
+  const coords =
+    activeDay === "all"
+      ? ROADBOOK_DAYS.flatMap((day) => day.stops.map((stop) => toGcj02(stop.coord)))
+      : ROADBOOK_DAYS[activeDay - 1].stops.map((stop) => toGcj02(stop.coord));
   map.fitBounds(L.latLngBounds(coords), { paddingTopLeft: [88, 96], paddingBottomRight: [56, 70] });
 }
 

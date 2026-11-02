@@ -15,7 +15,7 @@ toc:
 
 authors:
   - name: Zenan Huang
-    url: "https://lccurious.github.io/about"
+    url: "https://lccurious.github.io/"
     affiliations:
       name: Zhejiang University
   - name: Haobo Wang

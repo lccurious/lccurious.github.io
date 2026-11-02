@@ -124,8 +124,8 @@ int main(int argc, char *argv[])
 
 ## Gtest进阶
 
-- <https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md>
+- <https://github.com/google/googletest/blob/main/docs/advanced.md>
 
 ---
 
-[^1]: <https://github.com/google/googletest/blob/master/googletest/docs/Primer.md>
+[^1]: <https://github.com/google/googletest/blob/main/docs/primer.md>

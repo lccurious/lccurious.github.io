@@ -10,3 +10,11 @@ _posts/2015-10-20-math.md
 _sass/font-awesome/*.scss
 _sass/tabler-icons/*.scss
 _scripts/search.liquid.js
+
+# Kramdown block attributes are changed by Prettier's Markdown formatter.
+_posts/2024-02-25-Extend-LLMs-Context-Window.md
+_projects/004_rubicon.md
+_projects/005_llada_moe.md
+_projects/006_llada20.md
+_projects/007_llada22.md
+_projects/008_grovemoe.md

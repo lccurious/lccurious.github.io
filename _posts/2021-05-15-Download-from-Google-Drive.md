@@ -113,7 +113,7 @@ rm ${filename}
 cd
 ```
 
-但是如果连不上外网，那就需要一个梯子的选项，即`proxychains4`这个命令行代理工具，或者需要通过其他机器进行联网的中转可以参考[离线服务器通过PC中转连接公网](https://lccurious.github.io/2020/07/27/Local-Server-Proxy/)。
+但是如果连不上外网，那就需要一个梯子的选项，即`proxychains4`这个命令行代理工具，或者需要通过其他机器进行联网的中转可以参考[离线服务器通过PC中转连接公网](https://lccurious.github.io/blog/2020/Local-Server-Proxy/)。
 
 对于不能直接联网的机器运行脚本方式为：
 

@@ -12,7 +12,7 @@ date: 2023-01-01
 
 authors:
   - name: Zenan Huang
-    url: "https://lccurious.github.io/about/"
+    url: "https://lccurious.github.io/"
     affiliations:
       name: Zhejiang University
   - name: Jun Wen

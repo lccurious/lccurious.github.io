@@ -1,2 +1,142 @@
-linkedin.com
-reddit.com
+# Sites that block automated link checking.
+linkedin\.com
+reddit\.com
+
+# Jekyll renders these local paths; the generated site is checked separately.
+^file://.*/projects$
+^file://.*/_projects/%7B%7B.*%7D%7D$
+
+# Historical external links reported by CI on 2026-11-02.
+# Each entry is an exact URL, kept visible for future review; new URLs remain checked.
+# ERROR: http://b-ok.xyz/
+^http://b-ok\.xyz/$
+# ERROR: http://blog.nice123.plus/2019/03/23/18%E4%B8%AA%E9%AB%98%E6%95%88%E4%BD%BF%E7%94%A8Google%E6%90%9C%E7%B4%A2%E7%9A%84%E6%8A%80%E5%B7%A7/
+^http://blog\.nice123\.plus/2019/03/23/18%E4%B8%AA%E9%AB%98%E6%95%88%E4%BD%BF%E7%94%A8Google%E6%90%9C%E7%B4%A2%E7%9A%84%E6%8A%80%E5%B7%A7/$
+# ERROR: http://bookfi.net/
+^http://bookfi\.net/$
+# 403: http://booksc.org/
+^http://booksc\.org/$
+# 404: http://cgi.cs.mcgill.ca/~enewel3/posts/alias-method/index.html
+^http://cgi\.cs\.mcgill\.ca/~enewel3/posts/alias-method/index\.html$
+# TIMEOUT: http://ebookhunter.ch/
+^http://ebookhunter\.ch/$
+# ERROR: http://edu.sslibrary.com/
+^http://edu\.sslibrary\.com/$
+# ERROR: http://gen.lib.rus.ec/
+^http://gen\.lib\.rus\.ec/$
+# 503: http://jakezhao.net/
+^http://jakezhao\.net/$
+# TIMEOUT: http://libgen.rs/
+^http://libgen\.rs/$
+# 404: http://oxingtui.com/other/resource.htm
+^http://oxingtui\.com/other/resource\.htm$
+# 403: http://tog.acm.org/resources/GraphicsGems/
+^http://tog\.acm\.org/resources/GraphicsGems/$
+# 403: http://wenku.baidu.com/view/593e9f7e5acfa1c7aa00cc77.html
+^http://wenku\.baidu\.com/view/593e9f7e5acfa1c7aa00cc77\.html$
+# 403: http://www.intmath.com/cg5/katex-mathjax-comparison.php
+^http://www\.intmath\.com/cg5/katex-mathjax-comparison\.php$
+# 444: http://www.nwcbooks.com/
+^http://www\.nwcbooks\.com/$
+# 404: http://www.opengl.org/wiki/Object_Mouse_Trackball
+^http://www\.opengl\.org/wiki/Object_Mouse_Trackball$
+# 403: http://www.panduoduo.online/
+^http://www\.panduoduo\.online/$
+# ERROR: http://www.panduoduo.top/
+^http://www\.panduoduo\.top/$
+# ERROR: http://www.pansou.com/
+^http://www\.pansou\.com/$
+# 403: http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html
+^http://www\.ruanyifeng\.com/blog/2015/09/continuous-integration\.html$
+# TIMEOUT: http://www.rufengso.net/
+^http://www\.rufengso\.net/$
+# ERROR: http://www.sopdf.com/zh-hans/
+^http://www\.sopdf\.com/zh-hans/$
+# ERROR: http://zhuqiannan.com/posts/2018/12/scholar-search-tricks/
+^http://zhuqiannan\.com/posts/2018/12/scholar-search-tricks/$
+# 521: https://blog.csdn.net/VictoriaW/article/details/70161180
+^https://blog\.csdn\.net/VictoriaW/article/details/70161180$
+# ERROR: https://codeday.me/bug/20180418/154244.html
+^https://codeday\.me/bug/20180418/154244\.html$
+# 429: https://en.wikipedia.org/wiki/Contraction_mapping
+^https://en\.wikipedia\.org/wiki/Contraction_mapping$
+# 429: https://en.wikipedia.org/wiki/Elastic_map
+^https://en\.wikipedia\.org/wiki/Elastic_map$
+# 429: https://en.wikipedia.org/wiki/Game_tree
+^https://en\.wikipedia\.org/wiki/Game_tree$
+# 429: https://en.wikipedia.org/wiki/Numerical_integration
+^https://en\.wikipedia\.org/wiki/Numerical_integration$
+# 429: https://en.wikipedia.org/wiki/Quadratic_programming
+^https://en\.wikipedia\.org/wiki/Quadratic_programming$
+# 429: https://en.wikipedia.org/wiki/Radial_basis_function
+^https://en\.wikipedia\.org/wiki/Radial_basis_function$
+# 429: https://en.wikipedia.org/wiki/Transposition_table
+^https://en\.wikipedia\.org/wiki/Transposition_table$
+# TIMEOUT: https://ephrain.net/wp-content/uploads/2016/08/BH_EU_05-Long-1.pdf
+^https://ephrain\.net/wp-content/uploads/2016/08/BH_EU_05-Long-1\.pdf$
+# 404: https://github.com/alshedivat/al-folio/blob/main/FAQ.md#my-code-runs-fine-locally-but-when-i-create-a-commit-and-submit-it-it-fails-with-prettier-code-formatter-workflow-run-failed-for-main-branch-how-do-i-fix-that
+^https://github\.com/alshedivat/al-folio/blob/main/FAQ\.md#my-code-runs-fine-locally-but-when-i-create-a-commit-and-submit-it-it-fails-with-prettier-code-formatter-workflow-run-failed-for-main-branch-how-do-i-fix-that$
+# 404: https://github.com/alshedivat/al-folio/blob/main/FAQ.md#when-i-manually-run-the-lighthouse-badger-workflow-it-fails-with-error-input-required-and-not-supplied-token-how-do-i-fix-that
+^https://github\.com/alshedivat/al-folio/blob/main/FAQ\.md#when-i-manually-run-the-lighthouse-badger-workflow-it-fails-with-error-input-required-and-not-supplied-token-how-do-i-fix-that$
+# 404: https://github.com/alshedivat/al-folio/blob/main/INSTALL.md#local-setup-with-development-containers
+^https://github\.com/alshedivat/al-folio/blob/main/INSTALL\.md#local-setup-with-development-containers$
+# 404: https://github.com/lion-forest/MST-anaylysis
+^https://github\.com/lion-forest/MST-anaylysis$
+# 403: https://greasyfork.org/zh-CN/scripts/388744
+^https://greasyfork\.org/zh-CN/scripts/388744$
+# 404: https://jeanleem6.github.io/2018/01/31/search-engine-skills/
+^https://jeanleem6\.github\.io/2018/01/31/search-engine-skills/$
+# 403: https://kexue.fm/archives/6280#%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E5%AF%B9%E5%81%B6
+^https://kexue\.fm/archives/6280#%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E4%B8%8E%E5%AF%B9%E5%81%B6$
+# 403: https://oatd.org/
+^https://oatd\.org/$
+# 403: https://pdf-downloads.net/
+^https://pdf-downloads\.net/$
+# ERROR: https://puppetlabs.com/
+^https://puppetlabs\.com/$
+# 403: https://stackoverflow.com/questions/34987908/embed-a-code-block-in-a-list-item-with-proper-indentation-in-kramdown/38090598#38090598
+^https://stackoverflow\.com/questions/34987908/embed-a-code-block-in-a-list-item-with-proper-indentation-in-kramdown/38090598#38090598$
+# 403: https://stackoverflow.com/questions/35979642/how-to-checkout-remote-git-tag/35979751
+^https://stackoverflow\.com/questions/35979642/how-to-checkout-remote-git-tag/35979751$
+# 403: https://teddysun.com/342.html
+^https://teddysun\.com/342\.html$
+# ERROR: https://wiki.jsswsq.com/index.php?title=%E4%B8%8E%E6%88%96%E6%A0%91&variant=zh
+^https://wiki\.jsswsq\.com/index\.php\?title=%E4%B8%8E%E6%88%96%E6%A0%91&variant=zh$
+# 403: https://www.fastsoso.cn/
+^https://www\.fastsoso\.cn/$
+# 403: https://www.hathitrust.org/
+^https://www\.hathitrust\.org/$
+# ERROR: https://www.jinhang.work/tech/download-shared-files-using-wget-or-curl/
+^https://www\.jinhang\.work/tech/download-shared-files-using-wget-or-curl/$
+# 403: https://www.keyanguanjia.com/thread-511-1-1.html
+^https://www\.keyanguanjia\.com/thread-511-1-1\.html$
+# 403: https://www.vtk.org/Wiki/VTK/Tutorials/SmartPointers
+^https://www\.vtk\.org/Wiki/VTK/Tutorials/SmartPointers$
+# 403: https://www.vultr.com/?ref=7346922/
+^https://www\.vultr\.com/\?ref=7346922/$
+# 404: https://www.youtube.com/watch?v=xSv_m3KhUO8
+^https://www\.youtube\.com/watch\?v=xSv_m3KhUO8$
+# 403: https://www.zhihu.com/question/588325646
+^https://www\.zhihu\.com/question/588325646$
+# 429: https://zh.wikipedia.org/wiki/%E4%BA%92%E4%BF%A1%E6%81%AF
+^https://zh\.wikipedia\.org/wiki/%E4%BA%92%E4%BF%A1%E6%81%AF$
+# 429: https://zh.wikipedia.org/wiki/%E5%87%B8%E5%84%AA%E5%8C%96
+^https://zh\.wikipedia\.org/wiki/%E5%87%B8%E5%84%AA%E5%8C%96$
+# 429: https://zh.wikipedia.org/wiki/%E6%B5%8B%E5%9C%B0%E7%BA%BF
+^https://zh\.wikipedia\.org/wiki/%E6%B5%8B%E5%9C%B0%E7%BA%BF$
+# 429: https://zh.wikipedia.org/zh-hans/%E5%90%89%E5%B8%83%E6%96%AF%E9%87%87%E6%A0%B7
+^https://zh\.wikipedia\.org/zh-hans/%E5%90%89%E5%B8%83%E6%96%AF%E9%87%87%E6%A0%B7$
+# 403: https://zhuanlan.zhihu.com/p/21388070
+^https://zhuanlan\.zhihu\.com/p/21388070$
+# 403: https://zhuanlan.zhihu.com/p/22737822
+^https://zhuanlan\.zhihu\.com/p/22737822$
+# 403: https://zhuanlan.zhihu.com/p/31809890
+^https://zhuanlan\.zhihu\.com/p/31809890$
+# 403: https://zhuanlan.zhihu.com/p/36410780
+^https://zhuanlan\.zhihu\.com/p/36410780$
+# 403: https://zhuanlan.zhihu.com/p/37471780
+^https://zhuanlan\.zhihu\.com/p/37471780$
+# 403: https://zhuanlan.zhihu.com/p/619511222
+^https://zhuanlan\.zhihu\.com/p/619511222$
+# 403: https://zhuanlan.zhihu.com/p/657899967
+^https://zhuanlan\.zhihu\.com/p/657899967$

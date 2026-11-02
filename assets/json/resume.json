@@ -32,9 +32,7 @@
       "startDate": "2018",
       "endDate": "2023",
       "score": "10",
-      "courses": [
-        "Causal Learning"
-      ]
+      "courses": ["Causal Learning"]
     },
     {
       "institution": "Zhejiang University of Technology",
@@ -45,9 +43,7 @@
       "startDate": "2014",
       "endDate": "2018",
       "score": "10",
-      "courses": [
-        "Internet of Things"
-      ]
+      "courses": ["Internet of Things"]
     }
   ],
   "awards": [
